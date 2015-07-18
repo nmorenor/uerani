@@ -1,0 +1,6 @@
+framework module Pods_ueraniTests {
+  umbrella header "Pods-ueraniTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

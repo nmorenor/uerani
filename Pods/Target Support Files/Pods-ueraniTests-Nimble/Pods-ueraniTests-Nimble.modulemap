@@ -1,0 +1,6 @@
+framework module Nimble {
+  umbrella header "Pods-ueraniTests-Nimble-umbrella.h"
+
+  export *
+  module * { export * }
+}

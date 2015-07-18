@@ -1,0 +1,27 @@
+PODS:
+  - FBAnnotationClustering (0.1.2)
+  - Nimble (1.0.0)
+  - pop (1.0.7)
+  - Quick (0.3.1)
+  - Realm (0.93.2):
+    - Realm/Headers (= 0.93.2)
+  - Realm/Headers (0.93.2)
+  - RealmSwift (0.93.2):
+    - Realm (= 0.93.2)
+
+DEPENDENCIES:
+  - FBAnnotationClustering (~> 0.1.2)
+  - Nimble (~> 1.0.0-rc.1)
+  - pop (~> 1.0)
+  - Quick (~> 0.3.1)
+  - RealmSwift
+
+SPEC CHECKSUMS:
+  FBAnnotationClustering: 8be556cf48b27262acab01ad8419bc01703615e3
+  Nimble: 8bee528e5fcc403653076545db562d2b5db7bb87
+  pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
+  Quick: 824572d3d198d51e52cf4aa722cebf7e59952a35
+  Realm: 2fdd0ae74f730e190384e0338d8a0d3654df8220
+  RealmSwift: 231b064da9f98b1c4f325fe1f1cb8756aae2b8d6
+
+COCOAPODS: 0.37.2
