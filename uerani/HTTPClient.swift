@@ -8,7 +8,7 @@
 
 import Foundation
 
-let DEBUG = true
+let DEBUG = false
 
 public class HTTPClient: NSObject {
     

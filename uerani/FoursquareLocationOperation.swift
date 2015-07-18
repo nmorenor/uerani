@@ -62,7 +62,6 @@ public class FoursquareLocationOperation: NSOperation {
     */
     func shouldCallFoursquareAPI(realm:Realm) -> Bool {
         let matchingCenters = realm.objects(SearchBoxCenter).filter(getSearchBoxPredicate())
-        println(matchingCenters.count)
         if matchingCenters.count > 0 {
             let center = getCenter()
             let delta = (MapLocationRequestProcessor.locationSearchDistance/4) / 2
@@ -81,6 +80,7 @@ public class FoursquareLocationOperation: NSOperation {
         return true
     }
     
+    // Predicate for SearchBoxCenter, with the coordinates of this bounding box
     func getSearchBoxPredicate() -> NSPredicate {
         return NSPredicate(format: "(%f <= lng) AND (lng <= %f) AND (%f <= lat) AND (lat <= %f)", sw.longitude, ne.longitude, sw.latitude, ne.latitude)
     }

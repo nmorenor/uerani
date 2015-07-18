@@ -13,8 +13,8 @@ import RealmSwift
 class RefreshMapAnnotationOperation: NSOperation {
    
     weak var mapView:MKMapView!
-    var mapAnnotations:[AnyObject]!
     private var semaphore = dispatch_semaphore_create(0)
+    private var removeAllAnnotations = false
     
     init(mapView:MKMapView) {
         self.mapView = mapView
@@ -23,12 +23,36 @@ class RefreshMapAnnotationOperation: NSOperation {
         LocationRequestManager.sharedInstance().refreshOperationQueue.addOperation(self)
     }
     
+    convenience init(mapView:MKMapView, removeAnnotations:Bool) {
+        self.init(mapView: mapView)
+        self.removeAllAnnotations = removeAnnotations
+    }
+    
     override func main() {
-        if let mapView = self.mapView {
-            let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
-            if let annotations = self.getAnnotations(), let mapView = self.mapView {
-                self.displayAnnotations(annotations, mapView: mapView)
+        if self.removeAllAnnotations {
+            if let mapView = self.mapView {
+                self.removeAnnotations(mapView)
             }
+            
+        } else {
+            if let mapView = self.mapView {
+                let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+                if let annotations = self.getAnnotations(), let mapView = self.mapView {
+                    self.displayAnnotations(annotations, mapView: mapView)
+                }
+            }
+        }
+    }
+    
+    private func removeAnnotations(mapView:MKMapView) {
+        if let mapAnnotations = mapView.annotations {
+            NSOperationQueue.mainQueue().addOperationWithBlock {
+                mapView.removeAnnotations(mapAnnotations)
+                //once ui is updated unlock, let other threads to execute
+                self.unlock()
+            }
+            //block thread, only one at a time will update the ui
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
         }
     }
     
@@ -55,7 +79,7 @@ class RefreshMapAnnotationOperation: NSOperation {
                     //once ui is updated unlock, let other threads to execute
                     self.unlock()
                 }
-                //block other threads, only one at a time will update the ui
+                //block thread, only one at a time will update the ui
                 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
             }
         }

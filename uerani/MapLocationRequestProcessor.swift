@@ -22,10 +22,8 @@ public class MapLocationRequestProcessor {
     var searchBox:SearchBox? {
         willSet {
             self.cleanGridBox()
-            if let mapView = self.mapView, let annotations = mapView.annotations {
-                dispatch_async(dispatch_get_main_queue()) {
-                    mapView.removeAnnotations(annotations)
-                }
+            if let mapView = self.mapView {
+                RefreshMapAnnotationOperation(mapView: mapView, removeAnnotations: true)
             }
         }
     }
@@ -37,9 +35,7 @@ public class MapLocationRequestProcessor {
         self.clusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
     }
     
-    //debug flag
-    var flag = false
-    
+    //Authorize get user location
     public func trigerAuthorization(authorized:Bool) {
         if !self.authorized && authorized {
             self.setAllowLocation()
@@ -63,17 +59,14 @@ public class MapLocationRequestProcessor {
     }
     
     func displayLocation(location:CLLocation) {
+        var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.055, longitudeDelta: 0.055))
         dispatch_async(dispatch_get_main_queue()) {
-            var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.055, longitudeDelta: 0.055))
             self.mapView?.setRegion(region, animated: true)
         }
     }
     
     func triggerLocationSearch() {
         NSOperationQueue().addOperationWithBlock({
-            if self.flag {
-                return
-            }
             if self.shouldCalculateSearchBox() {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
                 objc_sync_enter(self.clusteringManager)
@@ -86,7 +79,6 @@ public class MapLocationRequestProcessor {
     
     func calculateSearchBox() {
         if let mapView = mapView {
-            self.flag = false
             self.searchBox?.removeOverlays()
             let centralLocation = GeoLocation(coordinate: mapView.region.center)
             self.searchBox = SearchBox(center: centralLocation, distance: MapLocationRequestProcessor.locationSearchDistance, mapView:mapView)
@@ -94,9 +86,7 @@ public class MapLocationRequestProcessor {
     }
     
     func updateUI() {
-        dispatch_async(dispatch_get_main_queue()) {
-            mapView?.delegate.mapView!(mapView, regionDidChangeAnimated: true)
-        }
+        mapView?.delegate.mapView!(mapView, regionDidChangeAnimated: true)
     }
     
     func shouldUseCluster() -> Bool {
