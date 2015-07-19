@@ -14,7 +14,7 @@ class RefreshMapAnnotationOperation: NSOperation {
    
     weak var mapView:MKMapView!
     private var semaphore = dispatch_semaphore_create(0)
-    private var removeAllAnnotations = false
+    private var removeOperation = false
     
     init(mapView:MKMapView) {
         self.mapView = mapView
@@ -25,11 +25,11 @@ class RefreshMapAnnotationOperation: NSOperation {
     
     convenience init(mapView:MKMapView, removeAnnotations:Bool) {
         self.init(mapView: mapView)
-        self.removeAllAnnotations = removeAnnotations
+        self.removeOperation = removeAnnotations
     }
     
     override func main() {
-        if self.removeAllAnnotations {
+        if self.removeOperation {
             if let mapView = self.mapView {
                 self.removeAnnotations(mapView)
             }
@@ -46,14 +46,21 @@ class RefreshMapAnnotationOperation: NSOperation {
     
     private func removeAnnotations(mapView:MKMapView) {
         if let mapAnnotations = mapView.annotations {
-            NSOperationQueue.mainQueue().addOperationWithBlock {
-                mapView.removeAnnotations(mapAnnotations)
-                //once ui is updated unlock, let other threads to execute
-                self.unlock()
+            if LocationRequestManager.sharedInstance().requestProcessor.shouldUseCluster() {
+                self.displayNoAnnotations()
+            } else {
+                // on remove and with big zoom we do not want to remove visible operations
+                if let visibleAnnotations = self.getNonClusteredAnnotations() {
+                    self.displayAnnotations(visibleAnnotations, mapView: mapView)
+                } else {
+                    self.displayNoAnnotations()
+                }
             }
-            //block thread, only one at a time will update the ui
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
         }
+    }
+    
+    private func displayNoAnnotations() {
+        self.displayAnnotations(Array<NSObject>(), mapView: mapView)
     }
     
     private func displayAnnotations(annotations:Array<NSObject>, mapView:MKMapView) {
@@ -90,24 +97,33 @@ class RefreshMapAnnotationOperation: NSOperation {
     }
     
     private func getAnnotations() -> Array<NSObject>? {
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
-        if requestProcessor.shouldUseCluster() {
-            let scale:Double = Double(mapView.bounds.size.width) / Double(mapView.visibleMapRect.size.width)
-            let annotations = requestProcessor.clusteringManager.clusteredAnnotationsWithinMapRect(mapView.visibleMapRect, withZoomScale: scale) as! Array<NSObject>
-            return annotations
+        if LocationRequestManager.sharedInstance().requestProcessor.shouldUseCluster() {
+            return self.getClusteredAnnotations()
         } else {
-            if let searchBox = requestProcessor.searchBox {
-                let predicate = searchBox.getPredicate(mapView.region)
-                let realm = Realm(path: Realm.defaultPath)
-                
-                let venues = realm.objects(FVenue).filter(searchBox.getPredicate(mapView.region))
-                var annotations = [FoursquareLocationMapAnnotation]()
-                for venue in venues {
-                    annotations.append(FoursquareLocationMapAnnotation(venue: venue))
-                }
-                
-                return annotations
+            return self.getNonClusteredAnnotations()
+        }
+    }
+    
+    func getClusteredAnnotations() -> Array<NSObject>? {
+        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+        let scale:Double = Double(mapView.bounds.size.width) / Double(mapView.visibleMapRect.size.width)
+        let annotations = requestProcessor.clusteringManager.clusteredAnnotationsWithinMapRect(mapView.visibleMapRect, withZoomScale: scale) as! Array<NSObject>
+        return annotations
+    }
+    
+    func getNonClusteredAnnotations() -> Array<NSObject>? {
+        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+        if let searchBox = requestProcessor.searchBox {
+            let predicate = searchBox.getPredicate(mapView.region)
+            let realm = Realm(path: Realm.defaultPath)
+            
+            let venues = realm.objects(FVenue).filter(searchBox.getPredicate(mapView.region))
+            var annotations = [FoursquareLocationMapAnnotation]()
+            for venue in venues {
+                annotations.append(FoursquareLocationMapAnnotation(venue: venue))
             }
+            
+            return annotations
         }
         return nil
     }

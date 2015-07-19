@@ -26,28 +26,12 @@ public class FoursquareLocationOperation: NSOperation {
     }
     
     public override func main() {
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         var searchOnFoursquare = true
         let realm = Realm(path: Realm.defaultPath)
         let shouldCallFoursquareAPI = self.shouldCallFoursquareAPI(realm)
         if !shouldCallFoursquareAPI {
-            let predicate = SearchBox.getPredicate(self.sw, ne: self.ne)
-            let venues = realm.objects(FVenue).filter(predicate)
-            
             searchOnFoursquare = false
-            var annotations = [FoursquareLocationMapAnnotation]()
-            for venue in venues {
-                annotations.append(FoursquareLocationMapAnnotation(venue: venue))
-            }
-                
-            if cancelled {
-                return
-            }
-            self.addAnnotationsToCluster(annotations)
-            if cancelled {
-                return
-            }
-            requestProcessor.updateUI()
+            self.doLocalCacheSearch(realm)
         }
         
         if searchOnFoursquare && shouldCallFoursquareAPI {
@@ -98,6 +82,28 @@ public class FoursquareLocationOperation: NSOperation {
         super.cancel()
     }
     
+    //Search on local cache
+    private func doLocalCacheSearch(realm:Realm) {
+        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne)
+        let venues = realm.objects(FVenue).filter(predicate)
+        
+        
+        var annotations = [FoursquareLocationMapAnnotation]()
+        for venue in venues {
+            annotations.append(FoursquareLocationMapAnnotation(venue: venue))
+        }
+        
+        if cancelled {
+            return
+        }
+        self.addAnnotationsToCluster(annotations)
+        if cancelled {
+            return
+        }
+        requestProcessor.updateUI()
+    }
+    
     private func doFoursquareSearch(completionHandler:(success:Bool, result:[[String:AnyObject]]?, errorString:String?) -> Void) {
         if cancelled {
             return
@@ -108,7 +114,8 @@ public class FoursquareLocationOperation: NSOperation {
     
     private func searchHandler(success:Bool, result:[[String:AnyObject]]?, errorString:String?) {
         if let error = errorString {
-            println(error)
+            //when we have any kind of error searching on foursquare we will just try to look on local cache
+            self.doLocalCacheSearch(Realm(path: Realm.defaultPath))
         } else {
             if let result = result where result.count > 0 {
                 let realm = Realm(path: Realm.defaultPath)
