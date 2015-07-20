@@ -25,7 +25,7 @@ public class MapLocationRequestProcessor {
         willSet {
             self.cleanGridBox()
             if let mapView = self.mapView {
-                RefreshMapAnnotationOperation(mapView: mapView, removeAnnotations: true)
+                RefreshMapAnnotationOperation(mapView: mapView)
             }
         }
     }
@@ -76,9 +76,6 @@ public class MapLocationRequestProcessor {
         NSOperationQueue().addOperationWithBlock({
             if self.triggeredAuthorization && self.shouldCalculateSearchBox() {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
-                objc_sync_enter(self.clusteringManager)
-                self.clusteringManager.setAnnotations([FoursquareLocationMapAnnotation]())
-                objc_sync_exit(self.clusteringManager)
                 if let region = region {
                     self.calculateSearchBox(region)
                 } else {
