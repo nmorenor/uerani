@@ -29,6 +29,10 @@ class RefreshMapAnnotationOperation: NSOperation {
     }
     
     override func main() {
+        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+        if requestProcessor.searchBox == nil {
+            return
+        }
         if self.removeOperation {
             if let mapView = self.mapView {
                 self.removeAnnotations(mapView)
@@ -36,7 +40,7 @@ class RefreshMapAnnotationOperation: NSOperation {
             
         } else {
             if let mapView = self.mapView {
-                let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+                
                 if let annotations = self.getAnnotations(), let mapView = self.mapView {
                     self.displayAnnotations(annotations, mapView: mapView)
                 }

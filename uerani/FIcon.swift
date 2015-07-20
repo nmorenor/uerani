@@ -11,11 +11,26 @@ import RealmSwift
 
 public class FIcon: Object {
     
-    public struct Sizes {
-        static let S32 = "32"
-        static let S44 = "44"
-        static let S64 = "64"
-        static let S88 = "88"
+    public enum FIconSize : Printable {
+        case S32;
+        case S44;
+        case S64;
+        case S88;
+        
+        static let allValues = [S32, S44, S64, S88]
+        
+        public var description:String {
+            switch self {
+            case .S32:
+                return "32"
+            case .S44:
+                return "44"
+            case .S64:
+                return "64"
+            case .S88:
+                return "88"
+            }
+        }
     }
     
     public dynamic var prefix = ""

@@ -54,6 +54,7 @@ extension MapViewController: MKMapViewDelegate {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: clusterPin)
             }
             self.drawCircleImage(annotation, view: view)
+            
         } else {
             if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView {
                 dequeuedView.annotation = annotation
@@ -61,43 +62,102 @@ extension MapViewController: MKMapViewDelegate {
             } else {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             }
+            if let annotation = annotation as? FoursquareLocationMapAnnotation, let categoryImageName = annotation.categoryImageName {
+                if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
+                    self.drawCategoryImage(view, image: image, categoryImagePinName: annotation.categoryImagePinName!)
+                } else if let prefix = annotation.categoryPrefix, let suffix = annotation.categorySuffix {
+                    FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
+                }
+            }
         }
         
         return view
     }
     
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
-        RefreshMapAnnotationOperation(mapView: mapView)
+        if LocationRequestManager.sharedInstance().requestProcessor.isRefreshReady() {
+            RefreshMapAnnotationOperation(mapView: mapView)
+        }
     }
     
     func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
-        if fullyRendered {
-            LocationRequestManager.sharedInstance().requestProcessor.triggerLocationSearch()
+        if fullyRendered && LocationRequestManager.sharedInstance().requestProcessor.isRefreshReady() {
+            LocationRequestManager.sharedInstance().requestProcessor.triggerLocationSearch(mapView.region)
         }
+    }
+    
+    func drawCategoryImage(view:MKPinAnnotationView, image:UIImage, categoryImagePinName:String) {
+        let containerLayer = CALayer()
+        var yellowColor = UIColor(red: 255.0/255.0, green: 188.0/255.0, blue: 8/255.0, alpha: 1.0)
+        containerLayer.frame = CGRectMake(0, 0, image.size.width + 10, image.size.height + 30)
+        
+        let circleLayer = CAShapeLayer()
+        circleLayer.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, image.size.width + 10, image.size.height + 10)).CGPath
+        circleLayer.fillColor = yellowColor.CGColor
+        circleLayer.backgroundColor = UIColor.clearColor().CGColor
+        
+        let triangleLayer = CAShapeLayer()
+        triangleLayer.frame = CGRectMake(0, image.size.height - ((image.size.height / 4) + 2), image.size.width + 10, 30)
+        let bezierPath = UIBezierPath()
+        bezierPath.moveToPoint(CGPoint(x: 0, y: 0))
+        bezierPath.addLineToPoint(CGPoint(x: (image.size.width + 10) / 2, y: 30))
+        bezierPath.addLineToPoint(CGPoint(x: image.size.width + 10, y: 0))
+        
+        bezierPath.closePath()
+        triangleLayer.path = bezierPath.CGPath
+        triangleLayer.fillColor = yellowColor.CGColor
+        triangleLayer.backgroundColor = UIColor.clearColor().CGColor
+        
+        let imageLayer = CALayer()
+        imageLayer.frame = CGRectMake(5, 5, image.size.width, image.size.height)
+        imageLayer.contents = image.CGImage
+        
+        containerLayer.addSublayer(circleLayer)
+        containerLayer.addSublayer(triangleLayer)
+        containerLayer.addSublayer(imageLayer)
+        
+        UIGraphicsBeginImageContextWithOptions(containerLayer.frame.size, false, 0.0)
+        let context = UIGraphicsGetCurrentContext()
+        containerLayer.renderInContext(context)
+        let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        view.image = resultImage
     }
     
     func drawCircleImage(annotation:FBAnnotationCluster, view:MKPinAnnotationView) {
         let number = annotation.annotations.count
-        let size:CGFloat = number > 9 ? 45 : 35
-        let fontSize:CGFloat = number > 9 ? 30 : 20
         
-        let circle = CAShapeLayer()
-        circle.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, size, size)).CGPath
-        circle.fillColor = UIColor.redColor().CGColor
-        circle.backgroundColor = UIColor.clearColor().CGColor
+        let fontSize:CGFloat = number > 9 ? 30 : 20
+        var font = UIFont(name: "Helvetica", size: fontSize)!
+        var yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
+        var attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: yellowColor])
+        let asize:CGSize = attributedString.size()
+        let size = max((asize.width + 10), 30)
+        
         let label = CATextLayer()
-        label.font = "Helvetica"
-        label.fontSize = fontSize
-        label.frame = CGRectMake(0, (((size - 5) - fontSize) / 2), size, size)
+        label.frame = CGRectMake(5, ((((size - 5) - fontSize) / 2) + 5), size, size)
         label.alignmentMode = kCAAlignmentCenter
         label.allowsEdgeAntialiasing = true
-        label.foregroundColor = UIColor.whiteColor().CGColor
-        label.string = String(annotation.annotations.count)
+        label.string = attributedString
+        label.backgroundColor = UIColor.clearColor().CGColor
+        label.foregroundColor = yellowColor.CGColor
+
+        let backCircle = CAShapeLayer()
+        backCircle.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, size + 10, size + 10)).CGPath
+        backCircle.fillColor = yellowColor.CGColor
+        backCircle.backgroundColor = UIColor.clearColor().CGColor
+        
+        let circle = CAShapeLayer()
+        circle.path = UIBezierPath(ovalInRect: CGRectMake(5, 5, size, size)).CGPath
+        circle.fillColor = UIColor.blackColor().CGColor
+        circle.backgroundColor = UIColor.clearColor().CGColor
+        backCircle.addSublayer(circle)
         circle.addSublayer(label)
         
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: size, height: size), false, 0.0)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: size + 10, height: size + 10), false, 0.0)
         let context = UIGraphicsGetCurrentContext()
-        circle.renderInContext(context)
+        backCircle.renderInContext(context)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         

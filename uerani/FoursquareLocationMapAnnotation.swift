@@ -14,7 +14,12 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
     let title:String
     let subtitle:String
     let coordinate:CLLocationCoordinate2D
+    var categoryImageName:String?
+    var categoryImagePinName:String?
+    var categoryPrefix:String?
+    var categorySuffix:String?
     weak var venue:FVenue?
+    
     override var hashValue: Int {
         get {
             return self.calculateHashValue()
@@ -40,6 +45,16 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         
         self.coordinate = CLLocationCoordinate2D(latitude: venue.location.lat, longitude: venue.location.lng)
         self.venue = venue
+        if let category = venue.categories.first, let url = NSURL(string: "\(category.icon.prefix)\(FIcon.FIconSize.S32.description)\(category.icon.suffix)"), let name = url.lastPathComponent {
+            categoryImageName = name
+            
+            let pathExtension = name.pathExtension
+            let pathPrefix = name.stringByDeletingPathExtension
+            categoryImagePinName = "\(pathPrefix)-pin.\(pathExtension)"
+            
+            self.categoryPrefix = category.icon.prefix
+            self.categorySuffix = category.icon.suffix
+        }
     }
     
     private func calculateHashValue() -> Int {

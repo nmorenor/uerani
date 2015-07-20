@@ -16,12 +16,13 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
     public var location:CLLocation?
     var operationQueue:NSOperationQueue
     var refreshOperationQueue:NSOperationQueue
+    var categoryIconOperationQueue:NSOperationQueue
+    
+    //http://krakendev.io/blog/the-right-way-to-write-a-singleton
+    static let sharedInstancee = LocationRequestManager()
     
     public class func sharedInstance() -> LocationRequestManager {
-        struct Singleton {
-            static var instance = LocationRequestManager()
-        }
-        return Singleton.instance
+        return sharedInstancee
     }
     
     public override init() {
@@ -36,8 +37,12 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         operationQueue.maxConcurrentOperationCount = 5
         
         refreshOperationQueue = NSOperationQueue()
-        refreshOperationQueue.name = "Refresh annotation operation"
+        refreshOperationQueue.name = "Refresh annotation operation queue"
         refreshOperationQueue.maxConcurrentOperationCount = 1
+        
+        categoryIconOperationQueue = NSOperationQueue()
+        categoryIconOperationQueue.name = "Category Icon Operation Queue"
+        categoryIconOperationQueue.maxConcurrentOperationCount = 20
         
         super.init()
         self.manager.delegate = self
@@ -54,7 +59,7 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         if status == CLAuthorizationStatus.AuthorizedWhenInUse {
             self.manager.startUpdatingLocation()
             self.requestProcessor.trigerAuthorization(true)
-        } else {
+        } else  if status != CLAuthorizationStatus.NotDetermined {
             self.requestProcessor.trigerAuthorization(false)
         }
     }

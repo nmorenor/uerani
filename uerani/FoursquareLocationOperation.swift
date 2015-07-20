@@ -141,7 +141,14 @@ public class FoursquareLocationOperation: NSOperation {
                     }
                     LocationRequestManager.sharedInstance().requestProcessor.updateUI()
                     
+                    for nextVenue in venues {
+                        for nextCategory in nextVenue.categories {
+                            FoursquareCategoryIconWorker(prefix: nextCategory.icon.prefix, suffix: nextCategory.icon.suffix)
+                        }
+                    }
                 }
+                
+                
             } else {
                 let realm = Realm(path: Realm.defaultPath)
                 let center = self.getCenter()

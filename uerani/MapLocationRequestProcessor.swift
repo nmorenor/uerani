@@ -19,6 +19,8 @@ public class MapLocationRequestProcessor {
     var authorized:Bool = false
     var location:CLLocation?
     var clusteringManager:FBClusteringManager
+    var triggeredAuthorization:Bool = false
+    var initialRegion:Bool = false
     var searchBox:SearchBox? {
         willSet {
             self.cleanGridBox()
@@ -40,7 +42,11 @@ public class MapLocationRequestProcessor {
         if !self.authorized && authorized {
             self.setAllowLocation()
         }
+        self.triggeredAuthorization = true
         self.authorized = authorized
+        if !self.authorized {
+            self.initialRegion = true
+        }
     }
     
     public func didUpdateLocation(newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
@@ -62,25 +68,38 @@ public class MapLocationRequestProcessor {
         var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.055, longitudeDelta: 0.055))
         dispatch_async(dispatch_get_main_queue()) {
             self.mapView?.setRegion(region, animated: true)
+            self.triggerLocationSearch(region)
         }
     }
     
-    func triggerLocationSearch() {
+    func triggerLocationSearch(region:MKCoordinateRegion?) {
         NSOperationQueue().addOperationWithBlock({
-            if self.shouldCalculateSearchBox() {
+            if self.triggeredAuthorization && self.shouldCalculateSearchBox() {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
                 objc_sync_enter(self.clusteringManager)
                 self.clusteringManager.setAnnotations([FoursquareLocationMapAnnotation]())
                 objc_sync_exit(self.clusteringManager)
-                self.calculateSearchBox()
+                if let region = region {
+                    self.calculateSearchBox(region)
+                } else {
+                    self.calculateSearchBox(self.mapView?.region)
+                }
+                self.initialRegion = true
             }
         })
     }
     
-    func calculateSearchBox() {
-        if let mapView = mapView {
+    func isRefreshReady() -> Bool {
+        if let searchBox = self.searchBox {
+            return self.triggeredAuthorization && self.initialRegion
+        }
+        return false
+    }
+    
+    func calculateSearchBox(region:MKCoordinateRegion?) {
+        if let mapView = mapView, let region = region {
             self.searchBox?.removeOverlays()
-            let centralLocation = GeoLocation(coordinate: mapView.region.center)
+            let centralLocation = GeoLocation(coordinate: region.center)
             self.searchBox = SearchBox(center: centralLocation, distance: MapLocationRequestProcessor.locationSearchDistance, mapView:mapView)
         }
     }
@@ -92,7 +111,7 @@ public class MapLocationRequestProcessor {
     func shouldUseCluster() -> Bool {
         if let searchBox = self.searchBox, let mapView = self.mapView {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            return mapRegionDistance > MapLocationRequestProcessor.locationSearchDistance * 2
+            return mapRegionDistance > MapLocationRequestProcessor.locationSearchDistance + 1
         }
         return true
     }
