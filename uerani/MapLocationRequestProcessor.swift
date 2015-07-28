@@ -23,6 +23,7 @@ public class MapLocationRequestProcessor {
     var initialRegion:Bool = false
     var calloutAnnotation:CalloutAnnotation?
     var selectedMapAnnotationView:MKAnnotationView?
+    var calloutMapAnnotationView:CalloutMapAnnotationView?
     var searchBox:SearchBox? {
         willSet {
             self.cleanGridBox()

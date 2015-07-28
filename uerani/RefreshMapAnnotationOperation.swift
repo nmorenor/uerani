@@ -28,7 +28,11 @@ class RefreshMapAnnotationOperation: NSOperation {
         self.mapView = mapView
         super.init()
         
-        LocationRequestManager.sharedInstance().refreshOperationQueue.addOperation(self)
+        // we can be adding an excesive amount of refresh workers to the queue
+        //this could lead to undesired results, only allow three on the queue
+        if LocationRequestManager.sharedInstance().refreshOperationQueue.operationCount <= 3 {
+            LocationRequestManager.sharedInstance().refreshOperationQueue.addOperation(self)
+        }
     }
     
     convenience init(mapView:MKMapView, removeAnnotations:Bool) {
@@ -133,7 +137,6 @@ class RefreshMapAnnotationOperation: NSOperation {
         if let searchBox = requestProcessor.searchBox {
             let predicate = searchBox.getPredicate(mapView.region)
             let realm = Realm(path: Realm.defaultPath)
-            
             let venues = realm.objects(FVenue).filter(searchBox.getPredicate(mapView.region))
             var annotations = [FoursquareLocationMapAnnotation]()
             for venue in venues {

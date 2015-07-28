@@ -29,7 +29,7 @@ class CalloutAnnotation: NSObject, MKAnnotation, Hashable, Equatable {
     private func calculateHashValue() -> Int {
         let prime:Int = 7
         var result:Int = 1
-        var toHash = NSString(format: "[%.8f,%.8f]", coordinate.latitude, coordinate.longitude)
+        var toHash = NSString(format: "c[%.8f,%.8f]", coordinate.latitude, coordinate.longitude)
         result = prime * result + toHash.hashValue
         return result
     }

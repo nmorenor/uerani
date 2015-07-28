@@ -39,11 +39,14 @@ class MapViewController: UIViewController {
 extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
-        if let calloutAnnotation = requestProcessor.calloutAnnotation {
+        if let calloutAnnotation = LocationRequestManager.sharedInstance().requestProcessor.calloutAnnotation {
             mapView.removeAnnotation(calloutAnnotation)
-            requestProcessor.calloutAnnotation = nil
         }
+    }
+    
+    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
+        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+        
         requestProcessor.calloutAnnotation = CalloutAnnotation(coordinate: view.annotation.coordinate)
         requestProcessor.selectedMapAnnotationView = view
         mapView.addAnnotation(requestProcessor.calloutAnnotation!)
@@ -96,15 +99,14 @@ extension MapViewController: MKMapViewDelegate {
         
         var customView:CalloutMapAnnotationView
         if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(calloutPin) as? CalloutMapAnnotationView {
-            dequeuedView.mapView = mapView
-            dequeuedView.parentAnnotationView = LocationRequestManager.sharedInstance().requestProcessor.selectedMapAnnotationView!
-            dequeuedView.annotation = annotation
             customView = dequeuedView
         } else {
             customView = CalloutMapAnnotationView(annotation: annotation, reuseIdentifier: calloutPin)
-            customView.mapView = mapView
-            customView.parentAnnotationView = LocationRequestManager.sharedInstance().requestProcessor.selectedMapAnnotationView!
+            
         }
+        customView.mapView = mapView
+        customView.parentAnnotationView = LocationRequestManager.sharedInstance().requestProcessor.selectedMapAnnotationView!
+        customView.annotation = annotation
         if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
             var aView = UIImageView(image: image)
             aView.frame = CGRectMake(5, 2, aView.frame.size.width, aView.frame.size.height)
