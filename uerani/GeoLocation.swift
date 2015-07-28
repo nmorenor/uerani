@@ -11,13 +11,22 @@ import MapKit
 
 struct GeoLocation {
     
-    struct GeoLocationBoundBox: Hashable, Equatable {
+    class GeoLocationBoundBox: Hashable, Equatable {
         var center:GeoLocation
         var distance:Double
         var neLocation:GeoLocation
         var swLocation:GeoLocation
         var nwLocation:GeoLocation
         var seLocation:GeoLocation
+        
+        init(center:GeoLocation, distance:Double, neLocation:GeoLocation, swLocation:GeoLocation, nwLocation:GeoLocation, seLocation:GeoLocation) {
+            self.center = center
+            self.distance = distance
+            self.neLocation = neLocation
+            self.swLocation = swLocation
+            self.nwLocation = nwLocation
+            self.seLocation = seLocation
+        }
         
         var hashValue:Int {
             get {

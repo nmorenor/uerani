@@ -10,6 +10,14 @@ import MapKit
 import FBAnnotationClustering
 import RealmSwift
 
+func delay(#seconds: Double, completion:()->()) {
+    let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64( Double(NSEC_PER_SEC) * seconds ))
+    
+    dispatch_after(popTime,  dispatch_get_main_queue()) {
+        completion()
+    }
+}
+
 class RefreshMapAnnotationOperation: NSOperation {
    
     weak var mapView:MKMapView!
@@ -71,6 +79,9 @@ class RefreshMapAnnotationOperation: NSOperation {
         if let mapAnnotations = mapView.annotations {
             var before:NSMutableSet = NSMutableSet(array: mapAnnotations)
             before.removeObject(mapView.userLocation)
+            if let calloutAnnotation = LocationRequestManager.sharedInstance().requestProcessor.calloutAnnotation {
+                before.removeObject(calloutAnnotation)
+            }
             
             var after:NSSet = NSSet(array: annotations)
             
@@ -84,7 +95,7 @@ class RefreshMapAnnotationOperation: NSOperation {
             toRemove.minusSet(after as Set<NSObject>)
             
             if toAdd.count > 0 || toRemove.count > 0 {
-                NSOperationQueue.mainQueue().addOperationWithBlock {
+                dispatch_async(dispatch_get_main_queue()) {
                     mapView.addAnnotations(toAdd.allObjects)
                     mapView.removeAnnotations(toRemove.allObjects)
                     //once ui is updated unlock, let other threads to execute
@@ -111,7 +122,9 @@ class RefreshMapAnnotationOperation: NSOperation {
     func getClusteredAnnotations() -> Array<NSObject>? {
         let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         let scale:Double = Double(mapView.bounds.size.width) / Double(mapView.visibleMapRect.size.width)
+        objc_sync_enter(requestProcessor.clusteringManager)
         let annotations = requestProcessor.clusteringManager.clusteredAnnotationsWithinMapRect(mapView.visibleMapRect, withZoomScale: scale) as! Array<NSObject>
+        objc_sync_exit(requestProcessor.clusteringManager)
         return annotations
     }
     

@@ -18,9 +18,11 @@ public class MapLocationRequestProcessor {
     weak var mapView:MKMapView?
     var authorized:Bool = false
     var location:CLLocation?
-    var clusteringManager:FBClusteringManager
+    var clusteringManager:FBClusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
     var triggeredAuthorization:Bool = false
     var initialRegion:Bool = false
+    var calloutAnnotation:CalloutAnnotation?
+    var selectedMapAnnotationView:MKAnnotationView?
     var searchBox:SearchBox? {
         willSet {
             self.cleanGridBox()
@@ -31,11 +33,10 @@ public class MapLocationRequestProcessor {
     }
     
     var mutex:NSObject = NSObject()
-    var gridBox:Set<GeoLocation.GeoLocationBoundBox> = Set()
     
-    init() {
-        self.clusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
-    }
+    //performance of NSSet is better than swift Set
+    var gridBox:NSMutableSet = NSMutableSet()
+    var allAnnotations:NSMutableSet = NSMutableSet()
     
     //Authorize get user location
     public func trigerAuthorization(authorized:Bool) {
@@ -129,14 +130,15 @@ public class MapLocationRequestProcessor {
     func getGidBoxLocations() -> Array<GeoLocation.GeoLocationBoundBox> {
         var result:Array<GeoLocation.GeoLocationBoundBox>!
         objc_sync_enter(self.mutex)
-        result = Array(self.gridBox)
+        result = self.gridBox.allObjects as! Array<GeoLocation.GeoLocationBoundBox>
+        println(result.count)
         objc_sync_exit(self.mutex)
         return result
     }
     
     func cleanGridBox() {
         objc_sync_enter(self.mutex)
-        self.gridBox.removeAll(keepCapacity: true)
+        self.gridBox.removeAllObjects()
         objc_sync_exit(self.mutex)
     }
     
@@ -158,10 +160,12 @@ public class MapLocationRequestProcessor {
     * Use it carefully, not thread safe, for thread safe use the non private funcions
     */
     private func isInGridBoxInternal(location:GeoLocation.GeoLocationBoundBox) -> Bool {
-        for nextLocation in self.gridBox {
-            let result = nextLocation.containsLocation(location.center)
-            if result {
-                return true
+        for next in self.gridBox {
+            if let nextLocation = next as? GeoLocation.GeoLocationBoundBox {
+                let result = nextLocation.containsLocation(location.center)
+                if result {
+                    return true
+                }
             }
         }
         return false
@@ -170,7 +174,7 @@ public class MapLocationRequestProcessor {
     func addToGridBox(location:GeoLocation.GeoLocationBoundBox) {
         objc_sync_enter(self.mutex)
         if !self.isInGridBoxInternal(location) {
-            self.gridBox.insert(location)
+            self.gridBox.addObject(location)
         }
         objc_sync_exit(self.mutex)
     }

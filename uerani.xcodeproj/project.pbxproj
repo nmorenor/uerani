@@ -38,6 +38,8 @@
 		66A7FCBC1B5AD7CA0012358D /* RefreshMapAnnotationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FCB41B5AD7CA0012358D /* RefreshMapAnnotationOperation.swift */; };
 		66A7FCBD1B5AD7CA0012358D /* SearchBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FCB51B5AD7CA0012358D /* SearchBox.swift */; };
 		66A7FCBF1B5AD8810012358D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7FCBE1B5AD8810012358D /* MapKit.framework */; };
+		66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */; };
+		66AFDC5D1B60692C002413DB /* CalloutMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */; };
 		66F693271B5AD92000C70E52 /* FoursquareClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F693261B5AD92000C70E52 /* FoursquareClientTests.swift */; };
 		B12BA67A7FD7B7356B1D2DC8 /* Pods_uerani.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC8C27BBF60AF6ACCDC3C0D /* Pods_uerani.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
@@ -88,6 +90,8 @@
 		66A7FCB41B5AD7CA0012358D /* RefreshMapAnnotationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshMapAnnotationOperation.swift; sourceTree = "<group>"; };
 		66A7FCB51B5AD7CA0012358D /* SearchBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBox.swift; sourceTree = "<group>"; };
 		66A7FCBE1B5AD8810012358D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutAnnotation.swift; sourceTree = "<group>"; };
+		66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutMapAnnotationView.swift; sourceTree = "<group>"; };
 		66F693261B5AD92000C70E52 /* FoursquareClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareClientTests.swift; sourceTree = "<group>"; };
 		85E0F1A40D3471844F2285F2 /* Pods-uerani.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-uerani.debug.xcconfig"; path = "Pods/Target Support Files/Pods-uerani/Pods-uerani.debug.xcconfig"; sourceTree = "<group>"; };
 		9A8F73D411711F3734457C38 /* Pods-uerani.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-uerani.release.xcconfig"; path = "Pods/Target Support Files/Pods-uerani/Pods-uerani.release.xcconfig"; sourceTree = "<group>"; };
@@ -213,6 +217,8 @@
 				66A7FCB41B5AD7CA0012358D /* RefreshMapAnnotationOperation.swift */,
 				66A7FCB51B5AD7CA0012358D /* SearchBox.swift */,
 				6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */,
+				66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */,
+				66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -460,6 +466,7 @@
 				66A7FCA21B5AD7600012358D /* HttpClientConstants.swift in Sources */,
 				66A7FCB61B5AD7CA0012358D /* FoursquareLocationMapAnnotation.swift in Sources */,
 				66A7FC9C1B5AD7470012358D /* FVenue.swift in Sources */,
+				66AFDC5D1B60692C002413DB /* CalloutMapAnnotationView.swift in Sources */,
 				66A7FC991B5AD7470012358D /* FLocation.swift in Sources */,
 				66A7FCAA1B5AD7A70012358D /* FoursquareClient.swift in Sources */,
 				66A7FC961B5AD7470012358D /* FCategory.swift in Sources */,
@@ -480,6 +487,7 @@
 				66A7FCAB1B5AD7A70012358D /* FoursquareConfig.swift in Sources */,
 				66A7FC9B1B5AD7470012358D /* FTag.swift in Sources */,
 				66A7FCB71B5AD7CA0012358D /* FoursquareLocationOperation.swift in Sources */,
+				66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */,
 				66A7FC971B5AD7470012358D /* FContact.swift in Sources */,
 				66A7FC6B1B5AD6B30012358D /* AppDelegate.swift in Sources */,
 			);

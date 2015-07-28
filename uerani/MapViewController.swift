@@ -38,6 +38,17 @@ class MapViewController: UIViewController {
 
 extension MapViewController: MKMapViewDelegate {
     
+    func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
+        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+        if let calloutAnnotation = requestProcessor.calloutAnnotation {
+            mapView.removeAnnotation(calloutAnnotation)
+            requestProcessor.calloutAnnotation = nil
+        }
+        requestProcessor.calloutAnnotation = CalloutAnnotation(coordinate: view.annotation.coordinate)
+        requestProcessor.selectedMapAnnotationView = view
+        mapView.addAnnotation(requestProcessor.calloutAnnotation!)
+    }
+    
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         if let annotation = annotation as? MKUserLocation {
             return nil
@@ -45,7 +56,8 @@ extension MapViewController: MKMapViewDelegate {
         
         let identifier = "foursquarePin"
         let clusterPin = "foursquareClusterPin"
-        var view:MKPinAnnotationView
+        let calloutPin = "calloutPin"
+        var view:MKPinAnnotationView?
         if let annotation = annotation as? FBAnnotationCluster {
             if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(clusterPin) as? MKPinAnnotationView {
                 dequeuedView.annotation = annotation
@@ -53,25 +65,54 @@ extension MapViewController: MKMapViewDelegate {
             } else {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: clusterPin)
             }
-            self.drawCircleImage(annotation, view: view)
+            self.drawCircleImage(annotation, view: view!)
             
-        } else {
+        } else if let annotation = annotation as? FoursquareLocationMapAnnotation {
             if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView {
                 dequeuedView.annotation = annotation
                 view = dequeuedView
             } else {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             }
-            if let annotation = annotation as? FoursquareLocationMapAnnotation, let categoryImageName = annotation.categoryImageName {
+            if let categoryImageName = annotation.categoryImageName {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
-                    self.drawCategoryImage(view, image: image, categoryImagePinName: annotation.categoryImagePinName!)
+                    self.drawCategoryImage(view!, image: image)
                 } else if let prefix = annotation.categoryPrefix, let suffix = annotation.categorySuffix {
                     FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
+                    if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
+                        self.drawCategoryImage(view!, image: image)
+                    }
+                } else {
+                    if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
+                        self.drawCategoryImage(view!, image: image)
+                    }
                 }
             }
+            view!.canShowCallout = false
+        }
+        if let view = view {
+            return view
         }
         
-        return view
+        var customView:CalloutMapAnnotationView
+        if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(calloutPin) as? CalloutMapAnnotationView {
+            dequeuedView.mapView = mapView
+            dequeuedView.parentAnnotationView = LocationRequestManager.sharedInstance().requestProcessor.selectedMapAnnotationView!
+            dequeuedView.annotation = annotation
+            customView = dequeuedView
+        } else {
+            customView = CalloutMapAnnotationView(annotation: annotation, reuseIdentifier: calloutPin)
+            customView.mapView = mapView
+            customView.parentAnnotationView = LocationRequestManager.sharedInstance().requestProcessor.selectedMapAnnotationView!
+        }
+        if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
+            var aView = UIImageView(image: image)
+            aView.frame = CGRectMake(5, 2, aView.frame.size.width, aView.frame.size.height)
+            customView.contentView().addSubview(aView)
+        }
+        
+        
+        return customView
     }
     
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
@@ -86,7 +127,7 @@ extension MapViewController: MKMapViewDelegate {
         }
     }
     
-    func drawCategoryImage(view:MKPinAnnotationView, image:UIImage, categoryImagePinName:String) {
+    func drawCategoryImage(view:MKPinAnnotationView, image:UIImage) {
         let containerLayer = CALayer()
         var yellowColor = UIColor(red: 255.0/255.0, green: 188.0/255.0, blue: 8/255.0, alpha: 1.0)
         containerLayer.frame = CGRectMake(0, 0, image.size.width + 10, image.size.height + 30)

@@ -173,21 +173,17 @@ public class FoursquareLocationOperation: NSOperation {
             objc_sync_exit(requestProcessor.clusteringManager)
             return
         }
-        let currentAnotations:[FoursquareLocationMapAnnotation] = requestProcessor.clusteringManager.allAnnotations().map({return $0 as! FoursquareLocationMapAnnotation})
-        if cancelled {
-            return
-        }
-        var annotationSet:Set<FoursquareLocationMapAnnotation> = Set(currentAnotations)
+        var annotationSet:NSSet = NSSet(array: annotations)
         if cancelled {
             objc_sync_exit(requestProcessor.clusteringManager)
             return
         }
-        annotationSet.unionInPlace(annotations)
+        requestProcessor.allAnnotations.unionSet(annotationSet as Set<NSObject>)
         if cancelled {
             objc_sync_exit(requestProcessor.clusteringManager)
             return
         }
-        requestProcessor.clusteringManager.setAnnotations(Array(annotationSet))
+        requestProcessor.clusteringManager.setAnnotations(requestProcessor.allAnnotations.allObjects)
         objc_sync_exit(requestProcessor.clusteringManager)
     }
 }

@@ -122,7 +122,12 @@ struct SearchBox {
                 let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
                 
                 //only trigger forsquare search one per bounding box
-                let locations = self.getLocations().filter({ !requestProcessor.isInGridBox($0) })
+                var locations = self.getLocations().filter({ !requestProcessor.isInGridBox($0) })
+                let regionCenter = GeoLocation(coordinate: mapView!.region.center)
+                locations.sort() { lhs, rhs in
+                    return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
+                }
+                
                 for location in locations {
                     self.triggerForusquareSearch(location)
                 }

@@ -50,10 +50,17 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
             
             let pathExtension = name.pathExtension
             let pathPrefix = name.stringByDeletingPathExtension
-            categoryImagePinName = "\(pathPrefix)-pin.\(pathExtension)"
+            
+            //protect from bad data from API
+            if "png" == pathExtension {
+                categoryImagePinName = "\(pathPrefix)-pin.\(pathExtension)"
+            } else {
+                categoryImagePinName = "default_32-pin.png"
+            }
             
             self.categoryPrefix = category.icon.prefix
             self.categorySuffix = category.icon.suffix
+            
         }
     }
     
