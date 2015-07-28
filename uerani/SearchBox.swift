@@ -60,7 +60,7 @@ struct SearchBox {
         if let mapView = mapView where debug {
             self.showAsOverlay(mapView)
         }
-        
+        self.triggerForusquareSearchOperations()
     }
     
     func getPredicate() -> NSPredicate {
@@ -123,13 +123,9 @@ struct SearchBox {
                 
                 //only trigger forsquare search one per bounding box
                 var locations = self.getLocations().filter({ !requestProcessor.isInGridBox($0) })
-                let regionCenter = GeoLocation(coordinate: mapView!.region.center)
-                locations.sort() { lhs, rhs in
-                    return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
-                }
                 
                 for location in locations {
-                    self.triggerForusquareSearch(location)
+                    LocationRequestManager.sharedInstance().requestProcessor.addToGridBox(location)
                 }
             }
             
@@ -151,9 +147,19 @@ struct SearchBox {
         box.triggerFoursquareSearch()
     }
     
-    private func triggerForusquareSearch(location:GeoLocation.GeoLocationBoundBox) {
-        FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate)
-        LocationRequestManager.sharedInstance().requestProcessor.addToGridBox(location)
+    private func triggerForusquareSearchOperations() {
+        if self.boxDistance == MapLocationRequestProcessor.locationSearchDistance {
+            var locations = LocationRequestManager.sharedInstance().requestProcessor.getGidBoxLocations()
+            
+            let regionCenter = GeoLocation(coordinate: mapView!.region.center)
+            locations.sort() { lhs, rhs in
+                return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
+            }
+            
+            for location in locations {
+                FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate)
+            }
+        }
     }
     
     static func getNorthWestBox(location:GeoLocation.GeoLocationBoundBox, distance:Double) -> GeoLocation.GeoLocationBoundBox {
