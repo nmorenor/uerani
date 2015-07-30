@@ -54,6 +54,10 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
+        if let clusterAnnotation = view.annotation as? FBAnnotationCluster {
+            return
+        }
+        
         let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         
         requestProcessor.calloutAnnotation = CalloutAnnotation(coordinate: view.annotation.coordinate)

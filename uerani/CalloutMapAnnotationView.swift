@@ -33,13 +33,6 @@ class CalloutMapAnnotationView: MKAnnotationView {
         }
     }
     
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -207,8 +200,8 @@ class CalloutMapAnnotationView: MKAnnotationView {
         CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
         CGPathAddLineToPoint(path, nil, nrect.origin.x, nrect.origin.y + nrect.size.height - radius)
         CGPathAddArc(path, nil, nrect.origin.x + radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI), CGFloat(M_PI_2), true)
-        CGPathAddLineToPoint(path, nil, parentX - 15, nrect.origin.y + nrect.size.height + 15)
-        CGPathAddLineToPoint(path, nil, parentX, nrect.origin.y + nrect.size.height)
+        CGPathAddLineToPoint(path, nil, parentX - 15, nrect.origin.y + nrect.size.height)
+        CGPathAddLineToPoint(path, nil, parentX, nrect.origin.y + nrect.size.height + 15)
         CGPathAddLineToPoint(path, nil, parentX + 15, nrect.origin.y + nrect.size.height)
         CGPathAddLineToPoint(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + nrect.size.height)
         CGPathAddArc(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI_2), 0.0, true)
@@ -238,10 +231,10 @@ class CalloutMapAnnotationView: MKAnnotationView {
         
         //get size for gloss
         var glossRect:CGRect = self.bounds
-        glossRect.size.width = rect.size.width - stroke
-        glossRect.size.height = (rect.size.height - stroke) / 2
+        glossRect.size.width = nrect.size.width - stroke
+        glossRect.size.height = (nrect.size.height - stroke) / 2
         glossRect.origin.x = nrect.origin.x + stroke / 2
-        glossRect.origin.y += rect.origin.y + stroke / 2
+        glossRect.origin.y += nrect.origin.y + stroke / 2
         
         var glossTopRadius:CGFloat = radius - stroke / 2
         var glossBottomRadius:CGFloat = radius / 1.5
@@ -249,7 +242,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
         var glossPath:CGMutablePathRef = CGPathCreateMutable()
         CGPathMoveToPoint(glossPath, nil, glossRect.origin.x, glossRect.origin.y + glossTopRadius)
         CGPathAddLineToPoint(glossPath, nil, glossRect.origin.x, glossRect.origin.y + glossRect.size.height - glossBottomRadius)
-        CGPathAddArc(glossPath, nil, glossRect.origin.x + glossBottomRadius, glossRect.origin.y + glossRect.size.height, glossBottomRadius, CGFloat(M_PI), CGFloat(M_PI_2), true)
+        CGPathAddArc(glossPath, nil, glossRect.origin.x + glossBottomRadius, glossRect.origin.y + glossRect.size.height - glossBottomRadius, glossBottomRadius, CGFloat(M_PI), CGFloat(M_PI_2), true)
         CGPathAddLineToPoint(glossPath, nil, glossRect.origin.x + glossRect.size.width - glossBottomRadius, glossRect.origin.y + glossRect.size.height)
         CGPathAddArc(glossPath, nil, glossRect.origin.x + glossRect.size.width - glossBottomRadius, glossRect.origin.y + glossRect.size.height - glossBottomRadius, glossBottomRadius, CGFloat(M_PI_2), 0.0, true)
         CGPathAddLineToPoint(glossPath, nil, glossRect.origin.x + glossRect.size.width, glossRect.origin.y + glossTopRadius)
@@ -281,7 +274,6 @@ class CalloutMapAnnotationView: MKAnnotationView {
         var startPoint2:CGPoint = glossRect.origin
         var endPoint2:CGPoint = CGPointMake(glossRect.origin.x, glossRect.origin.y + glossRect.size.height)
         CGContextDrawLinearGradient(context, gradient2, startPoint2, endPoint2, 0)
-        
     }
     
     func yShadowOffset() -> CGFloat {
