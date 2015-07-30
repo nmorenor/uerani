@@ -15,7 +15,6 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
     let subtitle:String
     let coordinate:CLLocationCoordinate2D
     var categoryImageName:String?
-    var categoryImagePinName:String?
     var categoryPrefix:String?
     var categorySuffix:String?
     weak var venue:FVenue?
@@ -45,18 +44,9 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         
         self.coordinate = CLLocationCoordinate2D(latitude: venue.location.lat, longitude: venue.location.lng)
         self.venue = venue
-        if let category = venue.categories.first, let url = NSURL(string: "\(category.icon.prefix)\(FIcon.FIconSize.S32.description)\(category.icon.suffix)"), let name = url.lastPathComponent {
-            categoryImageName = name
-            
-            let pathExtension = name.pathExtension
-            let pathPrefix = name.stringByDeletingPathExtension
-            
-            //protect from bad data from API
-            if "png" == pathExtension {
-                categoryImagePinName = "\(pathPrefix)-pin.\(pathExtension)"
-            } else {
-                categoryImagePinName = "default_32-pin.png"
-            }
+        if let category = FoursquareLocationMapAnnotation.getBestCategory(venue), let url = NSURL(string: "\(category.icon.prefix)\(FIcon.FIconSize.S32.description)\(category.icon.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
+            let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
+            categoryImageName = "\(prefix_image_name)_\(name)"
             
             self.categoryPrefix = category.icon.prefix
             self.categorySuffix = category.icon.suffix
@@ -70,6 +60,19 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         var toHash = NSString(format: "[%.8f,%.8f]", coordinate.latitude, coordinate.longitude)
         result = prime * result + toHash.hashValue
         return result
+    }
+    
+    private static func getBestCategory(venue:FVenue) -> FCategory? {
+        for nextCat in venue.categories {
+            if let url = NSURL(string: "\(nextCat.icon.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.icon.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
+                let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
+                let imageName = "\(prefix_image_name)_\(name)"
+                if let image = ImageCache.sharedInstance().imageWithIdentifier(imageName) {
+                    return nextCat
+                }
+            }
+        }
+        return venue.categories.first
     }
 }
 

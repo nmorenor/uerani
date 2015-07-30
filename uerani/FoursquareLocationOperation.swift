@@ -88,6 +88,18 @@ public class FoursquareLocationOperation: NSOperation {
         let predicate = SearchBox.getPredicate(self.sw, ne: self.ne)
         let venues = realm.objects(FVenue).filter(predicate)
         
+        for nextVenue in venues {
+            for nextCat in nextVenue.categories {
+                if let url = NSURL(string: "\(nextCat.icon.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.icon.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
+                    let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
+                    let imageName = "\(prefix_image_name)_\(name)"
+                    var image = ImageCache.sharedInstance().imageWithIdentifier(imageName)
+                    if image == nil {
+                         FoursquareCategoryIconWorker(prefix: nextCat.icon.prefix, suffix: nextCat.icon.suffix)
+                    }
+                }
+            }
+        }
         
         var annotations = [FoursquareLocationMapAnnotation]()
         for venue in venues {

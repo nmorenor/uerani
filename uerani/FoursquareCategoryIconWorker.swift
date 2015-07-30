@@ -17,6 +17,7 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     var prefix:String
     var suffix:String
     var currentIcon:NSURL?
+    var regex:Regex = Regex(pattern: "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)")
     private var semaphore = dispatch_semaphore_create(0)
     
     init(prefix:String, suffix:String) {
@@ -37,17 +38,26 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     
     override func main() {
         for nextSize in FIcon.FIconSize.allValues {
-            var url = NSURL(string: "\(prefix)\(nextSize.description)\(suffix)")
-            if let nextUrl = url {
+            var nextStringURL = "\(prefix)\(nextSize.description)\(suffix)"
+            var url = NSURL(string: nextStringURL)
+            if let nextUrl = url where regex.test(nextStringURL) {
                 self.currentIcon = nextUrl
-                let nextImage = ImageCache.sharedInstance().imageWithIdentifier(nextUrl.lastPathComponent!)
+                let pathComponents = nextUrl.pathComponents!
+                let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
+                var imageCacheName = "\(prefix_image_name)_\(nextUrl.lastPathComponent!)"
+                let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
                 if nextImage == nil {
-                    self.session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: self, delegateQueue: LocationRequestManager.sharedInstance().categoryIconOperationQueue)
+                    self.session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: self, delegateQueue: LocationRequestManager.sharedInstance().categoryIconDownloadOperationQueue)
                     self.download()
+                    
                     //wait for the download
                     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
                     self.session = nil
+                } else {
+                    println("url downloaded: \(nextStringURL)")
                 }
+            } else {
+                println("url invalid: \(nextStringURL)")
             }
             self.currentIcon = nil
         }
@@ -58,6 +68,7 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     }
     
     private func download() {
+        println("downloading: \(self.currentIcon!)")
         let request = NSURLRequest(URL: self.currentIcon!)
         let dataTask = self.session.dataTaskWithRequest(request)
         
@@ -66,6 +77,7 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     
     func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: (NSURLSessionResponseDisposition) -> Void) {
         if self.cancelled {
+            self.unlock()
             return;
         }
         
@@ -77,6 +89,7 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     
     func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
         if self.cancelled {
+            self.unlock()
             return;
         }
         
@@ -85,12 +98,17 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     }
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+        println("download finish: \(self.currentIcon!)")
         if let error = error {
             println("Error downloading category icon \(error)")
-        }
-        if let imageData = self.imageData {
-            let image = UIImage(data: imageData)
-            ImageCache.sharedInstance().storeImage(image, withIdentifier: self.currentIcon!.lastPathComponent!)
+        } else {
+            if let imageData = self.imageData {
+                let image = UIImage(data: imageData)
+                let pathComponents = self.currentIcon!.pathComponents!
+                let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
+                var imageCacheName = "\(prefix_image_name)_\(self.currentIcon!.lastPathComponent!)"
+                ImageCache.sharedInstance().storeImage(image, withIdentifier: imageCacheName)
+            }
         }
         self.totalBytes = 0
         self.receivedBytes = 0

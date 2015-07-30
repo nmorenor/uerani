@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6561868563E3124623A2772C /* Pods_ueraniTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 540BABF78B677F4DC0F4B85A /* Pods_ueraniTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		66382C211B6996DF00F5644C /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C201B6996DF00F5644C /* Regex.swift */; };
+		66382C231B69A62C00F5644C /* default_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 66382C221B69A62C00F5644C /* default_32.png */; };
 		6657BF031B5D565B00C94677 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF021B5D565B00C94677 /* ImageCache.swift */; };
 		6657BF051B5D588100C94677 /* FoursquareCategoryIconWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */; };
 		66A7FC6B1B5AD6B30012358D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */; };
@@ -56,6 +58,8 @@
 
 /* Begin PBXFileReference section */
 		540BABF78B677F4DC0F4B85A /* Pods_ueraniTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ueraniTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		66382C201B6996DF00F5644C /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+		66382C221B69A62C00F5644C /* default_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_32.png; sourceTree = "<group>"; };
 		6657BF021B5D565B00C94677 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareCategoryIconWorker.swift; sourceTree = "<group>"; };
 		66A7FC651B5AD6B30012358D /* uerani.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uerani.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +125,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		66382C1D1B69899C00F5644C /* images */ = {
+			isa = PBXGroup;
+			children = (
+				66382C221B69A62C00F5644C /* default_32.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		66A7FC5C1B5AD6B30012358D = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +157,7 @@
 		66A7FC671B5AD6B30012358D /* uerani */ = {
 			isa = PBXGroup;
 			children = (
+				66382C201B6996DF00F5644C /* Regex.swift */,
 				66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */,
 				66A7FC8C1B5AD71D0012358D /* Model */,
 				66A7FCA41B5AD76A0012358D /* Map */,
@@ -157,6 +170,7 @@
 		66A7FC681B5AD6B30012358D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				66382C1D1B69899C00F5644C /* images */,
 				66A7FC701B5AD6B30012358D /* Main.storyboard */,
 				66A7FC751B5AD6B30012358D /* LaunchScreen.xib */,
 				66A7FC691B5AD6B30012358D /* Info.plist */,
@@ -351,6 +365,7 @@
 			files = (
 				66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */,
 				66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */,
+				66382C231B69A62C00F5644C /* default_32.png in Resources */,
 				66A7FC741B5AD6B30012358D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -477,6 +492,7 @@
 				66A7FCB81B5AD7CA0012358D /* GeoLocation.swift in Sources */,
 				66A7FCBA1B5AD7CA0012358D /* MapLocationRequestProcessor.swift in Sources */,
 				66A7FCBB1B5AD7CA0012358D /* MapViewController.swift in Sources */,
+				66382C211B6996DF00F5644C /* Regex.swift in Sources */,
 				66A7FC981B5AD7470012358D /* FIcon.swift in Sources */,
 				66A7FC9A1B5AD7470012358D /* FPhoto.swift in Sources */,
 				66A7FCB91B5AD7CA0012358D /* LocationRequestManager.swift in Sources */,

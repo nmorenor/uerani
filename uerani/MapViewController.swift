@@ -13,7 +13,15 @@ import RealmSwift
 
 class MapViewController: UIViewController {
 
+    let identifier = "foursquarePin"
+    let clusterPin = "foursquareClusterPin"
+    let calloutPin = "calloutPin"
+    
+    let defaultPinImage = "default_32.png"
+    
     @IBOutlet weak var mapView: MKMapView!
+    var selectedMapAnnotationView:MKAnnotationView?
+    var calloutMapAnnotationView:CalloutMapAnnotationView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +34,7 @@ class MapViewController: UIViewController {
         super.viewWillDisappear(animated)
         let locationRequestManager = LocationRequestManager.sharedInstance()
         locationRequestManager.requestProcessor.mapView = nil
+        locationRequestManager.requestProcessor.calloutAnnotation = nil
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,7 +57,7 @@ extension MapViewController: MKMapViewDelegate {
         let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         
         requestProcessor.calloutAnnotation = CalloutAnnotation(coordinate: view.annotation.coordinate)
-        requestProcessor.selectedMapAnnotationView = view
+        self.selectedMapAnnotationView = view
         mapView.addAnnotation(requestProcessor.calloutAnnotation!)
     }
     
@@ -57,9 +66,6 @@ extension MapViewController: MKMapViewDelegate {
             return nil
         }
         
-        let identifier = "foursquarePin"
-        let clusterPin = "foursquareClusterPin"
-        let calloutPin = "calloutPin"
         var view:MKPinAnnotationView?
         if let annotation = annotation as? FBAnnotationCluster {
             if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(clusterPin) as? MKPinAnnotationView {
@@ -82,11 +88,11 @@ extension MapViewController: MKMapViewDelegate {
                     self.drawCategoryImage(view!, image: image)
                 } else if let prefix = annotation.categoryPrefix, let suffix = annotation.categorySuffix {
                     FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
-                    if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
+                    if let image = UIImage(named: defaultPinImage) {
                         self.drawCategoryImage(view!, image: image)
                     }
                 } else {
-                    if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
+                    if let image = UIImage(named: defaultPinImage) {
                         self.drawCategoryImage(view!, image: image)
                     }
                 }
@@ -105,7 +111,7 @@ extension MapViewController: MKMapViewDelegate {
             
         }
         customView.mapView = mapView
-        customView.parentAnnotationView = LocationRequestManager.sharedInstance().requestProcessor.selectedMapAnnotationView!
+        customView.parentAnnotationView = self.selectedMapAnnotationView!
         customView.annotation = annotation
         if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
             var aView = UIImageView(image: image)

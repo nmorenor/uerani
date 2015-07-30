@@ -16,14 +16,15 @@ public class MapLocationRequestProcessor {
     static let locationSearchDistance:Double = 1000.00
     
     weak var mapView:MKMapView?
+    //user location authorized
     var authorized:Bool = false
+    //user location
     var location:CLLocation?
     var clusteringManager:FBClusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
     var triggeredAuthorization:Bool = false
     var initialRegion:Bool = false
     var calloutAnnotation:CalloutAnnotation?
-    var selectedMapAnnotationView:MKAnnotationView?
-    var calloutMapAnnotationView:CalloutMapAnnotationView?
+    
     var searchBox:SearchBox? {
         willSet {
             self.cleanGridBox()
@@ -132,7 +133,6 @@ public class MapLocationRequestProcessor {
         var result:Array<GeoLocation.GeoLocationBoundBox>!
         objc_sync_enter(self.mutex)
         result = self.gridBox.allObjects as! Array<GeoLocation.GeoLocationBoundBox>
-        println(result.count)
         objc_sync_exit(self.mutex)
         return result
     }

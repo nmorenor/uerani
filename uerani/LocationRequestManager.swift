@@ -17,6 +17,7 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
     var operationQueue:NSOperationQueue
     var refreshOperationQueue:NSOperationQueue
     var categoryIconOperationQueue:NSOperationQueue
+    var categoryIconDownloadOperationQueue:NSOperationQueue
     
     //http://krakendev.io/blog/the-right-way-to-write-a-singleton
     static let sharedInstancee = LocationRequestManager()
@@ -42,7 +43,11 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         
         categoryIconOperationQueue = NSOperationQueue()
         categoryIconOperationQueue.name = "Category Icon Operation Queue"
-        categoryIconOperationQueue.maxConcurrentOperationCount = 20
+        categoryIconOperationQueue.maxConcurrentOperationCount = 4
+        
+        categoryIconDownloadOperationQueue = NSOperationQueue()
+        categoryIconDownloadOperationQueue.name = "Category Icon Operation Queue"
+        categoryIconDownloadOperationQueue.maxConcurrentOperationCount = 4
         
         super.init()
         self.manager.delegate = self
