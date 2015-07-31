@@ -40,11 +40,6 @@ class CalloutMapAnnotationView: MKAnnotationView {
     override init!(annotation: MKAnnotation!, reuseIdentifier: String!) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = UIColor.clearColor()
-        
-        self.prepareFrameSize()
-        self.prepareOffset()
-        self.prepareContentFrame()
-        self.setNeedsDisplay()
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -82,12 +77,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
     func adjustMapRegionIfNeeded() {
         if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView {
             //longitude
-            var xPixelShift:CGFloat = 0.0
-            if self.relativeParentXPosition() < 38 {
-                xPixelShift = 38.0 - self.relativeParentXPosition()
-            } else if self.relativeParentXPosition() > self.frame.size.width - 38 {
-                xPixelShift = (self.frame.size.width - 38.0) - self.relativeParentXPosition()
-            }
+            var xPixelShift:CGFloat = self.getXPixelShift()
             
             //latitude
             var mapViewOriginRelativeToParent = mapView.convertPoint(mapView.frame.origin, toView: parentAnnotationView)
@@ -117,6 +107,19 @@ class CalloutMapAnnotationView: MKAnnotationView {
                 self.centerOffset = CGPointMake(self.centerOffset.x - xPixelShift, self.centerOffset.y)
             }
         }
+    }
+    
+    func getXPixelShift() -> CGFloat {
+        var xPixelShift:CGFloat = 0.0
+        if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView {
+            
+            if self.relativeParentXPosition() < 38 {
+                xPixelShift = 38.0 - self.relativeParentXPosition()
+            } else if self.relativeParentXPosition() > self.frame.size.width - 38 {
+                xPixelShift = (self.frame.size.width - 38.0) - self.relativeParentXPosition()
+            }
+        }
+        return xPixelShift
     }
     
     func relativeParentXPosition() -> CGFloat {
@@ -184,10 +187,12 @@ class CalloutMapAnnotationView: MKAnnotationView {
         var stroke:CGFloat = 1.0
         var radius:CGFloat = 7.0
         var path:CGMutablePathRef = CGPathCreateMutable()
+        var xPixelShift:CGFloat = self.getXPixelShift()
+        println(xPixelShift)
         
         var space:CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()
         var context:CGContextRef = UIGraphicsGetCurrentContext();
-        var parentX:CGFloat = self.relativeParentXPosition()
+        var parentX:CGFloat = self.relativeParentXPosition() + ((xPixelShift) > 0.0 ? xPixelShift : ((xPixelShift < 0.0) ? ((xPixelShift / 2) + radius) : 0.0))
         
         //determine size
         var nrect = self.bounds
@@ -197,6 +202,8 @@ class CalloutMapAnnotationView: MKAnnotationView {
         nrect.origin.y += stroke / 2.0
         
         //Create Path For Callout Bubble
+        println(self.relativeParentXPosition())
+        
         CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
         CGPathAddLineToPoint(path, nil, nrect.origin.x, nrect.origin.y + nrect.size.height - radius)
         CGPathAddArc(path, nil, nrect.origin.x + radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI), CGFloat(M_PI_2), true)
@@ -228,52 +235,6 @@ class CalloutMapAnnotationView: MKAnnotationView {
         CGContextSetLineCap(context, kCGLineCapSquare)
         CGContextAddPath(context, path)
         CGContextStrokePath(context)
-        
-        //get size for gloss
-        var glossRect:CGRect = self.bounds
-        glossRect.size.width = nrect.size.width - stroke
-        glossRect.size.height = (nrect.size.height - stroke) / 2
-        glossRect.origin.x = nrect.origin.x + stroke / 2
-        glossRect.origin.y += nrect.origin.y + stroke / 2
-        
-        var glossTopRadius:CGFloat = radius - stroke / 2
-        var glossBottomRadius:CGFloat = radius / 1.5
-        
-        var glossPath:CGMutablePathRef = CGPathCreateMutable()
-        CGPathMoveToPoint(glossPath, nil, glossRect.origin.x, glossRect.origin.y + glossTopRadius)
-        CGPathAddLineToPoint(glossPath, nil, glossRect.origin.x, glossRect.origin.y + glossRect.size.height - glossBottomRadius)
-        CGPathAddArc(glossPath, nil, glossRect.origin.x + glossBottomRadius, glossRect.origin.y + glossRect.size.height - glossBottomRadius, glossBottomRadius, CGFloat(M_PI), CGFloat(M_PI_2), true)
-        CGPathAddLineToPoint(glossPath, nil, glossRect.origin.x + glossRect.size.width - glossBottomRadius, glossRect.origin.y + glossRect.size.height)
-        CGPathAddArc(glossPath, nil, glossRect.origin.x + glossRect.size.width - glossBottomRadius, glossRect.origin.y + glossRect.size.height - glossBottomRadius, glossBottomRadius, CGFloat(M_PI_2), 0.0, true)
-        CGPathAddLineToPoint(glossPath, nil, glossRect.origin.x + glossRect.size.width, glossRect.origin.y + glossTopRadius)
-        CGPathAddArc(glossPath, nil, glossRect.origin.x + glossRect.size.width - glossTopRadius, glossRect.origin.y + glossTopRadius, glossTopRadius, 0.0, CGFloat(-M_PI/2), true)
-        CGPathAddLineToPoint(glossPath, nil, glossRect.origin.x + glossTopRadius, glossRect.origin.y)
-        CGPathAddArc(glossPath, nil, glossRect.origin.x + glossTopRadius, glossRect.origin.y + glossTopRadius, glossTopRadius, CGFloat(-M_PI_2), CGFloat(M_PI), true)
-        CGPathCloseSubpath(glossPath)
-        
-        //fill gloss
-        CGContextAddPath(context, glossPath)
-        CGContextClip(context)
-        var colors:Array<CGFloat> = [1, 1, 1, 0.3, 1, 1, 1, 0.1]
-        var locations:Array<CGFloat> = [0, 1.0]
-        var gradient:CGGradientRef = CGGradientCreateWithColorComponents(space, colors, locations, 2)
-        var startPoint:CGPoint = glossRect.origin
-        var endPoint:CGPoint = CGPointMake(glossRect.origin.x, glossRect.origin.y + glossRect.size.height)
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0)
-        
-        //stroke gloss path
-        CGContextAddPath(context, glossPath)
-        CGContextSetLineWidth(context, 2)
-        CGContextReplacePathWithStrokedPath(context)
-        CGContextClip(context)
-        var colors2:Array<CGFloat> = [1, 1, 1, 0.3,
-                                    1, 1, 1,0.1,
-                                    1, 1, 1,0.0]
-        var locations2:Array<CGFloat> = [0, 0.1, 1.0]
-        var gradient2:CGGradientRef = CGGradientCreateWithColorComponents(space, colors2, locations2, 3)
-        var startPoint2:CGPoint = glossRect.origin
-        var endPoint2:CGPoint = CGPointMake(glossRect.origin.x, glossRect.origin.y + glossRect.size.height)
-        CGContextDrawLinearGradient(context, gradient2, startPoint2, endPoint2, 0)
     }
     
     func yShadowOffset() -> CGFloat {

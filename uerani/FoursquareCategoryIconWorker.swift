@@ -53,11 +53,7 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
                     //wait for the download
                     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
                     self.session = nil
-                } else {
-                    println("url downloaded: \(nextStringURL)")
                 }
-            } else {
-                println("url invalid: \(nextStringURL)")
             }
             self.currentIcon = nil
         }
@@ -68,7 +64,6 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     }
     
     private func download() {
-        println("downloading: \(self.currentIcon!)")
         let request = NSURLRequest(URL: self.currentIcon!)
         let dataTask = self.session.dataTaskWithRequest(request)
         
@@ -98,7 +93,6 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     }
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-        println("download finish: \(self.currentIcon!)")
         if let error = error {
             println("Error downloading category icon \(error)")
         } else {
