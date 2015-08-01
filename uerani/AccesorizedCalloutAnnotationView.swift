@@ -40,12 +40,14 @@ class AccesorizedCalloutAnnotationView: CalloutMapAnnotationView {
     }
 
     override func prepareContentFrame() {
-        var contentFrame = CGRectMake(self.bounds.origin.x + 10, self.bounds.origin.y + 3, self.bounds.size.width - 20, self.contentHeight)
+        var nrect = self.getRectDraw()
+        var contentFrame = CGRectMake(nrect.origin.x + 10, nrect.origin.y + 3, nrect.size.width - 20, self.contentHeight)
         self.contentView().frame = contentFrame
     }
     
     func prepareAccessoryFrame() {
-        self.accessory.frame = CGRectMake(self.bounds.size.width - self.accessory.frame.size.width - 15, (self.contentHeight + 3 - self.accessory.frame.size.height / 2), self.accessory.frame.size.width, self.accessory.frame.height)
+        var nrect = self.getRectDraw()
+        self.accessory.frame = CGRectMake(nrect.size.width - self.accessory.frame.size.width - 15, (self.contentHeight + 3 - self.accessory.frame.size.height) / 2, self.accessory.frame.size.width, self.accessory.frame.height)
     }
     
     func calloutAccessoryTapped(sender: UIButton!) {

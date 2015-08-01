@@ -15,11 +15,13 @@ public class FoursquareLocationOperation: NSOperation {
     
     var sw:CLLocationCoordinate2D
     var ne:CLLocationCoordinate2D
+    private var requestProcessor:MapLocationRequestProcessor
     private var semaphore = dispatch_semaphore_create(0)
     
-    init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D) {
+    init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, requestProcessor:MapLocationRequestProcessor) {
         self.sw = sw
         self.ne = ne
+        self.requestProcessor = requestProcessor
         super.init()
         
         LocationRequestManager.sharedInstance().operationQueue.addOperation(self)
@@ -84,7 +86,6 @@ public class FoursquareLocationOperation: NSOperation {
     
     //Search on local cache
     private func doLocalCacheSearch(realm:Realm) {
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         let predicate = SearchBox.getPredicate(self.sw, ne: self.ne)
         let venues = realm.objects(FVenue).filter(predicate)
         
@@ -151,7 +152,7 @@ public class FoursquareLocationOperation: NSOperation {
                     if cancelled {
                         return
                     }
-                    LocationRequestManager.sharedInstance().requestProcessor.updateUI()
+                   requestProcessor.updateUI()
                     
                     for nextVenue in venues {
                         for nextCategory in nextVenue.categories {
@@ -178,7 +179,6 @@ public class FoursquareLocationOperation: NSOperation {
     }
     
     private func addAnnotationsToCluster(annotations:Array<FoursquareLocationMapAnnotation>) {
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         objc_sync_enter(requestProcessor.clusteringManager)
         //avoid any possible thread lock in here
         if cancelled {

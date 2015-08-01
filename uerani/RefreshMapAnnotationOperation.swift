@@ -23,9 +23,11 @@ class RefreshMapAnnotationOperation: NSOperation {
     weak var mapView:MKMapView!
     private var semaphore = dispatch_semaphore_create(0)
     private var removeOperation = false
+    private var requestProcessor:MapLocationRequestProcessor
     
-    init(mapView:MKMapView) {
+    init(mapView:MKMapView, requestProcessor:MapLocationRequestProcessor) {
         self.mapView = mapView
+        self.requestProcessor = requestProcessor
         super.init()
         
         // we can be adding an excesive amount of refresh workers to the queue
@@ -35,13 +37,12 @@ class RefreshMapAnnotationOperation: NSOperation {
         }
     }
     
-    convenience init(mapView:MKMapView, removeAnnotations:Bool) {
-        self.init(mapView: mapView)
+    convenience init(mapView:MKMapView, removeAnnotations:Bool, requestProcessor:MapLocationRequestProcessor) {
+        self.init(mapView: mapView, requestProcessor:requestProcessor)
         self.removeOperation = removeAnnotations
     }
     
     override func main() {
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         if requestProcessor.searchBox == nil {
             return
         }
@@ -62,7 +63,7 @@ class RefreshMapAnnotationOperation: NSOperation {
     
     private func removeAnnotations(mapView:MKMapView) {
         if let mapAnnotations = mapView.annotations {
-            if LocationRequestManager.sharedInstance().requestProcessor.shouldUseCluster() {
+            if requestProcessor.shouldUseCluster() {
                 self.displayNoAnnotations()
             } else {
                 // on remove and with big zoom we do not want to remove visible operations
@@ -83,7 +84,7 @@ class RefreshMapAnnotationOperation: NSOperation {
         if let mapAnnotations = mapView.annotations {
             var before:NSMutableSet = NSMutableSet(array: mapAnnotations)
             before.removeObject(mapView.userLocation)
-            if let calloutAnnotation = LocationRequestManager.sharedInstance().requestProcessor.calloutAnnotation {
+            if let calloutAnnotation = requestProcessor.calloutAnnotation {
                 before.removeObject(calloutAnnotation)
             }
             
@@ -116,7 +117,7 @@ class RefreshMapAnnotationOperation: NSOperation {
     }
     
     private func getAnnotations() -> Array<NSObject>? {
-        if LocationRequestManager.sharedInstance().requestProcessor.shouldUseCluster() {
+        if requestProcessor.shouldUseCluster() {
             return self.getClusteredAnnotations()
         } else {
             return self.getNonClusteredAnnotations()
@@ -124,7 +125,6 @@ class RefreshMapAnnotationOperation: NSOperation {
     }
     
     func getClusteredAnnotations() -> Array<NSObject>? {
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         let scale:Double = Double(mapView.bounds.size.width) / Double(mapView.visibleMapRect.size.width)
         objc_sync_enter(requestProcessor.clusteringManager)
         let annotations = requestProcessor.clusteringManager.clusteredAnnotationsWithinMapRect(mapView.visibleMapRect, withZoomScale: scale) as! Array<NSObject>
@@ -133,7 +133,6 @@ class RefreshMapAnnotationOperation: NSOperation {
     }
     
     func getNonClusteredAnnotations() -> Array<NSObject>? {
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
         if let searchBox = requestProcessor.searchBox {
             let predicate = searchBox.getPredicate(mapView.region)
             let realm = Realm(path: Realm.defaultPath)

@@ -46,8 +46,6 @@ class CalloutMapAnnotationView: MKAnnotationView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
     func prepareFrameSize() {
         if let mapView = self.mapView {
             var frame = self.frame
@@ -198,11 +196,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
         var parentX:CGFloat = self.relativeParentXPosition() + ((xPixelShift) > 0.0 ? xPixelShift : ((xPixelShift < 0.0) ? ((xPixelShift / 2) + radius) : 0.0))
         
         //determine size
-        var nrect = self.bounds
-        nrect.size.width -= stroke + 14
-        nrect.size.height -= stroke + heightAboveParent - self.offsetFromParent.y + bottomShadowBufferSize
-        nrect.origin.x += stroke / 2.0 + 7
-        nrect.origin.y += stroke / 2.0
+        var nrect = self.getRectDraw()
         
         //Create Path For Callout Bubble
         CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
@@ -236,6 +230,17 @@ class CalloutMapAnnotationView: MKAnnotationView {
         CGContextSetLineCap(context, kCGLineCapSquare)
         CGContextAddPath(context, path)
         CGContextStrokePath(context)
+    }
+    
+    func getRectDraw() -> CGRect {
+        var stroke:CGFloat = 1.0
+        var nrect = self.bounds
+        nrect.size.width -= stroke + 14
+        nrect.size.height -= stroke + heightAboveParent - self.offsetFromParent.y + bottomShadowBufferSize
+        nrect.origin.x += stroke / 2.0 + 7
+        nrect.origin.y += stroke / 2.0
+        
+        return nrect
     }
     
     func yShadowOffset() -> CGFloat {

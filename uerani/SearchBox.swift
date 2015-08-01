@@ -26,6 +26,7 @@ struct SearchBox {
     var southEastBox:GeoLocation.GeoLocationBoundBox
     var triggeredNetworkSearch = false;
     var debug = false
+    var requestProcessor:MapLocationRequestProcessor
     weak var mapView:MKMapView?
     
     
@@ -41,10 +42,11 @@ struct SearchBox {
         }
     }
     
-    init(center:GeoLocation, distance:Double, mapView:MKMapView?) {
+    init(center:GeoLocation, distance:Double, mapView:MKMapView?, requestProcessor:MapLocationRequestProcessor) {
         if let mapView = mapView {
             self.mapView = mapView
         }
+        self.requestProcessor = requestProcessor
         self.center = center
         self.boxDistance = distance
         self.centralBoundBox = self.center.boundingBoxWithDistance(distance/2)
@@ -94,7 +96,6 @@ struct SearchBox {
     
     private func filterOverlayBoxes() -> Array<GeoLocation.GeoLocationBoundBox>? {
         if self.boxDistance == MapLocationRequestProcessor.locationSearchDistance {
-            let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
             return requestProcessor.getGidBoxLocations()
         }
         return nil
@@ -119,13 +120,12 @@ struct SearchBox {
         if self.boxDistance == SearchBox.internalBoxDistance {
             
             if self.boxDistance == SearchBox.internalBoxDistance {
-                let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
                 
                 //only trigger forsquare search one per bounding box
-                var locations = self.getLocations().filter({ !requestProcessor.isInGridBox($0) })
+                var locations = self.getLocations().filter({ !self.requestProcessor.isInGridBox($0) })
                 
                 for location in locations {
-                    LocationRequestManager.sharedInstance().requestProcessor.addToGridBox(location)
+                    self.requestProcessor.addToGridBox(location)
                 }
             }
             
@@ -143,13 +143,13 @@ struct SearchBox {
     }
     
     private func doSearch(location:GeoLocation.GeoLocationBoundBox) {
-        var box = SearchBox(center: location.center, distance: self.boxDistance/2, mapView:self.mapView)
+        var box = SearchBox(center: location.center, distance: self.boxDistance/2, mapView:self.mapView, requestProcessor:self.requestProcessor)
         box.triggerFoursquareSearch()
     }
     
     private func triggerForusquareSearchOperations() {
         if self.boxDistance == MapLocationRequestProcessor.locationSearchDistance {
-            var locations = LocationRequestManager.sharedInstance().requestProcessor.getGidBoxLocations()
+            var locations = requestProcessor.getGidBoxLocations()
             
             let regionCenter = GeoLocation(coordinate: mapView!.region.center)
             locations.sort() { lhs, rhs in
@@ -157,7 +157,7 @@ struct SearchBox {
             }
             
             for location in locations {
-                FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate)
+                FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, requestProcessor:self.requestProcessor)
             }
         }
     }

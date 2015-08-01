@@ -22,19 +22,30 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     var selectedMapAnnotationView:MKAnnotationView?
     var calloutMapAnnotationView:CalloutMapAnnotationView?
+    var requestProcessor:MapLocationRequestProcessor!
+    var isRefreshReady:Bool = false
+    
+    private var myContext = 0
+    private var userLocationContext = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let locationRequestManager = LocationRequestManager.sharedInstance()
-        locationRequestManager.requestProcessor.mapView = self.mapView
+        self.isRefreshReady = locationRequestManager.authorized
+        locationRequestManager.addObserver(self, forKeyPath: "authorized", options: NSKeyValueObservingOptions.New, context: &self.myContext)
+        locationRequestManager.addObserver(self, forKeyPath: "location", options: NSKeyValueObservingOptions.New, context: &self.userLocationContext)
+        self.requestProcessor = MapLocationRequestProcessor(mapView: self.mapView)
         self.mapView.delegate = self
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.requestProcessor?.mapView = self.mapView
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         let locationRequestManager = LocationRequestManager.sharedInstance()
-        locationRequestManager.requestProcessor.mapView = nil
-        locationRequestManager.requestProcessor.calloutAnnotation = nil
+        self.requestProcessor?.calloutAnnotation = nil
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,13 +53,38 @@ class MapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        if context == &myContext || context == &userLocationContext {
+            if context == &myContext {
+                if let authorized = change[NSKeyValueChangeNewKey] as? Bool {
+                    if authorized {
+                        self.requestProcessor.setAllowLocation()
+                    }
+                    if !authorized {
+                        self.isRefreshReady = true
+                    }
+                }
+            } else {
+                if let location = change[NSKeyValueChangeNewKey] as? CLLocation where !self.isRefreshReady {
+                    self.requestProcessor.displayLocation(location)
+                    self.isRefreshReady = true
+                }
+            }
+        } else {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        }
+    }
+    
+    deinit {
+        LocationRequestManager.sharedInstance().removeObserver(self, forKeyPath: "authorized", context: &self.myContext)
+        LocationRequestManager.sharedInstance().removeObserver(self, forKeyPath: "location", context: &self.userLocationContext)
+    }
 }
 
 extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
-        if let calloutAnnotation = LocationRequestManager.sharedInstance().requestProcessor.calloutAnnotation {
+        if let calloutAnnotation = self.requestProcessor.calloutAnnotation {
             mapView.removeAnnotation(calloutAnnotation)
         }
     }
@@ -58,7 +94,7 @@ extension MapViewController: MKMapViewDelegate {
             return
         }
         
-        let requestProcessor = LocationRequestManager.sharedInstance().requestProcessor
+        let requestProcessor = self.requestProcessor
         
         requestProcessor.calloutAnnotation = CalloutAnnotation(coordinate: view.annotation.coordinate)
         self.selectedMapAnnotationView = view
@@ -129,14 +165,14 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
-        if LocationRequestManager.sharedInstance().requestProcessor.isRefreshReady() {
-            RefreshMapAnnotationOperation(mapView: mapView)
+        if self.isRefreshReady {
+            RefreshMapAnnotationOperation(mapView: mapView, requestProcessor: self.requestProcessor)
         }
     }
     
     func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
-        if fullyRendered && LocationRequestManager.sharedInstance().requestProcessor.isRefreshReady() {
-            LocationRequestManager.sharedInstance().requestProcessor.triggerLocationSearch(mapView.region)
+        if fullyRendered && self.isRefreshReady {
+            self.requestProcessor.triggerLocationSearch(mapView.region)
         }
     }
     

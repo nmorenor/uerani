@@ -15,23 +15,19 @@ public class MapLocationRequestProcessor {
     
     static let locationSearchDistance:Double = 1000.00
     
-    weak var mapView:MKMapView?
-    //user location authorized
-    var authorized:Bool = false
-    //user location
-    var location:CLLocation?
+    var mapView:MKMapView
     var clusteringManager:FBClusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
-    var triggeredAuthorization:Bool = false
-    var initialRegion:Bool = false
     var calloutAnnotation:CalloutAnnotation?
     
     var searchBox:SearchBox? {
         willSet {
             self.cleanGridBox()
-            if let mapView = self.mapView {
-                RefreshMapAnnotationOperation(mapView: mapView)
-            }
+            RefreshMapAnnotationOperation(mapView: mapView, requestProcessor:self)
         }
+    }
+    
+    init(mapView:MKMapView) {
+        self.mapView = mapView
     }
     
     var mutex:NSObject = NSObject()
@@ -40,76 +36,49 @@ public class MapLocationRequestProcessor {
     var gridBox:NSMutableSet = NSMutableSet()
     var allAnnotations:NSMutableSet = NSMutableSet()
     
-    //Authorize get user location
-    public func trigerAuthorization(authorized:Bool) {
-        if !self.authorized && authorized {
-            self.setAllowLocation()
-        }
-        self.triggeredAuthorization = true
-        self.authorized = authorized
-        if !self.authorized {
-            self.initialRegion = true
-        }
-    }
-    
-    public func didUpdateLocation(newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
-        if self.location == nil {
-            self.displayLocation(newLocation)
-
-        }
-        self.location = newLocation
-    }
     
     func setAllowLocation() {
         dispatch_async(dispatch_get_main_queue()) {
-            self.mapView?.showsUserLocation = true
-            self.mapView?.userLocation
+            self.mapView.showsUserLocation = true
+            self.mapView.userLocation
         }
     }
     
     func displayLocation(location:CLLocation) {
         var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.055, longitudeDelta: 0.055))
         dispatch_async(dispatch_get_main_queue()) {
-            self.mapView?.setRegion(region, animated: true)
+            self.mapView.setRegion(region, animated: true)
             self.triggerLocationSearch(region)
         }
     }
     
     func triggerLocationSearch(region:MKCoordinateRegion?) {
         NSOperationQueue().addOperationWithBlock({
-            if self.triggeredAuthorization && self.shouldCalculateSearchBox() {
+            if self.shouldCalculateSearchBox() {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
                 if let region = region {
                     self.calculateSearchBox(region)
                 } else {
-                    self.calculateSearchBox(self.mapView?.region)
+                    self.calculateSearchBox(self.mapView.region)
                 }
-                self.initialRegion = true
             }
         })
     }
     
-    func isRefreshReady() -> Bool {
-        if let searchBox = self.searchBox {
-            return self.triggeredAuthorization && self.initialRegion
-        }
-        return false
-    }
-    
     func calculateSearchBox(region:MKCoordinateRegion?) {
-        if let mapView = mapView, let region = region {
+        if let region = region {
             self.searchBox?.removeOverlays()
             let centralLocation = GeoLocation(coordinate: region.center)
-            self.searchBox = SearchBox(center: centralLocation, distance: MapLocationRequestProcessor.locationSearchDistance, mapView:mapView)
+            self.searchBox = SearchBox(center: centralLocation, distance: MapLocationRequestProcessor.locationSearchDistance, mapView:mapView, requestProcessor:self)
         }
     }
     
     func updateUI() {
-        mapView?.delegate.mapView!(mapView, regionDidChangeAnimated: true)
+        mapView.delegate.mapView!(mapView, regionDidChangeAnimated: true)
     }
     
     func shouldUseCluster() -> Bool {
-        if let searchBox = self.searchBox, let mapView = self.mapView {
+        if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
             return mapRegionDistance > MapLocationRequestProcessor.locationSearchDistance + 1
         }
@@ -117,7 +86,7 @@ public class MapLocationRequestProcessor {
     }
     
     func shouldCalculateSearchBox() -> Bool {
-        if let searchBox = self.searchBox, let mapView = self.mapView {
+        if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
             if mapRegionDistance > (MapLocationRequestProcessor.locationSearchDistance * 10) {
                 return false

@@ -12,14 +12,19 @@ import MapKit
 public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
     
     public var manager:CLLocationManager
-    public var requestProcessor:MapLocationRequestProcessor
-    public var location:CLLocation?
+    public dynamic var location:CLLocation?
     var operationQueue:NSOperationQueue
     var refreshOperationQueue:NSOperationQueue
     var categoryIconOperationQueue:NSOperationQueue
     var categoryIconDownloadOperationQueue:NSOperationQueue
     
-    //http://krakendev.io/blog/the-right-way-to-write-a-singleton
+    //user location authorized
+    dynamic var authorized:Bool = false
+    
+    /**
+    * https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html
+    * Singleton Section
+    */
     static let sharedInstancee = LocationRequestManager()
     
     public class func sharedInstance() -> LocationRequestManager {
@@ -30,7 +35,6 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         self.manager = CLLocationManager()
         self.manager.distanceFilter = kCLDistanceFilterNone
         self.manager.desiredAccuracy = kCLLocationAccuracyBest
-        self.requestProcessor = MapLocationRequestProcessor()
         
         //setup operation queue
         operationQueue = NSOperationQueue()
@@ -63,14 +67,13 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
     public func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.AuthorizedWhenInUse {
             self.manager.startUpdatingLocation()
-            self.requestProcessor.trigerAuthorization(true)
+            self.authorized = true
         } else  if status != CLAuthorizationStatus.NotDetermined {
-            self.requestProcessor.trigerAuthorization(false)
+            self.authorized = false
         }
     }
     
     public func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
         self.location = newLocation
-        requestProcessor.didUpdateLocation(newLocation, fromLocation: oldLocation)
     }
 }
