@@ -163,7 +163,7 @@ extension MapViewController: MKMapViewDelegate {
                     aView.image = image
                     aView.name = annotation.title
                     aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                    aView.frame = CGRectMake(4, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
+                    aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
                     customView.contentView().addSubview(aView)
                 }
             } else {
@@ -172,13 +172,13 @@ extension MapViewController: MKMapViewDelegate {
                     aView.image = image
                     aView.name = annotation.title
                     aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                    aView.frame = CGRectMake(4, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
+                    aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
                     customView.contentView().subviews.map({$0.removeFromSuperview()})
                     customView.contentView().addSubview(aView)
                 }
             }
         }
-        
+        customView.superview?.bringSubviewToFront(customView)
         
         return customView
     }

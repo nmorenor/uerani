@@ -256,6 +256,11 @@ class CalloutMapAnnotationView: MKAnnotationView {
         return _yShadowOffset!
     }
     
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        self.superview?.bringSubviewToFront(self)
+        super.touchesBegan(touches, withEvent: event)
+    }
+    
     func contentView() -> UIView {
         if let contentView = self._contentView {
             return contentView

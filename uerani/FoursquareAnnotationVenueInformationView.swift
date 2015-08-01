@@ -97,7 +97,7 @@ class FoursquareAnnotationVenueInformationView: UIView {
         maskLayer.position = CGPoint(x: 0.0, y: 10.0)
         
         //Size the label
-        label.frame = CGRect(x: photoLayer.bounds.size.width + 6, y: 0, width: (self.frame.size.width - 64) - photoLayer.bounds.size.width, height: 15.0)
+        label.frame = CGRect(x: photoLayer.bounds.size.width + 9, y: 0, width: (self.frame.size.width - 64) - photoLayer.bounds.size.width, height: 15.0)
         addressLabel.frame = CGRect(x: photoLayer.bounds.size.width + 6, y: 15, width: (self.frame.size.width - 64) - photoLayer.bounds.size.width, height: self.frame.size.height - 22)
         
         animateSize(photoLayer)
