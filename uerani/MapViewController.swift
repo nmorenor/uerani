@@ -1,6 +1,6 @@
 //
 //  MapViewController.swift
-//  grabbed
+//  uerani
 //
 //  Created by nacho on 6/5/15.
 //  Copyright (c) 2015 Ignacio Moreno. All rights reserved.
@@ -102,31 +102,31 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
-        if let annotation = annotation as? MKUserLocation {
+        if let userAnnotation = annotation as? MKUserLocation {
             return nil
         }
         
         var view:MKPinAnnotationView?
-        if let annotation = annotation as? FBAnnotationCluster {
+        if let cluserAnnotation = annotation as? FBAnnotationCluster {
             if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(clusterPin) as? MKPinAnnotationView {
                 dequeuedView.annotation = annotation
                 view = dequeuedView
             } else {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: clusterPin)
             }
-            self.drawCircleImage(annotation, view: view!)
+            self.drawCircleImage(cluserAnnotation, view: view!)
             
-        } else if let annotation = annotation as? FoursquareLocationMapAnnotation {
+        } else if let foursquareAnnotation = annotation as? FoursquareLocationMapAnnotation {
             if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? BasicMapAnnotationView {
                 dequeuedView.annotation = annotation
                 view = dequeuedView
             } else {
                 view = BasicMapAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             }
-            if let categoryImageName = annotation.categoryImageName {
+            if let categoryImageName = foursquareAnnotation.categoryImageName {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
                     self.drawCategoryImage(view!, image: image)
-                } else if let prefix = annotation.categoryPrefix, let suffix = annotation.categorySuffix {
+                } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix {
                     FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
                     if let image = UIImage(named: defaultPinImage) {
                         self.drawCategoryImage(view!, image: image)
@@ -154,10 +154,29 @@ extension MapViewController: MKMapViewDelegate {
         customView.parentAnnotationView = self.selectedMapAnnotationView!
         customView.annotation = annotation
         customView.contentHeight = 80.0
-        if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
-            var aView = UIImageView(image: image)
-            aView.frame = CGRectMake(5, 2, aView.frame.size.width, aView.frame.size.height)
-            customView.contentView().addSubview(aView)
+        if let annotation = self.selectedMapAnnotationView?.annotation as? FoursquareLocationMapAnnotation {
+            customView.contentView().subviews.map({$0.removeFromSuperview()})
+            let contentFrame = customView.getContentFrame()
+            if let let categoryImageName = annotation.categoryImageName64 {
+                if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
+                    var aView = FoursquareAnnotationVenueInformationView()
+                    aView.image = image
+                    aView.name = annotation.title
+                    aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
+                    aView.frame = CGRectMake(4, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
+                    customView.contentView().addSubview(aView)
+                }
+            } else {
+                if let image = ImageCache.sharedInstance().imageWithIdentifier("default_64") {
+                    var aView = FoursquareAnnotationVenueInformationView()
+                    aView.image = image
+                    aView.name = annotation.title
+                    aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
+                    aView.frame = CGRectMake(4, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
+                    customView.contentView().subviews.map({$0.removeFromSuperview()})
+                    customView.contentView().addSubview(aView)
+                }
+            }
         }
         
         

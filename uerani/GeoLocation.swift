@@ -1,6 +1,6 @@
 //
 //  GeoLocation.swift
-//  grabbed
+//  uerani
 //  reference: http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
 //
 //  Created by nacho on 7/9/15.
