@@ -88,7 +88,7 @@ public class MapLocationRequestProcessor {
     func shouldCalculateSearchBox() -> Bool {
         if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            if mapRegionDistance > (MapLocationRequestProcessor.locationSearchDistance * 10) {
+            if mapRegionDistance > ((MapLocationRequestProcessor.locationSearchDistance / 2) * 10) {
                 return false
             }
             let centerLocation = GeoLocation(coordinate: mapView.region.center)
