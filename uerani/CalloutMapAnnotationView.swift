@@ -188,10 +188,13 @@ class CalloutMapAnnotationView: MKAnnotationView {
         var radius:CGFloat = 7.0
         var path:CGMutablePathRef = CGPathCreateMutable()
         var xPixelShift:CGFloat = self.getXPixelShift()
-        println(xPixelShift)
-        
         var space:CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()
         var context:CGContextRef = UIGraphicsGetCurrentContext();
+        
+        /**
+        * In case of pixel shift, when the map view is moving to display the annotaiton
+        * use the shift to draw the rect, so the triangle is not out of the rectangle
+        **/
         var parentX:CGFloat = self.relativeParentXPosition() + ((xPixelShift) > 0.0 ? xPixelShift : ((xPixelShift < 0.0) ? ((xPixelShift / 2) + radius) : 0.0))
         
         //determine size
@@ -202,8 +205,6 @@ class CalloutMapAnnotationView: MKAnnotationView {
         nrect.origin.y += stroke / 2.0
         
         //Create Path For Callout Bubble
-        println(self.relativeParentXPosition())
-        
         CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
         CGPathAddLineToPoint(path, nil, nrect.origin.x, nrect.origin.y + nrect.size.height - radius)
         CGPathAddArc(path, nil, nrect.origin.x + radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI), CGFloat(M_PI_2), true)

@@ -81,11 +81,11 @@ extension MapViewController: MKMapViewDelegate {
             self.drawCircleImage(annotation, view: view!)
             
         } else if let annotation = annotation as? FoursquareLocationMapAnnotation {
-            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView {
+            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? BasicMapAnnotationView {
                 dequeuedView.annotation = annotation
                 view = dequeuedView
             } else {
-                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view = BasicMapAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             }
             if let categoryImageName = annotation.categoryImageName {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
@@ -107,16 +107,17 @@ extension MapViewController: MKMapViewDelegate {
             return view
         }
         
-        var customView:CalloutMapAnnotationView
-        if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(calloutPin) as? CalloutMapAnnotationView {
+        var customView:AccesorizedCalloutAnnotationView
+        if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(calloutPin) as? AccesorizedCalloutAnnotationView {
             customView = dequeuedView
         } else {
-            customView = CalloutMapAnnotationView(annotation: annotation, reuseIdentifier: calloutPin)
+            customView = AccesorizedCalloutAnnotationView(annotation: annotation, reuseIdentifier: calloutPin)
             
         }
         customView.mapView = mapView
         customView.parentAnnotationView = self.selectedMapAnnotationView!
         customView.annotation = annotation
+        customView.contentHeight = 80.0
         if let image = ImageCache.sharedInstance().imageWithIdentifier("default_32.png") {
             var aView = UIImageView(image: image)
             aView.frame = CGRectMake(5, 2, aView.frame.size.width, aView.frame.size.height)
@@ -226,6 +227,10 @@ extension MapViewController: MKMapViewDelegate {
             return renderer
         }
         return nil
+    }
+    
+    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
+        println("Hello world")
     }
 }
 

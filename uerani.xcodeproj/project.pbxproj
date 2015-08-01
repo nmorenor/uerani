@@ -10,6 +10,8 @@
 		6561868563E3124623A2772C /* Pods_ueraniTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 540BABF78B677F4DC0F4B85A /* Pods_ueraniTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		66382C211B6996DF00F5644C /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C201B6996DF00F5644C /* Regex.swift */; };
 		66382C231B69A62C00F5644C /* default_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 66382C221B69A62C00F5644C /* default_32.png */; };
+		66382C251B6C439E00F5644C /* AccesorizedCalloutAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C241B6C439D00F5644C /* AccesorizedCalloutAnnotationView.swift */; };
+		66382C271B6C4AFA00F5644C /* BasicMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C261B6C4AFA00F5644C /* BasicMapAnnotationView.swift */; };
 		6657BF031B5D565B00C94677 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF021B5D565B00C94677 /* ImageCache.swift */; };
 		6657BF051B5D588100C94677 /* FoursquareCategoryIconWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */; };
 		66A7FC6B1B5AD6B30012358D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */; };
@@ -60,6 +62,8 @@
 		540BABF78B677F4DC0F4B85A /* Pods_ueraniTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ueraniTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		66382C201B6996DF00F5644C /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		66382C221B69A62C00F5644C /* default_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_32.png; sourceTree = "<group>"; };
+		66382C241B6C439D00F5644C /* AccesorizedCalloutAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccesorizedCalloutAnnotationView.swift; sourceTree = "<group>"; };
+		66382C261B6C4AFA00F5644C /* BasicMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicMapAnnotationView.swift; sourceTree = "<group>"; };
 		6657BF021B5D565B00C94677 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareCategoryIconWorker.swift; sourceTree = "<group>"; };
 		66A7FC651B5AD6B30012358D /* uerani.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uerani.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -233,6 +237,8 @@
 				6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */,
 				66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */,
 				66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */,
+				66382C241B6C439D00F5644C /* AccesorizedCalloutAnnotationView.swift */,
+				66382C261B6C4AFA00F5644C /* BasicMapAnnotationView.swift */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -480,10 +486,12 @@
 				66A7FCAD1B5AD7A70012358D /* FoursquareConvenience.swift in Sources */,
 				66A7FCA21B5AD7600012358D /* HttpClientConstants.swift in Sources */,
 				66A7FCB61B5AD7CA0012358D /* FoursquareLocationMapAnnotation.swift in Sources */,
+				66382C251B6C439E00F5644C /* AccesorizedCalloutAnnotationView.swift in Sources */,
 				66A7FC9C1B5AD7470012358D /* FVenue.swift in Sources */,
 				66AFDC5D1B60692C002413DB /* CalloutMapAnnotationView.swift in Sources */,
 				66A7FC991B5AD7470012358D /* FLocation.swift in Sources */,
 				66A7FCAA1B5AD7A70012358D /* FoursquareClient.swift in Sources */,
+				66382C271B6C4AFA00F5644C /* BasicMapAnnotationView.swift in Sources */,
 				66A7FC961B5AD7470012358D /* FCategory.swift in Sources */,
 				66A7FCA31B5AD7600012358D /* HTTPClientProtocol.swift in Sources */,
 				66A7FC9D1B5AD7470012358D /* SearchBoxCenter.swift in Sources */,
