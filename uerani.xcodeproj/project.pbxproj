@@ -16,6 +16,8 @@
 		66382C2B1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C2A1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift */; };
 		6657BF031B5D565B00C94677 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF021B5D565B00C94677 /* ImageCache.swift */; };
 		6657BF051B5D588100C94677 /* FoursquareCategoryIconWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */; };
+		667940661B702F46003A29A9 /* filter-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 667940651B702F46003A29A9 /* filter-32.png */; };
+		667940681B70324E003A29A9 /* VenueCategoriesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */; };
 		66A7FC6B1B5AD6B30012358D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */; };
 		66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC701B5AD6B30012358D /* Main.storyboard */; };
 		66A7FC741B5AD6B30012358D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC731B5AD6B30012358D /* Images.xcassets */; };
@@ -70,6 +72,8 @@
 		66382C2A1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareAnnotationVenueInformationView.swift; sourceTree = "<group>"; };
 		6657BF021B5D565B00C94677 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareCategoryIconWorker.swift; sourceTree = "<group>"; };
+		667940651B702F46003A29A9 /* filter-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "filter-32.png"; sourceTree = "<group>"; };
+		667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueCategoriesOperation.swift; sourceTree = "<group>"; };
 		66A7FC651B5AD6B30012358D /* uerani.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uerani.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A7FC691B5AD6B30012358D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -138,6 +142,7 @@
 			children = (
 				66382C281B6D103100F5644C /* default_64.png */,
 				66382C221B69A62C00F5644C /* default_32.png */,
+				667940651B702F46003A29A9 /* filter-32.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -245,6 +250,7 @@
 				66382C241B6C439D00F5644C /* AccesorizedCalloutAnnotationView.swift */,
 				66382C261B6C4AFA00F5644C /* BasicMapAnnotationView.swift */,
 				66382C2A1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift */,
+				667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -379,6 +385,7 @@
 				66382C291B6D103100F5644C /* default_64.png in Resources */,
 				66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */,
 				66382C231B69A62C00F5644C /* default_32.png in Resources */,
+				667940661B702F46003A29A9 /* filter-32.png in Resources */,
 				66A7FC741B5AD6B30012358D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,6 +520,7 @@
 				66A7FCB91B5AD7CA0012358D /* LocationRequestManager.swift in Sources */,
 				66382C2B1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift in Sources */,
 				6657BF051B5D588100C94677 /* FoursquareCategoryIconWorker.swift in Sources */,
+				667940681B70324E003A29A9 /* VenueCategoriesOperation.swift in Sources */,
 				66A7FCBC1B5AD7CA0012358D /* RefreshMapAnnotationOperation.swift in Sources */,
 				66A7FCAC1B5AD7A70012358D /* FoursquareConstants.swift in Sources */,
 				66A7FCA11B5AD7600012358D /* HTTPClient.swift in Sources */,

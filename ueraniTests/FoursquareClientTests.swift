@@ -30,7 +30,7 @@ class FoursquareClientTests: QuickSpec {
                         venueCategories = result!
                     }
                 }
-                expect(venueCategories).toEventuallyNot(beEmpty(), timeout: 6000)
+                expect(venueCategories).toEventuallyNot(beEmpty(), timeout: 60)
             }
             
             it("Can find venues") {
@@ -43,7 +43,7 @@ class FoursquareClientTests: QuickSpec {
                         venues = result!
                     }
                 }
-                expect(venues).toEventuallyNot(beEmpty(), timeout: 6000)
+                expect(venues).toEventuallyNot(beEmpty(), timeout: 60)
             }
             
             it("Can persist on realm") {
@@ -84,7 +84,7 @@ class FoursquareClientTests: QuickSpec {
                     }
                 }
                 
-                expect(testRealm.objects(FVenue).filter(NSPredicate(format: "completeVenue == false"))).toEventually(beEmpty(), timeout: 6000)
+                expect(testRealm.objects(FVenue).filter(NSPredicate(format: "completeVenue == false"))).toEventually(beEmpty(), timeout: 60)
             }
             
             it ("Can find tags") {

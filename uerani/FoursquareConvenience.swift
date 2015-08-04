@@ -36,7 +36,25 @@ extension FoursquareClient {
     public func searchCategories(completionHandler:(success:Bool, result:[[String:AnyObject]]?, errorString:String?) -> Void) {
         let parameters = self.addAuthParameters([String:AnyObject]())
         
-        self.doGETAPI(FoursquareClient.Methods.VENUE_CATEGORY, key: FoursquareClient.RespnoseKeys.CATEGORIES, parameters: parameters, completionHandler: completionHandler)
+        self.doGETAPI(FoursquareClient.Methods.VENUE_CATEGORY, key: FoursquareClient.RespnoseKeys.CATEGORIES, parameters: parameters) { (scuccess:Bool, result:[[String:AnyObject]]?, errorString:String?) in
+            if let error = errorString {
+                completionHandler(success: false, result: nil, errorString: error)
+            } else {
+                var completionResult = result!
+                
+                var topCategories = [[String:AnyObject]]()
+                for category in completionResult {
+                    var next = [String:AnyObject]()
+                    for nextKey in category.keys {
+                        next[nextKey] = category[nextKey]
+                    }
+                    next["topCategory"] = true
+                    topCategories.append(next)
+                }
+                
+                completionHandler(success: true, result: topCategories, errorString: nil)
+            }
+        }
     }
     
     public func getVenueDetail(venueID:String, completionHandler:(success:Bool, result:[String:AnyObject]?, errorString:String?) -> Void) {

@@ -25,6 +25,7 @@ class MapViewController: UIViewController {
     var requestProcessor:MapLocationRequestProcessor!
     var isRefreshReady:Bool = false
     
+    @IBOutlet weak var filterBarButton: UIBarButtonItem!
     private var myContext = 0
     private var userLocationContext = 1
     
@@ -36,6 +37,9 @@ class MapViewController: UIViewController {
         locationRequestManager.addObserver(self, forKeyPath: "location", options: NSKeyValueObservingOptions.New, context: &self.userLocationContext)
         self.requestProcessor = MapLocationRequestProcessor(mapView: self.mapView)
         self.mapView.delegate = self
+        
+        //search all venue categories in background thread
+        VenueCategoriesOperation()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -51,6 +55,10 @@ class MapViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func selectFilter(sender: UIBarButtonItem) {
+        
     }
 
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {

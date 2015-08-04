@@ -48,7 +48,6 @@ public class MapLocationRequestProcessor {
         var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.055, longitudeDelta: 0.055))
         dispatch_async(dispatch_get_main_queue()) {
             self.mapView.setRegion(region, animated: true)
-            self.triggerLocationSearch(region)
         }
     }
     

@@ -23,9 +23,11 @@ class CalloutMapAnnotationView: MKAnnotationView {
     var endFrame:CGRect!
     var _yShadowOffset:CGFloat?
     var _contentView:UIView?
+    var alreadyOpen = false
     
     override var annotation: MKAnnotation! {
         didSet {
+            self.alreadyOpen = false
             self.prepareFrameSize()
             self.prepareOffset()
             self.prepareContentFrame()
@@ -73,10 +75,9 @@ class CalloutMapAnnotationView: MKAnnotationView {
     }
     
     func adjustMapRegionIfNeeded() {
-        if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView {
+        if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView where !self.alreadyOpen {
             //longitude
             var xPixelShift:CGFloat = self.getXPixelShift()
-            
             //latitude
             var mapViewOriginRelativeToParent = mapView.convertPoint(mapView.frame.origin, toView: parentAnnotationView)
             var yPixelShift:CGFloat = 0.0
@@ -105,6 +106,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
                 self.centerOffset = CGPointMake(self.centerOffset.x - xPixelShift, self.centerOffset.y)
             }
         }
+        self.alreadyOpen = true
     }
     
     func getXPixelShift() -> CGFloat {
