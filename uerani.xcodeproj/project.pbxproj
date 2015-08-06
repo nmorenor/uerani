@@ -215,6 +215,7 @@
 				66A116271B72E2A700498070 /* CoreDataStackManager.swift */,
 				66382C201B6996DF00F5644C /* Regex.swift */,
 				66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */,
+				6657BF021B5D565B00C94677 /* ImageCache.swift */,
 				66A7FC8C1B5AD71D0012358D /* Model */,
 				66A7FCA41B5AD76A0012358D /* Map */,
 				66A7FC731B5AD6B30012358D /* Images.xcassets */,
@@ -255,7 +256,6 @@
 		66A7FC8C1B5AD71D0012358D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				6657BF021B5D565B00C94677 /* ImageCache.swift */,
 				66A7FC8D1B5AD7260012358D /* Foursquare */,
 				66A7FC9E1B5AD7600012358D /* HTTPClient.swift */,
 				66A7FC9F1B5AD7600012358D /* HttpClientConstants.swift */,

@@ -11,11 +11,10 @@ import CoreData
 
 class CoreDataStackManager {
     
+    static let instance = CoreDataStackManager()
+    
     class func sharedInstance() -> CoreDataStackManager {
-        struct Static {
-            static let instance = CoreDataStackManager()
-        }
-        return Static.instance
+        return instance
     }
     
     lazy var dataModel:CoreDataModel = {

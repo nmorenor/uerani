@@ -30,7 +30,6 @@ class VenueCategoriesOperation : NSOperation {
     func mergeChanges(notification:NSNotification) {
         var mainContext:NSManagedObjectContext = CoreDataStackManager.sharedInstance().dataStack.managedObjectContext
         dispatch_async(dispatch_get_main_queue()) {
-            println("Merging on main context")
             mainContext.mergeChangesFromContextDidSaveNotification(notification)
             CoreDataStackManager.sharedInstance().saveContext()
         }
@@ -72,7 +71,7 @@ class VenueCategoriesOperation : NSOperation {
             createChildrenCategories(parentCategory, categories: category.categories)
         }
         
-        //save context
+        //save context and wait
         saveContext(self.sharedModelContext) { success in
             self.unlock()
         }
