@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 import FBAnnotationClustering
 import RealmSwift
+import CoreData
 
 class MapViewController: UIViewController {
 
@@ -38,8 +39,15 @@ class MapViewController: UIViewController {
         self.requestProcessor = MapLocationRequestProcessor(mapView: self.mapView)
         self.mapView.delegate = self
         
+        //Initialize maged context on main thread
+        var context = self.sharedContext
+        
         //search all venue categories in background thread
         VenueCategoriesOperation()
+    }
+    
+    var sharedContext:NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().dataStack.managedObjectContext
     }
     
     override func viewWillAppear(animated: Bool) {

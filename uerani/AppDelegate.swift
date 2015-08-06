@@ -43,10 +43,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-
-func documentsDirectoryURL() -> NSURL {
-    var error: NSError?
-    let url = NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: &error)
-    assert(url != nil, "*** Error finding documents directory: \(error)")
-    return url!
-}

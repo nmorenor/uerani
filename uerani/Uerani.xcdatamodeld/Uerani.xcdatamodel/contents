@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CDCategory" representedClassName="CDCategory" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="pluralName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="primary" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="topCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDCategory" inverseName="parentCategory" inverseEntity="CDCategory" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDIcon" inverseName="category" inverseEntity="CDIcon" syncable="YES"/>
+        <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCategory" inverseName="categories" inverseEntity="CDCategory" syncable="YES"/>
+    </entity>
+    <entity name="CDIcon" representedClassName="CDIcon" syncable="YES">
+        <attribute name="prefix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="suffix" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCategory" inverseName="icon" inverseEntity="CDCategory" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CDCategory" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="CDIcon" positionX="-54" positionY="0" width="128" height="90"/>
+    </elements>
+</model>

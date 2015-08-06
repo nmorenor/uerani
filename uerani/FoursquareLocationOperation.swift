@@ -157,6 +157,7 @@ public class FoursquareLocationOperation: NSOperation {
                     for nextVenue in venues {
                         for nextCategory in nextVenue.categories {
                             FoursquareCategoryIconWorker(prefix: nextCategory.icon.prefix, suffix: nextCategory.icon.suffix)
+                            
                         }
                     }
                 }
