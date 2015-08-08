@@ -6,7 +6,7 @@
         <attribute name="pluralName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primary" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="topCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="topCategory" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDCategory" inverseName="parentCategory" inverseEntity="CDCategory" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDIcon" inverseName="category" inverseEntity="CDIcon" syncable="YES"/>
         <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCategory" inverseName="categories" inverseEntity="CDCategory" syncable="YES"/>

@@ -45,6 +45,7 @@ public class CDCategory : NSManagedObject, Equatable, Printable {
         self.shortName = category.shortName
         self.icon = CDIcon(icon: category.icon, context: context)
         self.primary = category.primary
+        self.topCategory = category.topCategory
     }
     
 }

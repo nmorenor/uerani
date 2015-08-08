@@ -13,8 +13,10 @@ import CoreData
 class VenueCategoriesOperation : NSOperation {
     
     private var semaphore = dispatch_semaphore_create(0)
+    weak var delegate:CategoriesReady?
     
-    override init() {
+    init(delegate:CategoriesReady) {
+        self.delegate = delegate;
         super.init()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "mergeChanges:", name: NSManagedObjectContextDidSaveNotification, object: self.sharedModelContext)
@@ -31,7 +33,10 @@ class VenueCategoriesOperation : NSOperation {
         var mainContext:NSManagedObjectContext = CoreDataStackManager.sharedInstance().dataStack.managedObjectContext
         dispatch_async(dispatch_get_main_queue()) {
             mainContext.mergeChangesFromContextDidSaveNotification(notification)
-            CoreDataStackManager.sharedInstance().saveContext()
+            saveContext(CoreDataStackManager.sharedInstance().dataStack.managedObjectContext) { success, error in 
+                self.delegate?.initializeSearchResults()
+                self.unlock()
+            }
         }
     }
     
@@ -42,6 +47,7 @@ class VenueCategoriesOperation : NSOperation {
         var rCategories = realm.objects(FCategory).filter(topCategoriesPredicate)
         if rCategories.count > 0 {
             //we already have categories on local cache
+            self.delegate?.initializeSearchResults()
             return
         }
         
@@ -73,7 +79,7 @@ class VenueCategoriesOperation : NSOperation {
         
         //save context and wait
         saveContext(self.sharedModelContext) { success in
-            self.unlock()
+            //do nothing
         }
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
     }
