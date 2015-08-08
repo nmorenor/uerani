@@ -55,20 +55,28 @@ public class MapLocationRequestProcessor {
         NSOperationQueue().addOperationWithBlock({
             if self.shouldCalculateSearchBox() {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
-                if let region = region {
-                    self.calculateSearchBox(region)
+                if let location = LocationRequestManager.sharedInstance().location where self.searchBox == nil {
+                    var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.055, longitudeDelta: 0.055))
+                    region.center = location.coordinate
+                    self.calculateSearchBox(region, useCenter:true)
                 } else {
-                    self.calculateSearchBox(self.mapView.region)
+                    if let region = region {
+                        self.calculateSearchBox(region, useCenter:false)
+                    } else {
+                        self.calculateSearchBox(self.mapView.region, useCenter:false)
+                    }
                 }
             }
         })
     }
     
-    func calculateSearchBox(region:MKCoordinateRegion?) {
+    func calculateSearchBox(region:MKCoordinateRegion?, useCenter:Bool) {
         if let region = region {
             self.searchBox?.removeOverlays()
             let centralLocation = GeoLocation(coordinate: region.center)
-            self.searchBox = SearchBox(center: centralLocation, distance: MapLocationRequestProcessor.locationSearchDistance, mapView:mapView, requestProcessor:self)
+            
+            self.searchBox = SearchBox(center: centralLocation, distance: MapLocationRequestProcessor.locationSearchDistance, mapView:mapView, useCenter:useCenter, requestProcessor:self)
+            
         }
     }
     

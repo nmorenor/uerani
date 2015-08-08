@@ -13,6 +13,7 @@ struct SearchBox {
     
     static let internalBoxDistance:Double = MapLocationRequestProcessor.locationSearchDistance/4
     var center:GeoLocation
+    var useCenter:Bool
     var boxDistance:Double
     
     var northWestBoundBox:GeoLocation.GeoLocationBoundBox
@@ -42,10 +43,11 @@ struct SearchBox {
         }
     }
     
-    init(center:GeoLocation, distance:Double, mapView:MKMapView?, requestProcessor:MapLocationRequestProcessor) {
+    init(center:GeoLocation, distance:Double, mapView:MKMapView?, useCenter:Bool, requestProcessor:MapLocationRequestProcessor) {
         if let mapView = mapView {
             self.mapView = mapView
         }
+        self.useCenter = useCenter
         self.requestProcessor = requestProcessor
         self.center = center
         self.boxDistance = distance
@@ -143,7 +145,7 @@ struct SearchBox {
     }
     
     private func doSearch(location:GeoLocation.GeoLocationBoundBox) {
-        var box = SearchBox(center: location.center, distance: self.boxDistance/2, mapView:self.mapView, requestProcessor:self.requestProcessor)
+        var box = SearchBox(center: location.center, distance: self.boxDistance/2, mapView:self.mapView, useCenter:self.useCenter, requestProcessor:self.requestProcessor)
         box.triggerFoursquareSearch()
     }
     
@@ -153,7 +155,11 @@ struct SearchBox {
             
             let regionCenter = GeoLocation(coordinate: mapView!.region.center)
             locations.sort() { lhs, rhs in
-                return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
+                if self.useCenter {
+                    return lhs.center.distanceTo(self.center) < rhs.center.distanceTo(self.center)
+                } else {
+                    return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
+                }
             }
             
             for location in locations {
