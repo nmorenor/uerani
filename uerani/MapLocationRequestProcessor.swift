@@ -35,6 +35,7 @@ public class MapLocationRequestProcessor {
     //performance of NSSet is better than swift Set
     var gridBox:NSMutableSet = NSMutableSet()
     var allAnnotations:NSMutableSet = NSMutableSet()
+    var category:[String]?
     
     
     func setAllowLocation() {
@@ -45,18 +46,18 @@ public class MapLocationRequestProcessor {
     }
     
     func displayLocation(location:CLLocation) {
-        var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.055, longitudeDelta: 0.055))
+        var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.035, longitudeDelta: 0.035))
         dispatch_async(dispatch_get_main_queue()) {
             self.mapView.setRegion(region, animated: true)
         }
     }
     
-    func triggerLocationSearch(region:MKCoordinateRegion?) {
+    func triggerLocationSearch(region:MKCoordinateRegion?, useLocation:Bool) {
         NSOperationQueue().addOperationWithBlock({
             if self.shouldCalculateSearchBox() {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
-                if let location = LocationRequestManager.sharedInstance().location where self.searchBox == nil {
-                    var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.055, longitudeDelta: 0.055))
+                if let location = LocationRequestManager.sharedInstance().location where self.searchBox == nil && useLocation {
+                    var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.035, longitudeDelta: 0.035))
                     region.center = location.coordinate
                     self.calculateSearchBox(region, useCenter:true)
                 } else {
@@ -154,5 +155,21 @@ public class MapLocationRequestProcessor {
             self.gridBox.addObject(location)
         }
         objc_sync_exit(self.mutex)
+    }
+    
+    func doSearchWithCategory(category:[String]?) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.category = category
+            self.searchBox = nil
+            LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
+            LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
+            objc_sync_enter(self.clusteringManager)
+            self.allAnnotations.removeAllObjects()
+            self.clusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            objc_sync_exit(self.clusteringManager)
+            
+            self.triggerLocationSearch(self.mapView.region, useLocation:false)
+        }
     }
 }

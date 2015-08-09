@@ -20,9 +20,7 @@ public class CDCategory : NSManagedObject, Equatable, Printable {
     @NSManaged public var icon:CDIcon
     @NSManaged public var primary:Bool
     @NSManaged public var topCategory:Bool
-    @NSManaged public var categories:[CDCategory]
-    
-    @NSManaged public var parentCategory:CDCategory?
+    @NSManaged public var categories:NSSet
     
     override public var description:String {
         get {
@@ -46,6 +44,26 @@ public class CDCategory : NSManagedObject, Equatable, Printable {
         self.icon = CDIcon(icon: category.icon, context: context)
         self.primary = category.primary
         self.topCategory = category.topCategory
+    }
+    
+    func getCategoriesIds() -> [String] {
+        var result = [String]()
+        result.append(self.id)
+        if self.categories.count > 0 {
+            result += getCategoryIds(self.categories.allObjects as! [CDSubCategory])
+        }
+        return result
+    }
+    
+    func getCategoryIds(categories:[CDSubCategory]) ->[String] {
+        var result = [String]()
+        for child in categories {
+            result.append(child.id)
+            if child.categories.count > 0 {
+                result += getCategoryIds(child.categories.allObjects as! [CDSubCategory])
+            }
+        }
+        return result
     }
     
 }

@@ -86,10 +86,11 @@ public class FoursquareLocationOperation: NSOperation {
     
     //Search on local cache
     private func doLocalCacheSearch(realm:Realm) {
-        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne)
-        let venues = realm.objects(FVenue).filter(predicate)
+        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, category:self.requestProcessor.category)
+        var venues = realm.objects(FVenue).filter(predicate)
         
         for nextVenue in venues {
+            
             for nextCat in nextVenue.categories {
                 if let url = NSURL(string: "\(nextCat.icon.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.icon.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
                     let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
@@ -132,7 +133,6 @@ public class FoursquareLocationOperation: NSOperation {
         } else {
             if let result = result where result.count > 0 {
                 let realm = Realm(path: Realm.defaultPath)
-                var newVenues:[FVenue]? = nil
                 
                 let center = self.getCenter()
                 let boxCenter = SearchBoxCenter()
@@ -140,29 +140,33 @@ public class FoursquareLocationOperation: NSOperation {
                 boxCenter.lng = center.longitude
                 realm.write() {
                     realm.add(boxCenter, update: true)
-                    newVenues = result.map({realm.create(FVenue.self, value: $0, update: true)})
-                }
-                if let venues = newVenues {
-                    let annotations = venues.map({FoursquareLocationMapAnnotation(venue: $0)})
-                    
-                    if cancelled {
-                        return
-                    }
-                    self.addAnnotationsToCluster(annotations)
-                    if cancelled {
-                        return
-                    }
-                   requestProcessor.updateUI()
-                    
-                    for nextVenue in venues {
-                        for nextCategory in nextVenue.categories {
-                            FoursquareCategoryIconWorker(prefix: nextCategory.icon.prefix, suffix: nextCategory.icon.suffix)
-                            
-                        }
+                    for next in result {
+                        realm.create(FVenue.self, value: next, update: true)
                     }
                 }
                 
+                let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, category:self.requestProcessor.category)
+                var newVenues = realm.objects(FVenue).filter(predicate)
                 
+                var annotations:[FoursquareLocationMapAnnotation] = [FoursquareLocationMapAnnotation]()
+                for venue in newVenues {
+                    for nextCategory in venue.categories {
+                        FoursquareCategoryIconWorker(prefix: nextCategory.icon.prefix, suffix: nextCategory.icon.suffix)
+                        
+                    }
+                    annotations.append(FoursquareLocationMapAnnotation(venue: venue))
+                }
+                
+                if cancelled {
+                    return
+                }
+                //filter with category predicate
+                
+                self.addAnnotationsToCluster(annotations)
+                if cancelled {
+                    return
+                }
+                requestProcessor.updateUI()
             } else {
                 let realm = Realm(path: Realm.defaultPath)
                 let center = self.getCenter()
@@ -180,6 +184,7 @@ public class FoursquareLocationOperation: NSOperation {
     }
     
     private func addAnnotationsToCluster(annotations:Array<FoursquareLocationMapAnnotation>) {
+       
         objc_sync_enter(requestProcessor.clusteringManager)
         //avoid any possible thread lock in here
         if cancelled {

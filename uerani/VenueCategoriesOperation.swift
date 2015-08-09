@@ -86,8 +86,7 @@ class VenueCategoriesOperation : NSOperation {
     
     func createChildrenCategories(parentCategory:CDCategory, categories:List<FSubCategory>) {
         for child in categories {
-            var childCat = CDCategory(category: child, context: self.sharedModelContext)
-            childCat.parentCategory = parentCategory
+            var childCat = CDSubCategory(parentCategory: parentCategory, category: child, context: self.sharedModelContext)
             if (child.categories.count > 0) {
                 createChildrenCategories(childCat, categories: child.categories)
             }

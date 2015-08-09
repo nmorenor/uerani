@@ -134,9 +134,9 @@ class RefreshMapAnnotationOperation: NSOperation {
     
     func getNonClusteredAnnotations() -> Array<NSObject>? {
         if let searchBox = requestProcessor.searchBox {
-            let predicate = searchBox.getPredicate(mapView.region)
+            let predicate = searchBox.getPredicate(mapView.region, category: self.requestProcessor.category)
             let realm = Realm(path: Realm.defaultPath)
-            let venues = realm.objects(FVenue).filter(searchBox.getPredicate(mapView.region))
+            let venues = realm.objects(FVenue).filter(predicate)
             var annotations = [FoursquareLocationMapAnnotation]()
             for venue in venues {
                 annotations.append(FoursquareLocationMapAnnotation(venue: venue))

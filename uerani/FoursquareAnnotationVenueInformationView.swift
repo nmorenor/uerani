@@ -58,7 +58,6 @@ class FoursquareAnnotationVenueInformationView: UIView {
         photoLayer.mask = maskLayer
         
         layer.addSublayer(circleLayer)
-        layer.addSublayer(photoLayer)
         
         addSubview(label)
         addSubview(addressLabel)
@@ -66,8 +65,6 @@ class FoursquareAnnotationVenueInformationView: UIView {
     
     override func layoutSubviews() {
         //Size the avatar image to fit
-        photoLayer.hidden = true
-        circleLayer.hidden = true
         photoLayer.frame = CGRect(
             x: 2.5,
             y: 0,
@@ -91,6 +88,7 @@ class FoursquareAnnotationVenueInformationView: UIView {
         innerCircleLayer.fillColor = UIColor.blackColor().CGColor
         
         circleLayer.addSublayer(self.innerCircleLayer)
+        circleLayer.addSublayer(self.photoLayer)
         
         //Size the layer
         maskLayer.path = circleLayer.path
@@ -100,17 +98,17 @@ class FoursquareAnnotationVenueInformationView: UIView {
         label.frame = CGRect(x: photoLayer.bounds.size.width + 9, y: 0, width: (self.frame.size.width - 64) - photoLayer.bounds.size.width, height: 15.0)
         addressLabel.frame = CGRect(x: photoLayer.bounds.size.width + 6, y: 15, width: (self.frame.size.width - 64) - photoLayer.bounds.size.width, height: self.frame.size.height - 22)
         
-        animateSize(photoLayer)
+        //animateSize(photoLayer)
+        //animateSize(innerCircleLayer)
         animateSize(circleLayer)
     }
     
-    func animateSize(layer:CALayer) {
+    func animateSize(layer:CALayer) {  
         var animation = CABasicAnimation(keyPath: "transform.scale")
         animation.fromValue = 0.0
         animation.toValue = 1.0
         animation.duration = 0.3
         
         layer.addAnimation(animation, forKey: nil)
-        layer.hidden = false
     }
 }

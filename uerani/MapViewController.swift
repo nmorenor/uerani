@@ -35,6 +35,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var isRefreshReady:Bool = false
     
     var resultSearchController = UISearchController()
+    var selectedCategory:[String]?
     
     private var myContext = 0
     private var userLocationContext = 1
@@ -56,11 +57,17 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         //search all venue categories in background thread
         VenueCategoriesOperation(delegate: self)
         
+        //do not show lines on empty rows
+        self.categoryViewSearch.tableFooterView = UIView(frame: CGRect.zeroRect)
+        
+        self.view.backgroundColor = UIColor.blackColor()
+        
         self.resultSearchController = ({
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
             controller.searchBar.sizeToFit()
+            controller.hidesNavigationBarDuringPresentation = false
             
             controller.searchBar.delegate = self
             
@@ -69,6 +76,10 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             return controller
         })()
         
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
     
     func initializeSearchResults() {
@@ -157,14 +168,26 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let movie = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDCategory
+        let category = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDCategory
         let CellIdentifier = "categorySearchCell"
         
         let cell = self.categoryViewSearch.dequeueReusableCellWithIdentifier(CellIdentifier) as! UITableViewCell
         
-        configureCell(cell, category: movie)
+        configureCell(cell, category: category)
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if let category = self.fetchedResultsController.objectAtIndexPath(indexPath) as? CDCategory {
+            let categoryId = category.id
+            self.mapView.hidden = false
+            self.categoryViewSearch.hidden = true
+            self.resultSearchController.active = false
+            self.resultSearchController.searchBar.text = category.name
+            self.selectedCategory = category.getCategoriesIds()
+            self.requestProcessor.doSearchWithCategory(self.selectedCategory)
+        }
     }
     
     // MARK: - Fetched Results Controller Delegate
@@ -207,7 +230,9 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
         }
         
-        cell.imageView!.image = categoryImage
+        //pngs are white use black color
+        cell.imageView!.image = categoryImage?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        cell.imageView!.tintColor = UIColor.blackColor()
     }
     
     //MARK: - Search Bar
@@ -234,9 +259,15 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.categoryViewSearch.reloadData()
     }
     
-    
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        self.selectedCategory = nil
+        self.mapView.hidden = false
+        self.categoryViewSearch.hidden = true
         
+        if self.requestProcessor.category != nil {
+            self.selectedCategory = nil
+            self.requestProcessor.doSearchWithCategory(nil)
+        }
     }
     
     deinit {
@@ -355,7 +386,7 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
         if fullyRendered && self.isRefreshReady {
-            self.requestProcessor.triggerLocationSearch(mapView.region)
+            self.requestProcessor.triggerLocationSearch(mapView.region, useLocation:true)
         }
     }
     
@@ -453,3 +484,9 @@ extension MapViewController: MKMapViewDelegate {
     }
 }
 
+extension UISearchController {
+    
+    override public func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+}
