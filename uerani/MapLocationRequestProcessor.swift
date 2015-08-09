@@ -35,7 +35,7 @@ public class MapLocationRequestProcessor {
     //performance of NSSet is better than swift Set
     var gridBox:NSMutableSet = NSMutableSet()
     var allAnnotations:NSMutableSet = NSMutableSet()
-    var category:[String]?
+    var categoryFilter:[String]?
     
     
     func setAllowLocation() {
@@ -159,7 +159,7 @@ public class MapLocationRequestProcessor {
     
     func doSearchWithCategory(category:[String]?) {
         dispatch_async(dispatch_get_main_queue()) {
-            self.category = category
+            self.categoryFilter = category
             self.searchBox = nil
             LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
             LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()

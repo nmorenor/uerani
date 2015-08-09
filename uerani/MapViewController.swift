@@ -34,8 +34,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var requestProcessor:MapLocationRequestProcessor!
     var isRefreshReady:Bool = false
     
-    var resultSearchController = UISearchController()
-    var selectedCategory:[String]?
+    var searchController = UISearchController()
+    var searchShouldBeginEditing = true
     
     private var myContext = 0
     private var userLocationContext = 1
@@ -62,13 +62,14 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
         self.view.backgroundColor = UIColor.blackColor()
         
-        self.resultSearchController = ({
+        self.searchController = ({
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
             controller.searchBar.sizeToFit()
             controller.hidesNavigationBarDuringPresentation = false
-            
+            controller.searchBar.barTintColor = UIColor.blackColor()
+            controller.searchBar.barStyle = UIBarStyle.Black
             controller.searchBar.delegate = self
             
             self.searchBarView.addSubview(controller.searchBar)
@@ -183,10 +184,9 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let categoryId = category.id
             self.mapView.hidden = false
             self.categoryViewSearch.hidden = true
-            self.resultSearchController.active = false
-            self.resultSearchController.searchBar.text = category.name
-            self.selectedCategory = category.getCategoriesIds()
-            self.requestProcessor.doSearchWithCategory(self.selectedCategory)
+            self.searchController.active = false
+            self.searchController.searchBar.text = category.name
+            self.requestProcessor.doSearchWithCategory(category.getCategoriesIds())
         }
     }
     
@@ -244,6 +244,19 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.categoryViewSearch.reloadData()
     }
     
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if !searchBar.isFirstResponder() {
+            self.searchShouldBeginEditing = false
+            searchBarCancelButtonClicked(searchBar)
+        }
+    }
+    
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        let result = self.searchShouldBeginEditing
+        self.searchShouldBeginEditing = true
+        return result
+    }
+    
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         let searchPredicate = searchController.searchBar.text.isEmpty ? NSPredicate(format: "topCategory == %@", NSNumber(bool: true)) : NSPredicate(format: "name contains[c] %@", searchController.searchBar.text)
         self.fetchedResultsController.fetchRequest.predicate = searchPredicate
@@ -259,13 +272,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.categoryViewSearch.reloadData()
     }
     
+    
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self.selectedCategory = nil
         self.mapView.hidden = false
         self.categoryViewSearch.hidden = true
         
-        if self.requestProcessor.category != nil {
-            self.selectedCategory = nil
+        if self.requestProcessor.categoryFilter != nil {
             self.requestProcessor.doSearchWithCategory(nil)
         }
     }

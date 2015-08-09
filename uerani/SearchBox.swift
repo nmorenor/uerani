@@ -71,28 +71,28 @@ struct SearchBox {
         return NSPredicate(format: "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)", swCoord.longitude, neCoord.longitude, swCoord.latitude, neCoord.latitude)
     }
     
-    private func getPredicate(box:GeoLocation.GeoLocationBoundBox, category:[String]?) -> NSPredicate {
-        if let category = category {
+    private func getPredicate(box:GeoLocation.GeoLocationBoundBox, categoryFilter:[String]?) -> NSPredicate {
+        if let categoryFilter = categoryFilter {
             var predicate1 = NSPredicate(format: "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)", box.swLocation.coordinate.longitude, box.neLocation.coordinate.longitude, box.swLocation.coordinate.latitude, box.neLocation.coordinate.latitude)
-            var predicate2 = NSPredicate(format: "ANY categories.id IN %@", category)
+            var predicate2 = NSPredicate(format: "ANY categories.id IN %@", categoryFilter)
             return NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         } else {
             return NSPredicate(format: "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)", box.swLocation.coordinate.longitude, box.neLocation.coordinate.longitude, box.swLocation.coordinate.latitude, box.neLocation.coordinate.latitude)
         }
     }
     
-    static func getPredicate(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, category:[String]?) -> NSPredicate {
-        if let category = category {
+    static func getPredicate(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, categoryFilter:[String]?) -> NSPredicate {
+        if let categoryFilter = categoryFilter {
             var predicate1 = NSPredicate(format: "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)", sw.longitude, ne.longitude, sw.latitude, ne.latitude)
-            var predicate2 = NSPredicate(format: "ANY categories.id IN %@", category)
+            var predicate2 = NSPredicate(format: "ANY categories.id IN %@", categoryFilter)
             return NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         } else {
             return NSPredicate(format: "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)", sw.longitude, ne.longitude, sw.latitude, ne.latitude)
         }
     }
     
-    func getPredicate(region:MKCoordinateRegion, category:[String]?) -> NSPredicate {
-        return self.getPredicate(GeoLocation.boundingBox(region), category:category)
+    func getPredicate(region:MKCoordinateRegion, categoryFilter:[String]?) -> NSPredicate {
+        return self.getPredicate(GeoLocation.boundingBox(region), categoryFilter:categoryFilter)
     }
     
     func showAsOverlay(mapView:MKMapView) {

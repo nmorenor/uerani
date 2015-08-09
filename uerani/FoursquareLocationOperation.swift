@@ -86,7 +86,7 @@ public class FoursquareLocationOperation: NSOperation {
     
     //Search on local cache
     private func doLocalCacheSearch(realm:Realm) {
-        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, category:self.requestProcessor.category)
+        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, categoryFilter:self.requestProcessor.categoryFilter)
         var venues = realm.objects(FVenue).filter(predicate)
         
         for nextVenue in venues {
@@ -145,7 +145,7 @@ public class FoursquareLocationOperation: NSOperation {
                     }
                 }
                 
-                let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, category:self.requestProcessor.category)
+                let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, categoryFilter:self.requestProcessor.categoryFilter)
                 var newVenues = realm.objects(FVenue).filter(predicate)
                 
                 var annotations:[FoursquareLocationMapAnnotation] = [FoursquareLocationMapAnnotation]()
