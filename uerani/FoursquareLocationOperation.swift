@@ -47,6 +47,9 @@ public class FoursquareLocationOperation: NSOperation {
     * the radius of the gridBox
     */
     func shouldCallFoursquareAPI(realm:Realm) -> Bool {
+        if self.requestProcessor.categoryFilter != nil {
+            return false
+        }
         let matchingCenters = realm.objects(SearchBoxCenter).filter(getSearchBoxPredicate())
         if matchingCenters.count > 0 {
             let center = getCenter()

@@ -163,19 +163,24 @@ struct SearchBox {
     
     private func triggerForusquareSearchOperations() {
         if self.boxDistance == MapLocationRequestProcessor.locationSearchDistance {
-            var locations = requestProcessor.getGidBoxLocations()
             
-            let regionCenter = GeoLocation(coordinate: mapView!.region.center)
-            locations.sort() { lhs, rhs in
-                if self.useCenter {
-                    return lhs.center.distanceTo(self.center) < rhs.center.distanceTo(self.center)
-                } else {
-                    return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
+            //Filter operations have a high cost avoid doing too many filter queries
+            if let categoryFilter = self.requestProcessor.categoryFilter {
+                FoursquareLocationOperation(sw: self.swCoord, ne: self.neCoord, requestProcessor: self.requestProcessor)
+            } else {
+                var locations = requestProcessor.getGidBoxLocations()
+                
+                let regionCenter = GeoLocation(coordinate: mapView!.region.center)
+                locations.sort() { lhs, rhs in
+                    if self.useCenter {
+                        return lhs.center.distanceTo(self.center) < rhs.center.distanceTo(self.center)
+                    } else {
+                        return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
+                    }
                 }
-            }
-            
-            for location in locations {
-                FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, requestProcessor:self.requestProcessor)
+                for location in locations {
+                    FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, requestProcessor:self.requestProcessor)
+                }
             }
         }
     }

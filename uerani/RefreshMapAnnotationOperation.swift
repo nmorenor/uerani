@@ -32,7 +32,7 @@ class RefreshMapAnnotationOperation: NSOperation {
         
         // we can be adding an excesive amount of refresh workers to the queue
         //this could lead to undesired results, only allow three on the queue
-        if LocationRequestManager.sharedInstance().refreshOperationQueue.operationCount <= 3 {
+        if LocationRequestManager.sharedInstance().refreshOperationQueue.operationCount < 3 {
             LocationRequestManager.sharedInstance().refreshOperationQueue.addOperation(self)
         }
     }

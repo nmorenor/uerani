@@ -12,6 +12,7 @@ import FBAnnotationClustering
 import RealmSwift
 import CoreData
 
+//allow a protocol to have a weak reference
 protocol CategoriesReady : class {
     
     func initializeSearchResults()
@@ -152,10 +153,6 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         }
     }
     
-    func handleSearch(button:UIBarButtonItem) {
-        self.performSegueWithIdentifier("venueFilter", sender: self)
-    }
-    
     // MARK: - Table View
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -216,7 +213,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     // MARK: - Configure Cell
     
     func configureCell(cell: UITableViewCell, category: CDCategory) {
-        var categoryImage = UIImage(named: "default_32")
+        var categoryImage = UIImage(named: defaultPinImage)
         
         cell.textLabel!.text = category.name
         cell.imageView!.image = nil
