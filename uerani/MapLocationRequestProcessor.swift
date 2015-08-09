@@ -88,7 +88,7 @@ public class MapLocationRequestProcessor {
     func shouldUseCluster() -> Bool {
         if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            var maxDistanceForNonClustered = self.categoryFilter != nil ? ((MapLocationRequestProcessor.locationSearchDistance / 4.0) + 1) : MapLocationRequestProcessor.locationSearchDistance + 1
+            var maxDistanceForNonClustered = self.categoryFilter != nil ? ((MapLocationRequestProcessor.locationSearchDistance / 3.0) + 1) : MapLocationRequestProcessor.locationSearchDistance + 1
             return mapRegionDistance > maxDistanceForNonClustered
         }
         return true
