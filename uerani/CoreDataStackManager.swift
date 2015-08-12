@@ -21,7 +21,7 @@ class CoreDataStackManager {
         return CoreDataModel(name: "Uerani")
     }()
     
-    lazy var dataStack:CoreDataStack = {
+    lazy var dataStack:CoreDataStack = { [unowned self] in
         return CoreDataStack(model: self.dataModel)
     }()
     

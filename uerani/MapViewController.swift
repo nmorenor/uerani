@@ -26,9 +26,11 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     let defaultPinImage = "default_32.png"
     
-    @IBOutlet weak var searchBarView: UIView!
+    @IBOutlet weak var searchBarView: SearchViewWtihProgress!
     @IBOutlet weak var categoryViewSearch: UITableView!
     @IBOutlet weak var mapView: MKMapView!
+    
+    @IBOutlet var categoryBottomConstraint: NSLayoutConstraint!
     
     var selectedMapAnnotationView:MKAnnotationView?
     var calloutMapAnnotationView:CalloutMapAnnotationView?
@@ -40,6 +42,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     private var myContext = 0
     private var userLocationContext = 1
+    
+    //MARK: LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,70 +71,40 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
-            controller.searchBar.sizeToFit()
             controller.hidesNavigationBarDuringPresentation = false
             controller.searchBar.barTintColor = UIColor.blackColor()
             controller.searchBar.barStyle = UIBarStyle.Black
             controller.searchBar.delegate = self
             
-            self.searchBarView.addSubview(controller.searchBar)
+            self.searchBarView.searchBar = controller.searchBar
             
             return controller
         })()
         
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
-    }
-    
-    func initializeSearchResults() {
-        dispatch_async(dispatch_get_main_queue()) {
-            let fetchRequest = NSFetchRequest(entityName: "CDCategory")
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-            fetchRequest.predicate = NSPredicate(format: "topCategory == %@", NSNumber(bool: true))
-            
-            var error:NSError? = nil
-            self.fetchedResultsController.performFetch(&error)
-            
-            if let error = error {
-                println("Error performing initial fetch")
-            }
-            let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
-            if sectionInfo.numberOfObjects > 0 {
-                self.categoryViewSearch.reloadData()
-            }
-        }
-    }
-    
-    var sharedContext:NSManagedObjectContext {
-        return CoreDataStackManager.sharedInstance().dataStack.managedObjectContext
-    }
-    
-    lazy var fetchedResultsController:NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "CDCategory")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "topCategory == %@", NSNumber(bool: true))
-        
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
-        return controller
-        }()
-    
     override func viewWillAppear(animated: Bool) {
         self.requestProcessor?.mapView = self.mapView
+        subscribeToKeyboardNotifications();
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        //self.searchBarView.beginProgress()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
         let locationRequestManager = LocationRequestManager.sharedInstance()
         self.requestProcessor?.calloutAnnotation = nil
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
         if context == &myContext || context == &userLocationContext {
             if context == &myContext {
@@ -150,6 +124,44 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
         } else {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        }
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
+    // MARK - Core Data
+    
+    var sharedContext:NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().dataStack.managedObjectContext
+    }
+    
+    lazy var fetchedResultsController:NSFetchedResultsController = { [unowned self] in
+        let fetchRequest = NSFetchRequest(entityName: "CDCategory")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
+        fetchRequest.predicate = NSPredicate(format: "topCategory == %@", NSNumber(bool: true))
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+        return controller
+        }()
+    
+    func initializeSearchResults() {
+        dispatch_async(dispatch_get_main_queue()) {
+            let fetchRequest = NSFetchRequest(entityName: "CDCategory")
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
+            fetchRequest.predicate = NSPredicate(format: "topCategory == %@", NSNumber(bool: true))
+            
+            var error:NSError? = nil
+            self.fetchedResultsController.performFetch(&error)
+            
+            if let error = error {
+                println("Error performing initial fetch")
+            }
+            let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
+            if sectionInfo.numberOfObjects > 0 {
+                self.categoryViewSearch.reloadData()
+            }
         }
     }
     
@@ -233,6 +245,45 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     //MARK: - Search Bar
+    
+    func subscribeToKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil);
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil);
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if (self.searchController.searchBar.isFirstResponder()) {
+            /** Some of the custom keyboards (like swype) can incorrectly report keyboardWillShow method multiple times. We could get bad behaviour if we use self.view.frame.origin.y -= getKeyboardHeight(notification);
+            
+            http://stackoverflow.com/questions/25874975/cant-get-correct-value-of-keyboard-height-in-ios8
+            */
+            self.categoryBottomConstraint.constant = getKeyboardHeight(notification)
+            UIView.animateWithDuration(1.0, animations: { [unowned self] in
+                self.view.layoutIfNeeded()
+                }, completion: nil)
+            
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if (self.searchController.searchBar.isFirstResponder()) {
+            self.categoryBottomConstraint.constant = 0;
+            UIView.animateWithDuration(1.0, animations: { [unowned self] in
+                self.view.layoutIfNeeded()
+                }, completion: nil)
+        }
+    }
+    
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        let userInfo = notification.userInfo;
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue;
+        return keyboardSize.CGRectValue().height
+    }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         self.mapView.hidden = true

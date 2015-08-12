@@ -39,7 +39,7 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         //setup operation queue
         operationQueue = NSOperationQueue()
         operationQueue.name = "Location operation Queue"
-        operationQueue.maxConcurrentOperationCount = 5
+        operationQueue.maxConcurrentOperationCount = 6
         
         refreshOperationQueue = NSOperationQueue()
         refreshOperationQueue.name = "Refresh annotation operation queue"
@@ -47,11 +47,11 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         
         categoryIconOperationQueue = NSOperationQueue()
         categoryIconOperationQueue.name = "Category Icon Operation Queue"
-        categoryIconOperationQueue.maxConcurrentOperationCount = 4
+        categoryIconOperationQueue.maxConcurrentOperationCount = 2
         
         categoryIconDownloadOperationQueue = NSOperationQueue()
         categoryIconDownloadOperationQueue.name = "Category Icon Operation Queue"
-        categoryIconDownloadOperationQueue.maxConcurrentOperationCount = 4
+        categoryIconDownloadOperationQueue.maxConcurrentOperationCount = 2
         
         super.init()
         self.manager.delegate = self

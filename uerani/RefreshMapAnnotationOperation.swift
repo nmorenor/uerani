@@ -24,6 +24,7 @@ class RefreshMapAnnotationOperation: NSOperation {
     private var semaphore = dispatch_semaphore_create(0)
     private var removeOperation = false
     private var requestProcessor:MapLocationRequestProcessor
+    private var startedProgress = false
     
     init(mapView:MKMapView, requestProcessor:MapLocationRequestProcessor) {
         self.mapView = mapView
@@ -108,6 +109,10 @@ class RefreshMapAnnotationOperation: NSOperation {
                 }
                 //block thread, only one at a time will update the ui
                 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                if !self.requestProcessor.hasRunningSearch() {
+                    let searchBeginNotification = NSNotification(name: "searchEnd", object: nil)
+                    NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
+                }
             }
         }
     }
@@ -134,6 +139,8 @@ class RefreshMapAnnotationOperation: NSOperation {
     
     func getNonClusteredAnnotations() -> Array<NSObject>? {
         if let searchBox = requestProcessor.searchBox {
+            let searchBeginNotification = NSNotification(name: "searchBegin", object: nil)
+            NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
             let predicate = searchBox.getPredicate(mapView.region, categoryFilter: self.requestProcessor.categoryFilter)
             let realm = Realm(path: Realm.defaultPath)
             let venues = realm.objects(FVenue).filter(predicate)

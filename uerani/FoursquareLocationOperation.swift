@@ -16,14 +16,16 @@ public class FoursquareLocationOperation: NSOperation {
     var sw:CLLocationCoordinate2D
     var ne:CLLocationCoordinate2D
     private var requestProcessor:MapLocationRequestProcessor
+    private var center:GeoLocation
     private var semaphore = dispatch_semaphore_create(0)
     
     init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, requestProcessor:MapLocationRequestProcessor) {
         self.sw = sw
         self.ne = ne
+        self.center = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: sw.latitude + ((ne.latitude - sw.latitude)/2), longitude: sw.longitude + ((ne.longitude - sw.longitude)/2)))
         self.requestProcessor = requestProcessor
         super.init()
-        
+        self.requestProcessor.addRunningSearch(self.center)
         LocationRequestManager.sharedInstance().operationQueue.addOperation(self)
     }
     
@@ -39,6 +41,7 @@ public class FoursquareLocationOperation: NSOperation {
         if searchOnFoursquare && shouldCallFoursquareAPI {
             doFoursquareSearch(self.searchHandler)
         }
+        self.requestProcessor.removeRunningSearch(self.center)
     }
     
     /**

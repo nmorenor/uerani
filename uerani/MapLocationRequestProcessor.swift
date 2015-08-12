@@ -15,7 +15,7 @@ public class MapLocationRequestProcessor {
     
     static let locationSearchDistance:Double = 1000.00
     
-    var mapView:MKMapView
+    unowned var mapView:MKMapView
     var clusteringManager:FBClusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
     var calloutAnnotation:CalloutAnnotation?
     
@@ -35,6 +35,7 @@ public class MapLocationRequestProcessor {
     //performance of NSSet is better than swift Set
     var gridBox:NSMutableSet = NSMutableSet()
     var allAnnotations:NSMutableSet = NSMutableSet()
+    var runningSearchLocations:NSMutableSet = NSMutableSet()
     var categoryFilter:[String]?
     
     
@@ -56,6 +57,7 @@ public class MapLocationRequestProcessor {
         NSOperationQueue().addOperationWithBlock({
             if self.shouldCalculateSearchBox() {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
+                self.cleanRunningSearches()
                 if let location = LocationRequestManager.sharedInstance().location where self.searchBox == nil && useLocation {
                     var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.035, longitudeDelta: 0.035))
                     region.center = location.coordinate
@@ -161,16 +163,61 @@ public class MapLocationRequestProcessor {
     func doSearchWithCategory(category:[String]?) {
         dispatch_async(dispatch_get_main_queue()) {
             self.categoryFilter = category
-            self.searchBox = nil
-            LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
-            LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
-            objc_sync_enter(self.clusteringManager)
-            self.allAnnotations.removeAllObjects()
-            self.clusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
-            self.mapView.removeAnnotations(self.mapView.annotations)
-            objc_sync_exit(self.clusteringManager)
-            
+            self.cleanMap()
             self.triggerLocationSearch(self.mapView.region, useLocation:false)
         }
+    }
+    
+    func cleanMap() {
+        self.searchBox = nil
+        LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
+        LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
+        self.cleanRunningSearches()
+        objc_sync_enter(self.clusteringManager)
+        self.allAnnotations.removeAllObjects()
+        self.clusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
+        self.mapView.removeAnnotations(self.mapView.annotations)
+        objc_sync_exit(self.clusteringManager)
+    }
+    
+    func cleanRunningSearches() {
+        objc_sync_enter(self.mutex)
+        self.runningSearchLocations.removeAllObjects()
+        objc_sync_exit(self.mutex)
+    }
+    
+    func addRunningSearch(location:GeoLocation) {
+        objc_sync_enter(self.mutex)
+        let hash = self.calculateHashFor(location)
+        var wasEmpty = self.runningSearchLocations.count == 0
+        self.runningSearchLocations.addObject(hash)
+        if wasEmpty {
+            let searchBeginNotification = NSNotification(name: "searchBegin", object: nil)
+            NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
+        }
+        objc_sync_exit(self.mutex)
+    }
+    
+    func hasRunningSearch() -> Bool {
+        var empty = false
+        objc_sync_enter(self.mutex)
+        empty = self.runningSearchLocations.count != 0
+        objc_sync_exit(self.mutex)
+        return empty
+    }
+    
+    func removeRunningSearch(location:GeoLocation) {
+        objc_sync_enter(self.mutex)
+        let hash = self.calculateHashFor(location)
+        self.runningSearchLocations.removeObject(hash)
+        objc_sync_exit(self.mutex)
+    }
+    
+    func calculateHashFor(location:GeoLocation) -> Int {
+        let prime:Int = 31
+        var result:Int = 1
+        var toHash = NSString(format: "[%.8f,%.8f]", location.coordinate.latitude, location.coordinate.longitude)
+        result = prime * result + toHash.hashValue
+        return result
     }
 }
