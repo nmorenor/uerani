@@ -132,6 +132,7 @@ struct GeoLocation {
         return GeoLocationBoundBox(center: center, distance: GeoLocation.getDistance(searchRegion), neLocation: GeoLocation(coordinate: neCoord), swLocation: GeoLocation(coordinate:swCoord), nwLocation:GeoLocation(coordinate:nwCoord), seLocation:GeoLocation(coordinate:seCoord))
     }
     
+    //zoom distance
     static func getDistance(region:MKCoordinateRegion) -> CLLocationDistance {
         let newLocation:CLLocation = CLLocation(latitude: region.center.latitude+region.span.latitudeDelta, longitude: region.center.longitude)
         let centerLocation:CLLocation = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)

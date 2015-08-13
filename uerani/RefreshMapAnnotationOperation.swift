@@ -112,6 +112,8 @@ class RefreshMapAnnotationOperation: NSOperation {
                 if !self.requestProcessor.hasRunningSearch() {
                     let searchBeginNotification = NSNotification(name: "searchEnd", object: nil)
                     NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
+                    //wait for progress animation to end
+                    NSThread.sleepForTimeInterval(0.65)
                 }
             }
         }
@@ -139,8 +141,10 @@ class RefreshMapAnnotationOperation: NSOperation {
     
     func getNonClusteredAnnotations() -> Array<NSObject>? {
         if let searchBox = requestProcessor.searchBox {
-            let searchBeginNotification = NSNotification(name: "searchBegin", object: nil)
-            NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
+            if !self.requestProcessor.hasRunningSearch() {
+                let searchBeginNotification = NSNotification(name: "searchBegin", object: nil)
+                NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
+            }
             let predicate = searchBox.getPredicate(mapView.region, categoryFilter: self.requestProcessor.categoryFilter)
             let realm = Realm(path: Realm.defaultPath)
             let venues = realm.objects(FVenue).filter(predicate)

@@ -72,8 +72,6 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
             controller.hidesNavigationBarDuringPresentation = false
-            controller.searchBar.barTintColor = UIColor.blackColor()
-            controller.searchBar.barStyle = UIBarStyle.Black
             controller.searchBar.delegate = self
             
             self.searchBarView.searchBar = controller.searchBar
@@ -440,6 +438,11 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
         if self.isRefreshReady {
+            NSOperationQueue().addOperationWithBlock({
+                if self.requestProcessor.shouldCalculateSearchBox() {
+                    self.requestProcessor.triggerLocationSearch(mapView.region, useLocation:true)
+                }
+            })
             RefreshMapAnnotationOperation(mapView: mapView, requestProcessor: self.requestProcessor)
         }
     }

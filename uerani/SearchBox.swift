@@ -165,22 +165,21 @@ struct SearchBox {
         if self.boxDistance == MapLocationRequestProcessor.locationSearchDistance {
             
             //Filter operations have a high cost avoid doing too many filter queries
+            var locations = requestProcessor.getGidBoxLocations()
+            let regionCenter = GeoLocation(coordinate: mapView!.region.center)
+            locations.sort() { lhs, rhs in
+                if self.useCenter {
+                    return lhs.center.distanceTo(self.center) < rhs.center.distanceTo(self.center)
+                } else {
+                    return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
+                }
+            }
+            for location in locations {
+                FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, requestProcessor:self.requestProcessor, updateUI:(self.requestProcessor.categoryFilter == nil))
+            }
+            
             if let categoryFilter = self.requestProcessor.categoryFilter {
-                FoursquareLocationOperation(sw: self.swCoord, ne: self.neCoord, requestProcessor: self.requestProcessor)
-            } else {
-                var locations = requestProcessor.getGidBoxLocations()
-                
-                let regionCenter = GeoLocation(coordinate: mapView!.region.center)
-                locations.sort() { lhs, rhs in
-                    if self.useCenter {
-                        return lhs.center.distanceTo(self.center) < rhs.center.distanceTo(self.center)
-                    } else {
-                        return lhs.center.distanceTo(regionCenter) < rhs.center.distanceTo(regionCenter)
-                    }
-                }
-                for location in locations {
-                    FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, requestProcessor:self.requestProcessor)
-                }
+                FoursquareLocationOperation(sw: self.swCoord, ne: self.neCoord, requestProcessor: self.requestProcessor, updateUI:true)
             }
         }
     }

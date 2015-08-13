@@ -17,11 +17,13 @@ public class FoursquareLocationOperation: NSOperation {
     var ne:CLLocationCoordinate2D
     private var requestProcessor:MapLocationRequestProcessor
     private var center:GeoLocation
+    private var updateUI:Bool
     private var semaphore = dispatch_semaphore_create(0)
     
-    init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, requestProcessor:MapLocationRequestProcessor) {
+    init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, requestProcessor:MapLocationRequestProcessor, updateUI:Bool) {
         self.sw = sw
         self.ne = ne
+        self.updateUI = updateUI
         self.center = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: sw.latitude + ((ne.latitude - sw.latitude)/2), longitude: sw.longitude + ((ne.longitude - sw.longitude)/2)))
         self.requestProcessor = requestProcessor
         super.init()
@@ -50,7 +52,7 @@ public class FoursquareLocationOperation: NSOperation {
     * the radius of the gridBox
     */
     func shouldCallFoursquareAPI(realm:Realm) -> Bool {
-        if self.requestProcessor.categoryFilter != nil {
+        if self.requestProcessor.categoryFilter != nil && self.updateUI {
             return false
         }
         let matchingCenters = realm.objects(SearchBoxCenter).filter(getSearchBoxPredicate())
@@ -92,6 +94,10 @@ public class FoursquareLocationOperation: NSOperation {
     
     //Search on local cache
     private func doLocalCacheSearch(realm:Realm) {
+        if !self.updateUI {
+            return
+        }
+        
         let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, categoryFilter:self.requestProcessor.categoryFilter)
         var venues = realm.objects(FVenue).filter(predicate)
         
@@ -139,7 +145,7 @@ public class FoursquareLocationOperation: NSOperation {
         } else {
             if let result = result where result.count > 0 {
                 let realm = Realm(path: Realm.defaultPath)
-                
+                var newVenues:[FVenue] = [FVenue]()
                 let center = self.getCenter()
                 let boxCenter = SearchBoxCenter()
                 boxCenter.lat = center.latitude
@@ -147,32 +153,34 @@ public class FoursquareLocationOperation: NSOperation {
                 realm.write() {
                     realm.add(boxCenter, update: true)
                     for next in result {
-                        realm.create(FVenue.self, value: next, update: true)
+                        let venue = realm.create(FVenue.self, value: next, update: true)
+                        newVenues.append(venue)
                     }
                 }
                 
-                let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, categoryFilter:self.requestProcessor.categoryFilter)
-                var newVenues = realm.objects(FVenue).filter(predicate)
-                
-                var annotations:[FoursquareLocationMapAnnotation] = [FoursquareLocationMapAnnotation]()
-                for venue in newVenues {
-                    for nextCategory in venue.categories {
-                        FoursquareCategoryIconWorker(prefix: nextCategory.icon.prefix, suffix: nextCategory.icon.suffix)
+                if self.updateUI {
+                    var annotations:[FoursquareLocationMapAnnotation] = [FoursquareLocationMapAnnotation]()
+                    for venue in newVenues {
+                        for nextCategory in venue.categories {
+                            FoursquareCategoryIconWorker(prefix: nextCategory.icon.prefix, suffix: nextCategory.icon.suffix)
                         
+                        }
+                        annotations.append(FoursquareLocationMapAnnotation(venue: venue))
                     }
-                    annotations.append(FoursquareLocationMapAnnotation(venue: venue))
+                
+                    if cancelled {
+                        return
+                    }
+                    //filter with category predicate
+                
+                    self.addAnnotationsToCluster(annotations)
+                    if cancelled {
+                        return
+                    }
+                    
+                    requestProcessor.updateUI()
                 }
                 
-                if cancelled {
-                    return
-                }
-                //filter with category predicate
-                
-                self.addAnnotationsToCluster(annotations)
-                if cancelled {
-                    return
-                }
-                requestProcessor.updateUI()
             } else {
                 let realm = Realm(path: Realm.defaultPath)
                 let center = self.getCenter()
