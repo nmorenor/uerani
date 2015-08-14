@@ -88,7 +88,6 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        //self.searchBarView.beginProgress()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -136,9 +135,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     lazy var fetchedResultsController:NSFetchedResultsController = { [unowned self] in
-        let fetchRequest = NSFetchRequest(entityName: "CDCategory")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "topCategory == %@", NSNumber(bool: true))
+        let fetchRequest = self.getTopCategoryFetchRequest()
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
         return controller
@@ -146,9 +143,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func initializeSearchResults() {
         dispatch_async(dispatch_get_main_queue()) {
-            let fetchRequest = NSFetchRequest(entityName: "CDCategory")
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-            fetchRequest.predicate = NSPredicate(format: "topCategory == %@", NSNumber(bool: true))
+            let fetchRequest = self.getTopCategoryFetchRequest()
             
             var error:NSError? = nil
             self.fetchedResultsController.performFetch(&error)
@@ -161,6 +156,13 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 self.categoryViewSearch.reloadData()
             }
         }
+    }
+    
+    func getTopCategoryFetchRequest() -> NSFetchRequest {
+        let fetchRequest = NSFetchRequest(entityName: "CDCategory")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
+        fetchRequest.predicate = NSPredicate(format: "topCategory == %@", NSNumber(bool: true))
+        return fetchRequest
     }
     
     // MARK: - Table View
@@ -359,81 +361,84 @@ extension MapViewController: MKMapViewDelegate {
             return nil
         }
         
-        var view:MKPinAnnotationView?
+        var view:MKAnnotationView?
         if let cluserAnnotation = annotation as? FBAnnotationCluster {
-            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(clusterPin) as? MKPinAnnotationView {
-                dequeuedView.annotation = annotation
-                view = dequeuedView
-            } else {
-                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: clusterPin)
-            }
-            self.drawCircleImage(cluserAnnotation, view: view!)
             
-        } else if let foursquareAnnotation = annotation as? FoursquareLocationMapAnnotation {
-            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? BasicMapAnnotationView {
+            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(clusterPin) as? ClusteredPinAnnotationView {
                 dequeuedView.annotation = annotation
                 view = dequeuedView
             } else {
-                view = BasicMapAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view = ClusteredPinAnnotationView(annotation: annotation, reuseIdentifier: clusterPin)
+            }
+        } else if let foursquareAnnotation = annotation as? FoursquareLocationMapAnnotation {
+            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? CategoryPinAnnotationView {
+                dequeuedView.annotation = annotation
+                view = dequeuedView
+            } else {
+                view = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             }
             if let categoryImageName = foursquareAnnotation.categoryImageName {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
-                    self.drawCategoryImage(view!, image: image)
+                    if let image16 = ImageCache.sharedInstance().imageWithIdentifier(foursquareAnnotation.categoryImageName16) {
+                        view!.image = image16
+                    } else {
+                        var image16 = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(16, 16))
+                        ImageCache.sharedInstance().storeImage(image16, withIdentifier: foursquareAnnotation.categoryImageName16!)
+                        view!.image = image16
+                    }
                 } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix {
                     FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
                     if let image = UIImage(named: defaultPinImage) {
-                        self.drawCategoryImage(view!, image: image)
+                        view!.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(16, 16))
                     }
                 } else {
                     if let image = UIImage(named: defaultPinImage) {
-                        self.drawCategoryImage(view!, image: image)
+                        view!.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(16, 16))
                     }
                 }
             }
             view!.canShowCallout = false
-        }
-        if let view = view {
-            return view
-        }
-        
-        var customView:AccesorizedCalloutAnnotationView
-        if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(calloutPin) as? AccesorizedCalloutAnnotationView {
-            customView = dequeuedView
         } else {
-            customView = AccesorizedCalloutAnnotationView(annotation: annotation, reuseIdentifier: calloutPin)
-            
-        }
-        customView.mapView = mapView
-        customView.parentAnnotationView = self.selectedMapAnnotationView!
-        customView.annotation = annotation
-        customView.contentHeight = 80.0
-        if let annotation = self.selectedMapAnnotationView?.annotation as? FoursquareLocationMapAnnotation {
-            customView.contentView().subviews.map({$0.removeFromSuperview()})
-            let contentFrame = customView.getContentFrame()
-            if let let categoryImageName = annotation.categoryImageName64 {
-                if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
-                    var aView = FoursquareAnnotationVenueInformationView()
-                    aView.image = image
-                    aView.name = annotation.title
-                    aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                    aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
-                    customView.contentView().addSubview(aView)
-                }
+            var customView:AccesorizedCalloutAnnotationView
+            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(calloutPin) as? AccesorizedCalloutAnnotationView {
+                customView = dequeuedView
             } else {
-                if let image = ImageCache.sharedInstance().imageWithIdentifier("default_64") {
-                    var aView = FoursquareAnnotationVenueInformationView()
-                    aView.image = image
-                    aView.name = annotation.title
-                    aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                    aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
-                    customView.contentView().subviews.map({$0.removeFromSuperview()})
-                    customView.contentView().addSubview(aView)
+                customView = AccesorizedCalloutAnnotationView(annotation: annotation, reuseIdentifier: calloutPin)
+            
+            }
+            customView.mapView = mapView
+            customView.parentAnnotationView = self.selectedMapAnnotationView!
+            customView.annotation = annotation
+            customView.contentHeight = 80.0
+            if let annotation = self.selectedMapAnnotationView?.annotation as? FoursquareLocationMapAnnotation {
+                customView.contentView().subviews.map({$0.removeFromSuperview()})
+                let contentFrame = customView.getContentFrame()
+                if let let categoryImageName = annotation.categoryImageName64 {
+                    if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
+                        var aView = FoursquareAnnotationVenueInformationView()
+                        aView.image = image
+                        aView.name = annotation.title
+                        aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
+                        aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
+                        customView.contentView().addSubview(aView)
+                    }
+                } else {
+                    if let image = ImageCache.sharedInstance().imageWithIdentifier("default_64") {
+                        var aView = FoursquareAnnotationVenueInformationView()
+                        aView.image = image
+                        aView.name = annotation.title
+                        aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
+                        aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
+                        customView.contentView().subviews.map({$0.removeFromSuperview()})
+                        customView.contentView().addSubview(aView)
+                    }
                 }
             }
+            customView.superview?.bringSubviewToFront(customView)
+            view = customView
         }
-        customView.superview?.bringSubviewToFront(customView)
         
-        return customView
+        return view
     }
     
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
@@ -451,84 +456,6 @@ extension MapViewController: MKMapViewDelegate {
         if fullyRendered && self.isRefreshReady {
             self.requestProcessor.triggerLocationSearch(mapView.region, useLocation:true)
         }
-    }
-    
-    func drawCategoryImage(view:MKPinAnnotationView, image:UIImage) {
-        let containerLayer = CALayer()
-        var yellowColor = UIColor(red: 255.0/255.0, green: 188.0/255.0, blue: 8/255.0, alpha: 1.0)
-        containerLayer.frame = CGRectMake(0, 0, image.size.width + 10, image.size.height + 30)
-        
-        let circleLayer = CAShapeLayer()
-        circleLayer.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, image.size.width + 10, image.size.height + 10)).CGPath
-        circleLayer.fillColor = yellowColor.CGColor
-        circleLayer.backgroundColor = UIColor.clearColor().CGColor
-        
-        let triangleLayer = CAShapeLayer()
-        triangleLayer.frame = CGRectMake(0, image.size.height - ((image.size.height / 4) + 2), image.size.width + 10, 30)
-        let bezierPath = UIBezierPath()
-        bezierPath.moveToPoint(CGPoint(x: 0, y: 0))
-        bezierPath.addLineToPoint(CGPoint(x: (image.size.width + 10) / 2, y: 30))
-        bezierPath.addLineToPoint(CGPoint(x: image.size.width + 10, y: 0))
-        
-        bezierPath.closePath()
-        triangleLayer.path = bezierPath.CGPath
-        triangleLayer.fillColor = yellowColor.CGColor
-        triangleLayer.backgroundColor = UIColor.clearColor().CGColor
-        
-        let imageLayer = CALayer()
-        imageLayer.frame = CGRectMake(5, 5, image.size.width, image.size.height)
-        imageLayer.contents = image.CGImage
-        
-        containerLayer.addSublayer(circleLayer)
-        containerLayer.addSublayer(triangleLayer)
-        containerLayer.addSublayer(imageLayer)
-        
-        UIGraphicsBeginImageContextWithOptions(containerLayer.frame.size, false, 0.0)
-        let context = UIGraphicsGetCurrentContext()
-        containerLayer.renderInContext(context)
-        let resultImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        view.image = resultImage
-    }
-    
-    func drawCircleImage(annotation:FBAnnotationCluster, view:MKPinAnnotationView) {
-        let number = annotation.annotations.count
-        
-        let fontSize:CGFloat = number > 9 ? 30 : 20
-        var font = UIFont(name: "Helvetica", size: fontSize)!
-        var yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
-        var attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: yellowColor])
-        let asize:CGSize = attributedString.size()
-        let size = max((asize.width + 10), 30)
-        
-        let label = CATextLayer()
-        label.frame = CGRectMake(5, ((((size - 5) - fontSize) / 2) + 5), size, size)
-        label.alignmentMode = kCAAlignmentCenter
-        label.allowsEdgeAntialiasing = true
-        label.string = attributedString
-        label.backgroundColor = UIColor.clearColor().CGColor
-        label.foregroundColor = yellowColor.CGColor
-
-        let backCircle = CAShapeLayer()
-        backCircle.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, size + 10, size + 10)).CGPath
-        backCircle.fillColor = yellowColor.CGColor
-        backCircle.backgroundColor = UIColor.clearColor().CGColor
-        
-        let circle = CAShapeLayer()
-        circle.path = UIBezierPath(ovalInRect: CGRectMake(5, 5, size, size)).CGPath
-        circle.fillColor = UIColor.blackColor().CGColor
-        circle.backgroundColor = UIColor.clearColor().CGColor
-        backCircle.addSublayer(circle)
-        circle.addSublayer(label)
-        
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: size + 10, height: size + 10), false, 0.0)
-        let context = UIGraphicsGetCurrentContext()
-        backCircle.renderInContext(context)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        view.image = image
     }
     
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {

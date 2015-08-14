@@ -16,7 +16,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
     let heightAboveParent:CGFloat = 2.0
     
     var contentHeight:CGFloat = 80.0
-    var offsetFromParent:CGPoint = CGPointMake(8, -14)
+    var offsetFromParent:CGPoint = CGPointMake(4, -7)
     
     var mapView:MKMapView?
     var parentAnnotationView:MKAnnotationView?

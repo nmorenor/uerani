@@ -8,7 +8,7 @@
 
 import MapKit
 
-class BasicMapAnnotationView : MKPinAnnotationView {
+class BasicMapAnnotationView : MKAnnotationView {
     
     var preventSelectionChange:Bool = false
     

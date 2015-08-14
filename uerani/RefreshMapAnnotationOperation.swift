@@ -110,7 +110,7 @@ class RefreshMapAnnotationOperation: NSOperation {
                 //block thread, only one at a time will update the ui
                 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
                 if !self.requestProcessor.hasRunningSearch() {
-                    let searchBeginNotification = NSNotification(name: "searchEnd", object: nil)
+                    let searchBeginNotification = NSNotification(name: UERANI_MAP_END_PROGRESS, object: nil)
                     NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
                     //wait for progress animation to end
                     NSThread.sleepForTimeInterval(0.65)
@@ -142,7 +142,7 @@ class RefreshMapAnnotationOperation: NSOperation {
     func getNonClusteredAnnotations() -> Array<NSObject>? {
         if let searchBox = requestProcessor.searchBox {
             if !self.requestProcessor.hasRunningSearch() {
-                let searchBeginNotification = NSNotification(name: "searchBegin", object: nil)
+                let searchBeginNotification = NSNotification(name: UERANI_MAP_BEGIN_PROGRESS, object: nil)
                 NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
             }
             let predicate = searchBox.getPredicate(mapView.region, categoryFilter: self.requestProcessor.categoryFilter)

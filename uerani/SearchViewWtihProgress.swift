@@ -9,6 +9,9 @@
 import UIKit
 import QuartzCore
 
+let UERANI_MAP_BEGIN_PROGRESS = "searchBegin"
+let UERANI_MAP_END_PROGRESS = "searchEnd"
+
 class SearchViewWtihProgress: UIView {
 
     var searchBar:UISearchBar! {
@@ -25,8 +28,8 @@ class SearchViewWtihProgress: UIView {
     var mutex:NSObject = NSObject()
     
     override func didMoveToSuperview() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "beginProgress", name: "searchBegin", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endProgress", name: "searchEnd", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "beginProgress", name: UERANI_MAP_BEGIN_PROGRESS, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endProgress", name: UERANI_MAP_END_PROGRESS, object: nil)
         self.backgroundColor = UIColor.blackColor()
     }
     
