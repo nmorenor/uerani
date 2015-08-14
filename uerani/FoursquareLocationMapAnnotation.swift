@@ -15,7 +15,7 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
     let subtitle:String
     let coordinate:CLLocationCoordinate2D
     var categoryImageName:String?
-    var categoryImageName16:String?
+    var categoryImageName12:String?
     var categoryImageName64:String?
     var categoryPrefix:String?
     var categorySuffix:String?
@@ -65,9 +65,9 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
             categoryImageName64 = "\(prefix_image_name)_\(name)"
         }
         
-        if let category = FoursquareLocationMapAnnotation.getBestCategory(venue), let url = NSURL(string: "\(category.icon.prefix)16\(category.icon.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
+        if let category = FoursquareLocationMapAnnotation.getBestCategory(venue), let url = NSURL(string: "\(category.icon.prefix)12\(category.icon.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
             let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-            categoryImageName16 = "\(prefix_image_name)_\(name)"
+            categoryImageName12 = "\(prefix_image_name)_\(name)"
         }
     }
     

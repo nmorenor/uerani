@@ -23,12 +23,12 @@ class RefreshMapAnnotationOperation: NSOperation {
     weak var mapView:MKMapView!
     private var semaphore = dispatch_semaphore_create(0)
     private var removeOperation = false
-    private var requestProcessor:MapLocationRequestProcessor
+    private var searchMediator:VenueLocationSearchMediator
     private var startedProgress = false
     
-    init(mapView:MKMapView, requestProcessor:MapLocationRequestProcessor) {
+    init(mapView:MKMapView, searchMediator:VenueLocationSearchMediator) {
         self.mapView = mapView
-        self.requestProcessor = requestProcessor
+        self.searchMediator = searchMediator
         super.init()
         
         // we can be adding an excesive amount of refresh workers to the queue
@@ -38,13 +38,13 @@ class RefreshMapAnnotationOperation: NSOperation {
         }
     }
     
-    convenience init(mapView:MKMapView, removeAnnotations:Bool, requestProcessor:MapLocationRequestProcessor) {
-        self.init(mapView: mapView, requestProcessor:requestProcessor)
+    convenience init(mapView:MKMapView, removeAnnotations:Bool, searchMediator:VenueLocationSearchMediator) {
+        self.init(mapView: mapView, searchMediator:searchMediator)
         self.removeOperation = removeAnnotations
     }
     
     override func main() {
-        if requestProcessor.searchBox == nil {
+        if searchMediator.searchBox == nil {
             return
         }
         if self.removeOperation {
@@ -64,7 +64,7 @@ class RefreshMapAnnotationOperation: NSOperation {
     
     private func removeAnnotations(mapView:MKMapView) {
         if let mapAnnotations = mapView.annotations {
-            if requestProcessor.shouldUseCluster() {
+            if searchMediator.shouldUseCluster() {
                 self.displayNoAnnotations()
             } else {
                 // on remove and with big zoom we do not want to remove visible operations
@@ -85,7 +85,7 @@ class RefreshMapAnnotationOperation: NSOperation {
         if let mapAnnotations = mapView.annotations {
             var before:NSMutableSet = NSMutableSet(array: mapAnnotations)
             before.removeObject(mapView.userLocation)
-            if let calloutAnnotation = requestProcessor.calloutAnnotation {
+            if let calloutAnnotation = searchMediator.calloutAnnotation {
                 before.removeObject(calloutAnnotation)
             }
             
@@ -109,7 +109,7 @@ class RefreshMapAnnotationOperation: NSOperation {
                 }
                 //block thread, only one at a time will update the ui
                 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-                if !self.requestProcessor.hasRunningSearch() {
+                if !self.searchMediator.hasRunningSearch() {
                     let searchBeginNotification = NSNotification(name: UERANI_MAP_END_PROGRESS, object: nil)
                     NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
                     //wait for progress animation to end
@@ -124,7 +124,7 @@ class RefreshMapAnnotationOperation: NSOperation {
     }
     
     private func getAnnotations() -> Array<NSObject>? {
-        if requestProcessor.shouldUseCluster() {
+        if searchMediator.shouldUseCluster() {
             return self.getClusteredAnnotations()
         } else {
             return self.getNonClusteredAnnotations()
@@ -133,19 +133,19 @@ class RefreshMapAnnotationOperation: NSOperation {
     
     func getClusteredAnnotations() -> Array<NSObject>? {
         let scale:Double = Double(mapView.bounds.size.width) / Double(mapView.visibleMapRect.size.width)
-        objc_sync_enter(requestProcessor.clusteringManager)
-        let annotations = requestProcessor.clusteringManager.clusteredAnnotationsWithinMapRect(mapView.visibleMapRect, withZoomScale: scale) as! Array<NSObject>
-        objc_sync_exit(requestProcessor.clusteringManager)
+        objc_sync_enter(searchMediator.clusteringManager)
+        let annotations = searchMediator.clusteringManager.clusteredAnnotationsWithinMapRect(mapView.visibleMapRect, withZoomScale: scale) as! Array<NSObject>
+        objc_sync_exit(searchMediator.clusteringManager)
         return annotations
     }
     
     func getNonClusteredAnnotations() -> Array<NSObject>? {
-        if let searchBox = requestProcessor.searchBox {
-            if !self.requestProcessor.hasRunningSearch() {
+        if let searchBox = searchMediator.searchBox {
+            if !self.searchMediator.hasRunningSearch() {
                 let searchBeginNotification = NSNotification(name: UERANI_MAP_BEGIN_PROGRESS, object: nil)
                 NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
             }
-            let predicate = searchBox.getPredicate(mapView.region, categoryFilter: self.requestProcessor.categoryFilter)
+            let predicate = searchBox.getPredicate(mapView.region, categoryFilter: self.searchMediator.categoryFilter)
             let realm = Realm(path: Realm.defaultPath)
             let venues = realm.objects(FVenue).filter(predicate)
             var annotations = [FoursquareLocationMapAnnotation]()

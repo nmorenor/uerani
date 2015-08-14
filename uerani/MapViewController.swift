@@ -34,7 +34,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var selectedMapAnnotationView:MKAnnotationView?
     var calloutMapAnnotationView:CalloutMapAnnotationView?
-    var requestProcessor:MapLocationRequestProcessor!
+    var searchMediator:VenueLocationSearchMediator!
     var isRefreshReady:Bool = false
     
     var searchController = UISearchController()
@@ -52,7 +52,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.isRefreshReady = locationRequestManager.authorized
         locationRequestManager.addObserver(self, forKeyPath: "authorized", options: NSKeyValueObservingOptions.New, context: &self.myContext)
         locationRequestManager.addObserver(self, forKeyPath: "location", options: NSKeyValueObservingOptions.New, context: &self.userLocationContext)
-        self.requestProcessor = MapLocationRequestProcessor(mapView: self.mapView)
+        self.searchMediator = VenueLocationSearchMediator(mapView: self.mapView)
         self.mapView.delegate = self
         
         //Initialize maged context on main thread
@@ -82,7 +82,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.requestProcessor?.mapView = self.mapView
+        self.searchMediator?.mapView = self.mapView
         subscribeToKeyboardNotifications();
     }
     
@@ -94,7 +94,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
         let locationRequestManager = LocationRequestManager.sharedInstance()
-        self.requestProcessor?.calloutAnnotation = nil
+        self.searchMediator?.calloutAnnotation = nil
     }
     
     override func didReceiveMemoryWarning() {
@@ -107,7 +107,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             if context == &myContext {
                 if let authorized = change[NSKeyValueChangeNewKey] as? Bool {
                     if authorized {
-                        self.requestProcessor.setAllowLocation()
+                        self.searchMediator.setAllowLocation()
                     }
                     if !authorized {
                         self.isRefreshReady = true
@@ -115,7 +115,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 }
             } else {
                 if let location = change[NSKeyValueChangeNewKey] as? CLLocation where !self.isRefreshReady {
-                    self.requestProcessor.displayLocation(location)
+                    self.searchMediator.displayLocation(location)
                     self.isRefreshReady = true
                 }
             }
@@ -195,7 +195,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             self.categoryViewSearch.hidden = true
             self.searchController.active = false
             self.searchController.searchBar.text = category.name
-            self.requestProcessor.doSearchWithCategory(category.getCategoriesIds())
+            self.searchMediator.doSearchWithCategory(category.getCategoriesIds())
         }
     }
     
@@ -325,8 +325,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.mapView.hidden = false
         self.categoryViewSearch.hidden = true
         
-        if self.requestProcessor.categoryFilter != nil {
-            self.requestProcessor.doSearchWithCategory(nil)
+        if self.searchMediator.categoryFilter != nil {
+            self.searchMediator.doSearchWithCategory(nil)
         }
     }
     
@@ -339,7 +339,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
-        if let calloutAnnotation = self.requestProcessor.calloutAnnotation {
+        if let calloutAnnotation = self.searchMediator.calloutAnnotation {
             mapView.removeAnnotation(calloutAnnotation)
         }
     }
@@ -349,11 +349,11 @@ extension MapViewController: MKMapViewDelegate {
             return
         }
         
-        let requestProcessor = self.requestProcessor
+        let searchMediator = self.searchMediator
         
-        requestProcessor.calloutAnnotation = CalloutAnnotation(coordinate: view.annotation.coordinate)
+        searchMediator.calloutAnnotation = CalloutAnnotation(coordinate: view.annotation.coordinate)
         self.selectedMapAnnotationView = view
-        mapView.addAnnotation(requestProcessor.calloutAnnotation!)
+        mapView.addAnnotation(searchMediator.calloutAnnotation!)
     }
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
@@ -379,21 +379,21 @@ extension MapViewController: MKMapViewDelegate {
             }
             if let categoryImageName = foursquareAnnotation.categoryImageName {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
-                    if let image16 = ImageCache.sharedInstance().imageWithIdentifier(foursquareAnnotation.categoryImageName16) {
+                    if let image16 = ImageCache.sharedInstance().imageWithIdentifier(foursquareAnnotation.categoryImageName12) {
                         view!.image = image16
                     } else {
-                        var image16 = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(16, 16))
-                        ImageCache.sharedInstance().storeImage(image16, withIdentifier: foursquareAnnotation.categoryImageName16!)
+                        var image16 = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
+                        ImageCache.sharedInstance().storeImage(image16, withIdentifier: foursquareAnnotation.categoryImageName12!)
                         view!.image = image16
                     }
                 } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix {
                     FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
                     if let image = UIImage(named: defaultPinImage) {
-                        view!.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(16, 16))
+                        view!.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
                     }
                 } else {
                     if let image = UIImage(named: defaultPinImage) {
-                        view!.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(16, 16))
+                        view!.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
                     }
                 }
             }
@@ -444,17 +444,17 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
         if self.isRefreshReady {
             NSOperationQueue().addOperationWithBlock({
-                if self.requestProcessor.shouldCalculateSearchBox() {
-                    self.requestProcessor.triggerLocationSearch(mapView.region, useLocation:true)
+                if self.searchMediator.shouldCalculateSearchBox() {
+                    self.searchMediator.triggerLocationSearch(mapView.region, useLocation:true)
                 }
             })
-            RefreshMapAnnotationOperation(mapView: mapView, requestProcessor: self.requestProcessor)
+            RefreshMapAnnotationOperation(mapView: mapView, searchMediator: self.searchMediator)
         }
     }
     
     func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
         if fullyRendered && self.isRefreshReady {
-            self.requestProcessor.triggerLocationSearch(mapView.region, useLocation:true)
+            self.searchMediator.triggerLocationSearch(mapView.region, useLocation:true)
         }
     }
     

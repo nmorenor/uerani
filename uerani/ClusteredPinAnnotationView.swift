@@ -16,9 +16,18 @@ class ClusteredPinAnnotationView : MKAnnotationView {
     
     override var annotation: MKAnnotation! {
         didSet {
-            self.setNeedsDisplay()
+             if let annotation = annotation as? FBAnnotationCluster where annotation.annotations.count != self.currentCount {
+                self.prepareFrameSize()
+                self.currentCount = annotation.annotations.count
+                self.setNeedsDisplay()
+            }
         }
     }
+    
+    var label:CATextLayer = CATextLayer()
+    let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
+    var initalized:Bool = false
+    var currentCount:Int = -1
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,41 +42,76 @@ class ClusteredPinAnnotationView : MKAnnotationView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func didMoveToSuperview() {
-        layer.sublayers = nil
+    func prepareFrameSize() {
         if let annotation = annotation as? FBAnnotationCluster {
             let number = annotation.annotations.count
             
-            let fontSize:CGFloat = number > 9 ? 20 : 15
+            let fontSize:CGFloat = number > 9 ? 24 : 18
             var font = UIFont(name: "HelveticaNeue", size: fontSize)!
-            var yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
             var attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: yellowColor])
             let asize:CGSize = attributedString.size()
-            let size = max((asize.width + 5), 30)
+            let size = asize.width + 10
+            self.frame = CGRectMake(0, 0, size + 5, size + 5)
+        }
+    }
+    
+    override func drawRect(rect: CGRect) {
+        if let annotation = annotation as? FBAnnotationCluster {
+            let size = self.frame.size.width
+            let number = annotation.annotations.count
+            let fontSize:CGFloat = number > 9 ? 24 : 18
             
-            let label = CATextLayer()
-            label.frame = CGRectMake(2.5, ((((size - 2.5) - fontSize) / 2) + 2.5), size, size)
-            label.alignmentMode = kCAAlignmentCenter
-            label.allowsEdgeAntialiasing = true
-            label.string = attributedString
-            label.backgroundColor = UIColor.clearColor().CGColor
-            label.foregroundColor = yellowColor.CGColor
-            label.zPosition = 0
-            label.contentsScale = UIScreen.mainScreen().scale
+            var path:CGMutablePathRef = CGPathCreateMutable()
+            var space:CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()
+            var context:CGContextRef = UIGraphicsGetCurrentContext();
             
-            let backCircle = CAShapeLayer()
-            backCircle.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, size + 5, size + 5)).CGPath
-            backCircle.fillColor = yellowColor.CGColor
-            backCircle.backgroundColor = UIColor.clearColor().CGColor
+            CGContextSetLineWidth(context, 6); // set the line width
+            yellowColor.setStroke()
             
-            let circle = CAShapeLayer()
-            circle.path = UIBezierPath(ovalInRect: CGRectMake(2.5, 2.5, size, size)).CGPath
-            circle.fillColor = UIColor.blackColor().CGColor
-            circle.backgroundColor = UIColor.clearColor().CGColor
-            backCircle.addSublayer(circle)
-            circle.addSublayer(label)
+            var center:CGPoint = CGPointMake(size/2, size/2)
+            var radius:CGFloat = 0.80 * center.x;
+            var startAngle:CGFloat = -(CGFloat(M_PI) / 2); // 90 degrees
+            var endAngle:CGFloat = ((2 * CGFloat(M_PI)) + startAngle);
+            CGContextAddArc(context, center.x, center.y, radius, startAngle, endAngle, 0);
             
-            layer.addSublayer(backCircle)
+            CGContextStrokePath(context);
+            
+            CGContextSetLineWidth(context, 0);
+            center = CGPointMake(size/2, size/2)
+            startAngle = -(CGFloat(M_PI) / 2); // 90 degrees
+            endAngle = ((2 * CGFloat(M_PI)) + startAngle);
+            CGContextAddArc(context, center.x, center.y, radius, startAngle, endAngle, 0);
+            
+            UIColor.blackColor().setFill()
+            
+            CGContextAddPath(context, path)
+            CGContextSaveGState(context)
+            CGContextFillPath(context)
+            CGContextRestoreGState(context)
+            
+            var textStyle:NSMutableParagraphStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
+            textStyle.alignment = NSTextAlignment.Center
+            
+            var font = UIFont(name: "HelveticaNeue", size: fontSize)!
+            
+            CGContextTranslateCTM(context, 0.0, CGRectGetHeight(rect))
+            CGContextScaleCTM(context, 1.0, -1.0)
+            let attr:CFDictionaryRef = [NSFontAttributeName:font,NSForegroundColorAttributeName:yellowColor]
+            // create the attributed string
+            let text = CFAttributedStringCreate(nil, "\(number)", attr)
+            // create the line of text
+            let line = CTLineCreateWithAttributedString(text)
+            // retrieve the bounds of the text
+            let bounds = CTLineGetBoundsWithOptions(line, CTLineBoundsOptions.UseOpticalBounds)
+            // set the line width to stroke the text with
+            CGContextSetLineWidth(context, 1.5)
+            // set the drawing mode to stroke
+            CGContextSetTextDrawingMode(context, kCGTextFill)
+            
+            CGContextSetTextPosition(context, (center.x - (bounds.size.width/2)), (center.y - (radius/2)))
+            // the line of text is drawn - see https://developer.apple.com/library/ios/DOCUMENTATION/StringsTextFonts/Conceptual/CoreText_Programming/LayoutOperations/LayoutOperations.html
+            // draw the line of text
+            CTLineDraw(line, context)
         }
     }
 }

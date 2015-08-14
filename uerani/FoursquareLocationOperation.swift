@@ -15,19 +15,19 @@ public class FoursquareLocationOperation: NSOperation {
     
     var sw:CLLocationCoordinate2D
     var ne:CLLocationCoordinate2D
-    private var requestProcessor:MapLocationRequestProcessor
+    private var searchMediator:VenueLocationSearchMediator
     private var center:GeoLocation
     private var updateUI:Bool
     private var semaphore = dispatch_semaphore_create(0)
     
-    init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, requestProcessor:MapLocationRequestProcessor, updateUI:Bool) {
+    init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, searchMediator:VenueLocationSearchMediator, updateUI:Bool) {
         self.sw = sw
         self.ne = ne
         self.updateUI = updateUI
         self.center = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: sw.latitude + ((ne.latitude - sw.latitude)/2), longitude: sw.longitude + ((ne.longitude - sw.longitude)/2)))
-        self.requestProcessor = requestProcessor
+        self.searchMediator = searchMediator
         super.init()
-        self.requestProcessor.addRunningSearch(self.center)
+        self.searchMediator.addRunningSearch(self.center)
         LocationRequestManager.sharedInstance().operationQueue.addOperation(self)
     }
     
@@ -43,7 +43,7 @@ public class FoursquareLocationOperation: NSOperation {
         if searchOnFoursquare && shouldCallFoursquareAPI {
             doFoursquareSearch(self.searchHandler)
         }
-        self.requestProcessor.removeRunningSearch(self.center)
+        self.searchMediator.removeRunningSearch(self.center)
     }
     
     /**
@@ -52,13 +52,13 @@ public class FoursquareLocationOperation: NSOperation {
     * the radius of the gridBox
     */
     func shouldCallFoursquareAPI(realm:Realm) -> Bool {
-        if self.requestProcessor.categoryFilter != nil && self.updateUI {
+        if self.searchMediator.categoryFilter != nil && self.updateUI {
             return false
         }
         let matchingCenters = realm.objects(SearchBoxCenter).filter(getSearchBoxPredicate())
         if matchingCenters.count > 0 {
             let center = getCenter()
-            let delta = (MapLocationRequestProcessor.locationSearchDistance/4) / 2
+            let delta = (VenueLocationSearchMediator.locationSearchDistance/4) / 2
             let currentCenterLocation = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: center.latitude, longitude: center.longitude))
             var result = true
             for nextCenter in matchingCenters {
@@ -98,7 +98,7 @@ public class FoursquareLocationOperation: NSOperation {
             return
         }
         
-        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, categoryFilter:self.requestProcessor.categoryFilter)
+        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, categoryFilter:self.searchMediator.categoryFilter)
         var venues = realm.objects(FVenue).filter(predicate)
         
         for nextVenue in venues {
@@ -127,7 +127,7 @@ public class FoursquareLocationOperation: NSOperation {
         if cancelled {
             return
         }
-        requestProcessor.updateUI()
+        searchMediator.updateUI()
     }
     
     private func doFoursquareSearch(completionHandler:(success:Bool, result:[[String:AnyObject]]?, errorString:String?) -> Void) {
@@ -178,7 +178,7 @@ public class FoursquareLocationOperation: NSOperation {
                         return
                     }
                     
-                    requestProcessor.updateUI()
+                    searchMediator.updateUI()
                 }
                 
             } else {
@@ -199,23 +199,23 @@ public class FoursquareLocationOperation: NSOperation {
     
     private func addAnnotationsToCluster(annotations:Array<FoursquareLocationMapAnnotation>) {
        
-        objc_sync_enter(requestProcessor.clusteringManager)
+        objc_sync_enter(searchMediator.clusteringManager)
         //avoid any possible thread lock in here
         if cancelled {
-            objc_sync_exit(requestProcessor.clusteringManager)
+            objc_sync_exit(searchMediator.clusteringManager)
             return
         }
         var annotationSet:NSSet = NSSet(array: annotations)
         if cancelled {
-            objc_sync_exit(requestProcessor.clusteringManager)
+            objc_sync_exit(searchMediator.clusteringManager)
             return
         }
-        requestProcessor.allAnnotations.unionSet(annotationSet as Set<NSObject>)
+        searchMediator.allAnnotations.unionSet(annotationSet as Set<NSObject>)
         if cancelled {
-            objc_sync_exit(requestProcessor.clusteringManager)
+            objc_sync_exit(searchMediator.clusteringManager)
             return
         }
-        requestProcessor.clusteringManager.setAnnotations(requestProcessor.allAnnotations.allObjects)
-        objc_sync_exit(requestProcessor.clusteringManager)
+        searchMediator.clusteringManager.setAnnotations(searchMediator.allAnnotations.allObjects)
+        objc_sync_exit(searchMediator.clusteringManager)
     }
 }

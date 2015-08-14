@@ -1,5 +1,5 @@
 //
-//  MapLocationRequestProcessor.swift
+//  VenueLocationSearchMediator.swift
 //  uerani
 //
 //  Created by nacho on 6/14/15.
@@ -11,7 +11,7 @@ import MapKit
 import RealmSwift
 import FBAnnotationClustering
 
-public class MapLocationRequestProcessor {
+public class VenueLocationSearchMediator {
     
     static let locationSearchDistance:Double = 1000.00
     
@@ -22,7 +22,7 @@ public class MapLocationRequestProcessor {
     var searchBox:SearchBox? {
         willSet {
             self.cleanGridBox()
-            RefreshMapAnnotationOperation(mapView: mapView, requestProcessor:self)
+            RefreshMapAnnotationOperation(mapView: mapView, searchMediator:self)
         }
     }
     
@@ -78,7 +78,7 @@ public class MapLocationRequestProcessor {
             self.searchBox?.removeOverlays()
             let centralLocation = GeoLocation(coordinate: region.center)
             
-            self.searchBox = SearchBox(center: centralLocation, distance: MapLocationRequestProcessor.locationSearchDistance, mapView:mapView, useCenter:useCenter, requestProcessor:self)
+            self.searchBox = SearchBox(center: centralLocation, distance: VenueLocationSearchMediator.locationSearchDistance, mapView:mapView, useCenter:useCenter, searchMediator:self)
             
         }
     }
@@ -90,7 +90,7 @@ public class MapLocationRequestProcessor {
     func shouldUseCluster() -> Bool {
         if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            var maxDistanceForNonClustered = self.categoryFilter != nil ? ((MapLocationRequestProcessor.locationSearchDistance / 3.0) + 1) : ((MapLocationRequestProcessor.locationSearchDistance / 2.0) + 1) + 1
+            var maxDistanceForNonClustered = self.categoryFilter != nil ? ((VenueLocationSearchMediator.locationSearchDistance / 3.0) + 1) : ((VenueLocationSearchMediator.locationSearchDistance / 2.0) + 1) + 1
             return mapRegionDistance > maxDistanceForNonClustered
         }
         return true
@@ -99,7 +99,7 @@ public class MapLocationRequestProcessor {
     func shouldCalculateSearchBox() -> Bool {
         if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            if mapRegionDistance > ((MapLocationRequestProcessor.locationSearchDistance) * 10) {
+            if mapRegionDistance > ((VenueLocationSearchMediator.locationSearchDistance) * 10) {
                 return false
             }
             let centerLocation = GeoLocation(coordinate: mapView.region.center)

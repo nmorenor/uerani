@@ -11,7 +11,7 @@ import RealmSwift
 
 struct SearchBox {
     
-    static let internalBoxDistance:Double = MapLocationRequestProcessor.locationSearchDistance/4
+    static let internalBoxDistance:Double = VenueLocationSearchMediator.locationSearchDistance/4
     var center:GeoLocation
     var useCenter:Bool
     var boxDistance:Double
@@ -27,7 +27,7 @@ struct SearchBox {
     var southEastBox:GeoLocation.GeoLocationBoundBox
     var triggeredNetworkSearch = false;
     var debug = false
-    var requestProcessor:MapLocationRequestProcessor
+    var searchMediator:VenueLocationSearchMediator
     weak var mapView:MKMapView?
     
     
@@ -43,12 +43,12 @@ struct SearchBox {
         }
     }
     
-    init(center:GeoLocation, distance:Double, mapView:MKMapView?, useCenter:Bool, requestProcessor:MapLocationRequestProcessor) {
+    init(center:GeoLocation, distance:Double, mapView:MKMapView?, useCenter:Bool, searchMediator:VenueLocationSearchMediator) {
         if let mapView = mapView {
             self.mapView = mapView
         }
         self.useCenter = useCenter
-        self.requestProcessor = requestProcessor
+        self.searchMediator = searchMediator
         self.center = center
         self.boxDistance = distance
         self.centralBoundBox = self.center.boundingBoxWithDistance(distance/2)
@@ -96,7 +96,7 @@ struct SearchBox {
     }
     
     func showAsOverlay(mapView:MKMapView) {
-        if self.boxDistance == MapLocationRequestProcessor.locationSearchDistance && self.debug {
+        if self.boxDistance == VenueLocationSearchMediator.locationSearchDistance && self.debug {
             let locationsForOverlay = self.filterOverlayBoxes()
             if let locations = locationsForOverlay {
                 dispatch_async(dispatch_get_main_queue()) {
@@ -109,8 +109,8 @@ struct SearchBox {
     }
     
     private func filterOverlayBoxes() -> Array<GeoLocation.GeoLocationBoundBox>? {
-        if self.boxDistance == MapLocationRequestProcessor.locationSearchDistance {
-            return requestProcessor.getGidBoxLocations()
+        if self.boxDistance == VenueLocationSearchMediator.locationSearchDistance {
+            return searchMediator.getGidBoxLocations()
         }
         return nil
     }
@@ -136,10 +136,10 @@ struct SearchBox {
             if self.boxDistance == SearchBox.internalBoxDistance {
                 
                 //only trigger forsquare search one per bounding box
-                var locations = self.getLocations().filter({ !self.requestProcessor.isInGridBox($0) })
+                var locations = self.getLocations().filter({ !self.searchMediator.isInGridBox($0) })
                 
                 for location in locations {
-                    self.requestProcessor.addToGridBox(location)
+                    self.searchMediator.addToGridBox(location)
                 }
             }
             
@@ -157,15 +157,15 @@ struct SearchBox {
     }
     
     private func doSearch(location:GeoLocation.GeoLocationBoundBox) {
-        var box = SearchBox(center: location.center, distance: self.boxDistance/2, mapView:self.mapView, useCenter:self.useCenter, requestProcessor:self.requestProcessor)
+        var box = SearchBox(center: location.center, distance: self.boxDistance/2, mapView:self.mapView, useCenter:self.useCenter, searchMediator:self.searchMediator)
         box.triggerFoursquareSearch()
     }
     
     private func triggerForusquareSearchOperations() {
-        if self.boxDistance == MapLocationRequestProcessor.locationSearchDistance {
+        if self.boxDistance == VenueLocationSearchMediator.locationSearchDistance {
             
             //Filter operations have a high cost avoid doing too many filter queries
-            var locations = requestProcessor.getGidBoxLocations()
+            var locations = searchMediator.getGidBoxLocations()
             let regionCenter = GeoLocation(coordinate: mapView!.region.center)
             locations.sort() { lhs, rhs in
                 if self.useCenter {
@@ -175,11 +175,11 @@ struct SearchBox {
                 }
             }
             for location in locations {
-                FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, requestProcessor:self.requestProcessor, updateUI:(self.requestProcessor.categoryFilter == nil))
+                FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, searchMediator:self.searchMediator, updateUI:(self.searchMediator.categoryFilter == nil))
             }
             
-            if let categoryFilter = self.requestProcessor.categoryFilter {
-                FoursquareLocationOperation(sw: self.swCoord, ne: self.neCoord, requestProcessor: self.requestProcessor, updateUI:true)
+            if let categoryFilter = self.searchMediator.categoryFilter {
+                FoursquareLocationOperation(sw: self.swCoord, ne: self.neCoord, searchMediator: self.searchMediator, updateUI:true)
             }
         }
     }
