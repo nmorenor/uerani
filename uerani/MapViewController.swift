@@ -8,7 +8,7 @@
 
 import UIKit
 import MapKit
-import FBAnnotationClustering
+
 import RealmSwift
 import CoreData
 
@@ -18,7 +18,7 @@ protocol CategoriesReady : class {
     func initializeSearchResults()
 }
 
-class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, CategoriesReady, UISearchBarDelegate, UISearchResultsUpdating {
+class MapViewController: UIViewController, CategoriesReady {
 
     let identifier = "foursquarePin"
     let clusterPin = "foursquareClusterPin"
@@ -99,7 +99,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        self.searchMediator.cleanMap()
+        self.searchMediator.updateUI()
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
@@ -158,319 +159,9 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         }
     }
     
-    func getTopCategoryFetchRequest() -> NSFetchRequest {
-        let fetchRequest = NSFetchRequest(entityName: "CDCategory")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "topCategory == %@", NSNumber(bool: true))
-        return fetchRequest
-    }
-    
-    // MARK: - Table View
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sections = self.fetchedResultsController.sections {
-            if sections.count > 0 {
-                let info = sections[section] as! NSFetchedResultsSectionInfo
-                return info.numberOfObjects
-            }
-        }
-        return 0
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let category = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDCategory
-        let CellIdentifier = "categorySearchCell"
-        
-        let cell = self.categoryViewSearch.dequeueReusableCellWithIdentifier(CellIdentifier) as! UITableViewCell
-        
-        configureCell(cell, category: category)
-        
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let category = self.fetchedResultsController.objectAtIndexPath(indexPath) as? CDCategory {
-            let categoryId = category.id
-            self.mapView.hidden = false
-            self.categoryViewSearch.hidden = true
-            self.searchController.active = false
-            self.searchController.searchBar.text = category.name
-            self.searchMediator.doSearchWithCategory(category.getCategoriesIds())
-        }
-    }
-    
-    // MARK: - Fetched Results Controller Delegate
-    
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        self.categoryViewSearch.beginUpdates()
-    }
-    
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        switch (type) {
-        case .Insert :
-            self.categoryViewSearch.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-            break
-        case .Delete :
-            self.categoryViewSearch.insertRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            break
-        default:
-            break
-        }
-    }
-    
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        self.categoryViewSearch.endUpdates()
-    }
-    
-    // MARK: - Configure Cell
-    
-    func configureCell(cell: UITableViewCell, category: CDCategory) {
-        var categoryImage = UIImage(named: defaultPinImage)
-        
-        cell.textLabel!.text = category.name
-        cell.imageView!.image = nil
-        
-        // Set the category image
-        if let url = NSURL(string: "\(category.icon.prefix)\(FIcon.FIconSize.S32.description)\(category.icon.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
-            let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-            let imageName = "\(prefix_image_name)_\(name)"
-            if let image = ImageCache.sharedInstance().imageWithIdentifier(imageName) {
-                categoryImage = image
-            }
-        }
-        
-        //pngs are white use black color
-        cell.imageView!.image = categoryImage?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        cell.imageView!.tintColor = UIColor.blackColor()
-    }
-    
-    //MARK: - Search Bar
-    
-    func subscribeToKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil);
-    }
-    
-    func unsubscribeFromKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil);
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        if (self.searchController.searchBar.isFirstResponder()) {
-            /** Some of the custom keyboards (like swype) can incorrectly report keyboardWillShow method multiple times. We could get bad behaviour if we use self.view.frame.origin.y -= getKeyboardHeight(notification);
-            
-            http://stackoverflow.com/questions/25874975/cant-get-correct-value-of-keyboard-height-in-ios8
-            */
-            self.categoryBottomConstraint.constant = getKeyboardHeight(notification)
-            UIView.animateWithDuration(1.0, animations: { [unowned self] in
-                self.view.layoutIfNeeded()
-                }, completion: nil)
-            
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        if (self.searchController.searchBar.isFirstResponder()) {
-            self.categoryBottomConstraint.constant = 0;
-            UIView.animateWithDuration(1.0, animations: { [unowned self] in
-                self.view.layoutIfNeeded()
-                }, completion: nil)
-        }
-    }
-    
-    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-        let userInfo = notification.userInfo;
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue;
-        return keyboardSize.CGRectValue().height
-    }
-    
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        self.mapView.hidden = true
-        self.categoryViewSearch.hidden = false
-        
-        self.categoryViewSearch.reloadData()
-    }
-    
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if !searchBar.isFirstResponder() {
-            self.searchShouldBeginEditing = false
-            searchBarCancelButtonClicked(searchBar)
-        }
-    }
-    
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
-        let result = self.searchShouldBeginEditing
-        self.searchShouldBeginEditing = true
-        return result
-    }
-    
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-        let searchPredicate = searchController.searchBar.text.isEmpty ? NSPredicate(format: "topCategory == %@", NSNumber(bool: true)) : NSPredicate(format: "name contains[c] %@", searchController.searchBar.text)
-        self.fetchedResultsController.fetchRequest.predicate = searchPredicate
-        
-        var error:NSError? = nil
-        self.fetchedResultsController.performFetch(&error)
-        
-        if let error = error {
-            println("Error performing doing a search fetch")
-        }
-        let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
-        
-        self.categoryViewSearch.reloadData()
-    }
-    
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self.mapView.hidden = false
-        self.categoryViewSearch.hidden = true
-        
-        if self.searchMediator.categoryFilter != nil {
-            self.searchMediator.doSearchWithCategory(nil)
-        }
-    }
-    
     deinit {
         LocationRequestManager.sharedInstance().removeObserver(self, forKeyPath: "authorized", context: &self.myContext)
         LocationRequestManager.sharedInstance().removeObserver(self, forKeyPath: "location", context: &self.userLocationContext)
-    }
-}
-
-extension MapViewController: MKMapViewDelegate {
-    
-    func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
-        if let calloutAnnotation = self.searchMediator.calloutAnnotation {
-            mapView.removeAnnotation(calloutAnnotation)
-        }
-    }
-    
-    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
-        if let clusterAnnotation = view.annotation as? FBAnnotationCluster {
-            return
-        }
-        
-        let searchMediator = self.searchMediator
-        
-        searchMediator.calloutAnnotation = CalloutAnnotation(coordinate: view.annotation.coordinate)
-        self.selectedMapAnnotationView = view
-        mapView.addAnnotation(searchMediator.calloutAnnotation!)
-    }
-    
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
-        if let userAnnotation = annotation as? MKUserLocation {
-            return nil
-        }
-        
-        var view:MKAnnotationView?
-        if let cluserAnnotation = annotation as? FBAnnotationCluster {
-            
-            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(clusterPin) as? ClusteredPinAnnotationView {
-                dequeuedView.annotation = annotation
-                view = dequeuedView
-            } else {
-                view = ClusteredPinAnnotationView(annotation: annotation, reuseIdentifier: clusterPin)
-            }
-        } else if let foursquareAnnotation = annotation as? FoursquareLocationMapAnnotation {
-            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? CategoryPinAnnotationView {
-                dequeuedView.annotation = annotation
-                view = dequeuedView
-            } else {
-                view = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            }
-            if let categoryImageName = foursquareAnnotation.categoryImageName {
-                if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
-                    if let image16 = ImageCache.sharedInstance().imageWithIdentifier(foursquareAnnotation.categoryImageName12) {
-                        view!.image = image16
-                    } else {
-                        var image16 = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
-                        ImageCache.sharedInstance().storeImage(image16, withIdentifier: foursquareAnnotation.categoryImageName12!)
-                        view!.image = image16
-                    }
-                } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix {
-                    FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
-                    if let image = UIImage(named: defaultPinImage) {
-                        view!.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
-                    }
-                } else {
-                    if let image = UIImage(named: defaultPinImage) {
-                        view!.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
-                    }
-                }
-            }
-            view!.canShowCallout = false
-        } else {
-            var customView:AccesorizedCalloutAnnotationView
-            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(calloutPin) as? AccesorizedCalloutAnnotationView {
-                customView = dequeuedView
-            } else {
-                customView = AccesorizedCalloutAnnotationView(annotation: annotation, reuseIdentifier: calloutPin)
-            
-            }
-            customView.mapView = mapView
-            customView.parentAnnotationView = self.selectedMapAnnotationView!
-            customView.annotation = annotation
-            customView.contentHeight = 80.0
-            if let annotation = self.selectedMapAnnotationView?.annotation as? FoursquareLocationMapAnnotation {
-                customView.contentView().subviews.map({$0.removeFromSuperview()})
-                let contentFrame = customView.getContentFrame()
-                if let let categoryImageName = annotation.categoryImageName64 {
-                    if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
-                        var aView = FoursquareAnnotationVenueInformationView()
-                        aView.image = image
-                        aView.name = annotation.title
-                        aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                        aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
-                        customView.contentView().addSubview(aView)
-                    }
-                } else {
-                    if let image = ImageCache.sharedInstance().imageWithIdentifier("default_64") {
-                        var aView = FoursquareAnnotationVenueInformationView()
-                        aView.image = image
-                        aView.name = annotation.title
-                        aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                        aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
-                        customView.contentView().subviews.map({$0.removeFromSuperview()})
-                        customView.contentView().addSubview(aView)
-                    }
-                }
-            }
-            customView.superview?.bringSubviewToFront(customView)
-            view = customView
-        }
-        
-        return view
-    }
-    
-    func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
-        if self.isRefreshReady {
-            NSOperationQueue().addOperationWithBlock({
-                if self.searchMediator.shouldCalculateSearchBox() {
-                    self.searchMediator.triggerLocationSearch(mapView.region, useLocation:true)
-                }
-            })
-            RefreshMapAnnotationOperation(mapView: mapView, searchMediator: self.searchMediator)
-        }
-    }
-    
-    func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
-        if fullyRendered && self.isRefreshReady {
-            self.searchMediator.triggerLocationSearch(mapView.region, useLocation:true)
-        }
-    }
-    
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if let overlay = overlay as? MKPolygon {
-            var renderer = MKPolygonRenderer(polygon: overlay)
-            renderer.fillColor = UIColor.blueColor().colorWithAlphaComponent(0.1)
-            renderer.strokeColor = UIColor.blueColor().colorWithAlphaComponent(0.1)
-            renderer.lineWidth = 1
-            return renderer
-        }
-        return nil
-    }
-    
-    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
-        println("Hello world")
     }
 }
 
