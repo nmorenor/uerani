@@ -20,9 +20,9 @@
 		664C5D7F1B7FDC7B00EDA856 /* MapViewDelegateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664C5D7E1B7FDC7B00EDA856 /* MapViewDelegateController.swift */; };
 		664C5D811B7FDCFF00EDA856 /* MapViewCategoriesTableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664C5D801B7FDCFF00EDA856 /* MapViewCategoriesTableDelegate.swift */; };
 		664C5D831B7FDE1100EDA856 /* MapViewSearchDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664C5D821B7FDE1100EDA856 /* MapViewSearchDelegate.swift */; };
+		664C5D861B7FFC1400EDA856 /* poweredby-black.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 664C5D851B7FFC1400EDA856 /* poweredby-black.pdf */; };
 		6657BF031B5D565B00C94677 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF021B5D565B00C94677 /* ImageCache.swift */; };
 		6657BF051B5D588100C94677 /* FoursquareCategoryIconWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */; };
-		667940661B702F46003A29A9 /* filter-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 667940651B702F46003A29A9 /* filter-32.png */; };
 		667940681B70324E003A29A9 /* VenueCategoriesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */; };
 		66A116281B72E2A700498070 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116251B72E2A700498070 /* CoreDataStack.swift */; };
 		66A116291B72E2A700498070 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116261B72E2A700498070 /* CoreDataModel.swift */; };
@@ -91,9 +91,9 @@
 		664C5D7E1B7FDC7B00EDA856 /* MapViewDelegateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewDelegateController.swift; sourceTree = "<group>"; };
 		664C5D801B7FDCFF00EDA856 /* MapViewCategoriesTableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewCategoriesTableDelegate.swift; sourceTree = "<group>"; };
 		664C5D821B7FDE1100EDA856 /* MapViewSearchDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewSearchDelegate.swift; sourceTree = "<group>"; };
+		664C5D851B7FFC1400EDA856 /* poweredby-black.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "poweredby-black.pdf"; sourceTree = "<group>"; };
 		6657BF021B5D565B00C94677 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareCategoryIconWorker.swift; sourceTree = "<group>"; };
-		667940651B702F46003A29A9 /* filter-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "filter-32.png"; sourceTree = "<group>"; };
 		667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueCategoriesOperation.swift; sourceTree = "<group>"; };
 		66A116251B72E2A700498070 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		66A116261B72E2A700498070 /* CoreDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
@@ -170,9 +170,9 @@
 		66382C1D1B69899C00F5644C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				664C5D851B7FFC1400EDA856 /* poweredby-black.pdf */,
 				66382C281B6D103100F5644C /* default_64.png */,
 				66382C221B69A62C00F5644C /* default_32.png */,
-				667940651B702F46003A29A9 /* filter-32.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -484,9 +484,9 @@
 			files = (
 				66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */,
 				66382C291B6D103100F5644C /* default_64.png in Resources */,
+				664C5D861B7FFC1400EDA856 /* poweredby-black.pdf in Resources */,
 				66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */,
 				66382C231B69A62C00F5644C /* default_32.png in Resources */,
-				667940661B702F46003A29A9 /* filter-32.png in Resources */,
 				66A7FC741B5AD6B30012358D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

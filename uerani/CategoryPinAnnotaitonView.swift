@@ -12,8 +12,11 @@ import MapKit
 
 class CategoryPinAnnotationView : BasicMapAnnotationView {
     
-    override var annotation: MKAnnotation! {
+    let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
+    
+    override var image:UIImage! {
         didSet {
+            self.prepareFrameSize()
             self.setNeedsDisplay()
         }
     }
@@ -31,39 +34,60 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func didMoveToSuperview() {
-        layer.sublayers = nil
+    func prepareFrameSize() {
+        self.frame = CGRectMake(0, 0, image.size.width + 5, image.size.height + 7)
+    }
+    
+    override func drawRect(rect: CGRect) {
+        var context:CGContextRef = UIGraphicsGetCurrentContext()
+        yellowColor.setFill()
+        var path:CGMutablePathRef = CGPathCreateMutable()
+        var nrect:CGRect = CGRectMake(0, 0, image.size.width + 2, image.size.height + 2)
+        CGContextSetLineWidth(context, 0);
+        var radius:CGFloat = 5.0
         
-        let containerLayer = CALayer()
-        var yellowColor = UIColor(red: 255.0/255.0, green: 188.0/255.0, blue: 8/255.0, alpha: 1.0)
-        containerLayer.frame = CGRectMake(0, 0, image.size.width + 10, image.size.height + 30)
+        CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
+        CGPathAddLineToPoint(path, nil, nrect.origin.x, nrect.origin.y + nrect.size.height - radius)
+        CGPathAddArc(path, nil, nrect.origin.x + radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI), CGFloat(M_PI_2), true)
+        CGPathAddArc(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI_2), 0.0, true)
+        CGPathAddArc(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + radius, radius, 0.0, CGFloat(-M_PI_2), true)
+        CGPathAddArc(path, nil, nrect.origin.x + radius, nrect.origin.y + radius, radius, CGFloat(-M_PI_2), CGFloat(M_PI), true)
+        CGPathCloseSubpath(path)
         
-        let circleLayer = CAShapeLayer()
-        circleLayer.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, image.size.width + 10, image.size.height + 10)).CGPath
-        circleLayer.fillColor = yellowColor.CGColor
-        circleLayer.backgroundColor = UIColor.clearColor().CGColor
+        // Fill & stroke the path
+        CGContextAddPath(context, path)
+        CGContextSaveGState(context)
+        CGContextFillPath(context)
+        CGContextRestoreGState(context)
         
-        let triangleLayer = CAShapeLayer()
-        triangleLayer.frame = CGRectMake(0, image.size.height - ((image.size.height / 4) + 2), image.size.width + 10, 30)
-        let bezierPath = UIBezierPath()
-        bezierPath.moveToPoint(CGPoint(x: 0, y: 0))
-        bezierPath.addLineToPoint(CGPoint(x: (image.size.width + 10) / 2, y: 30))
-        bezierPath.addLineToPoint(CGPoint(x: image.size.width + 10, y: 0))
+        var trianglePath:CGMutablePathRef = CGPathCreateMutable()
+        var originY:CGFloat = image.size.height + 2
+        var originX:CGFloat = nrect.size.width / 2
+        CGPathMoveToPoint(trianglePath, nil, originX + 5, originY)
+        CGPathAddLineToPoint(trianglePath, nil, originX, originY + 7)
+        CGPathAddLineToPoint(trianglePath, nil, originX - 5, originY)
+        CGPathAddLineToPoint(trianglePath, nil, originX + 5, originY)
+        CGPathCloseSubpath(trianglePath)
         
-        bezierPath.closePath()
-        triangleLayer.path = bezierPath.CGPath
-        triangleLayer.fillColor = yellowColor.CGColor
-        triangleLayer.backgroundColor = UIColor.clearColor().CGColor
+        //fill & shadow
+        CGContextAddPath(context, trianglePath)
+        CGContextSaveGState(context)
+        CGContextFillPath(context)
+        CGContextRestoreGState(context)
         
-        let imageLayer = CALayer()
-        imageLayer.frame = CGRectMake(5, 5, image.size.width, image.size.height)
-        imageLayer.contents = image.CGImage
+        //draw the image in black
+        UIColor.blackColor().setFill()
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+        var flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, image.size.height)
         
-        containerLayer.addSublayer(circleLayer)
-        containerLayer.addSublayer(triangleLayer)
-        containerLayer.addSublayer(imageLayer)
+        CGContextConcatCTM(context, flipVertical)
+        // Draw into the context; this scales the image
+        var imageRect = CGRectMake(1.0, -2.5, image.size.width, image.size.height)
+        CGContextDrawImage(context, imageRect, image.CGImage)
         
-        layer.addSublayer(containerLayer)
+        CGContextClipToMask(context, imageRect, image.CGImage)
+        CGContextAddRect(context, imageRect)
+        CGContextDrawPath(context, kCGPathFill)
     }
     
     static func resizeImage(image:UIImage, newSize:CGSize) -> UIImage {

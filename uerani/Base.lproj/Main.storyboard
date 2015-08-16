@@ -18,8 +18,15 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xfI-4p-Hff">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                             </mapView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poweredByFoursquare" translatesAutoresizingMaskIntoConstraints="NO" id="EeX-wa-L7p">
+                                <rect key="frame" x="468" y="565" width="125" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="125" id="5ZM-PJ-ZOa"/>
+                                    <constraint firstAttribute="height" constant="35" id="bxG-ro-Y1a"/>
+                                </constraints>
+                            </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ugk-Ll-QZF">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -51,8 +58,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="xfI-4p-Hff" secondAttribute="trailing" constant="-16" id="Aum-06-zVP"/>
                             <constraint firstItem="xfI-4p-Hff" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="BrH-Zm-Mgt"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="xfI-4p-Hff" secondAttribute="bottom" id="PMI-tp-200"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="EeX-wa-L7p" secondAttribute="trailing" constant="-9" id="Rbv-cD-dGP"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="EeX-wa-L7p" secondAttribute="bottom" id="XRH-rc-rfd"/>
                             <constraint firstItem="ugk-Ll-QZF" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="YUL-ca-D7d"/>
-                            <constraint firstItem="xfI-4p-Hff" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="20" id="euh-xF-7rz"/>
+                            <constraint firstItem="xfI-4p-Hff" firstAttribute="top" secondItem="Ko8-Be-9BA" secondAttribute="bottom" constant="1" id="fma-KE-GUh"/>
                             <constraint firstItem="Ko8-Be-9BA" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="h8M-p0-0dI"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ugk-Ll-QZF" secondAttribute="bottom" id="hA5-P9-M9o"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ugk-Ll-QZF" secondAttribute="trailing" constant="-16" id="lEQ-z0-qCa"/>
@@ -72,4 +81,7 @@
             <point key="canvasLocation" x="385" y="198"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="poweredByFoursquare" width="612" height="792"/>
+    </resources>
 </document>

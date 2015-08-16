@@ -61,8 +61,6 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             let number = annotation.annotations.count
             let fontSize:CGFloat = number > 9 ? 24 : 18
             
-            var path:CGMutablePathRef = CGPathCreateMutable()
-            var space:CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()
             var context:CGContextRef = UIGraphicsGetCurrentContext();
             
             CGContextSetLineWidth(context, 6); // set the line width
@@ -84,7 +82,6 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             
             UIColor.blackColor().setFill()
             
-            CGContextAddPath(context, path)
             CGContextSaveGState(context)
             CGContextFillPath(context)
             CGContextRestoreGState(context)
@@ -108,7 +105,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             // set the drawing mode to stroke
             CGContextSetTextDrawingMode(context, kCGTextFill)
             
-            CGContextSetTextPosition(context, (center.x - (bounds.size.width/2)), (center.y - (radius/2)))
+            CGContextSetTextPosition(context, (center.x - (bounds.size.width/2)), (((bounds.size.height/2) + (center.y / 2)) - (((bounds.size.height/2) - (radius/2)))) - 5)
             // the line of text is drawn - see https://developer.apple.com/library/ios/DOCUMENTATION/StringsTextFonts/Conceptual/CoreText_Programming/LayoutOperations/LayoutOperations.html
             // draw the line of text
             CTLineDraw(line, context)
