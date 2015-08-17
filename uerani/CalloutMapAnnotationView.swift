@@ -235,7 +235,6 @@ class CalloutMapAnnotationView: MKAnnotationView {
     
     func getParentX() -> CGFloat {
         var xPixelShift:CGFloat = self.getXPixelShift(false)
-        println("\(xPixelShift)")
         var parentX:CGFloat = (xPixelShift == 0) ? self.relativeParentXPosition() : xPixelShift < 0 ? self.relativeParentXPosition() : (self.relativeParentXPosition() + xPixelShift)
         return parentX
     }
