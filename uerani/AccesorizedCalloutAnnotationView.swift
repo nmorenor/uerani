@@ -44,13 +44,13 @@ class AccesorizedCalloutAnnotationView: CalloutMapAnnotationView {
     }
     
     func getContentFrame() -> CGRect {
-        var nrect = self.getRectDraw()
+        var nrect = self.getRectDraw(0)
         var contentFrame = CGRectMake(nrect.origin.x + 10, nrect.origin.y + 3, nrect.size.width - 20, self.contentHeight)
         return contentFrame
     }
     
     func prepareAccessoryFrame() {
-        var nrect = self.getRectDraw()
+        var nrect = self.getRectDraw(0)
         self.accessory.frame = CGRectMake(nrect.size.width - self.accessory.frame.size.width - 15, (self.contentHeight + 3 - self.accessory.frame.size.height) / 2, self.accessory.frame.size.width, self.accessory.frame.height)
     }
     

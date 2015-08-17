@@ -35,44 +35,46 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
     }
     
     func prepareFrameSize() {
-        self.frame = CGRectMake(0, 0, image.size.width + 5, image.size.height + 7)
+        self.frame = CGRectMake(0, 0, image.size.width + 5, image.size.height + 10)
     }
     
     override func drawRect(rect: CGRect) {
         var context:CGContextRef = UIGraphicsGetCurrentContext()
         yellowColor.setFill()
+        UIColor.blackColor().setStroke()
         var path:CGMutablePathRef = CGPathCreateMutable()
+        var stroke:CGFloat = 1.5
         var nrect:CGRect = CGRectMake(0, 0, image.size.width + 2, image.size.height + 2)
-        CGContextSetLineWidth(context, 0);
+        nrect.size.width -= stroke
+        nrect.size.height -= stroke
+        nrect.origin.x += stroke / 2.0
+        nrect.origin.y += stroke / 2.0
+        
+        CGContextSetLineWidth(context, stroke);
         var radius:CGFloat = 5.0
+        
+        //reference point for triangle
+        var originX:CGFloat = nrect.size.width / 2
         
         CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
         CGPathAddLineToPoint(path, nil, nrect.origin.x, nrect.origin.y + nrect.size.height - radius)
         CGPathAddArc(path, nil, nrect.origin.x + radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI), CGFloat(M_PI_2), true)
+        //draw triangle
+        CGPathAddLineToPoint(path, nil, originX - 5, nrect.origin.y + nrect.size.height)
+        CGPathAddLineToPoint(path, nil, originX, nrect.origin.y + nrect.size.height + 8)
+        CGPathAddLineToPoint(path, nil, originX + 5, nrect.origin.y + nrect.size.height)
+        CGPathAddLineToPoint(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + nrect.size.height)
         CGPathAddArc(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI_2), 0.0, true)
+        CGPathAddLineToPoint(path, nil, nrect.origin.x + nrect.size.width, nrect.origin.y + radius)
         CGPathAddArc(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + radius, radius, 0.0, CGFloat(-M_PI_2), true)
+        CGPathAddLineToPoint(path, nil, nrect.origin.x + radius, nrect.origin.y)
         CGPathAddArc(path, nil, nrect.origin.x + radius, nrect.origin.y + radius, radius, CGFloat(-M_PI_2), CGFloat(M_PI), true)
         CGPathCloseSubpath(path)
         
         // Fill & stroke the path
         CGContextAddPath(context, path)
         CGContextSaveGState(context)
-        CGContextFillPath(context)
-        CGContextRestoreGState(context)
-        
-        var trianglePath:CGMutablePathRef = CGPathCreateMutable()
-        var originY:CGFloat = image.size.height + 2
-        var originX:CGFloat = nrect.size.width / 2
-        CGPathMoveToPoint(trianglePath, nil, originX + 5, originY)
-        CGPathAddLineToPoint(trianglePath, nil, originX, originY + 7)
-        CGPathAddLineToPoint(trianglePath, nil, originX - 5, originY)
-        CGPathAddLineToPoint(trianglePath, nil, originX + 5, originY)
-        CGPathCloseSubpath(trianglePath)
-        
-        //fill & shadow
-        CGContextAddPath(context, trianglePath)
-        CGContextSaveGState(context)
-        CGContextFillPath(context)
+        CGContextDrawPath(context, kCGPathFillStroke);
         CGContextRestoreGState(context)
         
         //draw the image in black
@@ -82,7 +84,7 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         
         CGContextConcatCTM(context, flipVertical)
         // Draw into the context; this scales the image
-        var imageRect = CGRectMake(1.0, -2.5, image.size.width, image.size.height)
+        var imageRect = CGRectMake(1.0, -1.5, image.size.width, image.size.height)
         CGContextDrawImage(context, imageRect, image.CGImage)
         
         CGContextClipToMask(context, imageRect, image.CGImage)
@@ -94,7 +96,7 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         var newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
         var imageRef:CGImageRef = image.CGImage
         
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, UIScreen.mainScreen().scale)
         var context:CGContextRef = UIGraphicsGetCurrentContext()
         
         // Set the quality level to use when rescaling
