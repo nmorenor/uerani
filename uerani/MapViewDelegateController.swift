@@ -22,6 +22,9 @@ extension MapViewController: MKMapViewDelegate {
         if let clusterAnnotation = view.annotation as? FBAnnotationCluster {
             return
         }
+        if let userAnnotation = view.annotation as? MKUserLocation {
+            return
+        }
         
         let searchMediator = self.searchMediator
         
