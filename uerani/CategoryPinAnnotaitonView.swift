@@ -13,6 +13,7 @@ import MapKit
 class CategoryPinAnnotationView : BasicMapAnnotationView {
     
     let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
+    let defaultPinImage = "default_32.png"
     
     override var image:UIImage! {
         didSet {
@@ -36,6 +37,30 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
     
     func prepareFrameSize() {
         self.frame = CGRectMake(0, 0, image.size.width + 5, image.size.height + 10)
+    }
+    
+    func configure(foursquareAnnotation:FoursquareLocationMapAnnotation) {
+        if let categoryImageName = foursquareAnnotation.categoryImageName {
+            if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
+                if let image12 = ImageCache.sharedInstance().imageWithIdentifier(foursquareAnnotation.categoryImageName12) {
+                    self.image = image12
+                } else {
+                    var image12 = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
+                    ImageCache.sharedInstance().storeImage(image12, withIdentifier: foursquareAnnotation.categoryImageName12!)
+                    self.image = image12
+                }
+            } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix {
+                FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
+                if let image = UIImage(named: defaultPinImage) {
+                    self.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
+                }
+            } else {
+                if let image = UIImage(named: defaultPinImage) {
+                    self.image = CategoryPinAnnotationView.resizeImage(image, newSize:CGSizeMake(12, 12))
+                }
+            }
+        }
+        self.canShowCallout = false
     }
     
     override func drawRect(rect: CGRect) {

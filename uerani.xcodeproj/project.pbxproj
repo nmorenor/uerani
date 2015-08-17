@@ -11,6 +11,8 @@
 		6603AD9C1B7A3A1000ABF2F6 /* SearchViewProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6603AD9B1B7A3A1000ABF2F6 /* SearchViewProgress.swift */; };
 		66104FD01B7D741A004E32A6 /* ClusteredPinAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66104FCF1B7D741A004E32A6 /* ClusteredPinAnnotationView.swift */; };
 		66104FD21B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66104FD11B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift */; };
+		661B6D021B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661B6D011B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift */; };
+		661B6D041B82A68B00E710B4 /* foursquare-wordmark-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */; };
 		66382C211B6996DF00F5644C /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C201B6996DF00F5644C /* Regex.swift */; };
 		66382C231B69A62C00F5644C /* default_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 66382C221B69A62C00F5644C /* default_32.png */; };
 		66382C251B6C439E00F5644C /* AccesorizedCalloutAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C241B6C439D00F5644C /* AccesorizedCalloutAnnotationView.swift */; };
@@ -82,6 +84,8 @@
 		6603AD9B1B7A3A1000ABF2F6 /* SearchViewProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewProgress.swift; sourceTree = "<group>"; };
 		66104FCF1B7D741A004E32A6 /* ClusteredPinAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusteredPinAnnotationView.swift; sourceTree = "<group>"; };
 		66104FD11B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPinAnnotaitonView.swift; sourceTree = "<group>"; };
+		661B6D011B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareVenueDetailsAnnotationView.swift; sourceTree = "<group>"; };
+		661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "foursquare-wordmark-white.pdf"; sourceTree = "<group>"; };
 		66382C201B6996DF00F5644C /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		66382C221B69A62C00F5644C /* default_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_32.png; sourceTree = "<group>"; };
 		66382C241B6C439D00F5644C /* AccesorizedCalloutAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccesorizedCalloutAnnotationView.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 		66382C1D1B69899C00F5644C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */,
 				664C5D851B7FFC1400EDA856 /* poweredby-black.pdf */,
 				66382C281B6D103100F5644C /* default_64.png */,
 				66382C221B69A62C00F5644C /* default_32.png */,
@@ -325,6 +330,7 @@
 				66104FD11B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift */,
 				66382C241B6C439D00F5644C /* AccesorizedCalloutAnnotationView.swift */,
 				66382C2A1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift */,
+				661B6D011B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -486,6 +492,7 @@
 				66382C291B6D103100F5644C /* default_64.png in Resources */,
 				664C5D861B7FFC1400EDA856 /* poweredby-black.pdf in Resources */,
 				66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */,
+				661B6D041B82A68B00E710B4 /* foursquare-wordmark-white.pdf in Resources */,
 				66382C231B69A62C00F5644C /* default_32.png in Resources */,
 				66A7FC741B5AD6B30012358D /* Images.xcassets in Resources */,
 			);
@@ -641,6 +648,7 @@
 				66A116281B72E2A700498070 /* CoreDataStack.swift in Sources */,
 				66A7FCB71B5AD7CA0012358D /* FoursquareLocationOperation.swift in Sources */,
 				66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */,
+				661B6D021B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift in Sources */,
 				66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */,
 				66A116351B72E68500498070 /* NSManagedObject.swift in Sources */,
 				66A7FC971B5AD7470012358D /* FContact.swift in Sources */,

@@ -24,6 +24,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
     var _yShadowOffset:CGFloat?
     var _contentView:UIView?
     var alreadyOpen = false
+    var adjustedRegionShift:CGFloat = -1
     
     override var annotation: MKAnnotation! {
         didSet {
@@ -77,7 +78,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
     func adjustMapRegionIfNeeded() {
         if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView where !self.alreadyOpen {
             //longitude
-            var xPixelShift:CGFloat = self.getXPixelShift(true)
+            var xPixelShift:CGFloat = self.getXPixelShift()
             //latitude
             var mapViewOriginRelativeToParent = mapView.convertPoint(mapView.frame.origin, toView: parentAnnotationView)
             var yPixelShift:CGFloat = 0.0
@@ -91,6 +92,11 @@ class CalloutMapAnnotationView: MKAnnotationView {
             }
         
             if (xPixelShift != 0 || yPixelShift != 0) {
+                if xPixelShift == 0 {
+                    self.adjustedRegionShift = -1
+                } else {
+                    self.adjustedRegionShift = xPixelShift
+                }
                 var pixelsPerDegreeLongitude:CGFloat = mapView.frame.size.width / CGFloat(mapView.region.span.longitudeDelta)
                 var pixelsPerDegreeLatitude:CGFloat = mapView.frame.size.height / CGFloat(mapView.region.span.latitudeDelta)
             
@@ -104,19 +110,21 @@ class CalloutMapAnnotationView: MKAnnotationView {
                 self.frame = CGRectMake(self.frame.origin.x - xPixelShift, self.frame.origin.y - yPixelShift, self.frame.size.width, self.frame.size.height)
             
                 self.centerOffset = CGPointMake(self.centerOffset.x - xPixelShift, self.centerOffset.y)
+            } else if xPixelShift == 0 {
+                self.adjustedRegionShift = -1
             }
         }
         self.alreadyOpen = true
     }
     
-    func getXPixelShift(adjustRegion:Bool) -> CGFloat {
+    func getXPixelShift() -> CGFloat {
         var xPixelShift:CGFloat = 0
         if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView {
             
             if self.relativeParentXPosition() < 38 {
                 xPixelShift = 38 - self.relativeParentXPosition()
-            } else if self.relativeParentXPosition() > self.frame.size.width - 38 {
-                xPixelShift = (self.frame.size.width - (adjustRegion ? 48 : 38)) - self.relativeParentXPosition()
+            } else if self.relativeParentXPosition() > (self.frame.size.width - 88) {
+                xPixelShift = (self.frame.size.width - 88) - self.relativeParentXPosition()
             }
         }
         return xPixelShift
@@ -197,7 +205,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
         * use the shift to draw the rect, so the triangle is not out of the rectangle
         **/
         var parentX:CGFloat = self.getParentX()
-        var nrect = self.getRectDraw(parentX)
+        var nrect = self.getRectDraw()
         
         //Create Path For Callout Bubble
         CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
@@ -234,16 +242,13 @@ class CalloutMapAnnotationView: MKAnnotationView {
     }
     
     func getParentX() -> CGFloat {
-        var xPixelShift:CGFloat = self.getXPixelShift(false)
-        var parentX:CGFloat = (xPixelShift == 0) ? self.relativeParentXPosition() : xPixelShift < 0 ? self.relativeParentXPosition() : (self.relativeParentXPosition() + xPixelShift)
-        return parentX
+        return self.adjustedRegionShift != -1 ? self.relativeParentXPosition() + self.adjustedRegionShift : self.relativeParentXPosition()
     }
     
-    func getRectDraw(parentX:CGFloat) -> CGRect {
+    func getRectDraw() -> CGRect {
         var stroke:CGFloat = 1.0
         var nrect = self.bounds
         nrect.size.width -= stroke + 14
-        nrect.size.width = max(nrect.size.width, (parentX + 18))
         nrect.size.height -= stroke + heightAboveParent - self.offsetFromParent.y + bottomShadowBufferSize
         nrect.origin.x += stroke / 2.0
         nrect.origin.y += stroke / 2.0
