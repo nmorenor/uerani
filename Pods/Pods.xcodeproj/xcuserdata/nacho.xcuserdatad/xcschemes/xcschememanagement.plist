@@ -9,6 +9,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-uerani-FSOAuth.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-uerani-OAuthSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-uerani-Realm.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -34,7 +44,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-ueraniTests-FSOAuth.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-ueraniTests-Nimble.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-ueraniTests-OAuthSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -67,62 +87,82 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>20A431B968BF28C4B17B5090</key>
+		<key>108F4985939E0C104E973884</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5E031B1D72544D0A3882D507</key>
+		<key>1417F0A055FDF9C11B5D3B10</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6071B4532FB6AA4FE39B2122</key>
+		<key>394252A2579518C966166E2C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7B2E9AFA0C3BCD7FC8345F7D</key>
+		<key>44AD37CBBAD711BE956273F4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7B5807EBAE74825685777B8D</key>
+		<key>4B2DC0EE09629CA8B840E2E2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8D0A412EDD282C75A537D427</key>
+		<key>504B6E5843D6469CC9AF9CEF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AF2E13B8E4D3E541CC906D1C</key>
+		<key>5CCB118F29A17E747F21678C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BF0FC6C978B55C769BABF7FC</key>
+		<key>63B20C011B7A97657E282313</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DC3C00B34053509D5F608920</key>
+		<key>7D93CE79CAE995E93E118660</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E7A93DB43726050284B3CFDA</key>
+		<key>9552E0C039C19149C130A17A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8A1DDF31901E72811564A85</key>
+		<key>A67E1B3D80245F91550AA678</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FD507B004E57E41077417430</key>
+		<key>AC53889CE9ED3DE86C812884</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BF145B4B880AC192863450E1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D431AD1B8A2B35319C50BC99</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E135562E3DDF06512C0DBE9E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F80CC15B78075BB961F8F4D2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

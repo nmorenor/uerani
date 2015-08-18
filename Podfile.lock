@@ -1,6 +1,8 @@
 PODS:
   - FBAnnotationClustering (0.1.2)
+  - FSOAuth (1.0)
   - Nimble (1.0.0)
+  - OAuthSwift (0.3.6)
   - pop (1.0.7)
   - Quick (0.3.1)
   - Realm (0.93.2):
@@ -11,14 +13,18 @@ PODS:
 
 DEPENDENCIES:
   - FBAnnotationClustering (~> 0.1.2)
+  - FSOAuth
   - Nimble (~> 1.0.0-rc.1)
+  - OAuthSwift (~> 0.3.6)
   - pop (~> 1.0)
   - Quick (~> 0.3.1)
   - RealmSwift
 
 SPEC CHECKSUMS:
   FBAnnotationClustering: 8be556cf48b27262acab01ad8419bc01703615e3
+  FSOAuth: 438481891a5334d489795ae14afc372904acf49c
   Nimble: 8bee528e5fcc403653076545db562d2b5db7bb87
+  OAuthSwift: 3517e94380923085dfa7f23421bc3d4a61ce48c0
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   Quick: 824572d3d198d51e52cf4aa722cebf7e59952a35
   Realm: 2fdd0ae74f730e190384e0338d8a0d3654df8220

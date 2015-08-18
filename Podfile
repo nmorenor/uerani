@@ -8,6 +8,8 @@ link_with 'uerani', 'ueraniTests'
 target 'uerani' do
   pod 'RealmSwift'
   pod 'pop', '~> 1.0'
+  pod 'FSOAuth'
+  pod 'OAuthSwift', '~> 0.3.6'
   pod 'FBAnnotationClustering', '~> 0.1.2'
 end
 
@@ -16,5 +18,7 @@ target 'ueraniTests' do
   pod 'Nimble', '~> 1.0.0-rc.1'
   pod 'RealmSwift'
   pod 'pop', '~> 1.0'
+  pod 'FSOAuth'
+  pod 'OAuthSwift', '~> 0.3.6'
   pod 'FBAnnotationClustering', '~> 0.1.2'
 end

@@ -1,10 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wn7-5i-SaT">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="jcr-lO-8SH">
+            <objects>
+                <viewController storyboardIdentifier="loginController" id="Wn7-5i-SaT" customClass="LoginViewController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BTm-Lc-Ern"/>
+                        <viewControllerLayoutGuide type="bottom" id="KYd-tB-XLr"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pv7-3H-Llc">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PAS-ws-nNx" customClass="BorderedButton" customModule="uerani">
+                                <rect key="frame" x="255" y="355" width="90" height="30"/>
+                                <state key="normal" title="Connecto to ">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="connectToFoursquare:" destination="Wn7-5i-SaT" eventType="touchUpInside" id="fRD-14-YOL"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="foursquare-logo-white" translatesAutoresizingMaskIntoConstraints="NO" id="oXD-Ro-iD5">
+                                <rect key="frame" x="200" y="71" width="200" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="HIW-Fg-hH2"/>
+                                    <constraint firstAttribute="height" constant="250" id="WDS-Is-ooI"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="PAS-ws-nNx" firstAttribute="top" secondItem="oXD-Ro-iD5" secondAttribute="bottom" constant="34" id="Z2x-Zw-q7d"/>
+                            <constraint firstItem="PAS-ws-nNx" firstAttribute="centerX" secondItem="oXD-Ro-iD5" secondAttribute="centerX" id="gEs-FJ-9SN"/>
+                            <constraint firstItem="oXD-Ro-iD5" firstAttribute="centerX" secondItem="pv7-3H-Llc" secondAttribute="centerX" id="iyH-PE-kYq"/>
+                            <constraint firstItem="oXD-Ro-iD5" firstAttribute="top" secondItem="BTm-Lc-Ern" secondAttribute="bottom" constant="51" id="y9S-dR-pdX"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="connectButton" destination="PAS-ws-nNx" id="X7e-1x-hDw"/>
+                        <segue destination="vXZ-lx-hvc" kind="show" identifier="showMapSegue" id="kFX-fY-BMj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vbn-Eg-0P5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-262" y="198"/>
+        </scene>
         <!--Map View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
@@ -78,10 +125,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="385" y="198"/>
+            <point key="canvasLocation" x="451" y="198"/>
         </scene>
     </scenes>
     <resources>
+        <image name="foursquare-logo-white" width="612" height="792"/>
         <image name="poweredByFoursquare" width="612" height="792"/>
     </resources>
 </document>

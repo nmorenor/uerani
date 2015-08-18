@@ -2,6 +2,9 @@
 //  CalloutMapAnnotationView.swift
 //  uerani
 //
+//  based on http://blog.asynchrony.com/2010/09/building-custom-map-annotation-callouts-part-1/ 
+//  with a few fixes and changes here and there, excellent to get started with CGGraphics
+//
 //  Created by nacho on 7/22/15.
 //  Copyright (c) 2015 Ignacio Moreno. All rights reserved.
 //

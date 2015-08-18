@@ -3,7 +3,7 @@ CLANG_CXX_LANGUAGE_STANDARD = ${PODS_UERANI_REALM_CLANG_CXX_LANGUAGE_STANDARD}
 CONFIGURATION_BUILD_DIR = $PODS_FRAMEWORK_BUILD_PATH
 FRAMEWORK_SEARCH_PATHS = "$PODS_FRAMEWORK_BUILD_PATH"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/Realm" "${PODS_ROOT}/Headers/Private/Realm/realm" "${PODS_ROOT}/Headers/Private/Realm/realm/impl" "${PODS_ROOT}/Headers/Private/Realm/realm/util" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FBAnnotationClustering" "${PODS_ROOT}/Headers/Public/Nimble" "${PODS_ROOT}/Headers/Public/Quick" "${PODS_ROOT}/Headers/Public/Realm" "${PODS_ROOT}/Headers/Public/Realm/realm" "${PODS_ROOT}/Headers/Public/RealmSwift" "${PODS_ROOT}/Headers/Public/pop"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/Realm" "${PODS_ROOT}/Headers/Private/Realm/realm" "${PODS_ROOT}/Headers/Private/Realm/realm/impl" "${PODS_ROOT}/Headers/Private/Realm/realm/util" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FBAnnotationClustering" "${PODS_ROOT}/Headers/Public/FSOAuth" "${PODS_ROOT}/Headers/Public/Nimble" "${PODS_ROOT}/Headers/Public/OAuthSwift" "${PODS_ROOT}/Headers/Public/Quick" "${PODS_ROOT}/Headers/Public/Realm" "${PODS_ROOT}/Headers/Public/Realm/realm" "${PODS_ROOT}/Headers/Public/RealmSwift" "${PODS_ROOT}/Headers/Public/pop"
 LIBRARY_SEARCH_PATHS = ${PODS_UERANI_REALM_LIBRARY_SEARCH_PATHS}
 OTHER_CPLUSPLUSFLAGS = ${PODS_UERANI_REALM_OTHER_CPLUSPLUSFLAGS}
 OTHER_LDFLAGS = ${PODS_UERANI_REALM_OTHER_LDFLAGS} -ObjC

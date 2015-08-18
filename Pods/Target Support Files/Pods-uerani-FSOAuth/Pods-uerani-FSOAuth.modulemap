@@ -1,0 +1,6 @@
+framework module FSOAuth {
+  umbrella header "Pods-uerani-FSOAuth-umbrella.h"
+
+  export *
+  module * { export * }
+}
