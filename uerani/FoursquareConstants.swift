@@ -19,6 +19,7 @@ extension FoursquareClient {
         static let FORUSQUARE_VERSION = "20150610"
         static let FOURSQUARE_VENUE_LIMIT = "50"
         static let FOURSQUARE_BROWSE_INTENT = "browse"
+        static let FOURSQUARE_CALLBACK_URI = "authuerani://uerani/authorized"
     }
     
     struct ParameterKeys {

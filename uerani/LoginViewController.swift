@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FSOAuth
 
 class LoginViewController: UIViewController {
     
@@ -34,8 +35,42 @@ class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
     
     @IBAction func connectToFoursquare(sender: FSButton) {
+        let statusCode:FSOAuthStatusCode = FSOAuth.authorizeUserUsingClientId(FoursquareClient.Constants.FOURSQUARE_CLIENT_ID, callbackURIString: FoursquareClient.Constants.FOURSQUARE_CALLBACK_URI);
+        
+        
+        switch (statusCode) {
+        case FSOAuthStatusCode.Success:
+            successLogin()
+            break;
+        case FSOAuthStatusCode.ErrorInvalidCallback:
+            println("Invalid callback URI")
+            break;
+            
+        case FSOAuthStatusCode.ErrorFoursquareNotInstalled:
+            println("Foursquare not installed")
+            break;
+            
+        case FSOAuthStatusCode.ErrorInvalidClientID:
+            println("Error Invalid client ID")
+            break;
+        case FSOAuthStatusCode.ErrorFoursquareOAuthNotSupported:
+            println("OAuth is not supported")
+            break;
+            
+        default:
+            
+            break;
+            
+        }
+        
+    }
+    
+    func successLogin() {
         self.performSegueWithIdentifier("showMapSegue", sender: self)
     }
 }
