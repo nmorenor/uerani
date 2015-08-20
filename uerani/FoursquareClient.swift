@@ -7,11 +7,14 @@
 //
 
 import Foundation
+import FSOAuth
 
 public class FoursquareClient : HTTPClientProtocol {
     
     var httpClient:HTTPClient?
     var config = FoursquareConfig.unarchivedInstance() ?? FoursquareConfig()
+    var accessCode:String?
+    var oauthError:String?
     
     init() {
         self.httpClient = HTTPClient(delegate: self)
@@ -37,11 +40,54 @@ public class FoursquareClient : HTTPClientProtocol {
     public func addAuthParameters(parameters:[String:AnyObject]) -> [String:AnyObject] {
         var result = parameters
 
-        result[FoursquareClient.ParameterKeys.CLIENT_ID] = FoursquareClient.Constants.FOURSQUARE_CLIENT_ID
-        result[FoursquareClient.ParameterKeys.CLIENT_SECRET] = FoursquareClient.Constants.FOURSQUARE_SECRET
+        result[FoursquareClient.ParameterKeys.FOURSQUARE_OAUTH_TOKEN] = self.accessCode
         result[FoursquareClient.ParameterKeys.VERSION] = FoursquareClient.Constants.FORUSQUARE_VERSION
         
         return result
+    }
+    
+    
+    public func handleURL(url:NSURL) {
+        if (url.scheme == "authuerani") {
+            var errorCode:FSOAuthErrorCode = FSOAuthErrorCode.None
+            var accessCode = FSOAuth.accessCodeForFSOAuthURL(url, error: &errorCode)
+            
+            if (errorCode == FSOAuthErrorCode.None) {
+                self.accessCode = accessCode;
+            }else {
+                self.oauthError = self.errorMessageForCode(errorCode)
+            }
+        }
+    }
+    
+    func errorMessageForCode(errorCode:FSOAuthErrorCode) -> String? {
+        var resultText:String? = nil;
+    
+        switch (errorCode) {
+            case FSOAuthErrorCode.None:
+                break
+        case FSOAuthErrorCode.InvalidClient:
+                resultText = "Invalid client error"
+                break
+            case FSOAuthErrorCode.InvalidGrant:
+                resultText = "Invalid grant error"
+                break
+            case FSOAuthErrorCode.InvalidRequest:
+                resultText =  "Invalid request error"
+                break
+            case FSOAuthErrorCode.UnauthorizedClient:
+                resultText =  "Invalid unauthorized client error"
+                break
+            case FSOAuthErrorCode.UnsupportedGrantType:
+                resultText =  "Invalid unsupported grant error"
+                break
+            default:
+                resultText =  "Unknown error"
+                break
+        
+        }
+    
+        return resultText;
     }
     
     // MARK: - Shared Instance

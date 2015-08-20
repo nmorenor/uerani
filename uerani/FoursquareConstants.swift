@@ -40,10 +40,10 @@ extension FoursquareClient {
         static let PROVIDER_ID = "providerId"
         static let LINKED_ID = "linkedId"
         static let CLIENT_ID = "client_id"
-        static let CLIENT_SECRET = "client_secret"
         static let VERSION = "v"
         static let SW = "sw"
         static let NE = "ne"
+        static let FOURSQUARE_OAUTH_TOKEN = "oauth_token"
     }
     
     struct RespnoseKeys {
