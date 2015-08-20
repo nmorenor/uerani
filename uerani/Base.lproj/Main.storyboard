@@ -17,9 +17,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PAS-ws-nNx" customClass="BorderedButton" customModule="uerani">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="PAS-ws-nNx" customClass="FSButton" customModule="uerani">
                                 <rect key="frame" x="255" y="355" width="90" height="30"/>
-                                <state key="normal" title="Connecto to ">
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="CONNECT TO">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -37,10 +39,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="PAS-ws-nNx" firstAttribute="top" secondItem="oXD-Ro-iD5" secondAttribute="bottom" constant="34" id="Z2x-Zw-q7d"/>
-                            <constraint firstItem="PAS-ws-nNx" firstAttribute="centerX" secondItem="oXD-Ro-iD5" secondAttribute="centerX" id="gEs-FJ-9SN"/>
+                            <constraint firstItem="PAS-ws-nNx" firstAttribute="centerX" secondItem="oXD-Ro-iD5" secondAttribute="centerX" id="asE-Yn-7sq"/>
                             <constraint firstItem="oXD-Ro-iD5" firstAttribute="centerX" secondItem="pv7-3H-Llc" secondAttribute="centerX" id="iyH-PE-kYq"/>
                             <constraint firstItem="oXD-Ro-iD5" firstAttribute="top" secondItem="BTm-Lc-Ern" secondAttribute="bottom" constant="51" id="y9S-dR-pdX"/>
+                            <constraint firstItem="PAS-ws-nNx" firstAttribute="top" secondItem="oXD-Ro-iD5" secondAttribute="bottom" constant="34" id="zHN-Pn-NsF"/>
                         </constraints>
                     </view>
                     <connections>

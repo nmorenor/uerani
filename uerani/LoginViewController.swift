@@ -14,7 +14,7 @@ class LoginViewController: UIViewController {
     let blackJetColor:UIColor = UIColor(red: 52.0/255.0, green: 52.0/255.0, blue: 52.0/255.0, alpha: 1.0)
     let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
     
-    @IBOutlet weak var connectButton: BorderedButton! {
+    @IBOutlet weak var connectButton: FSButton! {
         didSet {
             connectButton.borderColor = yellowColor
             connectButton.backingColor = UIColor.blackColor()
@@ -35,7 +35,7 @@ class LoginViewController: UIViewController {
     }
     
     
-    @IBAction func connectToFoursquare(sender: BorderedButton) {
+    @IBAction func connectToFoursquare(sender: FSButton) {
         self.performSegueWithIdentifier("showMapSegue", sender: self)
     }
 }

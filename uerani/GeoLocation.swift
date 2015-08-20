@@ -9,6 +9,14 @@
 
 import MapKit
 
+func toRadian(x:Double) -> Double {
+    return x * (M_PI/180)
+}
+
+func fromRadian(x:Double) -> Double {
+    return x * (180/M_PI)
+}
+
 struct GeoLocation {
     
     class GeoLocationBoundBox: Hashable, Equatable {
@@ -68,8 +76,8 @@ struct GeoLocation {
     
     init(coordinate:CLLocationCoordinate2D) {
         self.coordinate = coordinate
-        self.radLat = GeoLocation.toRadian(coordinate.latitude)
-        self.radLon = GeoLocation.toRadian(coordinate.longitude)
+        self.radLat = toRadian(coordinate.latitude)
+        self.radLon = toRadian(coordinate.longitude)
     }
     
     func distanceTo(location:GeoLocation) -> Double {
@@ -105,8 +113,8 @@ struct GeoLocation {
             minLon = -(M_PI)
             maxLon = M_PI
         }
-        let neLocation = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: GeoLocation.fromRadian(maxLat), longitude: GeoLocation.fromRadian(maxLon)))
-        let swLocation = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: GeoLocation.fromRadian(minLat), longitude: GeoLocation.fromRadian(minLon)))
+        let neLocation = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: fromRadian(maxLat), longitude: fromRadian(maxLon)))
+        let swLocation = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: fromRadian(minLat), longitude: fromRadian(minLon)))
         let nwLocation = GeoLocation(coordinate:CLLocationCoordinate2D(latitude: neLocation.latitude, longitude: swLocation.longitude))
         let seLocation = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: swLocation.latitude, longitude: neLocation.longitude))
         let center = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: swLocation.latitude + ((neLocation.latitude - swLocation.latitude)/2), longitude: swLocation.longitude + ((neLocation.longitude - swLocation.longitude)/2)))
@@ -138,14 +146,6 @@ struct GeoLocation {
         let centerLocation:CLLocation = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)
         let distance:CLLocationDistance = centerLocation.distanceFromLocation(newLocation)
         return distance
-    }
-    
-    static func toRadian(x:Double) -> Double {
-        return x * (M_PI/180)
-    }
-    
-    static func fromRadian(x:Double) -> Double {
-        return x * (180/M_PI)
     }
 }
 

@@ -7,14 +7,10 @@
 //
 
 import UIKit
-import QuartzCore
 
-let borderedButtonHeight : CGFloat = 44.0
-let borderedButtonCornerRadius : CGFloat = 6.0
-let padBorderedButtonExtraPadding : CGFloat = 20.0
-let phoneBorderedButtonExtraPadding : CGFloat = 14.0
+let borderedButtonCornerRadius : CGFloat = 20.0
 
-class BorderedButton: UIButton {
+class FSButton: UIButton {
     
     // MARK: - Properties
     
@@ -22,17 +18,23 @@ class BorderedButton: UIButton {
     var highlightedBackingColor : UIColor? = nil
     var borderColor:UIColor? {
         didSet {
-            layer.borderWidth = 1.0
+            layer.borderWidth = 4.0
             layer.borderColor = self.borderColor!.CGColor
         }
     }
-    var borderLayout:CAShapeLayer = CAShapeLayer()
     
     // MARK: - Constructors
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.cornerRadius = borderedButtonCornerRadius;
+        
+        var image = UIImage(named: "foursquare-word-mark")
+        image = image!.resizeImage(CGSizeMake(image!.size.width / 12, image!.size.height / 12))
+        image = image!.imageRotatedByDegrees(-90.0, flip: false)
+        image = image!.cropHeight(45)
+        
+        self.setImage(image!, forState: UIControlState.allZeros)
     }
     
     override init(frame: CGRect) {
@@ -46,6 +48,20 @@ class BorderedButton: UIButton {
             self.backingColor = backingColor;
             self.backgroundColor = backingColor;
         }
+    }
+    
+    override func imageRectForContentRect(contentRect: CGRect) -> CGRect {
+        var frame:CGRect = super.imageRectForContentRect(contentRect)
+        frame.origin.x = CGRectGetMaxX(contentRect) - CGRectGetWidth(frame) -  self.imageEdgeInsets.right + self.imageEdgeInsets.left;
+        frame.origin.y = contentRect.size.height / 2 - (contentRect.size.height / 9)
+
+        return frame;
+    }
+    
+    override func titleRectForContentRect(contentRect: CGRect) -> CGRect {
+        var frame:CGRect = super.titleRectForContentRect(contentRect)
+        frame.origin.x = (CGRectGetMinX(frame) + 9) - CGRectGetWidth(self.imageRectForContentRect(contentRect))
+        return frame
     }
     
     private func setHighlightedBackingColor(highlightedBackingColor: UIColor) -> Void {
@@ -66,17 +82,5 @@ class BorderedButton: UIButton {
     
     override func cancelTrackingWithEvent(event: UIEvent?) {
         self.backgroundColor = self.backingColor
-    }
-    
-    // MARK: - Layout
-    
-    override func sizeThatFits(size: CGSize) -> CGSize {
-        let userInterfaceIdiom = UIDevice.currentDevice().userInterfaceIdiom
-        let extraButtonPadding : CGFloat = 25.0
-        var sizeThatFits = CGSizeZero
-        sizeThatFits.width = super.sizeThatFits(size).width + extraButtonPadding
-        sizeThatFits.height = 44.0
-        return sizeThatFits
-        
     }
 }
