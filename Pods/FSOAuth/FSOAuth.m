@@ -32,7 +32,6 @@
     }
     
     if (![sharedApplication canOpenURL:[NSURL URLWithString:@"foursquare://"]]) {
-        [sharedApplication openURL:[NSURL URLWithString:kFoursquareAppStoreURL]];
         return FSOAuthStatusErrorFoursquareNotInstalled;
     }
     

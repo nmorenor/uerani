@@ -20,6 +20,7 @@ extension FoursquareClient {
         static let FOURSQUARE_VENUE_LIMIT = "50"
         static let FOURSQUARE_BROWSE_INTENT = "browse"
         static let FOURSQUARE_CALLBACK_URI = "authuerani://uerani/authorized"
+        static let FOURSQUARE_AUTHORIZE_URI = "https://foursquare.com/oauth2/authorize"
     }
     
     struct ParameterKeys {
