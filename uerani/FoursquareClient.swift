@@ -151,8 +151,7 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
             authorizeUrl:   FoursquareClient.Constants.FOURSQUARE_AUTHORIZE_URI,
             responseType:   "code"
         )
-        let parameters = ["grant_type" : "authorization_code"]
-        oauthswift.authorizeWithCallbackURL(NSURL(string: FoursquareClient.Constants.FOURSQUARE_CALLBACK_URI)!, scope: "", state: "", params: parameters, success: {_ in }, failure: { _ in })
+        oauthswift.authorizeWithCallbackURL(NSURL(string: FoursquareClient.Constants.FOURSQUARE_CALLBACK_URI)!, scope: "", state: "", params: [String:String](), success: {_ in }, failure: { _ in })
         
     }
     
