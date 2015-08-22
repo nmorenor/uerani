@@ -24,9 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //if we are already logged in, go to the map view
         if let accessToken = FoursquareClient.sharedInstance().accessToken {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let mapView = storyboard.instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
+            let tabView = storyboard.instantiateViewControllerWithIdentifier("MainTabBar") as? UIViewController
             self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-            self.window!.rootViewController = mapView
+            self.window!.rootViewController = tabView
             self.window!.backgroundColor = UIColor.whiteColor()
             self.window!.makeKeyAndVisible()
         }

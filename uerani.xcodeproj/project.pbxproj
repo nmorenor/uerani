@@ -38,9 +38,12 @@
 		66A116351B72E68500498070 /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116341B72E68500498070 /* NSManagedObject.swift */; };
 		66A116371B72E79000498070 /* CDIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116361B72E79000498070 /* CDIcon.swift */; };
 		66A265501B88C874005C4970 /* FoursquareConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A2654F1B88C874005C4970 /* FoursquareConstants.swift */; };
+		66A2655E1B88FCF0005C4970 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66A2655D1B88FCF0005C4970 /* Images.xcassets */; };
+		66A265621B890112005C4970 /* map.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66A265611B890112005C4970 /* map.pdf */; };
+		66A265641B8901CB005C4970 /* user.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66A265631B8901CB005C4970 /* user.pdf */; };
+		66A265661B8903A0005C4970 /* notes.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66A265651B8903A0005C4970 /* notes.pdf */; };
 		66A7FC6B1B5AD6B30012358D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */; };
 		66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC701B5AD6B30012358D /* Main.storyboard */; };
-		66A7FC741B5AD6B30012358D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC731B5AD6B30012358D /* Images.xcassets */; };
 		66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC751B5AD6B30012358D /* LaunchScreen.xib */; };
 		66A7FC961B5AD7470012358D /* FCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC8E1B5AD7470012358D /* FCategory.swift */; };
 		66A7FC971B5AD7470012358D /* FContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC8F1B5AD7470012358D /* FContact.swift */; };
@@ -115,11 +118,14 @@
 		66A116341B72E68500498070 /* NSManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		66A116361B72E79000498070 /* CDIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDIcon.swift; sourceTree = "<group>"; };
 		66A2654F1B88C874005C4970 /* FoursquareConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareConstants.swift; sourceTree = "<group>"; };
+		66A2655D1B88FCF0005C4970 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		66A265611B890112005C4970 /* map.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = map.pdf; sourceTree = "<group>"; };
+		66A265631B8901CB005C4970 /* user.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = user.pdf; sourceTree = "<group>"; };
+		66A265651B8903A0005C4970 /* notes.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = notes.pdf; sourceTree = "<group>"; };
 		66A7FC651B5AD6B30012358D /* uerani.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uerani.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A7FC691B5AD6B30012358D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		66A7FC711B5AD6B30012358D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		66A7FC731B5AD6B30012358D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		66A7FC761B5AD6B30012358D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		66A7FC7C1B5AD6B30012358D /* ueraniTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ueraniTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A7FC811B5AD6B30012358D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -182,6 +188,9 @@
 		66382C1D1B69899C00F5644C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				66A265651B8903A0005C4970 /* notes.pdf */,
+				66A265631B8901CB005C4970 /* user.pdf */,
+				66A265611B890112005C4970 /* map.pdf */,
 				6684E4C91B82AC9100B67B0A /* foursquare-logomark-white.pdf */,
 				6684E4CA1B82AC9100B67B0A /* foursquare-logomark.pdf */,
 				661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */,
@@ -268,7 +277,6 @@
 				66A7FC8C1B5AD71D0012358D /* Model */,
 				66A7FCA41B5AD76A0012358D /* Map */,
 				6684E4CD1B82AFC400B67B0A /* login */,
-				66A7FC731B5AD6B30012358D /* Images.xcassets */,
 				66A7FC681B5AD6B30012358D /* Supporting Files */,
 			);
 			path = uerani;
@@ -277,6 +285,7 @@
 		66A7FC681B5AD6B30012358D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				66A2655D1B88FCF0005C4970 /* Images.xcassets */,
 				66A1162B1B72E2E500498070 /* Uerani.xcdatamodeld */,
 				66382C1D1B69899C00F5644C /* images */,
 				66A7FC701B5AD6B30012358D /* Main.storyboard */,
@@ -520,10 +529,13 @@
 				6684E4CB1B82AC9100B67B0A /* foursquare-logomark-white.pdf in Resources */,
 				66382C291B6D103100F5644C /* default_64.png in Resources */,
 				664C5D861B7FFC1400EDA856 /* poweredby-black.pdf in Resources */,
+				66A265641B8901CB005C4970 /* user.pdf in Resources */,
 				66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */,
+				66A265661B8903A0005C4970 /* notes.pdf in Resources */,
+				66A265621B890112005C4970 /* map.pdf in Resources */,
 				661B6D041B82A68B00E710B4 /* foursquare-wordmark-white.pdf in Resources */,
+				66A2655E1B88FCF0005C4970 /* Images.xcassets in Resources */,
 				66382C231B69A62C00F5644C /* default_32.png in Resources */,
-				66A7FC741B5AD6B30012358D /* Images.xcassets in Resources */,
 				6684E4CC1B82AC9100B67B0A /* foursquare-logomark.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -86,7 +86,7 @@ class LoginViewController: UIViewController, AccessTokenLoginDelegate {
     }
     
     func successLogin() {
-        self.performSegueWithIdentifier("showMapSegue", sender: self)
+        self.performSegueWithIdentifier("showMainSegue", sender: self)
     }
     
     func errorLogin(errorMessage:String?) {
