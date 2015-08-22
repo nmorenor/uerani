@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 public class FoursquareConfig:NSObject, NSCoding {
     
@@ -15,12 +16,13 @@ public class FoursquareConfig:NSObject, NSCoding {
     static let _fileURL:NSURL = documentsDirectoryURL().URLByAppendingPathComponent("FoursquareContext")
     
     public override init() {
-
+        
     }
     
     public var daysSinceLastUpdate:Int? {
         if let lastUpdate = dateUpdated {
-            return Int(NSDate().timeIntervalSinceDate(lastUpdate) / 60*60*24)
+            var timeInterval = NSDate().timeIntervalSinceDate(lastUpdate)
+            return Int(timeInterval / (60*60*24))
         } else {
             return nil
         }
@@ -32,7 +34,27 @@ public class FoursquareConfig:NSObject, NSCoding {
                 return
             }
         }
-        //TODO: Do something clever :)
+        //clean cache database
+        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        realm.write() {
+            realm.deleteAll()
+        }
+        
+        let fileManager = NSFileManager.defaultManager()
+        
+        var imageCacheDir = ImageCache.sharedInstance().imagesDirectoryURL.path!
+        var exist = fileManager.fileExistsAtPath(imageCacheDir)
+        if exist {
+            var error:NSError?
+            for file in fileManager.contentsOfDirectoryAtPath(imageCacheDir, error: &error) as! [String] {
+                var success = fileManager.removeItemAtPath("\(imageCacheDir)/\(file)", error: &error)
+                if !success {
+                    println("Can not delete \(file)")
+                }
+            }
+        }
+        
+        self.dateUpdated = NSDate()
         
         FoursquareClient.sharedInstance().config.save()
     }

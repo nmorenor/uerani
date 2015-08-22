@@ -1,6 +1,7 @@
 PODS:
   - FBAnnotationClustering (0.1.2)
   - FSOAuth (1.0)
+  - Locksmith (1.2.2)
   - Nimble (1.0.0)
   - OAuthSwift (0.3.6)
   - pop (1.0.7)
@@ -14,6 +15,7 @@ PODS:
 DEPENDENCIES:
   - FBAnnotationClustering (~> 0.1.2)
   - FSOAuth
+  - Locksmith (~> 1.2.2)
   - Nimble (~> 1.0.0-rc.1)
   - OAuthSwift (~> 0.3.6)
   - pop (~> 1.0)
@@ -23,6 +25,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   FBAnnotationClustering: 8be556cf48b27262acab01ad8419bc01703615e3
   FSOAuth: 438481891a5334d489795ae14afc372904acf49c
+  Locksmith: c84c10bf23f99e6d04703dba65065dc38b038d88
   Nimble: 8bee528e5fcc403653076545db562d2b5db7bb87
   OAuthSwift: 3517e94380923085dfa7f23421bc3d4a61ce48c0
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923

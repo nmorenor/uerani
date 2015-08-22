@@ -50,6 +50,7 @@ code_sign() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'FBAnnotationClustering.framework'
   install_framework 'FSOAuth.framework'
+  install_framework 'Locksmith.framework'
   install_framework 'OAuthSwift.framework'
   install_framework 'Realm.framework'
   install_framework 'RealmSwift.framework'
@@ -58,6 +59,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'FBAnnotationClustering.framework'
   install_framework 'FSOAuth.framework'
+  install_framework 'Locksmith.framework'
   install_framework 'OAuthSwift.framework'
   install_framework 'Realm.framework'
   install_framework 'RealmSwift.framework'

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "44AD37CBBAD711BE956273F4"
+               BlueprintIdentifier = "7BF97F0570170FF28AFBC6C1"
                BuildableName = "FBAnnotationClustering.framework"
                BlueprintName = "Pods-ueraniTests-FBAnnotationClustering"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -146,7 +146,7 @@ class RefreshMapAnnotationOperation: NSOperation {
                 NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
             }
             let predicate = searchBox.getPredicate(mapView.region, categoryFilter: self.searchMediator.categoryFilter)
-            let realm = Realm(path: Realm.defaultPath)
+            let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
             let venues = realm.objects(FVenue).filter(predicate)
             var annotations = [FoursquareLocationMapAnnotation]()
             for venue in venues {

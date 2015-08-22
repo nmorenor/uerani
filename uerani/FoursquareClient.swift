@@ -9,18 +9,71 @@
 import Foundation
 import FSOAuth
 import OAuthSwift
+import Locksmith
 
 public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
     
     static var instance = FoursquareClient()
     var httpClient:HTTPClient?
     var config = FoursquareConfig.unarchivedInstance() ?? FoursquareConfig()
-    var accessToken:String?
+    private var inMemoryToken:String?
+    var accessToken:String? {
+        get {
+            if let accessToken = self.inMemoryToken {
+                return accessToken
+            }
+            //look for data on the key chain, do not store access token in plain text
+            let (dictionary, error) = Locksmith.loadDataForUserAccount("foursquare-client")
+            if error != nil {
+                println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load access token from keychain \(error)")
+                return nil
+            }
+            if let dictionary = dictionary {
+                if let accessToken = dictionary["access_token"] as? String {
+                    self.inMemoryToken = accessToken
+                    return accessToken
+                }
+            }
+            return nil
+        }
+        
+        set (accessToken) {
+            self.inMemoryToken = accessToken
+            if let accessToken = accessToken {
+                var data = ["access_token" : accessToken]
+                //save data on key chain
+                Locksmith.saveData(data, forUserAccount: "foursquare-client")
+            } else {
+                Locksmith.deleteDataForUserAccount("foursquare-client")
+            }
+        }
+    }
     var oauthError:String? {
         didSet {
             //do something
         }
     }
+    
+    lazy var foursquareDataCacheRealmFile:NSURL = { [unowned self] in
+        let fileManager = NSFileManager.defaultManager()
+        if !fileManager.fileExistsAtPath(FoursquareClient.Constants.FOURSQUARE_CACHE_DIR.path!) {
+            var error:NSError?
+            let result = fileManager.createDirectoryAtURL(FoursquareClient.Constants.FOURSQUARE_CACHE_DIR, withIntermediateDirectories: false, attributes: nil, error: &error)
+            if !result {
+                println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create directory to store cache data: \(error)")
+            }
+        }
+        let targetFile = FoursquareClient.Constants.FOURSQUARE_CACHE_DIR.URLByAppendingPathComponent("cache.realm")
+        if !fileManager.fileExistsAtPath(targetFile.path!) {
+            let result = fileManager.createFileAtPath(targetFile.path!, contents: nil, attributes: nil)
+            if !result {
+                println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create file to store cache data")
+            }
+        }
+        
+        return targetFile
+    }()
+    
     var foursquareNativeAuthentication:Bool = false
     weak var accessTokenLoginDelegate:AccessTokenLoginDelegate? = nil
     

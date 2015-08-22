@@ -42,7 +42,7 @@ class VenueCategoriesOperation : NSOperation {
     
     override func main() {
         var topCategoriesPredicate = NSPredicate(format: "topCategory = %@", NSNumber(bool: true))
-        let realm = Realm(path: Realm.defaultPath)
+        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         
         var rCategories = realm.objects(FCategory).filter(topCategoriesPredicate)
         if rCategories.count > 0 {

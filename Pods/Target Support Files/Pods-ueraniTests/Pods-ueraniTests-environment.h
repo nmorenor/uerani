@@ -18,6 +18,12 @@
 #define COCOAPODS_VERSION_MINOR_FSOAuth 0
 #define COCOAPODS_VERSION_PATCH_FSOAuth 0
 
+// Locksmith
+#define COCOAPODS_POD_AVAILABLE_Locksmith
+#define COCOAPODS_VERSION_MAJOR_Locksmith 1
+#define COCOAPODS_VERSION_MINOR_Locksmith 2
+#define COCOAPODS_VERSION_PATCH_Locksmith 2
+
 // Nimble
 #define COCOAPODS_POD_AVAILABLE_Nimble
 #define COCOAPODS_VERSION_MAJOR_Nimble 1

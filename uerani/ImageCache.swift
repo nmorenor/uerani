@@ -13,6 +13,7 @@ class ImageCache {
     
     private var inMeMoryCache = NSCache()
     static let sharedInstancee = ImageCache()
+    let imagesDirectoryURL:NSURL = FoursquareClient.Constants.FOURSQUARE_CACHE_DIR.URLByAppendingPathComponent("images")
     
     class func sharedInstance() -> ImageCache {
         return sharedInstancee
@@ -54,8 +55,10 @@ class ImageCache {
     }
     
     func pathForIdentifier(identifier: String) -> String {
-        let documentsDirectoryURL:NSURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first as! NSURL
-        let fullURL = documentsDirectoryURL.URLByAppendingPathComponent(identifier)
+        if !NSFileManager.defaultManager().fileExistsAtPath(imagesDirectoryURL.path!) {
+            NSFileManager.defaultManager().createDirectoryAtURL(imagesDirectoryURL, withIntermediateDirectories: false, attributes: nil, error: nil)
+        }
+        let fullURL = imagesDirectoryURL.URLByAppendingPathComponent(identifier)
         return fullURL.path!
     }
 }

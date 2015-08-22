@@ -33,7 +33,7 @@ public class FoursquareLocationOperation: NSOperation {
     
     public override func main() {
         var searchOnFoursquare = true
-        let realm = Realm(path: Realm.defaultPath)
+        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         let shouldCallFoursquareAPI = self.shouldCallFoursquareAPI(realm)
         if !shouldCallFoursquareAPI {
             searchOnFoursquare = false
@@ -141,10 +141,10 @@ public class FoursquareLocationOperation: NSOperation {
     private func searchHandler(success:Bool, result:[[String:AnyObject]]?, errorString:String?) {
         if let error = errorString {
             //when we have any kind of error searching on foursquare we will just try to look on local cache
-            self.doLocalCacheSearch(Realm(path: Realm.defaultPath))
+            self.doLocalCacheSearch(Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!))
         } else {
             if let result = result where result.count > 0 {
-                let realm = Realm(path: Realm.defaultPath)
+                let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
                 var newVenues:[FVenue] = [FVenue]()
                 let center = self.getCenter()
                 let boxCenter = SearchBoxCenter()
@@ -182,7 +182,7 @@ public class FoursquareLocationOperation: NSOperation {
                 }
                 
             } else {
-                let realm = Realm(path: Realm.defaultPath)
+                let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
                 let center = self.getCenter()
                 let boxCenter = SearchBoxCenter()
                 boxCenter.lat = center.latitude

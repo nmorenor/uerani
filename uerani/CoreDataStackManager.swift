@@ -18,7 +18,7 @@ class CoreDataStackManager {
     }
     
     lazy var dataModel:CoreDataModel = {
-        return CoreDataModel(name: "Uerani")
+        return CoreDataModel(name: "Uerani", bundle:NSBundle.mainBundle(), storeDirectoryURL:documentsDirectoryURL().URLByAppendingPathComponent("uerani-data"))
     }()
     
     lazy var dataStack:CoreDataStack = { [unowned self] in

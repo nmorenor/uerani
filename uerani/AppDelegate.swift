@@ -19,7 +19,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        FoursquareClient.sharedInstance().config.updateIfDaysSinceUpdateExceeds(7)
+        
+        //if we are already logged in, go to the map view
+        if let accessToken = FoursquareClient.sharedInstance().accessToken {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mapView = storyboard.instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
+            self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+            self.window!.rootViewController = mapView
+            self.window!.backgroundColor = UIColor.whiteColor()
+            self.window!.makeKeyAndVisible()
+        }
+        
         return true
     }
 

@@ -57,6 +57,14 @@ public struct CoreDataModel: Printable {
     public init(name:String, bundle:NSBundle = NSBundle.mainBundle(), storeDirectoryURL: NSURL = documentsDirectoryURL()) {
         self.name = name
         self.bundle = bundle
+        if !NSFileManager.defaultManager().fileExistsAtPath(storeDirectoryURL.path!) {
+            var error:NSError?
+            let result = NSFileManager.defaultManager().createDirectoryAtURL(storeDirectoryURL, withIntermediateDirectories: false, attributes: nil, error: &error)
+            if !result {
+                println("*** \(toString(CoreDataModel.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create directory to store data: \(error)")
+            }
+        }
+        
         self.storeDirectoryURL = storeDirectoryURL
     }
     
@@ -101,8 +109,6 @@ public func saveContext(context: NSManagedObjectContext, completion: (ContextSav
         completion((success, error))
     }
 }
-
-// MARK: Private
 
 public func documentsDirectoryURL() -> NSURL {
     var error: NSError?

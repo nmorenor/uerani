@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9552E0C039C19149C130A17A"
+               BlueprintIdentifier = "E607C1D31880E9F9EC7D9D61"
                BuildableName = "OAuthSwift.framework"
                BlueprintName = "Pods-uerani-OAuthSwift"
                ReferencedContainer = "container:Pods.xcodeproj">
