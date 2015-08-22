@@ -19,33 +19,11 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
     private var inMemoryToken:String?
     var accessToken:String? {
         get {
-            if let accessToken = self.inMemoryToken {
-                return accessToken
-            }
-            //look for data on the key chain, do not store access token in plain text
-            let (dictionary, error) = Locksmith.loadDataForUserAccount("foursquare-client")
-            if error != nil {
-                println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load access token from keychain \(error)")
-                return nil
-            }
-            if let dictionary = dictionary {
-                if let accessToken = dictionary["access_token"] as? String {
-                    self.inMemoryToken = accessToken
-                    return accessToken
-                }
-            }
-            return nil
+            return self.getAccessToken()
         }
         
         set (accessToken) {
-            self.inMemoryToken = accessToken
-            if let accessToken = accessToken {
-                var data = ["access_token" : accessToken]
-                //save data on key chain
-                Locksmith.saveData(data, forUserAccount: "foursquare-client")
-            } else {
-                Locksmith.deleteDataForUserAccount("foursquare-client")
-            }
+            self.setInMemoryToken(accessToken)
         }
     }
     var oauthError:String? {
@@ -79,6 +57,36 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
     
     init() {
         self.httpClient = HTTPClient(delegate: self)
+    }
+    
+    private func setInMemoryToken(accessToken:String?) {
+        if let accessToken = accessToken {
+            var data = ["access_token" : accessToken]
+            //save data on key chain
+            Locksmith.saveData(data, forUserAccount: "foursquare-client")
+        } else {
+            Locksmith.deleteDataForUserAccount("foursquare-client")
+        }
+        self.inMemoryToken = accessToken
+    }
+    
+    private func getAccessToken() -> String? {
+            if let accessToken = self.inMemoryToken {
+                return accessToken
+            }
+            //look for data on the key chain, do not store access token in plain text
+            let (dictionary, error) = Locksmith.loadDataForUserAccount("foursquare-client")
+            if error != nil {
+                println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load access token from keychain \(error)")
+                return nil
+            }
+            if let dictionary = dictionary {
+                if let accessToken = dictionary["access_token"] as? String {
+                    self.inMemoryToken = accessToken
+                    return accessToken
+                }
+            }
+            return nil
     }
     
     public func getBaseURLSecure() -> String {
