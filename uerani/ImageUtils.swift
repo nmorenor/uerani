@@ -93,6 +93,10 @@ extension UIImage {
         return image
     }
     
+    /*
+    * 
+    * http://krakendev.io/blog/4-xcode-asset-catalog-secrets-you-need-to-know
+    */
     func imageWithColor(color: UIColor) -> UIImage? {
         // begin a new image context, to draw our colored image onto. Passing in zero for scale tells the system to take from the current device's screen scale.
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0)

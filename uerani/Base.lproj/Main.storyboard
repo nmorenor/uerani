@@ -54,10 +54,10 @@
             </objects>
             <point key="canvasLocation" x="-1582" y="-736"/>
         </scene>
-        <!--View Controller-->
+        <!--User View Controller-->
         <scene sceneID="Qir-Xg-ZYK">
             <objects>
-                <viewController id="nFZ-cj-VXH" sceneMemberID="viewController">
+                <viewController id="nFZ-cj-VXH" customClass="UserViewController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LiD-jJ-XYU"/>
                         <viewControllerLayoutGuide type="bottom" id="nru-uW-2sx"/>

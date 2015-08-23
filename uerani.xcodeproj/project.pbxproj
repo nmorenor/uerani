@@ -44,6 +44,7 @@
 		66A265661B8903A0005C4970 /* notes.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66A265651B8903A0005C4970 /* notes.pdf */; };
 		66A265691B8A569A005C4970 /* UeraniTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A265681B8A569A005C4970 /* UeraniTabBarViewController.swift */; };
 		66A2656B1B8A5718005C4970 /* ImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A2656A1B8A5718005C4970 /* ImageUtils.swift */; };
+		66A265701B8A642D005C4970 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A2656F1B8A642D005C4970 /* UserViewController.swift */; };
 		66A7FC6B1B5AD6B30012358D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */; };
 		66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC701B5AD6B30012358D /* Main.storyboard */; };
 		66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC751B5AD6B30012358D /* LaunchScreen.xib */; };
@@ -126,6 +127,7 @@
 		66A265651B8903A0005C4970 /* notes.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = notes.pdf; sourceTree = "<group>"; };
 		66A265681B8A569A005C4970 /* UeraniTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UeraniTabBarViewController.swift; sourceTree = "<group>"; };
 		66A2656A1B8A5718005C4970 /* ImageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
+		66A2656F1B8A642D005C4970 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		66A7FC651B5AD6B30012358D /* uerani.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uerani.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A7FC691B5AD6B30012358D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -255,6 +257,14 @@
 			name = TabBar;
 			sourceTree = "<group>";
 		};
+		66A2656E1B8A6405005C4970 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				66A2656F1B8A642D005C4970 /* UserViewController.swift */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
 		66A7FC5C1B5AD6B30012358D = {
 			isa = PBXGroup;
 			children = (
@@ -285,6 +295,7 @@
 				66382C201B6996DF00F5644C /* Regex.swift */,
 				66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */,
 				6657BF021B5D565B00C94677 /* ImageCache.swift */,
+				66A2656E1B8A6405005C4970 /* User */,
 				66A265671B8A5665005C4970 /* TabBar */,
 				6684E4D01B82B26000B67B0A /* view */,
 				66A7FC8C1B5AD71D0012358D /* Model */,
@@ -662,6 +673,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				664C5D831B7FDE1100EDA856 /* MapViewSearchDelegate.swift in Sources */,
+				66A265701B8A642D005C4970 /* UserViewController.swift in Sources */,
 				66A7FCAD1B5AD7A70012358D /* FoursquareConvenience.swift in Sources */,
 				66A7FCA21B5AD7600012358D /* HttpClientConstants.swift in Sources */,
 				66A7FCB61B5AD7CA0012358D /* FoursquareLocationMapAnnotation.swift in Sources */,
