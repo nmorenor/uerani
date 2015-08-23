@@ -63,7 +63,7 @@
                         <viewControllerLayoutGuide type="bottom" id="nru-uW-2sx"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1pa-Ty-oPB">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -84,7 +84,7 @@
                         <viewControllerLayoutGuide type="bottom" id="KK6-TM-hNO"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Sqf-yM-SKg">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -96,16 +96,17 @@
             </objects>
             <point key="canvasLocation" x="668" y="-875"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Uerani Tab Bar View Controller-->
         <scene sceneID="85D-7D-22O">
             <objects>
-                <tabBarController storyboardIdentifier="MainTabBar" id="9Cs-Xt-n1F" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabBar" id="9Cs-Xt-n1F" customClass="UeraniTabBarViewController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" id="kn9-in-Xr0">
+                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="kn9-in-Xr0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="8vH-5x-T2V"/>
@@ -126,14 +127,14 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xfI-4p-Hff">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xfI-4p-Hff">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                             </mapView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="poweredByFoursquare" translatesAutoresizingMaskIntoConstraints="NO" id="EeX-wa-L7p">
-                                <rect key="frame" x="468" y="565" width="125" height="35"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poweredByFoursquare" translatesAutoresizingMaskIntoConstraints="NO" id="EeX-wa-L7p">
+                                <rect key="frame" x="468" y="516" width="125" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="125" id="5ZM-PJ-ZOa"/>
                                     <constraint firstAttribute="height" constant="35" id="bxG-ro-Y1a"/>
