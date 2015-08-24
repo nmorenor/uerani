@@ -47,7 +47,7 @@ public class VenueLocationSearchMediator {
     }
     
     func displayLocation(location:CLLocation) {
-        var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.035, longitudeDelta: 0.035))
+        var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
         dispatch_async(dispatch_get_main_queue()) {
             self.mapView.setRegion(region, animated: true)
         }
@@ -59,7 +59,7 @@ public class VenueLocationSearchMediator {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
                 self.cleanRunningSearches()
                 if let location = LocationRequestManager.sharedInstance().location where self.searchBox == nil && useLocation {
-                    var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.035, longitudeDelta: 0.035))
+                    var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
                     region.center = location.coordinate
                     self.calculateSearchBox(region, useCenter:true)
                 } else {

@@ -22,6 +22,8 @@ public class CDCategory : NSManagedObject, Equatable, Printable {
     @NSManaged public var topCategory:Bool
     @NSManaged public var categories:NSSet
     
+    @NSManaged public var venue:CDVenue?
+    
     override public var description:String {
         get {
             return self.name

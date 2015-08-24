@@ -65,5 +65,6 @@ extension FoursquareClient {
         static let VENUE_SEARCH = "venues/search"
         static let VENUE_CATEGORY = "venues/categories"
         static let VENUE_DETAIL = "venues/{id}"
+        static let USERS_SELF = "users/self"
     }
 }

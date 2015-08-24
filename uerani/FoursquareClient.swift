@@ -221,6 +221,24 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
     public class func sharedInstance() -> FoursquareClient {
         return instance
     }
+    
+    // MARK: - Shared Date Formatter
+    
+    class var sharedDateFormatter: NSDateFormatter  {
+        
+        struct Singleton {
+            static let dateFormatter = Singleton.generateDateFormatter()
+            
+            static func generateDateFormatter() -> NSDateFormatter {
+                var formatter = NSDateFormatter()
+                formatter.dateFormat = "yyyy-mm-dd"
+                
+                return formatter
+            }
+        }
+        
+        return Singleton.dateFormatter
+    }
 }
 
 extension String {
