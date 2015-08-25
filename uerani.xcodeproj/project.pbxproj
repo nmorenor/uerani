@@ -80,6 +80,11 @@
 		66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */; };
 		66AFDC5D1B60692C002413DB /* CalloutMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */; };
 		66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */; };
+		66F55A961B8BE21E005C2F49 /* ConnectToFoursquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A951B8BE21E005C2F49 /* ConnectToFoursquare.png */; };
+		66F55A981B8BE23B005C2F49 /* CategoryFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A971B8BE23B005C2F49 /* CategoryFilter.png */; };
+		66F55A9A1B8BE253005C2F49 /* MapView.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A991B8BE253005C2F49 /* MapView.png */; };
+		66F55AC21B8BF221005C2F49 /* CustomCallout.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55AC11B8BF221005C2F49 /* CustomCallout.png */; };
+		66F55AC41B8BF712005C2F49 /* readme.md in Sources */ = {isa = PBXBuildFile; fileRef = 66F55AC31B8BF712005C2F49 /* readme.md */; };
 		66F693271B5AD92000C70E52 /* FoursquareClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F693261B5AD92000C70E52 /* FoursquareClientTests.swift */; };
 		66FBB1801B77CE88009374C1 /* CDSubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FBB17F1B77CE88009374C1 /* CDSubCategory.swift */; };
 		B12BA67A7FD7B7356B1D2DC8 /* Pods_uerani.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC8C27BBF60AF6ACCDC3C0D /* Pods_uerani.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -173,6 +178,11 @@
 		66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutAnnotation.swift; sourceTree = "<group>"; };
 		66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutMapAnnotationView.swift; sourceTree = "<group>"; };
 		66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewWtihProgress.swift; sourceTree = "<group>"; };
+		66F55A951B8BE21E005C2F49 /* ConnectToFoursquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ConnectToFoursquare.png; path = ueraniTests/ConnectToFoursquare.png; sourceTree = SOURCE_ROOT; };
+		66F55A971B8BE23B005C2F49 /* CategoryFilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategoryFilter.png; sourceTree = "<group>"; };
+		66F55A991B8BE253005C2F49 /* MapView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapView.png; sourceTree = "<group>"; };
+		66F55AC11B8BF221005C2F49 /* CustomCallout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CustomCallout.png; sourceTree = "<group>"; };
+		66F55AC31B8BF712005C2F49 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
 		66F693261B5AD92000C70E52 /* FoursquareClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareClientTests.swift; sourceTree = "<group>"; };
 		66FBB17F1B77CE88009374C1 /* CDSubCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDSubCategory.swift; sourceTree = "<group>"; };
 		85E0F1A40D3471844F2285F2 /* Pods-uerani.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-uerani.debug.xcconfig"; path = "Pods/Target Support Files/Pods-uerani/Pods-uerani.debug.xcconfig"; sourceTree = "<group>"; };
@@ -206,6 +216,10 @@
 		66382C1D1B69899C00F5644C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				66F55A991B8BE253005C2F49 /* MapView.png */,
+				66F55AC11B8BF221005C2F49 /* CustomCallout.png */,
+				66F55A971B8BE23B005C2F49 /* CategoryFilter.png */,
+				66F55A951B8BE21E005C2F49 /* ConnectToFoursquare.png */,
 				66A265651B8903A0005C4970 /* notes.pdf */,
 				66A265631B8901CB005C4970 /* user.pdf */,
 				66A265611B890112005C4970 /* map.pdf */,
@@ -286,6 +300,7 @@
 		66A7FC5C1B5AD6B30012358D = {
 			isa = PBXGroup;
 			children = (
+				66F55AC31B8BF712005C2F49 /* readme.md */,
 				66A7FCBE1B5AD8810012358D /* MapKit.framework */,
 				66A7FC671B5AD6B30012358D /* uerani */,
 				66A7FC7F1B5AD6B30012358D /* ueraniTests */,
@@ -568,11 +583,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66F55AC21B8BF221005C2F49 /* CustomCallout.png in Resources */,
 				66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */,
 				6684E4CB1B82AC9100B67B0A /* foursquare-logomark-white.pdf in Resources */,
 				66382C291B6D103100F5644C /* default_64.png in Resources */,
+				66F55A9A1B8BE253005C2F49 /* MapView.png in Resources */,
 				664C5D861B7FFC1400EDA856 /* poweredby-black.pdf in Resources */,
 				66A265641B8901CB005C4970 /* user.pdf in Resources */,
+				66F55A981B8BE23B005C2F49 /* CategoryFilter.png in Resources */,
 				66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */,
 				66A265661B8903A0005C4970 /* notes.pdf in Resources */,
 				66A265621B890112005C4970 /* map.pdf in Resources */,
@@ -587,6 +605,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66F55A961B8BE21E005C2F49 /* ConnectToFoursquare.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -711,6 +730,7 @@
 				66A7FCA31B5AD7600012358D /* HTTPClientProtocol.swift in Sources */,
 				66A116311B72E34C00498070 /* CDCategory.swift in Sources */,
 				66A265691B8A569A005C4970 /* UeraniTabBarViewController.swift in Sources */,
+				66F55AC41B8BF712005C2F49 /* readme.md in Sources */,
 				66A7FC9D1B5AD7470012358D /* SearchBoxCenter.swift in Sources */,
 				66A7FCBD1B5AD7CA0012358D /* SearchBox.swift in Sources */,
 				6657BF031B5D565B00C94677 /* ImageCache.swift in Sources */,
