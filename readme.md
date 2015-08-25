@@ -8,10 +8,10 @@ As displaying all the Foursquare locations could end up in a bad performance due
 
 To use the application your Foursquare credentials are required, the app is doing OAuth2 authentication either natively with the help of the Foursquare Application or going by using Safari to go to the Foursquare site.
 
-![alt tag](https://raw.github.com/nmorenor/uerani/uerani/master/MapView.png)
-![alt tag](https://raw.github.com/nmorenor/uerani/uerani/master/CustomCallout.png)
-![alt tag](https://raw.github.com/nmorenor/uerani/uerani/master/CategoryFilter.png)
-![alt tag](https://raw.github.com/nmorenor/uerani/uerani/master/ConnectToFoursquare.png)
+![alt tag](https://raw.github.com/nmorenor/uerani/master/uerani/MapView.png)
+![alt tag](https://raw.github.com/nmorenor/uerani/master/CustomCallout.png)
+![alt tag](https://raw.github.com/nmorenor/uerani/master/CategoryFilter.png)
+![alt tag](https://raw.github.com/nmorenor/uerani/master/ConnectToFoursquare.png)
 
 ## TODO
 
