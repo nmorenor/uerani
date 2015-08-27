@@ -39,8 +39,8 @@ public class CategroyVenueFilter {
         }
     }
     
-    func filterVenues(venues:Results<FVenue>) -> [FVenue] {
-        var result = [FVenue]()
+    func filterVenues(venues:GeneratorOf<FVenue>) -> GeneratorOf<FVenue> {
+        var result = Queue<FVenue>()
         outer : for next in venues {
             for nextCategory in next.categories {
                 var index = self.symbolGraph.indexOf(CategoryFilter(id: nextCategory.id))
@@ -49,13 +49,13 @@ public class CategroyVenueFilter {
                     continue
                 }
                 if filter.marked(index) {
-                    result.append(next)
+                    result.enqueue(next)
                     continue outer
                 }
             }
             
         }
-        return result
+        return GeneratorOf<FVenue>(result.generate())
     }
 }
 

@@ -150,15 +150,14 @@ class RefreshMapAnnotationOperation: NSOperation {
             let venueResults = realm.objects(FVenue).filter(predicate)
             
             var annotations = [FoursquareLocationMapAnnotation]()
+            var venues:GeneratorOf<FVenue>
             if let filter = self.searchMediator.getFilter() {
-                var venues = filter.filterVenues(venueResults)
-                for venue in venues {
-                    annotations.append(FoursquareLocationMapAnnotation(venue: venue))
-                }
+                venues = filter.filterVenues(venueResults.generate())
             } else {
-                for venue in venueResults {
-                    annotations.append(FoursquareLocationMapAnnotation(venue: venue))
-                }
+                venues = venueResults.generate()
+            }
+            for venue in venues {
+                annotations.append(FoursquareLocationMapAnnotation(venue: venue))
             }
             
             return annotations
