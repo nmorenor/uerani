@@ -22,7 +22,7 @@ import Realm.Private
 
 /**
 In Realm you define your model classes by subclassing `Object` and adding properties to be persisted.
-You then instantiate and use your custom subclasses instead of using the RLMObject class directly.
+You then instantiate and use your custom subclasses instead of using the Object class directly.
 
 ```swift
 class Dog: Object {
@@ -77,7 +77,8 @@ public class Object: RLMObjectBase, Equatable, Printable {
                     thrown if any required properties are not present and no default is set.
     */
     public init(value: AnyObject) {
-        super.init(value: value, schema: RLMSchema.sharedSchema())
+        self.dynamicType.sharedSchema() // ensure this class' objectSchema is loaded in the partialSharedSchema
+        super.init(value: value, schema: RLMSchema.partialSharedSchema())
     }
 
 
@@ -103,14 +104,22 @@ public class Object: RLMObjectBase, Equatable, Printable {
     /// Returns a human-readable description of this object.
     public override var description: String { return super.description }
 
+    #if os(OSX)
+    /// Helper to return the class name for an Object subclass.
+    public final override var className: String { return "" }
+    #else
+    /// Helper to return the class name for an Object subclass.
+    public final var className: String { return "" }
+    #endif
 
-    // MARK: Object customization
+    // MARK: Object Customization
 
     /**
     Override to designate a property as the primary key for an `Object` subclass. Only properties of
     type String and Int can be designated as the primary key. Primary key
     properties enforce uniqueness for each value whenever the property is set which incurs some overhead.
     Indexes are created automatically for primary key properties.
+
     :returns: Name of the property designated as the primary key, or `nil` if the model has no primary key.
     */
     public class func primaryKey() -> String? { return nil }
@@ -144,6 +153,29 @@ public class Object: RLMObjectBase, Equatable, Printable {
         return RLMObjectBaseLinkingObjectsOfClass(self, T.className(), propertyName) as! [T]
     }
 
+    // MARK: Key-Value Coding & Subscripting
+
+    /// Returns or sets the value of the property with the given name.
+    public subscript(key: String) -> AnyObject? {
+        get {
+            if realm == nil {
+                return self.valueForKey(key)
+            }
+            let property = RLMValidatedGetProperty(self, key)
+            if property.type == .Array {
+                return self.listForProperty(property)
+            }
+            return RLMDynamicGet(self, property)
+        }
+        set(value) {
+            if realm == nil {
+                self.setValue(value, forKey: key)
+            }
+            else {
+                RLMDynamicValidatedSet(self, key, value)
+            }
+        }
+    }
 
     // MARK: Private functions
 
@@ -165,62 +197,9 @@ public class Object: RLMObjectBase, Equatable, Printable {
         super.init(value: value, schema: schema)
     }
 
-    /**
-    Returns the value for the property identified by the given key.
-    :param: key The name of one of the receiver's properties.
-    :returns: The value for the property identified by `key`.
-    */
-    public override func valueForKey(key: String) -> AnyObject? {
-        if let list = listProperty(key) {
-            return list
-        }
-        return super.valueForKey(key)
-    }
-
-    /**
-    Sets the property of the receiver specified by the given key to the given value.
-    :param: value The value for the property identified by `key`.
-    :param: key   The name of one of the receiver's properties.
-    */
-    public override func setValue(value: AnyObject?, forKey key: String) {
-        if let list = listProperty(key) {
-            if let value = value as? NSFastEnumeration {
-                list._rlmArray.removeAllObjects()
-                list._rlmArray.addObjects(value)
-            }
-            return
-        }
-        super.setValue(value, forKey: key)
-    }
-
-    /// Returns or sets the value of the property with the given name.
-    public subscript(key: String) -> AnyObject? {
-        get {
-            if let list = listProperty(key) {
-                return list
-            }
-            return RLMObjectBaseObjectForKeyedSubscript(self, key)
-        }
-        set(value) {
-            if let list = listProperty(key) {
-                if let value = value as? NSFastEnumeration {
-                    list._rlmArray.removeAllObjects()
-                    list._rlmArray.addObjects(value)
-                }
-                return
-            }
-            RLMObjectBaseSetObjectForKeyedSubscript(self, key, value)
-        }
-    }
-
-    // Helper for getting a list property for the given key
-    private func listProperty(key: String) -> RLMListBase? {
-        if let prop = RLMObjectBaseObjectSchema(self)?[key] {
-            if prop.type == .Array {
-                return object_getIvar(self, prop.swiftListIvar) as! RLMListBase?
-            }
-        }
-        return nil
+    // Helper for getting the list object for a property
+    internal func listForProperty(prop: RLMProperty) -> RLMListBase {
+        return object_getIvar(self, prop.swiftListIvar) as! RLMListBase
     }
 }
 
@@ -234,22 +213,18 @@ public func == <T: Object>(lhs: T, rhs: T) -> Bool {
 }
 
 /// Object interface which allows untyped getters and setters for Objects.
+/// :nodoc:
 public final class DynamicObject : Object {
     private var listProperties = [String: List<DynamicObject>]()
 
     // Override to create List<DynamicObject> on access
-    private override func listProperty(key: String) -> RLMListBase? {
-        if let prop = RLMObjectBaseObjectSchema(self)?[key] {
-            if prop.type == .Array {
-                if let list = listProperties[key] {
-                    return list
-                }
-                let list = List<DynamicObject>()
-                listProperties[key] = list
-                return list
-            }
+    internal override func listForProperty(prop: RLMProperty) -> RLMListBase {
+        if let list = listProperties[prop.name] {
+            return list
         }
-        return nil
+        let list = List<DynamicObject>()
+        listProperties[prop.name] = list
+        return list
     }
 
     /// :nodoc:
@@ -262,7 +237,8 @@ public final class DynamicObject : Object {
         self[key] = value
     }
 
-    @objc private class func shouldPersistToRealm() -> Bool {
+    /// :nodoc:
+    public override class func shouldIncludeInDefaultSchema() -> Bool {
         return false;
     }
 }
@@ -302,8 +278,28 @@ public class ObjectUtil: NSObject {
         return properties
     }
 
-    @objc private class func initializeListProperty(object: RLMObjectBase?, property: RLMProperty?, array: RLMArray?) {
-        let list = (object as! Object)[property!.name]! as! RLMListBase
-        list._rlmArray = array
+    @objc private class func initializeListProperty(object: RLMObjectBase, property: RLMProperty, array: RLMArray) {
+        (object as! Object).listForProperty(property)._rlmArray = array
+    }
+
+    @objc private class func getOptionalPropertyNames(object: AnyObject) -> NSArray {
+        let reflection = reflect(object)
+
+        var properties = [String]()
+
+        // Skip the first property (super):
+        // super is an implicit property on Swift objects
+        for i in 1..<reflection.count {
+            let mirror = reflection[i].1
+            if mirror.disposition == .Optional {
+                properties.append(reflection[i].0)
+            }
+        }
+
+        return properties
+    }
+
+    @objc private class func requiredPropertiesForClass(_: AnyClass) -> NSArray? {
+        return nil
     }
 }

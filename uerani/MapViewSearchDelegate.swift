@@ -28,7 +28,7 @@ extension MapViewController: UISearchBarDelegate, UISearchResultsUpdating {
             
             http://stackoverflow.com/questions/25874975/cant-get-correct-value-of-keyboard-height-in-ios8
             */
-            self.categoryBottomConstraint.constant = getKeyboardHeight(notification)
+            self.categoryBottomConstraint.constant = (getKeyboardHeight(notification) - (self.tabBarController != nil ? self.tabBarController!.tabBar.frame.height : 0))
             UIView.animateWithDuration(1.0, animations: { [unowned self] in
                 self.view.layoutIfNeeded()
                 }, completion: nil)

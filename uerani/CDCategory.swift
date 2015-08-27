@@ -49,7 +49,7 @@ public class CDCategory : NSManagedObject, Equatable, Hashable, Printable {
         self.name = category.name
         self.pluralName = category.pluralName
         self.shortName = category.shortName
-        self.icon = CDIcon(icon: category.icon, context: context)
+        self.icon = CDIcon(icon: category.icon!, context: context)
         self.primary = category.primary
         self.topCategory = category.topCategory
     }

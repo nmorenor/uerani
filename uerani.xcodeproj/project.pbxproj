@@ -48,14 +48,12 @@
 		66A265721B8A9593005C4970 /* CDUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A265711B8A9593005C4970 /* CDUser.swift */; };
 		66A265741B8A9AA6005C4970 /* CDTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A265731B8A9AA6005C4970 /* CDTag.swift */; };
 		66A265761B8A9B3A005C4970 /* CDPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A265751B8A9B3A005C4970 /* CDPhoto.swift */; };
-		66A265781B8A9B79005C4970 /* CDContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A265771B8A9B79005C4970 /* CDContact.swift */; };
 		66A2657A1B8A9DD7005C4970 /* CDLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A265791B8A9DD7005C4970 /* CDLocation.swift */; };
 		66A2657C1B8A9EC1005C4970 /* CDVenue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A2657B1B8A9EC1005C4970 /* CDVenue.swift */; };
 		66A7FC6B1B5AD6B30012358D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */; };
 		66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC701B5AD6B30012358D /* Main.storyboard */; };
 		66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 66A7FC751B5AD6B30012358D /* LaunchScreen.xib */; };
 		66A7FC961B5AD7470012358D /* FCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC8E1B5AD7470012358D /* FCategory.swift */; };
-		66A7FC971B5AD7470012358D /* FContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC8F1B5AD7470012358D /* FContact.swift */; };
 		66A7FC981B5AD7470012358D /* FIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC901B5AD7470012358D /* FIcon.swift */; };
 		66A7FC991B5AD7470012358D /* FLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC911B5AD7470012358D /* FLocation.swift */; };
 		66A7FC9A1B5AD7470012358D /* FPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FC921B5AD7470012358D /* FPhoto.swift */; };
@@ -148,7 +146,6 @@
 		66A265711B8A9593005C4970 /* CDUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDUser.swift; sourceTree = "<group>"; };
 		66A265731B8A9AA6005C4970 /* CDTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDTag.swift; sourceTree = "<group>"; };
 		66A265751B8A9B3A005C4970 /* CDPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDPhoto.swift; sourceTree = "<group>"; };
-		66A265771B8A9B79005C4970 /* CDContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDContact.swift; sourceTree = "<group>"; };
 		66A265791B8A9DD7005C4970 /* CDLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDLocation.swift; sourceTree = "<group>"; };
 		66A2657B1B8A9EC1005C4970 /* CDVenue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDVenue.swift; sourceTree = "<group>"; };
 		66A7FC651B5AD6B30012358D /* uerani.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uerani.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,7 +156,6 @@
 		66A7FC7C1B5AD6B30012358D /* ueraniTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ueraniTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A7FC811B5AD6B30012358D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66A7FC8E1B5AD7470012358D /* FCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FCategory.swift; sourceTree = "<group>"; };
-		66A7FC8F1B5AD7470012358D /* FContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FContact.swift; sourceTree = "<group>"; };
 		66A7FC901B5AD7470012358D /* FIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIcon.swift; sourceTree = "<group>"; };
 		66A7FC911B5AD7470012358D /* FLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FLocation.swift; sourceTree = "<group>"; };
 		66A7FC921B5AD7470012358D /* FPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FPhoto.swift; sourceTree = "<group>"; };
@@ -265,7 +261,6 @@
 			isa = PBXGroup;
 			children = (
 				66A7FC8E1B5AD7470012358D /* FCategory.swift */,
-				66A7FC8F1B5AD7470012358D /* FContact.swift */,
 				66A7FC901B5AD7470012358D /* FIcon.swift */,
 				66A7FC911B5AD7470012358D /* FLocation.swift */,
 				66A7FC921B5AD7470012358D /* FPhoto.swift */,
@@ -286,7 +281,6 @@
 				66A265711B8A9593005C4970 /* CDUser.swift */,
 				66A265731B8A9AA6005C4970 /* CDTag.swift */,
 				66A265751B8A9B3A005C4970 /* CDPhoto.swift */,
-				66A265771B8A9B79005C4970 /* CDContact.swift */,
 				66A265791B8A9DD7005C4970 /* CDLocation.swift */,
 				66A2657B1B8A9EC1005C4970 /* CDVenue.swift */,
 			);
@@ -763,7 +757,6 @@
 				66A7FCBB1B5AD7CA0012358D /* MapViewController.swift in Sources */,
 				66A265721B8A9593005C4970 /* CDUser.swift in Sources */,
 				66A265761B8A9B3A005C4970 /* CDPhoto.swift in Sources */,
-				66A265781B8A9B79005C4970 /* CDContact.swift in Sources */,
 				66382C211B6996DF00F5644C /* Regex.swift in Sources */,
 				66A116291B72E2A700498070 /* CoreDataModel.swift in Sources */,
 				66A7FC981B5AD7470012358D /* FIcon.swift in Sources */,
@@ -791,7 +784,6 @@
 				66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */,
 				66A116351B72E68500498070 /* NSManagedObject.swift in Sources */,
 				66F55ACE1B8E4232005C2F49 /* QNode.swift in Sources */,
-				66A7FC971B5AD7470012358D /* FContact.swift in Sources */,
 				66A7FC6B1B5AD6B30012358D /* AppDelegate.swift in Sources */,
 				66FBB1801B77CE88009374C1 /* CDSubCategory.swift in Sources */,
 			);

@@ -15,7 +15,7 @@ public class FCategory: Object {
     public dynamic var name = ""
     public dynamic var pluralName = ""
     public dynamic var shortName = ""
-    public dynamic var icon = FIcon()
+    public dynamic var icon:FIcon?
     public dynamic var primary = false
     public dynamic var topCategory = false
     public dynamic var categories = List<FSubCategory>()

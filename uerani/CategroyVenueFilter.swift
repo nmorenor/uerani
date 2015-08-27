@@ -45,7 +45,7 @@ public class CategroyVenueFilter {
             for nextCategory in next.categories {
                 var index = self.symbolGraph.indexOf(CategoryFilter(id: nextCategory.id))
                 if (index == -1) {
-                    println("Can not find index for graph")
+                    println("Can not find index for graph \(nextCategory.id)")
                     continue
                 }
                 if filter.marked(index) {

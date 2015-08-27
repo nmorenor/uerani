@@ -3,14 +3,14 @@ PODS:
   - FSOAuth (1.0)
   - Locksmith (1.2.2)
   - Nimble (1.0.0)
-  - OAuthSwift (0.3.6)
+  - OAuthSwift (0.3.7)
   - pop (1.0.7)
   - Quick (0.3.1)
-  - Realm (0.93.2):
-    - Realm/Headers (= 0.93.2)
-  - Realm/Headers (0.93.2)
-  - RealmSwift (0.93.2):
-    - Realm (= 0.93.2)
+  - Realm (0.95.0):
+    - Realm/Headers (= 0.95.0)
+  - Realm/Headers (0.95.0)
+  - RealmSwift (0.95.0):
+    - Realm (= 0.95.0)
 
 DEPENDENCIES:
   - FBAnnotationClustering (~> 0.1.2)
@@ -27,10 +27,10 @@ SPEC CHECKSUMS:
   FSOAuth: 438481891a5334d489795ae14afc372904acf49c
   Locksmith: c84c10bf23f99e6d04703dba65065dc38b038d88
   Nimble: 8bee528e5fcc403653076545db562d2b5db7bb87
-  OAuthSwift: 3517e94380923085dfa7f23421bc3d4a61ce48c0
+  OAuthSwift: d5a96a1a92329e3b4bb63b682c3e4e89a8698dc8
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   Quick: 824572d3d198d51e52cf4aa722cebf7e59952a35
-  Realm: 2fdd0ae74f730e190384e0338d8a0d3654df8220
-  RealmSwift: 231b064da9f98b1c4f325fe1f1cb8756aae2b8d6
+  Realm: bbb171b96728ea136ed5cd354dca2a3d6529923c
+  RealmSwift: 35eeb642bf0b43dedfe363451ba3288d0e72ebb9
 
 COCOAPODS: 0.37.2

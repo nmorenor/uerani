@@ -38,13 +38,9 @@ public class VenueLocationSearchMediator {
     var runningSearchLocations:NSMutableSet = NSMutableSet()
     var categoryFilter:CategoryFilter? {
         didSet {
-            if self.categoryFilter == nil {
-                NSOperationQueue().addOperationWithBlock() {
-                    objc_sync_enter(self.mutex)
-                    self.filter = nil
-                    objc_sync_exit(self.mutex)
-                }
-            }
+            objc_sync_enter(self.mutex)
+            self.filter = nil
+            objc_sync_exit(self.mutex)
         }
     }
     var filter:CategroyVenueFilter?
@@ -100,7 +96,7 @@ public class VenueLocationSearchMediator {
     func shouldUseCluster() -> Bool {
         if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            var maxDistanceForNonClustered = self.categoryFilter != nil ? ((VenueLocationSearchMediator.locationSearchDistance / 3.0) + 1) : ((VenueLocationSearchMediator.locationSearchDistance / 2.0) + 1) + 1
+            var maxDistanceForNonClustered = ((VenueLocationSearchMediator.locationSearchDistance / 2.0) + 1) + 1
             return mapRegionDistance > maxDistanceForNonClustered
         }
         return true
@@ -171,9 +167,9 @@ public class VenueLocationSearchMediator {
     }
     
     func doSearchWithCategory(category:String?) {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.categoryFilter = category == nil ? nil : CategoryFilter(id: category!)
+        NSOperationQueue().addOperationWithBlock() {
             self.cleanMap()
+            self.categoryFilter = category == nil ? nil : CategoryFilter(id: category!)
             self.triggerLocationSearch(self.mapView.region, useLocation:false)
         }
     }
@@ -186,7 +182,9 @@ public class VenueLocationSearchMediator {
         objc_sync_enter(self.clusteringManager)
         self.allAnnotations.removeAllObjects()
         self.clusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
-        self.mapView.removeAnnotations(self.mapView.annotations)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.mapView.removeAnnotations(self.mapView.annotations)
+        }
         objc_sync_exit(self.clusteringManager)
     }
     

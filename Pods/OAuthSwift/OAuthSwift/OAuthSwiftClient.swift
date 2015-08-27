@@ -18,7 +18,7 @@ public class OAuthSwiftClient {
         static let signatureMethod = "HMAC-SHA1"
     }
     
-    var credential: OAuthSwiftCredential
+    private(set) public var credential: OAuthSwiftCredential
     
     public init(consumerKey: String, consumerSecret: String) {
         self.credential = OAuthSwiftCredential(consumer_key: consumerKey, consumer_secret: consumerSecret)
@@ -141,6 +141,66 @@ public class OAuthSwiftClient {
         }
         
         data.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        return data
+    }
+
+    public func postMultiPartRequest(url: String, method: String, parameters: Dictionary<String, AnyObject>, success: OAuthSwiftHTTPRequest.SuccessHandler?, failure: OAuthSwiftHTTPRequest.FailureHandler?) {
+        if let url = NSURL(string: url) {
+            var request = OAuthSwiftHTTPRequest(URL: url, method: method, parameters: parameters)
+            request.successHandler = success
+            request.failureHandler = failure
+            request.dataEncoding = dataEncoding
+            request.encodeParameters = true
+
+            let boundary = "POST-boundary-\(arc4random())-\(arc4random())"
+            var type = "multipart/form-data; boundary=\(boundary)"
+            var body = self.multiDataFromObject(parameters, boundary: boundary)
+
+            request.HTTPBodyMultipart = body
+            request.contentTypeMultipart = type
+            request.start()
+        }
+    }
+
+    func multiDataFromObject(object: [String:AnyObject], boundary: String) -> NSData? {
+        var data = NSMutableData()
+
+        let prefixString = "--\(boundary)\r\n"
+        let prefixData = prefixString.dataUsingEncoding(NSUTF8StringEncoding)!
+
+        let seperatorString = "\r\n"
+        let seperatorData = seperatorString.dataUsingEncoding(NSUTF8StringEncoding)!
+
+        for (key, value) in object {
+
+            var valueData: NSData?
+            var valueType: String?
+            var filenameClause = ""
+
+            let stringValue = "\(value)"
+            valueData = stringValue.dataUsingEncoding(NSUTF8StringEncoding)!
+
+            if valueData == nil {
+                continue
+            }
+            data.appendData(prefixData)
+            let contentDispositionString = "Content-Disposition: form-data; name=\"\(key)\";\(filenameClause)\r\n"
+            let contentDispositionData = contentDispositionString.dataUsingEncoding(NSUTF8StringEncoding)
+            data.appendData(contentDispositionData!)
+            if let type = valueType {
+                let contentTypeString = "Content-Type: \(type)\r\n"
+                let contentTypeData = contentTypeString.dataUsingEncoding(NSUTF8StringEncoding)
+                data.appendData(contentTypeData!)
+            }
+            data.appendData(seperatorData)
+            data.appendData(valueData!)
+            data.appendData(seperatorData)
+        }
+
+        let endingString = "--\(boundary)--\r\n"
+        let endingData = endingString.dataUsingEncoding(NSUTF8StringEncoding)!
+        data.appendData(endingData)
+
         return data
     }
 
