@@ -23,6 +23,17 @@ public class FCategory: Object {
     public static override func primaryKey() -> String? {
         return "id"
     }
+    
+    func getCategoryIds(categories:List<FSubCategory>) ->[String] {
+        var result = [String]()
+        for child in categories {
+            result.append(child.id)
+            if child.categories.count > 0 {
+                result += getCategoryIds(child.categories)
+            }
+        }
+        return result
+    }
 }
 
 public class FSubCategory:FCategory {

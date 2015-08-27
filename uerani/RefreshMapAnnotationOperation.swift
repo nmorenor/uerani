@@ -145,12 +145,20 @@ class RefreshMapAnnotationOperation: NSOperation {
                 let searchBeginNotification = NSNotification(name: UERANI_MAP_BEGIN_PROGRESS, object: nil)
                 NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
             }
-            let predicate = searchBox.getPredicate(mapView.region, categoryFilter: self.searchMediator.categoryFilter)
+            let predicate = searchBox.getPredicate(mapView.region)
             let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
-            let venues = realm.objects(FVenue).filter(predicate)
+            let venueResults = realm.objects(FVenue).filter(predicate)
+            
             var annotations = [FoursquareLocationMapAnnotation]()
-            for venue in venues {
-                annotations.append(FoursquareLocationMapAnnotation(venue: venue))
+            if let filter = self.searchMediator.getFilter() {
+                var venues = filter.filterVenues(venueResults)
+                for venue in venues {
+                    annotations.append(FoursquareLocationMapAnnotation(venue: venue))
+                }
+            } else {
+                for venue in venueResults {
+                    annotations.append(FoursquareLocationMapAnnotation(venue: venue))
+                }
             }
             
             return annotations

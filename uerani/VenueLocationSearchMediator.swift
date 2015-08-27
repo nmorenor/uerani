@@ -36,8 +36,18 @@ public class VenueLocationSearchMediator {
     var gridBox:NSMutableSet = NSMutableSet()
     var allAnnotations:NSMutableSet = NSMutableSet()
     var runningSearchLocations:NSMutableSet = NSMutableSet()
-    var categoryFilter:[String]?
-    
+    var categoryFilter:CategoryFilter? {
+        didSet {
+            if self.categoryFilter == nil {
+                NSOperationQueue().addOperationWithBlock() {
+                    objc_sync_enter(self.mutex)
+                    self.filter = nil
+                    objc_sync_exit(self.mutex)
+                }
+            }
+        }
+    }
+    var filter:CategroyVenueFilter?
     
     func setAllowLocation() {
         dispatch_async(dispatch_get_main_queue()) {
@@ -160,9 +170,9 @@ public class VenueLocationSearchMediator {
         objc_sync_exit(self.mutex)
     }
     
-    func doSearchWithCategory(category:[String]?) {
+    func doSearchWithCategory(category:String?) {
         dispatch_async(dispatch_get_main_queue()) {
-            self.categoryFilter = category
+            self.categoryFilter = category == nil ? nil : CategoryFilter(id: category!)
             self.cleanMap()
             self.triggerLocationSearch(self.mapView.region, useLocation:false)
         }
@@ -218,6 +228,17 @@ public class VenueLocationSearchMediator {
         var result:Int = 1
         var toHash = NSString(format: "[%.8f,%.8f]", location.coordinate.latitude, location.coordinate.longitude)
         result = prime * result + toHash.hashValue
+        return result
+    }
+    
+    func getFilter() -> CategroyVenueFilter? {
+        var result:CategroyVenueFilter?
+        objc_sync_enter(self.mutex)
+        if let categoryFilter = self.categoryFilter where self.filter == nil {
+            self.filter = CategroyVenueFilter(filter: categoryFilter)
+        }
+        result = self.filter
+        objc_sync_exit(self.mutex)
         return result
     }
 }

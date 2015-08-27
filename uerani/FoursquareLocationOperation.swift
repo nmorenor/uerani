@@ -97,9 +97,16 @@ public class FoursquareLocationOperation: NSOperation {
         if !self.updateUI {
             return
         }
-        
-        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne, categoryFilter:self.searchMediator.categoryFilter)
-        var venues = realm.objects(FVenue).filter(predicate)
+        let predicate = SearchBox.getPredicate(self.sw, ne: self.ne)
+        let venueResults = realm.objects(FVenue).filter(predicate)
+        var venues:[FVenue] = [FVenue]()
+        if let filter = self.searchMediator.getFilter() {
+            venues += filter.filterVenues(venueResults)
+        } else {
+            for nextVenue in venueResults {
+                venues.append(nextVenue)
+            }
+        }
         
         for nextVenue in venues {
             

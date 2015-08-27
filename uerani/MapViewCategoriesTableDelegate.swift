@@ -40,7 +40,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
             self.categoryViewSearch.hidden = true
             self.searchController.active = false
             self.searchController.searchBar.text = category.name
-            self.searchMediator.doSearchWithCategory(category.getCategoriesIds())
+            self.searchMediator.doSearchWithCategory(category.id)
         }
     }
     
