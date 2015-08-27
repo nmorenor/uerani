@@ -17,13 +17,11 @@ public class FoursquareLocationOperation: NSOperation {
     var ne:CLLocationCoordinate2D
     private var searchMediator:VenueLocationSearchMediator
     private var center:GeoLocation
-    private var updateUI:Bool
     private var semaphore = dispatch_semaphore_create(0)
     
-    init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, searchMediator:VenueLocationSearchMediator, updateUI:Bool) {
+    init(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D, searchMediator:VenueLocationSearchMediator) {
         self.sw = sw
         self.ne = ne
-        self.updateUI = updateUI
         self.center = GeoLocation(coordinate: CLLocationCoordinate2D(latitude: sw.latitude + ((ne.latitude - sw.latitude)/2), longitude: sw.longitude + ((ne.longitude - sw.longitude)/2)))
         self.searchMediator = searchMediator
         super.init()
@@ -55,9 +53,6 @@ public class FoursquareLocationOperation: NSOperation {
     * the radius of the gridBox
     */
     func shouldCallFoursquareAPI(realm:Realm) -> Bool {
-        if self.searchMediator.categoryFilter != nil && self.updateUI {
-            return false
-        }
         let matchingCenters = realm.objects(SearchBoxCenter).filter(getSearchBoxPredicate())
         if matchingCenters.count > 0 {
             let center = getCenter()
@@ -97,9 +92,6 @@ public class FoursquareLocationOperation: NSOperation {
     
     //Search on local cache
     private func doLocalCacheSearch(realm:Realm) {
-        if !self.updateUI {
-            return
-        }
         let predicate = SearchBox.getPredicate(self.sw, ne: self.ne)
         let venueResults = realm.objects(FVenue).filter(predicate)
         var venues:GeneratorOf<FVenue>
@@ -150,7 +142,7 @@ public class FoursquareLocationOperation: NSOperation {
             self.doLocalCacheSearch(realm)
         } else {
             if let result = result where result.count > 0 {
-                var newVenues:[FVenue] = [FVenue]()
+                var newVenues:Queue = Queue<FVenue>()
                 let center = self.getCenter()
                 let boxCenter = SearchBoxCenter()
                 boxCenter.lat = center.latitude
@@ -159,32 +151,38 @@ public class FoursquareLocationOperation: NSOperation {
                     realm.add(boxCenter, update: true)
                     for next in result {
                         let venue = realm.create(FVenue.self, value: next, update: true)
-                        newVenues.append(venue)
+                        newVenues.enqueue(venue)
                     }
                 }
                 
-                if self.updateUI {
-                    var annotations:[FoursquareLocationMapAnnotation] = [FoursquareLocationMapAnnotation]()
-                    for venue in newVenues {
-                        for nextCategory in venue.categories {
-                            FoursquareCategoryIconWorker(prefix: nextCategory.icon!.prefix, suffix: nextCategory.icon!.suffix)
-                        
-                        }
-                        annotations.append(FoursquareLocationMapAnnotation(venue: venue))
-                    }
-                
-                    if cancelled {
-                        return
-                    }
-                    //filter with category predicate
-                
-                    self.addAnnotationsToCluster(annotations)
-                    if cancelled {
-                        return
-                    }
-                    
-                    searchMediator.updateUI()
+                var annotations:[FoursquareLocationMapAnnotation] = [FoursquareLocationMapAnnotation]()
+                var venues:GeneratorOf<FVenue>
+                if let filter = self.searchMediator.getFilter() {
+                    venues = filter.filterVenues(GeneratorOf<FVenue>(newVenues.generate()))
+                } else {
+                    venues = GeneratorOf<FVenue>(newVenues.generate())
                 }
+                
+                for venue in venues {
+                    for nextCategory in venue.categories {
+                        FoursquareCategoryIconWorker(prefix: nextCategory.icon!.prefix, suffix: nextCategory.icon!.suffix)
+
+                    }
+                    annotations.append(FoursquareLocationMapAnnotation(venue: venue))
+                }
+            
+                if cancelled {
+                    return
+                }
+                //filter with category predicate
+            
+                self.addAnnotationsToCluster(annotations)
+                if cancelled {
+                    return
+                }
+                
+                searchMediator.updateUI()
+                
                 
             } else {
                 let center = self.getCenter()

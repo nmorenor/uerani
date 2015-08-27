@@ -96,7 +96,7 @@ public class VenueLocationSearchMediator {
     func shouldUseCluster() -> Bool {
         if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            var maxDistanceForNonClustered = ((VenueLocationSearchMediator.locationSearchDistance / 1.5) + 1) + 1
+            var maxDistanceForNonClustered = (VenueLocationSearchMediator.locationSearchDistance * 0.8) + 1
             return mapRegionDistance > maxDistanceForNonClustered
         }
         return true
@@ -179,8 +179,6 @@ public class VenueLocationSearchMediator {
         self.searchBox = nil
         LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
         LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
-        let searchBeginNotification = NSNotification(name: UERANI_MAP_END_PROGRESS, object: nil)
-        NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
         self.cleanRunningSearches()
         objc_sync_enter(self.clusteringManager)
         self.allAnnotations.removeAllObjects()
