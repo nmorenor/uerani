@@ -110,8 +110,8 @@ class RefreshMapAnnotationOperation: NSOperation {
                 //block thread, only one at a time will update the ui
                 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
                 if !self.searchMediator.hasRunningSearch() {
-                    let searchBeginNotification = NSNotification(name: UERANI_MAP_END_PROGRESS, object: nil)
-                    NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
+                    let searchEndNotification = NSNotification(name: UERANI_MAP_END_PROGRESS, object: nil)
+                    NSNotificationCenter.defaultCenter().postNotification(searchEndNotification)
                     //wait for progress animation to end
                     NSThread.sleepForTimeInterval(0.65)
                 }

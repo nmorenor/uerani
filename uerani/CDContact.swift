@@ -15,6 +15,7 @@ public class CDContact : NSManagedObject {
     
     @NSManaged public var phone:String
     @NSManaged public var formattedPhone:String
+    @NSManaged public var email:String
     
     @NSManaged public var venue:CDVenue?
     

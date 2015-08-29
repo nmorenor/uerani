@@ -83,16 +83,18 @@ class MapViewController: UIViewController, CategoriesReady {
     
     override func viewWillAppear(animated: Bool) {
         self.searchMediator?.mapView = self.mapView
-        subscribeToKeyboardNotifications();
-        LocationRequestManager.sharedInstance().operationQueue.suspended = false
-        LocationRequestManager.sharedInstance().refreshOperationQueue.suspended = false
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         unsubscribeFromKeyboardNotifications()
-        LocationRequestManager.sharedInstance().operationQueue.suspended = true
-        LocationRequestManager.sharedInstance().refreshOperationQueue.suspended = true
+        if self.isRefreshReady {
+            self.searchMediator.updateUI()
+        }
+        if self.searchMediator.hasRunningSearch() {
+            let searchBeginNotification = NSNotification(name: UERANI_MAP_BEGIN_PROGRESS, object: nil)
+            NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -100,6 +102,10 @@ class MapViewController: UIViewController, CategoriesReady {
         unsubscribeFromKeyboardNotifications()
         let locationRequestManager = LocationRequestManager.sharedInstance()
         self.searchMediator?.calloutAnnotation = nil
+        
+        LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
+        let searchEndNotification = NSNotification(name: UERANI_MAP_END_PROGRESS, object: nil)
+        NSNotificationCenter.defaultCenter().postNotification(searchEndNotification)
     }
     
     override func didReceiveMemoryWarning() {

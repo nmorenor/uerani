@@ -11,6 +11,12 @@ import MapKit
 
 extension FoursquareClient {
     
+    public func loadUserData(completionHandler:(success:Bool, result:[[String:AnyObject]]?, errorString:String?) -> Void) {
+        var parameters = self.addAuthParameters([String:AnyObject]())
+        
+        self.doGETAPI(FoursquareClient.Methods.USERS_SELF, key: FoursquareClient.RespnoseKeys.USER, parameters: parameters, completionHandler: completionHandler)
+    }
+    
     public func searchVenuesForLocation(location: CLLocationCoordinate2D, completionHandler:(success:Bool, result:[[String:AnyObject]]?, errorString:String?) -> Void) {
         var parameters:[String:AnyObject] = [
             FoursquareClient.ParameterKeys.LATITUDE_LONGITUDE : "\(location.latitude),\(location.longitude)",

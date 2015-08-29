@@ -84,7 +84,6 @@
 		66F55A981B8BE23B005C2F49 /* CategoryFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A971B8BE23B005C2F49 /* CategoryFilter.png */; };
 		66F55A9A1B8BE253005C2F49 /* MapView.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A991B8BE253005C2F49 /* MapView.png */; };
 		66F55AC21B8BF221005C2F49 /* CustomCallout.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55AC11B8BF221005C2F49 /* CustomCallout.png */; };
-		66F55AC41B8BF712005C2F49 /* readme.md in Sources */ = {isa = PBXBuildFile; fileRef = 66F55AC31B8BF712005C2F49 /* readme.md */; };
 		66F55AC61B8BF9CB005C2F49 /* ConnectToFoursquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55AC51B8BF9CB005C2F49 /* ConnectToFoursquare.png */; };
 		66F55AC81B8E3C8D005C2F49 /* DirectedGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F55AC71B8E3C8D005C2F49 /* DirectedGraph.swift */; };
 		66F55ACA1B8E4040005C2F49 /* SymbolGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F55AC91B8E4040005C2F49 /* SymbolGraph.swift */; };
@@ -754,7 +753,6 @@
 				66A7FCA31B5AD7600012358D /* HTTPClientProtocol.swift in Sources */,
 				66A116311B72E34C00498070 /* CDCategory.swift in Sources */,
 				66A265691B8A569A005C4970 /* UeraniTabBarViewController.swift in Sources */,
-				66F55AC41B8BF712005C2F49 /* readme.md in Sources */,
 				66F55AD01B8E4EBE005C2F49 /* DirectedDepthFirstSearch.swift in Sources */,
 				66A7FC9D1B5AD7470012358D /* SearchBoxCenter.swift in Sources */,
 				66A7FCBD1B5AD7CA0012358D /* SearchBox.swift in Sources */,

@@ -53,6 +53,7 @@ extension FoursquareClient {
         static let VENUES = "venues"
         static let VENUE = "venue"
         static let CATEGORIES = "categories"
+        static let USER = "user"
         
         static let ErrorDetail = "errorDetail"
         static let ErrorType = "errorType"

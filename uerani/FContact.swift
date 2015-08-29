@@ -13,5 +13,6 @@ public class FContact : Object {
     
     public dynamic var phone = ""
     public dynamic var formattedPhone = ""
+    public dynamic var email = ""
     
 }

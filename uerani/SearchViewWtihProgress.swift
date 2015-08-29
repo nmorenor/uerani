@@ -42,7 +42,9 @@ class SearchViewWtihProgress: UIView {
             self.progress?.beginProgress()
         } else {
             self.progress?.endProgress()
-            self.progress?.beginProgress()
+            delay(seconds: 0.2) {
+                self.progress?.beginProgress()
+            }
         }
         if self.onProgress {
             let refreshRadius:CGFloat = self.frame.size.height/2 * 0.9

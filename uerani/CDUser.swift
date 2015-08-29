@@ -20,6 +20,7 @@ public class CDUser : NSManagedObject, Equatable, Printable {
     @NSManaged public var homeCity:String
     @NSManaged public var gender:String
     @NSManaged public var lastUpdate:NSDate
+    @NSManaged public var photo:CDPhoto
     
     @NSManaged public var venueLists:[CDVenueList]
     
