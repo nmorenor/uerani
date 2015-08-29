@@ -1,41 +1,31 @@
 //
-//  CDVenue.swift
+//  CDContact.swift
 //  uerani
 //
-//  Created by nacho on 8/23/15.
+//  Created by nacho on 8/28/15.
 //  Copyright (c) 2015 Ignacio Moreno. All rights reserved.
 //
 
 import Foundation
 import CoreData
 
-@objc(CDVenue)
+@objc(CDContact)
 
-public class CDVenue : NSManagedObject, Equatable {
+public class CDContact : NSManagedObject {
     
-    @NSManaged public var id:String
-    @NSManaged public var name:String
-    @NSManaged public var completeVenue:Bool
-    @NSManaged public var contact:CDContact?
-    @NSManaged public var location:CDLocation
-    @NSManaged public var categories:[CDCategory]
-    @NSManaged public var verified:Bool
-    @NSManaged public var url:String
-    @NSManaged public var tags:[CDTag]
-    @NSManaged public var photos:[CDPhoto]
+    @NSManaged public var phone:String
+    @NSManaged public var formattedPhone:String
     
-    @NSManaged public var lastUpdate:NSDate
+    @NSManaged public var venue:CDVenue?
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
     
-    //from cache data
-    init(venue:FVenue, context:NSManagedObjectContext) {
+    init(tag:FContact, context:NSManagedObjectContext) {
         let name = self.dynamicType.entityName()
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
-        
         
     }
     
@@ -46,8 +36,4 @@ public class CDVenue : NSManagedObject, Equatable {
         
         //TODO
     }
-}
-
-public func ==(lhs:CDVenue, rhs:CDVenue) -> Bool {
-    return lhs.id == rhs.id
 }

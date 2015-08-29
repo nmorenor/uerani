@@ -14,12 +14,11 @@ import CoreData
 public class CDPhoto : NSManagedObject, Equatable {
     
     @NSManaged public var id:String
-    @NSManaged public var createdAt:NSDate
     @NSManaged public var prefix:String
     @NSManaged public var suffix:String
     @NSManaged public var visibility:String
     
-    @NSManaged public var venue:CDVenue
+    @NSManaged public var venue:CDVenue?
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)

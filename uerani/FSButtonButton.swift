@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import QuartzCore
 
 let borderedButtonCornerRadius : CGFloat = 20.0
 
@@ -48,6 +49,14 @@ class FSButton: UIButton {
             self.backingColor = backingColor;
             self.backgroundColor = backingColor;
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.imageView?.layer.shouldRasterize = true
+        self.imageView?.layer.edgeAntialiasingMask = CAEdgeAntialiasingMask.LayerLeftEdge | .LayerRightEdge | .LayerBottomEdge | CAEdgeAntialiasingMask.LayerTopEdge
+        self.imageView?.clipsToBounds = false
+        self.imageView?.layer.masksToBounds = false
     }
     
     override func imageRectForContentRect(contentRect: CGRect) -> CGRect {

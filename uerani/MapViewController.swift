@@ -84,10 +84,15 @@ class MapViewController: UIViewController, CategoriesReady {
     override func viewWillAppear(animated: Bool) {
         self.searchMediator?.mapView = self.mapView
         subscribeToKeyboardNotifications();
+        LocationRequestManager.sharedInstance().operationQueue.suspended = false
+        LocationRequestManager.sharedInstance().refreshOperationQueue.suspended = false
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        unsubscribeFromKeyboardNotifications()
+        LocationRequestManager.sharedInstance().operationQueue.suspended = true
+        LocationRequestManager.sharedInstance().refreshOperationQueue.suspended = true
     }
     
     override func viewWillDisappear(animated: Bool) {

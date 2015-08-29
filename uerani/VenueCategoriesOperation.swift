@@ -46,7 +46,18 @@ class VenueCategoriesOperation : NSOperation {
         
         var rCategories = realm.objects(FCategory).filter(topCategoriesPredicate)
         if rCategories.count > 0 {
-            //we already have categories on local cache
+            //we already have categories on local cache, look for any category that has pending image download
+            let results = realm.objects(FCategory)
+            for nextCat in results {
+                if let url = NSURL(string: "\(nextCat.icon!.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.icon!.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
+                    let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
+                    let imageName = "\(prefix_image_name)_\(name)"
+                    var image = ImageCache.sharedInstance().imageWithIdentifier(imageName)
+                    if image == nil {
+                        FoursquareCategoryIconWorker(prefix: nextCat.icon!.prefix, suffix: nextCat.icon!.suffix)
+                    }
+                }
+            }
             self.delegate?.initializeSearchResults()
             return
         }

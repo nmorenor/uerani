@@ -40,6 +40,9 @@ class SearchViewWtihProgress: UIView {
             self.addSubview(self.progress!)
             self.layoutIfNeeded()
             self.progress?.beginProgress()
+        } else {
+            self.progress?.endProgress()
+            self.progress?.beginProgress()
         }
         if self.onProgress {
             let refreshRadius:CGFloat = self.frame.size.height/2 * 0.9

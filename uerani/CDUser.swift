@@ -21,6 +21,8 @@ public class CDUser : NSManagedObject, Equatable, Printable {
     @NSManaged public var gender:String
     @NSManaged public var lastUpdate:NSDate
     
+    @NSManaged public var venueLists:[CDVenueList]
+    
     override public var description:String {
         get {
             return "\(self.firstName) \(self.lastName)"

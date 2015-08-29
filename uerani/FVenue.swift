@@ -15,6 +15,7 @@ public class FVenue: Object {
     public dynamic var name = ""
     public dynamic var completeVenue = false
     public dynamic var location:FLocation?
+    public dynamic var cotact:FContact?
     public dynamic var categories = List<FCategory>()
     public dynamic var verified = false
     public dynamic var url = ""

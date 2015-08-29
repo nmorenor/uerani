@@ -20,9 +20,7 @@ public class CDCategory : NSManagedObject, Equatable, Hashable, Printable {
     @NSManaged public var icon:CDIcon
     @NSManaged public var primary:Bool
     @NSManaged public var topCategory:Bool
-    @NSManaged public var categories:NSSet
-    
-    @NSManaged public var venue:CDVenue?
+    @NSManaged public var categories:[CDSubCategory]
     
     override public var description:String {
         get {

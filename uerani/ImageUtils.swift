@@ -12,10 +12,10 @@ import QuartzCore
 
 extension UIImage {
     public func imageRotatedByDegrees(degrees: Double, flip: Bool) -> UIImage {
-        
+
         // calculate the size of the rotated view's containing box for our drawing space
         let rotatedViewBox = UIView(frame: CGRect(origin: CGPointZero, size: size))
-        let t = CGAffineTransformMakeRotation(CGFloat(toRadian(degrees)));
+        let t = CGAffineTransformMakeRotation(CGFloat(toRadian(degrees)))
         rotatedViewBox.transform = t
         let rotatedSize = rotatedViewBox.frame.size
         
@@ -23,11 +23,15 @@ extension UIImage {
         UIGraphicsBeginImageContext(rotatedSize)
         let bitmap = UIGraphicsGetCurrentContext()
         
+        CGContextSetAllowsAntialiasing(bitmap, true)
+        CGContextSetShouldAntialias(bitmap, true)
+        CGContextSetInterpolationQuality(bitmap, kCGInterpolationHigh)
+        
         // Move the origin to the middle of the image so we will rotate and scale around the center.
-        CGContextTranslateCTM(bitmap, rotatedSize.width / 2.0, rotatedSize.height / 2.0);
+        CGContextTranslateCTM(bitmap, rotatedSize.width / 2.0, rotatedSize.height / 2.0)
         
         //   // Rotate the image context
-        CGContextRotateCTM(bitmap, CGFloat(toRadian(degrees)));
+        CGContextRotateCTM(bitmap, CGFloat(toRadian(degrees)))
         
         // Now, draw the rotated/scaled image into the context
         var yFlip: CGFloat
@@ -48,14 +52,18 @@ extension UIImage {
     }
     
     public func resizeImage(newSize:CGSize) -> UIImage {
+        
         var newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
         var imageRef:CGImageRef = self.CGImage
         
-        UIGraphicsBeginImageContextWithOptions(newSize, false, UIScreen.mainScreen().scale)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
         var context:CGContextRef = UIGraphicsGetCurrentContext()
         
         // Set the quality level to use when rescaling
-        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh)
+        CGContextSetAllowsAntialiasing(context, true)
+        CGContextSetShouldAntialias(context, true)
+        
         var flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
         
         CGContextConcatCTM(context, flipVertical)
@@ -103,7 +111,8 @@ extension UIImage {
         
         // get a reference to that context we created
         let context = UIGraphicsGetCurrentContext()
-        
+        CGContextSetAllowsAntialiasing(context, true)
+        CGContextSetShouldAntialias(context, true)
         // set the context's fill color
         color.setFill()
     
