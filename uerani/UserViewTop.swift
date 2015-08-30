@@ -34,6 +34,7 @@ public class UserViewTop : UIView {
         CGPathAddLineToPoint(path, nil, 0, 0)
         
         createArcPathOnBottomOfRect(rect, arcHeight: arcHeight * 0.95, path: path)
+        CGPathCloseSubpath(path)
         
         CGContextAddPath(context, path)
         
@@ -52,8 +53,6 @@ public class UserViewTop : UIView {
         var angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
         var startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
         var endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
-        
-        println("start: \(startAngle) :: end: (\(endAngle))")
         
         CGPathAddArc(path, nil, arcCenter.x, arcCenter.y, arcRadius, startAngle, endAngle, true)
     }

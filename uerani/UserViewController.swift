@@ -30,4 +30,8 @@ class UserViewController : UIViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
     }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
 }

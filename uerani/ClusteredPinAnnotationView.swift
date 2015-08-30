@@ -46,12 +46,12 @@ class ClusteredPinAnnotationView : MKAnnotationView {
         if let annotation = annotation as? FBAnnotationCluster {
             let number = annotation.annotations.count
             
-            let fontSize:CGFloat = number > 9 ? 24 : 18
+            let fontSize:CGFloat = number > 9 ? 20 : 18
             var font = UIFont(name: "HelveticaNeue", size: fontSize)!
             var attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: yellowColor])
             let asize:CGSize = attributedString.size()
-            let size = asize.width + 10
-            self.frame = CGRectMake(0, 0, size + 5, size + 5)
+            let size = asize.width + 16
+            self.frame = CGRectMake(0, 0, size + 8, size + 8)
         }
     }
     
@@ -59,7 +59,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
         if let annotation = annotation as? FBAnnotationCluster {
             let size = self.frame.size.width
             let number = annotation.annotations.count
-            let fontSize:CGFloat = number > 9 ? 24 : 18
+            let fontSize:CGFloat = number > 9 ? 20 : 18
             
             var context:CGContextRef = UIGraphicsGetCurrentContext();
             
@@ -105,7 +105,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             // set the drawing mode to stroke
             CGContextSetTextDrawingMode(context, kCGTextFill)
             
-            CGContextSetTextPosition(context, (center.x - (bounds.size.width/2)), (((bounds.size.height/2) + (center.y / 2)) - (((bounds.size.height/2) - (radius/2)))) - 5)
+            CGContextSetTextPosition(context, (center.x - (bounds.size.width/2)), (((bounds.size.height/2) + (center.y / 2)) - (((bounds.size.height/2) - (radius/2)))) - 4)
             // the line of text is drawn - see https://developer.apple.com/library/ios/DOCUMENTATION/StringsTextFonts/Conceptual/CoreText_Programming/LayoutOperations/LayoutOperations.html
             // draw the line of text
             CTLineDraw(line, context)

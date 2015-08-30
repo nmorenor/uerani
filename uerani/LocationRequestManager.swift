@@ -17,6 +17,7 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
     var refreshOperationQueue:NSOperationQueue
     var categoryIconOperationQueue:NSOperationQueue
     var categoryIconDownloadOperationQueue:NSOperationQueue
+    var userRefreshOperationQueue:NSOperationQueue
     
     //user location authorized
     dynamic var authorized:Bool = false
@@ -52,6 +53,10 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         categoryIconDownloadOperationQueue = NSOperationQueue()
         categoryIconDownloadOperationQueue.name = "Download Category Icon Operation Queue"
         categoryIconDownloadOperationQueue.maxConcurrentOperationCount = 5
+        
+        userRefreshOperationQueue = NSOperationQueue()
+        userRefreshOperationQueue.name = "User refresh Operation Queue"
+        userRefreshOperationQueue.maxConcurrentOperationCount = 1
         
         super.init()
         self.manager.delegate = self
