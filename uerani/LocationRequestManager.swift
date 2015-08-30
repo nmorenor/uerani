@@ -39,7 +39,7 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         //setup operation queue
         operationQueue = NSOperationQueue()
         operationQueue.name = "Location operation Queue"
-        operationQueue.maxConcurrentOperationCount = 1
+        operationQueue.maxConcurrentOperationCount = 2
         
         refreshOperationQueue = NSOperationQueue()
         refreshOperationQueue.name = "Refresh annotation operation queue"

@@ -33,6 +33,8 @@
 		6688F12D1B911E37008BF82B /* FContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688F12C1B911E37008BF82B /* FContact.swift */; };
 		6688F12F1B911F6F008BF82B /* CDContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688F12E1B911F6F008BF82B /* CDContact.swift */; };
 		6688F1311B912760008BF82B /* CDVenueList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688F1301B912760008BF82B /* CDVenueList.swift */; };
+		6688F1371B920221008BF82B /* UserPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688F1361B920221008BF82B /* UserPhotoView.swift */; };
+		6688F1391B9204CA008BF82B /* UserViewTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688F1381B9204CA008BF82B /* UserViewTop.swift */; };
 		66A116281B72E2A700498070 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116251B72E2A700498070 /* CoreDataStack.swift */; };
 		66A116291B72E2A700498070 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116261B72E2A700498070 /* CoreDataModel.swift */; };
 		66A1162A1B72E2A700498070 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116271B72E2A700498070 /* CoreDataStackManager.swift */; };
@@ -133,6 +135,8 @@
 		6688F12C1B911E37008BF82B /* FContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FContact.swift; sourceTree = "<group>"; };
 		6688F12E1B911F6F008BF82B /* CDContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDContact.swift; sourceTree = "<group>"; };
 		6688F1301B912760008BF82B /* CDVenueList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDVenueList.swift; sourceTree = "<group>"; };
+		6688F1361B920221008BF82B /* UserPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPhotoView.swift; sourceTree = "<group>"; };
+		6688F1381B9204CA008BF82B /* UserViewTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewTop.swift; sourceTree = "<group>"; };
 		66A116251B72E2A700498070 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		66A116261B72E2A700498070 /* CoreDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
 		66A116271B72E2A700498070 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
@@ -262,6 +266,15 @@
 			name = view;
 			sourceTree = "<group>";
 		};
+		6688F1351B91FD0A008BF82B /* views */ = {
+			isa = PBXGroup;
+			children = (
+				6688F1361B920221008BF82B /* UserPhotoView.swift */,
+				6688F1381B9204CA008BF82B /* UserViewTop.swift */,
+			);
+			name = views;
+			sourceTree = "<group>";
+		};
 		66A1162E1B72E30000498070 /* realm */ = {
 			isa = PBXGroup;
 			children = (
@@ -306,6 +319,7 @@
 		66A2656E1B8A6405005C4970 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				6688F1351B91FD0A008BF82B /* views */,
 				66A2656F1B8A642D005C4970 /* UserViewController.swift */,
 			);
 			name = User;
@@ -732,6 +746,7 @@
 				664C5D831B7FDE1100EDA856 /* MapViewSearchDelegate.swift in Sources */,
 				66A265701B8A642D005C4970 /* UserViewController.swift in Sources */,
 				66A7FCAD1B5AD7A70012358D /* FoursquareConvenience.swift in Sources */,
+				6688F1391B9204CA008BF82B /* UserViewTop.swift in Sources */,
 				66F55AC81B8E3C8D005C2F49 /* DirectedGraph.swift in Sources */,
 				66A7FCA21B5AD7600012358D /* HttpClientConstants.swift in Sources */,
 				66A7FCB61B5AD7CA0012358D /* FoursquareLocationMapAnnotation.swift in Sources */,
@@ -776,6 +791,7 @@
 				6657BF051B5D588100C94677 /* FoursquareCategoryIconWorker.swift in Sources */,
 				66F55ACC1B8E4169005C2F49 /* Queue.swift in Sources */,
 				66A116371B72E79000498070 /* CDIcon.swift in Sources */,
+				6688F1371B920221008BF82B /* UserPhotoView.swift in Sources */,
 				667940681B70324E003A29A9 /* VenueCategoriesOperation.swift in Sources */,
 				66104FD21B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift in Sources */,
 				6688F1311B912760008BF82B /* CDVenueList.swift in Sources */,

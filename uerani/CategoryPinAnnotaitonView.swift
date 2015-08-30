@@ -75,7 +75,7 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         nrect.origin.x += stroke / 2.0
         nrect.origin.y += stroke / 2.0
         
-        CGContextSetLineWidth(context, stroke);
+        CGContextSetLineWidth(context, stroke)
         var radius:CGFloat = 5.0
         
         //reference point for triangle
