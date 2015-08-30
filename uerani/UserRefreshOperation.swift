@@ -70,47 +70,49 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
             if let error = error {
                 self.refreshDelegate?.refreshUserDataError("Can not update user data")
             } else {
-                if let cResult = cResult, user = cResult.first as? CDUser {
-                    if let firstName = result[FoursquareClient.RespnoseKeys.FIRST_NAME] as? String {
-                        user.firstName = firstName
-                    } else {
-                        user.firstName = ""
-                    }
-                    if let lastName = result[FoursquareClient.RespnoseKeys.LAST_NAME] as? String {
-                        user.lastName = lastName
-                    } else {
-                        user.lastName = ""
-                    }
-                    if let homeCity = result[FoursquareClient.RespnoseKeys.HOME_CITY] as? String {
-                        user.homeCity = homeCity
-                    } else {
-                        user.homeCity = ""
-                    }
-                    if let gender = result[FoursquareClient.RespnoseKeys.GENDER] as? String {
-                        user.gender = gender
-                    } else {
-                        user.gender = ""
-                    }
-                    if let photo = result[FoursquareClient.RespnoseKeys.PHOTO] as? [String:AnyObject] {
-                        if let cPhoto = user.photo {
-                            cPhoto.prefix = photo[FoursquareClient.RespnoseKeys.PREFIX] as! String
-                            cPhoto.suffix = photo[FoursquareClient.RespnoseKeys.SUFFIX] as! String
-                        } else {
-                            var cPhoto = CDPhoto(data: photo, context: self.sharedModelContext)
-                            cPhoto.user = user
-                            user.photo = cPhoto
+                if let cResult = cResult {
+                    for next in cResult {
+                        if let user = next as? CDUser {
+                            if let firstName = result[FoursquareClient.RespnoseKeys.FIRST_NAME] as? String {
+                                user.firstName = firstName
+                            } else {
+                                user.firstName = ""
+                            }
+                            if let lastName = result[FoursquareClient.RespnoseKeys.LAST_NAME] as? String {
+                                user.lastName = lastName
+                            } else {
+                                user.lastName = ""
+                            }
+                            if let homeCity = result[FoursquareClient.RespnoseKeys.HOME_CITY] as? String {
+                                user.homeCity = homeCity
+                            } else {
+                                user.homeCity = ""
+                            }
+                            if let gender = result[FoursquareClient.RespnoseKeys.GENDER] as? String {
+                                user.gender = gender
+                            } else {
+                                user.gender = ""
+                            }
+                            if let photo = result[FoursquareClient.RespnoseKeys.PHOTO] as? [String:AnyObject] {
+                                if let cPhoto = user.photo {
+                                    cPhoto.prefix = photo[FoursquareClient.RespnoseKeys.PREFIX] as! String
+                                    cPhoto.suffix = photo[FoursquareClient.RespnoseKeys.SUFFIX] as! String
+                                } else {
+                                    var cPhoto = CDPhoto(data: photo, context: self.sharedModelContext)
+                                    cPhoto.user = user
+                                    user.photo = cPhoto
+                                }
+                            } else {
+                                if let photo = user.photo {
+                                    user.photo = nil
+                                    self.sharedModelContext.deleteObject(photo)
+                                }
+                            }
+                            user.lastUpdate = NSDate()
+                        
+                            return user
                         }
-                    } else {
-                        if let photo = user.photo {
-                            user.photo = nil
-                            self.sharedModelContext.deleteObject(photo)
-                        }
                     }
-                    user.lastUpdate = NSDate()
-                    
-                    return user
-                } else {
-                    self.refreshDelegate?.refreshUserDataError("Can not update user data")
                 }
             }
         }

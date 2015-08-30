@@ -37,6 +37,8 @@ public class CDUser : NSManagedObject, Equatable, Printable {
         let name = self.dynamicType.entityName()
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.id = result[FoursquareClient.RespnoseKeys.ID] as! String
+        
         if let firstName = result[FoursquareClient.RespnoseKeys.FIRST_NAME] as? String {
             self.firstName = firstName
         } else {
