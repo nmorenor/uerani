@@ -33,7 +33,9 @@ public class CategroyVenueFilter {
         
         var index = symbolGraph.indexOf(filter)
         if index == -1 {
-            println("can not find filter in graph")
+            if DEBUG {
+                println("can not find filter in graph")
+            }
         } else {
             self.filter = DirectedDepthFirstSearch(g: symbolGraph.g, s: index)
         }
@@ -45,7 +47,9 @@ public class CategroyVenueFilter {
             for nextCategory in next.categories {
                 var index = self.symbolGraph.indexOf(CategoryFilter(id: nextCategory.id))
                 if (index == -1) {
-                    println("Can not find index for graph \(nextCategory.id)")
+                    if DEBUG {
+                        println("Can not find index for graph \(nextCategory.id)")
+                    }
                     continue
                 }
                 if filter.marked(index) {

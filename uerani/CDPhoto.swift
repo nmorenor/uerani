@@ -19,7 +19,7 @@ public class CDPhoto : NSManagedObject, Equatable {
     @NSManaged public var visibility:String
     
     @NSManaged public var venue:CDVenue?
-    @NSManaged public var user:CDPhoto?
+    @NSManaged public var user:CDUser?
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -30,7 +30,8 @@ public class CDPhoto : NSManagedObject, Equatable {
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
-
+        self.prefix = photo.prefix
+        self.suffix = photo.suffix
     }
     
     init(data:[String:AnyObject], context:NSManagedObjectContext) {
@@ -38,7 +39,8 @@ public class CDPhoto : NSManagedObject, Equatable {
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
-        //TODO
+        self.prefix = data[FoursquareClient.RespnoseKeys.PREFIX] as! String
+        self.suffix = data[FoursquareClient.RespnoseKeys.SUFFIX] as! String
     }
 }
 

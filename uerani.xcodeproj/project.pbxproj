@@ -36,6 +36,7 @@
 		6688F1371B920221008BF82B /* UserPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688F1361B920221008BF82B /* UserPhotoView.swift */; };
 		6688F1391B9204CA008BF82B /* UserViewTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688F1381B9204CA008BF82B /* UserViewTop.swift */; };
 		6693062E1B92AD9900E148DF /* UserRefreshOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6693062D1B92AD9900E148DF /* UserRefreshOperation.swift */; };
+		669306301B938E2C00E148DF /* AbstractCoreDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6693062F1B938E2C00E148DF /* AbstractCoreDataOperation.swift */; };
 		66A116281B72E2A700498070 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116251B72E2A700498070 /* CoreDataStack.swift */; };
 		66A116291B72E2A700498070 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116261B72E2A700498070 /* CoreDataModel.swift */; };
 		66A1162A1B72E2A700498070 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116271B72E2A700498070 /* CoreDataStackManager.swift */; };
@@ -139,6 +140,7 @@
 		6688F1361B920221008BF82B /* UserPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPhotoView.swift; sourceTree = "<group>"; };
 		6688F1381B9204CA008BF82B /* UserViewTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewTop.swift; sourceTree = "<group>"; };
 		6693062D1B92AD9900E148DF /* UserRefreshOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRefreshOperation.swift; sourceTree = "<group>"; };
+		6693062F1B938E2C00E148DF /* AbstractCoreDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractCoreDataOperation.swift; sourceTree = "<group>"; };
 		66A116251B72E2A700498070 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		66A116261B72E2A700498070 /* CoreDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
 		66A116271B72E2A700498070 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				66A7FCB41B5AD7CA0012358D /* RefreshMapAnnotationOperation.swift */,
 				6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */,
 				667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */,
+				6693062F1B938E2C00E148DF /* AbstractCoreDataOperation.swift */,
 			);
 			name = operations;
 			sourceTree = "<group>";
@@ -819,6 +822,7 @@
 				66A7FCB71B5AD7CA0012358D /* FoursquareLocationOperation.swift in Sources */,
 				66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */,
 				661B6D021B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift in Sources */,
+				669306301B938E2C00E148DF /* AbstractCoreDataOperation.swift in Sources */,
 				66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */,
 				66A116351B72E68500498070 /* NSManagedObject.swift in Sources */,
 				66F55ACE1B8E4232005C2F49 /* QNode.swift in Sources */,

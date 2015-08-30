@@ -60,6 +60,19 @@ extension FoursquareClient {
         static let Meta = "meta"
         static let Code = "code"
         static let Response = "response"
+        
+        static let ID = "id"
+        static let FIRST_NAME = "firstName"
+        static let LAST_NAME = "lastName"
+        static let GENDER = "gender"
+        static let PHOTO = "photo"
+        static let PREFIX = "prefix"
+        static let SUFFIX = "suffix"
+        static let HOME_CITY = "homeCity"
+        static let CONTACT = "contact"
+        static let PHONE = "phone"
+        static let FORMATED_PHONE = "formated_phone"
+        static let EMAIL = "email"        
     }
     
     struct Methods {

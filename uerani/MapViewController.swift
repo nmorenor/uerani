@@ -61,6 +61,7 @@ class MapViewController: UIViewController, CategoriesReady {
         
         //search all venue categories in background thread
         VenueCategoriesOperation(delegate: self)
+        UserRefreshOperation(delegate: nil)
         
         //do not show lines on empty rows
         self.categoryViewSearch.tableFooterView = UIView(frame: CGRect.zeroRect)

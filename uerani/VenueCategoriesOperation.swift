@@ -10,34 +10,13 @@ import Foundation
 import RealmSwift
 import CoreData
 
-class VenueCategoriesOperation : NSOperation {
+class VenueCategoriesOperation : AbstractCoreDataOperation {
     
-    private var semaphore = dispatch_semaphore_create(0)
     weak var delegate:CategoriesReady?
     
     init(delegate:CategoriesReady) {
         self.delegate = delegate;
-        super.init()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "mergeChanges:", name: NSManagedObjectContextDidSaveNotification, object: self.sharedModelContext)
-        
-        
-        NSOperationQueue().addOperation(self)
-    }
-    
-    lazy var sharedModelContext:NSManagedObjectContext = {
-        return CoreDataStackManager.sharedInstance().dataStack.childManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
-        }()
-    
-    func mergeChanges(notification:NSNotification) {
-        var mainContext:NSManagedObjectContext = CoreDataStackManager.sharedInstance().dataStack.managedObjectContext
-        dispatch_async(dispatch_get_main_queue()) {
-            mainContext.mergeChangesFromContextDidSaveNotification(notification)
-            saveContext(CoreDataStackManager.sharedInstance().dataStack.managedObjectContext) { success, error in 
-                self.delegate?.initializeSearchResults()
-                self.unlock()
-            }
-        }
+        super.init(operationQueue: NSOperationQueue())
     }
     
     override func main() {
@@ -102,13 +81,5 @@ class VenueCategoriesOperation : NSOperation {
                 createChildrenCategories(childCat, categories: child.categories)
             }
         }
-    }
-    
-    private func unlock() {
-        dispatch_semaphore_signal(semaphore)
-    }
-    
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: self.sharedModelContext)
     }
 }

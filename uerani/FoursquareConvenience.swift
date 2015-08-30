@@ -11,7 +11,7 @@ import MapKit
 
 extension FoursquareClient {
     
-    public func loadUserData(completionHandler:(success:Bool, result:[[String:AnyObject]]?, errorString:String?) -> Void) {
+    public func loadUserData(completionHandler:(success:Bool, result:[String:AnyObject]?, errorString:String?) -> Void) {
         var parameters = self.addAuthParameters([String:AnyObject]())
         
         self.doGETAPI(FoursquareClient.Methods.USERS_SELF, key: FoursquareClient.RespnoseKeys.USER, parameters: parameters, completionHandler: completionHandler)
