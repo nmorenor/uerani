@@ -13,7 +13,7 @@ import MapKit
 class CategoryPinAnnotationView : BasicMapAnnotationView {
     
     let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
-    let defaultPinImage = "default_32.png"
+    let defaultPinImage = "default_32"
     
     override var image:UIImage! {
         didSet {

@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 public protocol UserRefreshDelegate : class {
     
@@ -19,19 +20,22 @@ public protocol UserRefreshDelegate : class {
 public class UserRefreshOperation : AbstractCoreDataOperation {
     
     var refreshDelegate:UserRefreshDelegate?
+    var user:CDUser?
+    var imageSemaphore = dispatch_semaphore_create(0)
     
     init(delegate:UserRefreshDelegate?) {
         self.refreshDelegate = delegate
-        if LocationRequestManager.sharedInstance().userRefreshOperationQueue.operationCount == 0 {
-            super.init(operationQueue: LocationRequestManager.sharedInstance().userRefreshOperationQueue)
-        } else {
-            super.init(operationQueue: nil)
-        }
+        super.init(operationQueue: LocationRequestManager.sharedInstance().userRefreshOperationQueue)
     }
     
     override public func main() {
         FoursquareClient.sharedInstance().loadUserData(self.userDataResponseHandler)
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        self.downloadUserPhoto(self.user)
+        if let user = self.user {
+            FoursquareClient.sharedInstance().userId = user.id
+            self.refreshDelegate?.refreshUserData(user)
+        }
     }
     
     func userDataResponseHandler(success:Bool, result:[String: AnyObject]?, errorString:String?) {
@@ -42,19 +46,38 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
             if let result = result {
                 if let user:CDUser = self.getUserFromResponse(result) {
                     saveContext(self.sharedModelContext) { success in
-                        self.refreshDelegate?.refreshUserData(user)
+                        self.user = user
                         self.unlock()
                     }
                 } else {
                     let user = CDUser(result: result, context: self.sharedModelContext)
                     saveContext(self.sharedModelContext) { success in
-                        self.refreshDelegate?.refreshUserData(user)
+                        self.user = user
                         self.unlock()
                     }
                 }
             } else {
                 self.refreshDelegate?.refreshUserDataError("Bad response data")
                 self.unlock()
+            }
+        }
+    }
+    
+    func downloadUserPhoto(user:CDUser?) {
+        if let user = user {
+            if let photo = user.photo {
+                var photoURL = "\(photo.prefix)100x100\(photo.suffix)"
+                if let url = NSURL(string: photoURL) {
+                    var imageCacheName = "user_\(user.id)_\(url.lastPathComponent!)"
+                    let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
+                    
+                    if nextImage == nil {
+                        var downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: LocationRequestManager.sharedInstance().userRefreshOperationQueue, finishHandler: self.unlockDownload)
+                        downloadImage.performDownload(url)
+                        //wait for the download
+                        dispatch_semaphore_wait(imageSemaphore, DISPATCH_TIME_FOREVER)
+                    }
+                }
             }
         }
     }
@@ -117,5 +140,9 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
             }
         }
         return nil
+    }
+    
+    func unlockDownload() {
+        dispatch_semaphore_signal(imageSemaphore)
     }
 }

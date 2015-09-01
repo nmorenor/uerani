@@ -74,11 +74,11 @@ extension FoursquareClient {
                 } else {
                     var completionResult = result!
                     var completionPhotos:[[String:AnyObject]]? = nil
-                    if let photos = completionResult["photos"] as? [String:AnyObject] where photos["groups"] != nil {
-                        let groups = photos["groups"] as! [[String:AnyObject]]
+                    if let photos = completionResult[FoursquareClient.RespnoseKeys.PHOTOS] as? [String:AnyObject] where photos[FoursquareClient.RespnoseKeys.GROUPS] != nil {
+                        let groups = photos[FoursquareClient.RespnoseKeys.GROUPS] as! [[String:AnyObject]]
                         for nextGroup in groups {
-                            if let type = nextGroup["type"] as? String where type == FoursquareClient.RespnoseKeys.VENUE {
-                                if let items = nextGroup["items"] as? [[String:AnyObject]] {
+                            if let type = nextGroup[FoursquareClient.RespnoseKeys.TYPE] as? String where type == FoursquareClient.RespnoseKeys.VENUE {
+                                if let items = nextGroup[FoursquareClient.RespnoseKeys.ITEMS] as? [[String:AnyObject]] {
                                     completionPhotos = items
                                     break
                                 }
@@ -87,15 +87,15 @@ extension FoursquareClient {
                     }
                     
                     var completionTags:[[String:String]]? = nil
-                    if let tags = completionResult["tags"] as? [String] {
+                    if let tags = completionResult[FoursquareClient.RespnoseKeys.TAGS] as? [String] {
                         completionTags = [[String:String]]()
                         for nextTag in tags {
-                            completionTags!.append(["tagvalue" : nextTag])
+                            completionTags!.append([FoursquareClient.RespnoseKeys.TAGVALUE : nextTag])
                         }
                     }
                     
-                    completionResult["tags"] = completionTags ?? nil
-                    completionResult["photos"] = completionPhotos ?? nil
+                    completionResult[FoursquareClient.RespnoseKeys.TAGS] = completionTags ?? nil
+                    completionResult[FoursquareClient.RespnoseKeys.PHOTOS] = completionPhotos ?? nil
                     completionHandler(success: true, result: completionResult, errorString: nil)
                 }
             }

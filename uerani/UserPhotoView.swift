@@ -22,7 +22,7 @@ public class UserPhotoView : UIView {
     let maskLayer = CAShapeLayer()
     let label: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue", size: 18.0)
+        label.font = UIFont(name: "HelveticaNeue", size: 14.0)
         label.textAlignment = .Center
         label.textColor = UIColor.blackColor()
         return label
@@ -77,7 +77,7 @@ public class UserPhotoView : UIView {
         
         //Size the layer
         maskLayer.path = circleLayer.path
-        maskLayer.position = CGPoint(x: 0.0, y: 10.0)
+        maskLayer.position = CGPoint(x: 0.0, y: 0.0)
         
         //Size the label
         label.frame = CGRect(x: 0.0, y: bounds.size.height + 10.0, width: bounds.size.width, height: 24.0)

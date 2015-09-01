@@ -16,6 +16,7 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
     static var instance = FoursquareClient()
     var httpClient:HTTPClient?
     var config = FoursquareConfig.unarchivedInstance() ?? FoursquareConfig()
+    var userId:String?
     private var inMemoryToken:String?
     var accessToken:String? {
         get {

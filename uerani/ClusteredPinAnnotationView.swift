@@ -24,6 +24,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
         }
     }
     
+    let fontName = "HelveticaNeue"
     var label:CATextLayer = CATextLayer()
     let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
     var initalized:Bool = false
@@ -46,8 +47,8 @@ class ClusteredPinAnnotationView : MKAnnotationView {
         if let annotation = annotation as? FBAnnotationCluster {
             let number = annotation.annotations.count
             
-            let fontSize:CGFloat = number > 9 ? 20 : 18
-            var font = UIFont(name: "HelveticaNeue", size: fontSize)!
+            let fontSize:CGFloat = self.getFontSize(number)
+            var font = UIFont(name: fontName, size: fontSize)!
             var attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: yellowColor])
             let asize:CGSize = attributedString.size()
             let size = asize.width + 16
@@ -59,7 +60,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
         if let annotation = annotation as? FBAnnotationCluster {
             let size = self.frame.size.width
             let number = annotation.annotations.count
-            let fontSize:CGFloat = number > 9 ? 20 : 18
+            let fontSize:CGFloat = self.getFontSize(annotation.annotations.count)
             
             var context:CGContextRef = UIGraphicsGetCurrentContext();
             
@@ -89,7 +90,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             var textStyle:NSMutableParagraphStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
             textStyle.alignment = NSTextAlignment.Center
             
-            var font = UIFont(name: "HelveticaNeue", size: fontSize)!
+            var font = UIFont(name: fontName, size: fontSize)!
             
             CGContextTranslateCTM(context, 0.0, CGRectGetHeight(rect))
             CGContextScaleCTM(context, 1.0, -1.0)
@@ -110,5 +111,9 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             // draw the line of text
             CTLineDraw(line, context)
         }
+    }
+    
+    private func getFontSize(number:Int) -> CGFloat {
+        return number > 9 ? 20 : 18
     }
 }

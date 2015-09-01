@@ -19,6 +19,7 @@ class UeraniTabBarViewController : UITabBarController {
         super.viewDidLoad()
         self.tabBar.tintColor = selectedColor
         
+        //set custom colors
         var mapItem = self.tabBar.items![0] as! UITabBarItem
         var mapImage = UIImage(named: "map")
         mapItem.image = mapImage!.imageWithColor(unselectedColor)!.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)

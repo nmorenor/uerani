@@ -24,7 +24,7 @@ class MapViewController: UIViewController, CategoriesReady {
     let clusterPin = "foursquareClusterPin"
     let calloutPin = "calloutPin"
     
-    let defaultPinImage = "default_32.png"
+    let defaultPinImage = "default_32"
     
     @IBOutlet weak var searchBarView: SearchViewWtihProgress!
     @IBOutlet weak var categoryViewSearch: UITableView!

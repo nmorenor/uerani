@@ -56,7 +56,7 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         
         userRefreshOperationQueue = NSOperationQueue()
         userRefreshOperationQueue.name = "User refresh Operation Queue"
-        userRefreshOperationQueue.maxConcurrentOperationCount = 1
+        userRefreshOperationQueue.maxConcurrentOperationCount = 4
         
         super.init()
         self.manager.delegate = self

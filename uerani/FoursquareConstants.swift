@@ -72,7 +72,14 @@ extension FoursquareClient {
         static let CONTACT = "contact"
         static let PHONE = "phone"
         static let FORMATED_PHONE = "formated_phone"
-        static let EMAIL = "email"        
+        static let EMAIL = "email"
+        
+        static let PHOTOS = "photos"
+        static let GROUPS = "groups"
+        static let TYPE = "type"
+        static let ITEMS = "items"
+        static let TAGS = "tags"
+        static let TAGVALUE = "tagvalue"
     }
     
     struct Methods {
