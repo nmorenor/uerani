@@ -38,6 +38,8 @@
 		6693062E1B92AD9900E148DF /* UserRefreshOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6693062D1B92AD9900E148DF /* UserRefreshOperation.swift */; };
 		669306301B938E2C00E148DF /* AbstractCoreDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6693062F1B938E2C00E148DF /* AbstractCoreDataOperation.swift */; };
 		669306321B9524FC00E148DF /* DownloadImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669306311B9524FC00E148DF /* DownloadImageUtil.swift */; };
+		669306341B97A07E00E148DF /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669306331B97A07E00E148DF /* UserViewModel.swift */; };
+		669306361B97D6C700E148DF /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669306351B97D6C700E148DF /* BorderedButton.swift */; };
 		66A116281B72E2A700498070 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116251B72E2A700498070 /* CoreDataStack.swift */; };
 		66A116291B72E2A700498070 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116261B72E2A700498070 /* CoreDataModel.swift */; };
 		66A1162A1B72E2A700498070 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116271B72E2A700498070 /* CoreDataStackManager.swift */; };
@@ -143,6 +145,8 @@
 		6693062D1B92AD9900E148DF /* UserRefreshOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRefreshOperation.swift; sourceTree = "<group>"; };
 		6693062F1B938E2C00E148DF /* AbstractCoreDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractCoreDataOperation.swift; sourceTree = "<group>"; };
 		669306311B9524FC00E148DF /* DownloadImageUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadImageUtil.swift; sourceTree = "<group>"; };
+		669306331B97A07E00E148DF /* UserViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		669306351B97D6C700E148DF /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
 		66A116251B72E2A700498070 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		66A116261B72E2A700498070 /* CoreDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
 		66A116271B72E2A700498070 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
@@ -267,6 +271,7 @@
 		6684E4D01B82B26000B67B0A /* view */ = {
 			isa = PBXGroup;
 			children = (
+				669306351B97D6C700E148DF /* BorderedButton.swift */,
 				6684E4D11B82B27600B67B0A /* FSButtonButton.swift */,
 			);
 			name = view;
@@ -336,6 +341,7 @@
 				6693062C1B92ACF600E148DF /* operations */,
 				6688F1351B91FD0A008BF82B /* views */,
 				66A2656F1B8A642D005C4970 /* UserViewController.swift */,
+				669306331B97A07E00E148DF /* UserViewModel.swift */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -813,6 +819,7 @@
 				6688F1371B920221008BF82B /* UserPhotoView.swift in Sources */,
 				667940681B70324E003A29A9 /* VenueCategoriesOperation.swift in Sources */,
 				66104FD21B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift in Sources */,
+				669306341B97A07E00E148DF /* UserViewModel.swift in Sources */,
 				6688F1311B912760008BF82B /* CDVenueList.swift in Sources */,
 				66A7FCBC1B5AD7CA0012358D /* RefreshMapAnnotationOperation.swift in Sources */,
 				66A7FCA11B5AD7600012358D /* HTTPClient.swift in Sources */,
@@ -827,6 +834,7 @@
 				66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */,
 				661B6D021B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift in Sources */,
 				669306301B938E2C00E148DF /* AbstractCoreDataOperation.swift in Sources */,
+				669306361B97D6C700E148DF /* BorderedButton.swift in Sources */,
 				66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */,
 				66A116351B72E68500498070 /* NSManagedObject.swift in Sources */,
 				66F55ACE1B8E4232005C2F49 /* QNode.swift in Sources */,

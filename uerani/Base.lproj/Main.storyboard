@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="KYd-tB-XLr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pv7-3H-Llc">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="PAS-ws-nNx" customClass="FSButton" customModule="uerani">
@@ -52,7 +52,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vbn-Eg-0P5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1582" y="-736"/>
+            <point key="canvasLocation" x="-1558" y="132"/>
         </scene>
         <!--User View Controller-->
         <scene sceneID="Qir-Xg-ZYK">
@@ -65,11 +65,35 @@
                     <view key="view" contentMode="scaleToFill" id="1pa-Ty-oPB">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wnH-GA-Z0X" customClass="BorderedButton" customModule="uerani" customModuleProvider="target">
+                                <rect key="frame" x="268" y="468" width="64" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="64" id="gIs-xZ-UmZ"/>
+                                </constraints>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="doLogout:" destination="nFZ-cj-VXH" eventType="touchUpInside" id="Tpr-ve-OFf"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="wnH-GA-Z0X" secondAttribute="centerX" id="4UU-v9-HoQ"/>
+                            <constraint firstItem="nru-uW-2sx" firstAttribute="top" secondItem="wnH-GA-Z0X" secondAttribute="bottom" constant="53" id="EqZ-Fe-Lga"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="user" id="QWQ-xi-K3K">
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
+                    <connections>
+                        <outlet property="logoutButton" destination="wnH-GA-Z0X" id="8lU-2I-VGJ"/>
+                        <segue destination="Wn7-5i-SaT" kind="show" identifier="logoutSegue" id="LqP-s3-DWs"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LVK-N2-Ycq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

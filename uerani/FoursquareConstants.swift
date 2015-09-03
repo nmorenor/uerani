@@ -23,6 +23,8 @@ extension FoursquareClient {
         static let FOURSQUARE_AUTHORIZE_URI = "https://foursquare.com/oauth2/authorize"
         
         static let FOURSQUARE_CACHE_DIR = documentsDirectoryURL().URLByAppendingPathComponent("foursquare-cache")
+        
+        static let FOURSQUARE_USER_ID = "userid"
     }
     
     struct ParameterKeys {

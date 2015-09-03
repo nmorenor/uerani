@@ -77,6 +77,33 @@ extension UIImage {
         return newImage
     }
     
+    public func resizeImageWithScale(scale:CGFloat) -> UIImage {
+        let newSize = CGSizeApplyAffineTransform(self.size, CGAffineTransformMakeScale(scale, scale))
+        var newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
+        var imageRef:CGImageRef = self.CGImage
+        
+        //0 means grab the scale from device
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        var context:CGContextRef = UIGraphicsGetCurrentContext()
+        
+        // Set the quality level to use when rescaling
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh)
+        CGContextSetAllowsAntialiasing(context, true)
+        CGContextSetShouldAntialias(context, true)
+        
+        var flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
+        
+        CGContextConcatCTM(context, flipVertical)
+        // Draw into the context; this scales the image
+        CGContextDrawImage(context, newRect, imageRef)
+        
+        // Get the resized image from the context and a UIImage
+        var newImage:UIImage = UIImage(CGImage: CGBitmapContextCreateImage(context))!
+        
+        UIGraphicsEndImageContext();
+        return newImage
+    }
+    
     func cropHeight(offset:CGFloat) -> UIImage {
         // Create a copy of the image without the imageOrientation property so it is in its native orientation (landscape)
         let contextImage: UIImage = UIImage(CGImage: self.CGImage)!

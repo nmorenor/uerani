@@ -47,12 +47,19 @@ class MapViewController: UIViewController, CategoriesReady {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "logout", name: UERANI_LOGOUT, object: nil)
+        
         self.categoryViewSearch.hidden = true
         let locationRequestManager = LocationRequestManager.sharedInstance()
         self.isRefreshReady = locationRequestManager.authorized
+        self.searchMediator = VenueLocationSearchMediator(mapView: self.mapView)
+        
+        if let location = locationRequestManager.location {
+            self.searchMediator.displayLocation(location)
+        }
+        
         locationRequestManager.addObserver(self, forKeyPath: "authorized", options: NSKeyValueObservingOptions.New, context: &self.myContext)
         locationRequestManager.addObserver(self, forKeyPath: "location", options: NSKeyValueObservingOptions.New, context: &self.userLocationContext)
-        self.searchMediator = VenueLocationSearchMediator(mapView: self.mapView)
         self.mapView.delegate = self
         
         //Initialize maged context on main thread
@@ -141,6 +148,10 @@ class MapViewController: UIViewController, CategoriesReady {
         return UIStatusBarStyle.LightContent
     }
     
+    func logout() {
+        self.searchMediator.cleanMap()
+    }
+    
     // MARK - Core Data
     
     var sharedContext:NSManagedObjectContext {
@@ -174,6 +185,7 @@ class MapViewController: UIViewController, CategoriesReady {
     deinit {
         LocationRequestManager.sharedInstance().removeObserver(self, forKeyPath: "authorized", context: &self.myContext)
         LocationRequestManager.sharedInstance().removeObserver(self, forKeyPath: "location", context: &self.userLocationContext)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }
 

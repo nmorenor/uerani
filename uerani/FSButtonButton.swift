@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-let borderedButtonCornerRadius : CGFloat = 20.0
+let fsButtonCornerRadius : CGFloat = 20.0
 
 class FSButton: UIButton {
     
@@ -28,7 +28,7 @@ class FSButton: UIButton {
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.layer.cornerRadius = borderedButtonCornerRadius;
+        self.layer.cornerRadius = fsButtonCornerRadius;
         
         var image = UIImage(named: "foursquare-word-mark")
         image = image!.resizeImage(CGSizeMake(image!.size.width / 12, image!.size.height / 12))

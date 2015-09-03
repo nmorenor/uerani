@@ -10,20 +10,35 @@ import Foundation
 import UIKit
 import CoreData
 
+let UERANI_LOGOUT = "logout"
+
 class UserViewController : UIViewController, UserRefreshDelegate {
     
+    @IBOutlet weak var logoutButton: BorderedButton!
     private var userViewTop:UserViewTop!
-    private var userPhotoView:UserPhotoView?
+    private var userPhotoView:UserPhotoView!
+    private var userViewModel:UserViewModel!
     
     let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = yellowColor
+        self.logoutButton.backingColor = UIColor.blackColor()
+        self.logoutButton.highlightedBackingColor = UIColor.blackColor()
         let viewFrame = self.view.frame
         let userViewFrame = CGRectMake(0, 0, viewFrame.size.width, CGFloat(viewFrame.size.height * 0.35))
         self.userViewTop = UserViewTop(frame: userViewFrame)
         self.view.addSubview(self.userViewTop)
+        
+        self.userViewModel = UserViewModel()
+        self.userViewModel.populate(self.sharedContext)
+        
+        self.userPhotoView = UserPhotoView(frame: CGRectMake((self.userViewTop.frame.size.width/2 - 50), self.userViewTop.frame.size.height - 100, self.userViewModel.width, 100))
+        self.userPhotoView.image = self.userViewModel.image
+        self.userPhotoView.name = "\(self.userViewModel.name)"
+        self.view.addSubview(self.userPhotoView!)
+        
         UserRefreshOperation(delegate: self)
     }
     
@@ -47,28 +62,27 @@ class UserViewController : UIViewController, UserRefreshDelegate {
     
     func refreshUserData(user:CDUser) {
         dispatch_async(dispatch_get_main_queue()) {
-            var user = self.sharedContext.objectWithID(user.objectID) as! CDUser
-            var userName = "\(user.firstName) \(user.lastName)"
-            if self.userPhotoView == nil {
-                let fontSize:CGFloat = 14.0
-                var font = UIFont(name: "HelveticaNeue", size: fontSize)!
-                var attributedString = NSAttributedString(string:userName, attributes: [NSFontAttributeName : font])
-                let asize:CGSize = attributedString.size()
-                
-                self.userPhotoView = UserPhotoView(frame: CGRectMake((self.userViewTop.frame.size.width/2 - 50), self.userViewTop.frame.size.height - 100, (asize.width > 100 ? asize.width : 100), 100))
-                
-                var photoURL = "\(user.photo!.prefix)100x100\(user.photo!.suffix)"
-                let url = NSURL(string: photoURL)!
-                var imageCacheName = "user_\(user.id)_\(url.lastPathComponent!)"
-                
-                self.userPhotoView?.image = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
-                self.userPhotoView?.name = userName
-                self.view.addSubview(self.userPhotoView!)
-            }
+            self.userViewModel.loadUserData(user, context: self.sharedContext)
+            
+            self.userPhotoView.frame.size.width = self.userViewModel.width
+            self.userPhotoView.image = self.userViewModel.image
+            self.userPhotoView.name = self.userViewModel.name
+            self.userPhotoView.layoutIfNeeded()
         }
     }
     
     func refreshUserDataError(errorString:String) {
+
         //TODO:
     }
+    
+    @IBAction func doLogout(sender: BorderedButton) {
+        //clean map
+        let logoutNotification = NSNotification(name: UERANI_LOGOUT, object: nil)
+        NSNotificationCenter.defaultCenter().postNotification(logoutNotification)
+        FoursquareClient.sharedInstance().userId = nil
+        FoursquareClient.sharedInstance().accessToken = nil
+        self.performSegueWithIdentifier("logoutSegue", sender: self)
+    }
+    
 }

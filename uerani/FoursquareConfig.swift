@@ -12,8 +12,11 @@ import RealmSwift
 public class FoursquareConfig:NSObject, NSCoding {
     
     let DateUpdatedKey = "config.date_update_key"
+    let DictionaryData = "config.dictionary"
     var dateUpdated:NSDate? = nil
+    var dictionary:NSMutableDictionary? = nil
     static let _fileURL:NSURL = documentsDirectoryURL().URLByAppendingPathComponent("FoursquareContext")
+    
     
     public override init() {
         
@@ -59,12 +62,34 @@ public class FoursquareConfig:NSObject, NSCoding {
         FoursquareClient.sharedInstance().config.save()
     }
     
+    public func addValue(key:String, value:String?) {
+        if dictionary == nil {
+            self.dictionary = NSMutableDictionary()
+        }
+        self.dictionary!.setValue(value, forKey: key)
+        
+        FoursquareClient.sharedInstance().config.save()
+    }
+    
+    public func getValue(key:String) -> String? {
+        if let dictionary = self.dictionary {
+            return dictionary.valueForKey(key) as? String
+        }
+        return nil
+    }
+    
     public required init(coder aDecoder: NSCoder) {
         dateUpdated = aDecoder.decodeObjectForKey(DateUpdatedKey) as? NSDate
+        dictionary = aDecoder.decodeObjectForKey(DictionaryData) as? NSMutableDictionary
     }
     
     public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(dateUpdated, forKey: DateUpdatedKey)
+        if let dictionary = self.dictionary {
+            aCoder.encodeObject(dictionary, forKey: DictionaryData)
+        } else {
+            aCoder.encodeObject(NSDictionary(), forKey: DictionaryData)
+        }
     }
     
     public func save() {
