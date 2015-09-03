@@ -24,14 +24,11 @@ protocol WebTokenDelegate : class {
 
 class LoginViewController: UIViewController, AccessTokenLoginDelegate {
     
-    let blackJetColor:UIColor = UIColor(red: 52.0/255.0, green: 52.0/255.0, blue: 52.0/255.0, alpha: 1.0)
-    let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
-    
     @IBOutlet weak var connectButton: FSButton! {
         didSet {
-            connectButton.borderColor = yellowColor
+            connectButton.borderColor = UIColor.ueraniYellowColor()
             connectButton.backingColor = UIColor.blackColor()
-            connectButton.highlightedBackingColor = blackJetColor
+            connectButton.highlightedBackingColor = UIColor.ueraniBlackJetColor()
         }
     }
     

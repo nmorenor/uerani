@@ -29,7 +29,11 @@ class UserViewModel {
         
     }
     
-    func populate(context:NSManagedObjectContext) {
+    init(context:NSManagedObjectContext) {
+        self.populate(context)
+    }
+    
+    private func populate(context:NSManagedObjectContext) {
         if let userId = FoursquareClient.sharedInstance().userId {
             var request = NSFetchRequest(entityName: "CDUser")
             request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]

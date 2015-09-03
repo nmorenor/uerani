@@ -26,7 +26,6 @@ class ClusteredPinAnnotationView : MKAnnotationView {
     
     let fontName = "HelveticaNeue"
     var label:CATextLayer = CATextLayer()
-    let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
     var initalized:Bool = false
     var currentCount:Int = -1
     
@@ -49,7 +48,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             
             let fontSize:CGFloat = self.getFontSize(number)
             var font = UIFont(name: fontName, size: fontSize)!
-            var attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: yellowColor])
+            var attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: UIColor.ueraniYellowColor()])
             let asize:CGSize = attributedString.size()
             let size = asize.width + 16
             self.frame = CGRectMake(0, 0, size + 8, size + 8)
@@ -65,7 +64,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             var context:CGContextRef = UIGraphicsGetCurrentContext();
             
             CGContextSetLineWidth(context, 6); // set the line width
-            yellowColor.setStroke()
+            UIColor.ueraniYellowColor().setStroke()
             
             var center:CGPoint = CGPointMake(size/2, size/2)
             var radius:CGFloat = 0.80 * center.x;
@@ -94,7 +93,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             
             CGContextTranslateCTM(context, 0.0, CGRectGetHeight(rect))
             CGContextScaleCTM(context, 1.0, -1.0)
-            let attr:CFDictionaryRef = [NSFontAttributeName:font,NSForegroundColorAttributeName:yellowColor]
+            let attr:CFDictionaryRef = [NSFontAttributeName:font,NSForegroundColorAttributeName:UIColor.ueraniYellowColor()]
             // create the attributed string
             let text = CFAttributedStringCreate(nil, "\(number)", attr)
             // create the line of text

@@ -12,7 +12,6 @@ import MapKit
 
 class CategoryPinAnnotationView : BasicMapAnnotationView {
     
-    let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
     let defaultPinImage = "default_32"
     
     override var image:UIImage! {
@@ -65,7 +64,7 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
     
     override func drawRect(rect: CGRect) {
         var context:CGContextRef = UIGraphicsGetCurrentContext()
-        yellowColor.setFill()
+        UIColor.ueraniYellowColor().setFill()
         UIColor.blackColor().setStroke()
         var path:CGMutablePathRef = CGPathCreateMutable()
         var stroke:CGFloat = 1.5

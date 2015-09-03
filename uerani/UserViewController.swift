@@ -19,11 +19,9 @@ class UserViewController : UIViewController, UserRefreshDelegate {
     private var userPhotoView:UserPhotoView!
     private var userViewModel:UserViewModel!
     
-    let yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = yellowColor
+        self.view.backgroundColor = UIColor.ueraniYellowColor()
         self.logoutButton.backingColor = UIColor.blackColor()
         self.logoutButton.highlightedBackingColor = UIColor.blackColor()
         let viewFrame = self.view.frame
@@ -31,8 +29,7 @@ class UserViewController : UIViewController, UserRefreshDelegate {
         self.userViewTop = UserViewTop(frame: userViewFrame)
         self.view.addSubview(self.userViewTop)
         
-        self.userViewModel = UserViewModel()
-        self.userViewModel.populate(self.sharedContext)
+        self.userViewModel = UserViewModel(context: self.sharedContext)
         
         self.userPhotoView = UserPhotoView(frame: CGRectMake((self.userViewTop.frame.size.width/2 - 50), self.userViewTop.frame.size.height - 100, self.userViewModel.width, 100))
         self.userPhotoView.image = self.userViewModel.image

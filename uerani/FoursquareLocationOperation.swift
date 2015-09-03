@@ -105,13 +105,12 @@ public class FoursquareLocationOperation: NSOperation {
         for nextVenue in venues {
             
             for nextCat in nextVenue.categories {
-                if let url = NSURL(string: "\(nextCat.icon!.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.icon!.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
-                    let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-                    let imageName = "\(prefix_image_name)_\(name)"
-                    var image = ImageCache.sharedInstance().imageWithIdentifier(imageName)
-                    if image == nil {
-                         FoursquareCategoryIconWorker(prefix: nextCat.icon!.prefix, suffix: nextCat.icon!.suffix)
-                    }
+                var downloadCategoryImage = true
+                if let imageid = FoursquareLocationMapAnnotation.getCategoryImageIdentifier(FIcon.FIconSize.S32.description, category: nextCat), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
+                    downloadCategoryImage = false
+                }
+                if downloadCategoryImage {
+                    FoursquareCategoryIconWorker(prefix: nextCat.icon!.prefix, suffix: nextCat.icon!.suffix)
                 }
             }
             annotations.append(FoursquareLocationMapAnnotation(venue: nextVenue))

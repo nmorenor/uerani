@@ -71,15 +71,13 @@ class FoursquareAnnotationVenueInformationView: UIView {
             width: image.size.width,
             height: image.size.height)
         
-        
-        var yellowColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 8/255.0, alpha: 1.0)
         //Draw the circle
         
         circleLayer.frame.size = photoLayer.frame.size
         circleLayer.path = UIBezierPath(ovalInRect: photoLayer.bounds).CGPath
         circleLayer.strokeColor = UIColor.clearColor().CGColor
         circleLayer.lineWidth = lineWidth
-        circleLayer.fillColor = yellowColor.CGColor
+        circleLayer.fillColor = UIColor.ueraniYellowColor().CGColor
         circleLayer.frame.origin = photoLayer.frame.origin
         
         innerCircleLayer.path = UIBezierPath(ovalInRect: CGRectMake(5, 5, photoLayer.bounds.size.width - 10, photoLayer.bounds.size.height - 10)).CGPath

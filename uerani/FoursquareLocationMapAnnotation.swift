@@ -52,22 +52,13 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         
         self.coordinate = CLLocationCoordinate2D(latitude: venue.location!.lat, longitude: venue.location!.lng)
         self.venue = venue
-        if let category = FoursquareLocationMapAnnotation.getBestCategory(venue), let url = NSURL(string: "\(category.icon!.prefix)\(FIcon.FIconSize.S32.description)\(category.icon!.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
-            let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-            categoryImageName = "\(prefix_image_name)_\(name)"
+        if let category = FoursquareLocationMapAnnotation.getBestCategory(venue) {
+            categoryImageName = FoursquareLocationMapAnnotation.getCategoryImageIdentifier(FIcon.FIconSize.S32.description, category: category)
+            categoryImageName64 = FoursquareLocationMapAnnotation.getCategoryImageIdentifier(FIcon.FIconSize.S64.description, category: category)
+            categoryImageName12 = FoursquareLocationMapAnnotation.getCategoryImageIdentifier("12", category: category)
             
             self.categoryPrefix = category.icon!.prefix
             self.categorySuffix = category.icon!.suffix
-        }
-        
-        if let category = FoursquareLocationMapAnnotation.getBestCategory(venue), let url = NSURL(string: "\(category.icon!.prefix)\(FIcon.FIconSize.S64.description)\(category.icon!.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
-            let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-            categoryImageName64 = "\(prefix_image_name)_\(name)"
-        }
-        
-        if let category = FoursquareLocationMapAnnotation.getBestCategory(venue), let url = NSURL(string: "\(category.icon!.prefix)12\(category.icon!.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
-            let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-            categoryImageName12 = "\(prefix_image_name)_\(name)"
         }
     }
     
@@ -90,6 +81,14 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
             }
         }
         return venue.categories.first
+    }
+    
+    static func getCategoryImageIdentifier(size:String, category:FCategory) -> String? {
+        if let url = NSURL(string: "\(category.icon!.prefix)\(size)\(category.icon!.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
+            let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
+            return "\(prefix_image_name)_\(name)"
+        }
+        return nil
     }
 }
 

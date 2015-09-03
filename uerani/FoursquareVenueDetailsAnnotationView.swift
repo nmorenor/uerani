@@ -21,34 +21,27 @@ class FoursquareVenueDetailsAnnotationView : AccesorizedCalloutAnnotationView {
             let contentFrame = self.getContentFrame()
             if let let categoryImageName = annotation.categoryImageName64 {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
-                    var aView = FoursquareAnnotationVenueInformationView()
-                    aView.image = image
-                    aView.name = annotation.title
-                    aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                    aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
-                    self.contentView().addSubview(aView)
+                     self.configureView(annotation, contentFrame: contentFrame, image: image)
                 } else if let image = ImageCache.sharedInstance().imageWithIdentifier("default_64") {
-                    var aView = FoursquareAnnotationVenueInformationView()
-                    aView.image = image
-                    aView.name = annotation.title
-                    aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                    aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
-                    self.contentView().subviews.map({$0.removeFromSuperview()})
-                    self.contentView().addSubview(aView)
+                     self.configureView(annotation, contentFrame: contentFrame, image: image)
                 }
             } else {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier("default_64") {
-                    var aView = FoursquareAnnotationVenueInformationView()
-                    aView.image = image
-                    aView.name = annotation.title
-                    aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
-                    aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
-                    self.contentView().subviews.map({$0.removeFromSuperview()})
-                    self.contentView().addSubview(aView)
+                    self.configureView(annotation, contentFrame: contentFrame, image: image)
                 }
             }
         }
         self.superview?.bringSubviewToFront(self)
+    }
+    
+    func configureView(annotation:FoursquareLocationMapAnnotation, contentFrame:CGRect, image:UIImage) {
+        var aView = FoursquareAnnotationVenueInformationView()
+        aView.image = image
+        aView.name = annotation.title
+        aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
+        aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
+        self.contentView().subviews.map({$0.removeFromSuperview()})
+        self.contentView().addSubview(aView)
     }
 }
 
