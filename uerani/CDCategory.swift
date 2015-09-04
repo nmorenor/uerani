@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDCategory)
 
-public class CDCategory : NSManagedObject, Equatable, Hashable, Printable {
+public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconCapable {
     
     @NSManaged public var id:String
     @NSManaged public var name:String
@@ -33,6 +33,17 @@ public class CDCategory : NSManagedObject, Equatable, Hashable, Printable {
     override public var hashValue:Int {
         get {
             return self.id.hashValue
+        }
+    }
+    
+    public var iconPrefix:String {
+        get {
+            return self.icon.prefix
+        }
+    }
+    public var iconSuffix:String {
+        get {
+            return self.icon.suffix
         }
     }
     

@@ -83,8 +83,8 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         return venue.categories.first
     }
     
-    static func getCategoryImageIdentifier(size:String, category:FCategory) -> String? {
-        if let url = NSURL(string: "\(category.icon!.prefix)\(size)\(category.icon!.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
+    static func getCategoryImageIdentifier<T:IconCapable>(size:String, category:T) -> String? {
+        if let url = NSURL(string: "\(category.iconPrefix)\(size)\(category.iconSuffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
             let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
             return "\(prefix_image_name)_\(name)"
         }

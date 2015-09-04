@@ -53,12 +53,8 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
         cell.imageView!.image = nil
         
         // Set the category image
-        if let url = NSURL(string: "\(category.icon.prefix)\(FIcon.FIconSize.S64.description)\(category.icon.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
-            let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-            let imageName = "\(prefix_image_name)_\(name)"
-            if let image = ImageCache.sharedInstance().imageWithIdentifier(imageName) {
-                categoryImage = image
-            }
+        if let imageid = FoursquareLocationMapAnnotation.getCategoryImageIdentifier(FIcon.FIconSize.S64.description, category: category), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
+            categoryImage = image
         }
         
         //pngs are white use black color

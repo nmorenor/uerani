@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-public class FCategory: Object {
+public class FCategory: Object, IconCapable {
     
     public dynamic var id = ""
     public dynamic var name = ""
@@ -19,6 +19,17 @@ public class FCategory: Object {
     public dynamic var primary = false
     public dynamic var topCategory = false
     public dynamic var categories = List<FSubCategory>()
+    
+    public var iconPrefix:String {
+        get {
+            return self.icon!.prefix
+        }
+    }
+    public var iconSuffix:String {
+        get {
+            return self.icon!.suffix
+        }
+    }
     
     public static override func primaryKey() -> String? {
         return "id"

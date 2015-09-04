@@ -41,6 +41,7 @@
 		669306341B97A07E00E148DF /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669306331B97A07E00E148DF /* UserViewModel.swift */; };
 		669306361B97D6C700E148DF /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669306351B97D6C700E148DF /* BorderedButton.swift */; };
 		669306381B98A43900E148DF /* UeraniColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669306371B98A43900E148DF /* UeraniColor.swift */; };
+		6693063A1B99168F00E148DF /* IconCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669306391B99168F00E148DF /* IconCapable.swift */; };
 		66A116281B72E2A700498070 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116251B72E2A700498070 /* CoreDataStack.swift */; };
 		66A116291B72E2A700498070 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116261B72E2A700498070 /* CoreDataModel.swift */; };
 		66A1162A1B72E2A700498070 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A116271B72E2A700498070 /* CoreDataStackManager.swift */; };
@@ -149,6 +150,7 @@
 		669306331B97A07E00E148DF /* UserViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		669306351B97D6C700E148DF /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
 		669306371B98A43900E148DF /* UeraniColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UeraniColor.swift; sourceTree = "<group>"; };
+		669306391B99168F00E148DF /* IconCapable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconCapable.swift; sourceTree = "<group>"; };
 		66A116251B72E2A700498070 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		66A116261B72E2A700498070 /* CoreDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
 		66A116271B72E2A700498070 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 			children = (
 				66A1162F1B72E31E00498070 /* CoreData */,
 				66A1162E1B72E30000498070 /* realm */,
+				669306391B99168F00E148DF /* IconCapable.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -773,6 +776,7 @@
 				66A265701B8A642D005C4970 /* UserViewController.swift in Sources */,
 				66A7FCAD1B5AD7A70012358D /* FoursquareConvenience.swift in Sources */,
 				6688F1391B9204CA008BF82B /* UserViewTop.swift in Sources */,
+				6693063A1B99168F00E148DF /* IconCapable.swift in Sources */,
 				66F55AC81B8E3C8D005C2F49 /* DirectedGraph.swift in Sources */,
 				66A7FCA21B5AD7600012358D /* HttpClientConstants.swift in Sources */,
 				66A7FCB61B5AD7CA0012358D /* FoursquareLocationMapAnnotation.swift in Sources */,
