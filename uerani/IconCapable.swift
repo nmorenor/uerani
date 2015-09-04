@@ -15,7 +15,14 @@ public protocol IconCapable : class {
 }
 
 func getCategoryImageIdentifier<T:IconCapable>(size:String, category:T) -> String? {
-    if let url = NSURL(string: "\(category.iconPrefix)\(size)\(category.iconSuffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
+    if let url = NSURL(string: "\(category.iconPrefix)\(size)\(category.iconSuffix)") {
+        return getImageIdentifier(url)
+    }
+    return nil
+}
+
+func getImageIdentifier(url:NSURL) -> String? {
+    if let name = url.lastPathComponent, let pathComponents = url.pathComponents {
         let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
         return "\(prefix_image_name)_\(name)"
     }

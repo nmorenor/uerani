@@ -29,11 +29,8 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
         for nextSize in FIcon.FIconSize.allValues {
             var nextStringURL = "\(prefix)\(nextSize.description)\(suffix)"
             var url = NSURL(string: nextStringURL)
-            if let nextUrl = url where regex.test(nextStringURL) {
+            if let nextUrl = url, let imageCacheName = getImageIdentifier(nextUrl) where regex.test(nextStringURL) {
                 self.currentIcon = nextUrl
-                let pathComponents = nextUrl.pathComponents!
-                let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-                var imageCacheName = "\(prefix_image_name)_\(nextUrl.lastPathComponent!)"
                 let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
                 if nextImage == nil {
                     var downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: LocationRequestManager.sharedInstance().categoryIconDownloadOperationQueue, finishHandler: self.unlock)

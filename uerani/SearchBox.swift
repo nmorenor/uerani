@@ -11,6 +11,7 @@ import RealmSwift
 
 struct SearchBox {
     
+    static let locationPredicate:String = "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)"
     static let internalBoxDistance:Double = VenueLocationSearchMediator.locationSearchDistance/4
     var center:GeoLocation
     var useCenter:Bool
@@ -68,15 +69,15 @@ struct SearchBox {
     }
     
     func getPredicate() -> NSPredicate {
-        return NSPredicate(format: "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)", swCoord.longitude, neCoord.longitude, swCoord.latitude, neCoord.latitude)
+        return NSPredicate(format: SearchBox.locationPredicate, swCoord.longitude, neCoord.longitude, swCoord.latitude, neCoord.latitude)
     }
     
     private func getPredicate(box:GeoLocation.GeoLocationBoundBox) -> NSPredicate {
-        return NSPredicate(format: "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)", box.swLocation.coordinate.longitude, box.neLocation.coordinate.longitude, box.swLocation.coordinate.latitude, box.neLocation.coordinate.latitude)
+        return NSPredicate(format: SearchBox.locationPredicate, box.swLocation.coordinate.longitude, box.neLocation.coordinate.longitude, box.swLocation.coordinate.latitude, box.neLocation.coordinate.latitude)
     }
     
     static func getPredicate(sw:CLLocationCoordinate2D, ne:CLLocationCoordinate2D) -> NSPredicate {
-        return NSPredicate(format: "(%f <= location.lng) AND (location.lng <= %f) AND (%f <= location.lat) AND (location.lat <= %f)", sw.longitude, ne.longitude, sw.latitude, ne.latitude)
+        return NSPredicate(format: SearchBox.locationPredicate, sw.longitude, ne.longitude, sw.latitude, ne.latitude)
 
     }
     

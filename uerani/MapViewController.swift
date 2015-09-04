@@ -91,6 +91,7 @@ class MapViewController: UIViewController, CategoriesReady {
     
     override func viewWillAppear(animated: Bool) {
         self.searchMediator?.mapView = self.mapView
+        self.navigationController?.navigationBarHidden = true
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -114,6 +115,7 @@ class MapViewController: UIViewController, CategoriesReady {
         LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
         let searchEndNotification = NSNotification(name: UERANI_MAP_END_PROGRESS, object: nil)
         NSNotificationCenter.defaultCenter().postNotification(searchEndNotification)
+        self.navigationController?.navigationBarHidden = false
     }
     
     override func didReceiveMemoryWarning() {

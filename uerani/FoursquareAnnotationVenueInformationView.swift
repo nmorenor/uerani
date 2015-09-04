@@ -19,14 +19,14 @@ class FoursquareAnnotationVenueInformationView: UIView {
     let maskLayer = CAShapeLayer()
     let label: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 11.0)
+        label.font = UIFont(name: "HelveticaNeue", size: 11.0)
         label.textAlignment = NSTextAlignment.Left
         label.textColor = UIColor.whiteColor()
         return label
         }()
     let addressLabel:UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 11.0)
+        label.font = UIFont(name: "HelveticaNeue", size: 11.0)
         label.textAlignment = NSTextAlignment.Left
         label.textColor = UIColor.whiteColor()
         label.lineBreakMode = .ByWordWrapping // or NSLineBreakMode.ByWordWrapping

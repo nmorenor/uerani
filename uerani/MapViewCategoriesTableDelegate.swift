@@ -47,7 +47,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
     // MARK: - Configure Cell
     
     func configureCell(cell: UITableViewCell, category: CDCategory) {
-        var categoryImage = UIImage(named: defaultPinImage)
+        var categoryImage = UIImage(named: "default_64")
         
         cell.textLabel!.text = category.name
         cell.imageView!.image = nil

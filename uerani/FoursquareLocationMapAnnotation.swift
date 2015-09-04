@@ -72,9 +72,7 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
     
     private static func getBestCategory(venue:FVenue) -> FCategory? {
         for nextCat in venue.categories {
-            if let url = NSURL(string: "\(nextCat.icon!.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.icon!.suffix)"), let name = url.lastPathComponent, let pathComponents = url.pathComponents {
-                let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
-                let imageName = "\(prefix_image_name)_\(name)"
+            if let url = NSURL(string: "\(nextCat.icon!.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.icon!.suffix)"), let imageName = getImageIdentifier(url) {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(imageName) {
                     return nextCat
                 }

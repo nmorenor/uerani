@@ -100,6 +100,25 @@
             </objects>
             <point key="canvasLocation" x="662" y="-149"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="edV-X1-pS7">
+            <objects>
+                <navigationController id="HeO-Bd-YFL" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="MapView.png" id="XKa-q7-GIE">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                    </tabBarItem>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="hZy-dA-HbN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="D4f-UL-dWi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2hW-iD-JQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="662" y="-1615"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="Dv4-0t-MLE">
             <objects>
@@ -134,9 +153,9 @@
                         <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="8vH-5x-T2V"/>
-                        <segue destination="BDy-lW-wmO" kind="relationship" relationship="viewControllers" id="p6C-BE-xTS"/>
-                        <segue destination="nFZ-cj-VXH" kind="relationship" relationship="viewControllers" id="BGn-Jo-lmY"/>
+                        <segue destination="HeO-Bd-YFL" kind="relationship" relationship="viewControllers" id="7R0-TG-eTa"/>
+                        <segue destination="BDy-lW-wmO" kind="relationship" relationship="viewControllers" id="aFD-cb-ExF"/>
+                        <segue destination="nFZ-cj-VXH" kind="relationship" relationship="viewControllers" id="dYb-21-Che"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tcy-97-vAg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -152,21 +171,21 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xfI-4p-Hff">
-                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xfI-4p-Hff">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                             </mapView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poweredByFoursquare" translatesAutoresizingMaskIntoConstraints="NO" id="EeX-wa-L7p">
-                                <rect key="frame" x="468" y="516" width="125" height="35"/>
+                                <rect key="frame" x="468" y="452" width="125" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="125" id="5ZM-PJ-ZOa"/>
                                     <constraint firstAttribute="height" constant="35" id="bxG-ro-Y1a"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ugk-Ll-QZF">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ugk-Ll-QZF">
+                                <rect key="frame" x="0.0" y="64" width="600" height="585"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="categorySearchCell" id="MQf-MH-EyY">
@@ -182,7 +201,7 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="Idg-SV-Rdj"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ko8-Be-9BA" customClass="SearchViewWtihProgress" customModule="uerani" customModuleProvider="target">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ko8-Be-9BA" customClass="SearchViewWtihProgress" customModule="uerani" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="600" height="43"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -210,19 +229,40 @@
                     <tabBarItem key="tabBarItem" title="" image="map" id="83Z-Kh-tXE">
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
+                    <navigationItem key="navigationItem" id="ZLa-Ti-Ajh"/>
                     <connections>
                         <outlet property="categoryBottomConstraint" destination="hA5-P9-M9o" id="yrB-Zb-bYU"/>
                         <outlet property="categoryViewSearch" destination="ugk-Ll-QZF" id="NQ3-pA-NgF"/>
                         <outlet property="mapView" destination="xfI-4p-Hff" id="eBb-Zd-3Gc"/>
                         <outlet property="searchBarView" destination="Ko8-Be-9BA" id="jgp-4I-URR"/>
+                        <segue destination="TrI-LW-zlZ" kind="show" identifier="VenueDetailsMap" id="9L2-oY-64T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="668" y="-1558"/>
+            <point key="canvasLocation" x="1678" y="-1615"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="5sV-kc-ugk">
+            <objects>
+                <viewController id="TrI-LW-zlZ" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sRU-au-sax"/>
+                        <viewControllerLayoutGuide type="bottom" id="O0I-AS-FO9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YES-6r-kmd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2D5-N4-XF1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2696" y="-1615"/>
         </scene>
     </scenes>
     <resources>
+        <image name="MapView.png" width="974" height="1602"/>
         <image name="foursquare-logo-white" width="612" height="792"/>
         <image name="list" width="30" height="30"/>
         <image name="map" width="30" height="30"/>
