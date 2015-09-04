@@ -29,7 +29,7 @@ class VenueCategoriesOperation : AbstractCoreDataOperation {
             let results = realm.objects(FCategory)
             for nextCat in results {
                 var downloadCategoryImage = true
-                if let imageid = FoursquareLocationMapAnnotation.getCategoryImageIdentifier(FIcon.FIconSize.S32.description, category: nextCat), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
+                if let imageid = getCategoryImageIdentifier(FIcon.FIconSize.S32.description, nextCat), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
                     downloadCategoryImage = false
                 }
                 if downloadCategoryImage {
