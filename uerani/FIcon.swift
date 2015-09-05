@@ -9,7 +9,13 @@
 import Foundation
 import RealmSwift
 
-public class FIcon: Object {
+public protocol Icon : class {
+    
+    var prefix:String {get}
+    var suffix:String {get}
+}
+
+public class FIcon: Object, Icon {
     
     public enum FIconSize : Printable {
         case S32;

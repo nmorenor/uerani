@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDContact)
 
-public class CDContact : NSManagedObject {
+public class CDContact : NSManagedObject, Contact {
     
     @NSManaged public var phone:String
     @NSManaged public var formattedPhone:String

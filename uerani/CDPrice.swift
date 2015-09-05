@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDPrice)
 
-public class CDPrice : NSManagedObject {
+public class CDPrice : NSManagedObject, Price {
 
     @NSManaged public var tier:Int
     @NSManaged public var message:String

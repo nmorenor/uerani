@@ -55,7 +55,7 @@
         <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCategory" inverseName="categories" inverseEntity="CDCategory" syncable="YES"/>
     </entity>
     <entity name="CDTag" representedClassName="CDTag" syncable="YES">
-        <attribute name="tagValue" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tagvalue" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="venues" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDVenue" inverseName="tags" inverseEntity="CDVenue" syncable="YES"/>
     </entity>
     <entity name="CDTimeFrames" representedClassName="CDTimeFrames" syncable="YES">
@@ -107,7 +107,7 @@
         <element name="CDLocation" positionX="-36" positionY="90" width="128" height="165"/>
         <element name="CDPhoto" positionX="-45" positionY="81" width="128" height="150"/>
         <element name="CDSubCategory" positionX="-54" positionY="54" width="128" height="60"/>
-        <element name="CDTag" positionX="18" positionY="153" width="128" height="73"/>
+        <element name="CDTag" positionX="18" positionY="153" width="128" height="75"/>
         <element name="CDUser" positionX="-54" positionY="54" width="128" height="178"/>
         <element name="CDVenue" positionX="0" positionY="144" width="128" height="285"/>
         <element name="CDVenueList" positionX="-27" positionY="81" width="128" height="30"/>

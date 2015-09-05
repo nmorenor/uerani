@@ -9,7 +9,15 @@
 import Foundation
 import RealmSwift
 
-public class FPhoto: Object, IconCapable {
+public protocol Photo : IconCapable {
+    
+    var id:String {get}
+    var suffix:String {get}
+    var prefix:String {get}
+    var visibility:String {get}
+}
+
+public class FPhoto: Object, IconCapable, Photo {
     
     public dynamic var id = ""
     public dynamic var createdAt = 0

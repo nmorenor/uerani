@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDVenue)
 
-public class CDVenue : NSManagedObject, Equatable {
+public class CDVenue : NSManagedObject, Equatable, Venue {
     
     @NSManaged public var id:String
     @NSManaged public var name:String
@@ -30,6 +30,60 @@ public class CDVenue : NSManagedObject, Equatable {
     @NSManaged public var price:CDPrice?
     
     @NSManaged public var lastUpdate:NSDate
+    
+    public var c_contact:Contact? {
+        return self.contact
+    }
+    
+    public var c_bestPhoto:Photo? {
+        return self.bestPhoto
+    }
+    
+    public var c_price:Price? {
+        return self.price
+    }
+    
+    public var c_hours:Hours? {
+        get {
+            return self.hours
+        }
+    }
+    
+    public var c_location:Location? {
+        get {
+            return self.location
+        }
+    }
+    
+    public var c_categories:GeneratorOf<Category> {
+        get {
+            var queue = Queue<Category>()
+            for next in self.categories {
+                queue.enqueue(next)
+            }
+            return GeneratorOf<Category>(queue.generate())
+        }
+    }
+    
+    public var c_tags:GeneratorOf<Tag> {
+        get {
+            var queue = Queue<Tag>()
+            for next in self.tags {
+                queue.enqueue(next)
+            }
+            return GeneratorOf<Tag>(queue.generate())
+        }
+    }
+    
+    public var c_photos:GeneratorOf<Photo> {
+        get {
+            var queue = Queue<Photo>()
+            for next in self.photos {
+                queue.enqueue(next)
+            }
+            return GeneratorOf<Photo>(queue.generate())
+        }
+    }
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)

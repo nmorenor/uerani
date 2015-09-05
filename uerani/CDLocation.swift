@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDLocation)
 
-public class CDLocation : NSManagedObject {
+public class CDLocation : NSManagedObject, Location {
     
     @NSManaged public var lat:Double
     @NSManaged public var lng:Double

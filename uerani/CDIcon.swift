@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDIcon)
 
-public class CDIcon : NSManagedObject, Equatable, Printable {
+public class CDIcon : NSManagedObject, Equatable, Printable, Icon {
     
     @NSManaged public var prefix:String
     @NSManaged public var suffix:String

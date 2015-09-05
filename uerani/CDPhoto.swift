@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDPhoto)
 
-public class CDPhoto : NSManagedObject, Equatable, IconCapable {
+public class CDPhoto : NSManagedObject, Equatable, IconCapable, Photo {
     
     @NSManaged public var id:String
     @NSManaged public var prefix:String

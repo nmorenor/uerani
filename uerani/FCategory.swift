@@ -9,7 +9,20 @@
 import Foundation
 import RealmSwift
 
-public class FCategory: Object, IconCapable {
+public protocol Category : class {
+    
+    var id:String {get}
+    var name:String {get}
+    var pluralName:String {get}
+    var shortName:String {get}
+    var primary: Bool {get}
+    var topCategory: Bool {get}
+    
+    var c_categories:GeneratorOf<Category> {get}
+    
+}
+
+public class FCategory: Object, IconCapable, Category {
     
     public dynamic var id = ""
     public dynamic var name = ""
@@ -31,6 +44,16 @@ public class FCategory: Object, IconCapable {
         }
     }
     
+    public var c_categories:GeneratorOf<Category> {
+        get {
+            var queue = Queue<Category>()
+            for next in categories {
+                queue.enqueue(next)
+            }
+            return GeneratorOf<Category>(queue.generate())
+        }
+    }
+    
     public static override func primaryKey() -> String? {
         return "id"
     }
@@ -47,6 +70,6 @@ public class FCategory: Object, IconCapable {
     }
 }
 
-public class FSubCategory:FCategory {
+public class FSubCategory:FCategory, Category {
     
 }

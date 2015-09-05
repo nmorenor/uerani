@@ -9,9 +9,10 @@
 import Foundation
 import RealmSwift
 
-public class VenueDetailViewModel {
+public class VenueDetailViewModel<T:Venue> {
     
     var name:String!
+    var imageSize:CGSize!
     var email:String?
     var phone:String?
     var address:String?
@@ -22,59 +23,76 @@ public class VenueDetailViewModel {
     var tags:[String]?
     var rating:Float!
     var photoIdentifier:String?
+    var price:String?
+    var isOpen:Bool?
+    var status:String?
     
-    init(venueId:String, realm:Realm, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
-        let venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)!
-        self.loadData(venue, imageSize:imageSize)
+    init(venue:T, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
+        self.imageSize = imageSize
+        self.loadData(venue)
         if let delegate = delegate where !venue.completeVenue {
-            VenueDetailOperation(venueId: venueId, imageSize: imageSize, delegate: delegate)
-        } else if venue.bestPhoto == nil {
-            VenueDetailOperation(venueId: venueId, imageSize: imageSize, delegate: delegate)
+            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
+        } else if venue.c_bestPhoto == nil {
+            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
         } else {
-            if let identifier = VenueDetailViewModel.getBestPhotoIdentifier(venue.id, imageSize:imageSize, bestPhoto: venue.bestPhoto!) {
+            if let identifier = VenueDetailViewModel.getBestPhotoIdentifier(venue.id, imageSize:imageSize, bestPhoto: venue.c_bestPhoto!) {
                 var image = ImageCache.sharedInstance().imageWithIdentifier(identifier)
                 if image == nil {
-                    VenueDetailOperation(venueId: venueId, imageSize: imageSize, delegate: delegate)
+                    VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
                 }
             } else {
-                VenueDetailOperation(venueId: venueId, imageSize: imageSize, delegate: delegate)
+                VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
             }
         }
     }
     
-    static func getBestPhotoIdentifier(venueId:String, imageSize:CGSize, bestPhoto:FPhoto) -> String? {
+    static func getBestPhotoIdentifier(venueId:String, imageSize:CGSize, bestPhoto:Photo) -> String? {
         var size = "\(imageSize.width.getIntValue())x\(imageSize.height.getIntValue())"
-        var identifier = getImageIdentifier(size, bestPhoto)
-        if let identifier = identifier {
+        let url = NSURL(string: "\(bestPhoto.iprefix)\(size)\(bestPhoto.isuffix)")!
+        if let identifier = getImageIdentifier(url) {
             return "venue_\(venueId)_\(size)_\(identifier)"
         }
         return nil
     }
     
-    func loadData(venue:FVenue, imageSize:CGSize) {
+    func loadData(venue:T) {
         self.name = venue.name
         self.rating = venue.rating
         self.loadContactData(venue)
         self.loadLocationData(venue)
         self.loadTagData(venue)
+        self.loadPriceData(venue)
         
-        if let bestPhoto = venue.bestPhoto {
+        if let hours = venue.c_hours {
+            if !hours.status.isEmpty {
+                self.status = hours.status
+            }
+            self.isOpen = hours.isOpen
+        }
+        
+        if let bestPhoto = venue.c_bestPhoto {
             self.photoIdentifier = VenueDetailViewModel.getBestPhotoIdentifier(venue.id, imageSize:imageSize, bestPhoto: bestPhoto)
         }
     }
     
-    func loadTagData(venue:FVenue) {
-        if venue.tags.count > 0 {
-            var tags = [String]()
-            for tag in venue.tags {
-                tags.append(tag.tagvalue)
+    private func loadPriceData(venue:T) {
+        if let price = venue.c_price {
+            if !price.message.isEmpty {
+                self.price = price.message
             }
-            self.tags = tags
         }
     }
     
-    func loadLocationData(venue:FVenue) {
-        if let location = venue.location {
+    private func loadTagData(venue:T) {
+        var tags = [String]()
+        for tag in venue.c_tags {
+            tags.append(tag.tagvalue)
+        }
+        self.tags = tags
+    }
+    
+    private func loadLocationData(venue:T) {
+        if let location = venue.c_location {
             if !location.address.isEmpty {
                 self.address = location.address
             }
@@ -93,8 +111,8 @@ public class VenueDetailViewModel {
         }
     }
     
-    func loadContactData(venue:FVenue) {
-        if let contact = venue.contact {
+    private func loadContactData(venue:T) {
+        if let contact = venue.c_contact {
             if !contact.email.isEmpty {
                 self.email = contact.email
             }

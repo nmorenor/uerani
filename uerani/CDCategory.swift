@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDCategory)
 
-public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconCapable {
+public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconCapable, Category {
     
     @NSManaged public var id:String
     @NSManaged public var name:String
@@ -44,6 +44,16 @@ public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconC
     public var isuffix:String {
         get {
             return self.icon.suffix
+        }
+    }
+    
+    public var c_categories:GeneratorOf<Category> {
+        get {
+            var queue = Queue<Category>()
+            for next in categories {
+                queue.enqueue(next)
+            }
+            return GeneratorOf<Category>(queue.generate())
         }
     }
     

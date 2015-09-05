@@ -10,7 +10,12 @@ import Foundation
 import RealmSwift
 import Realm
 
-public class FTag:Object {
+public protocol Tag : class {
+    
+    var tagvalue:String {get}
+}
+
+public class FTag:Object, Tag {
     
     public dynamic var tagvalue = ""
     

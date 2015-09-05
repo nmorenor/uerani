@@ -9,7 +9,18 @@
 import Foundation
 import RealmSwift
 
-public class FLocation: Object {
+public protocol Location : class {
+    
+    var lat:Double {get}
+    var lng:Double {get}
+    var address:String {get}
+    var city:String {get}
+    var state:String {get}
+    var postalCode:String {get}
+    var country:String {get}
+}
+
+public class FLocation: Object, Location {
     
     public dynamic var lat:Double = 0.0
     public dynamic var lng:Double = 0.0

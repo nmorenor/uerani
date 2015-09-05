@@ -9,7 +9,13 @@
 import Foundation
 import RealmSwift
 
-public class FPrice:Object {
+public protocol Price : class {
+    
+    var tier:Int {get}
+    var message:String {get}
+}
+
+public class FPrice:Object, Price {
     
     public dynamic var tier:Int = 1
     public dynamic var message:String = ""

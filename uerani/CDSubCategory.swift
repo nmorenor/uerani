@@ -12,7 +12,7 @@ import CoreData
 @objc(CDSubCategory)
 
 
-public class CDSubCategory : CDCategory {
+public class CDSubCategory : CDCategory, Category {
     
     @NSManaged public var parentCategory:CDCategory?
     

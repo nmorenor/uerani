@@ -9,7 +9,14 @@
 import Foundation
 import RealmSwift
 
-public class FContact : Object {
+public protocol Contact : class {
+    
+    var phone:String {get}
+    var formattedPhone:String {get}
+    var email:String {get}
+}
+
+public class FContact : Object, Contact {
     
     public dynamic var phone = ""
     public dynamic var formattedPhone = ""

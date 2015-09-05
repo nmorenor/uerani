@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDTimeOpenFrames)
 
-public class CDTimeOpenFrames : NSManagedObject {
+public class CDTimeOpenFrames : NSManagedObject, TimeOpenFrames {
     
     @NSManaged public var renderedTime:String
     @NSManaged public var timeFrames:CDTimeFrames?

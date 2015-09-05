@@ -11,15 +11,15 @@ import CoreData
 
 @objc(CDTag)
 
-public class CDTag : NSManagedObject, Printable {
+public class CDTag : NSManagedObject, Printable, Tag {
     
-    @NSManaged public var tagValue:String
+    @NSManaged public var tagvalue:String
     
     @NSManaged public var venues:[CDVenue]
     
     override public var description:String {
         get {
-            return "\(self.tagValue)"
+            return "\(self.tagvalue)"
         }
     }
     
@@ -32,7 +32,7 @@ public class CDTag : NSManagedObject, Printable {
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
-        self.tagValue = tag.tagvalue
+        self.tagvalue = tag.tagvalue
     }
     
     init(data:[String:AnyObject], context:NSManagedObjectContext) {
