@@ -10,12 +10,12 @@ import Foundation
 
 public protocol IconCapable : class {
     
-    var iconPrefix:String {get}
-    var iconSuffix:String {get}
+    var iprefix:String {get}
+    var isuffix:String {get}
 }
 
-func getCategoryImageIdentifier<T:IconCapable>(size:String, category:T) -> String? {
-    if let url = NSURL(string: "\(category.iconPrefix)\(size)\(category.iconSuffix)") {
+func getImageIdentifier<T:IconCapable>(size:String, iconCapable:T) -> String? {
+    if let url = NSURL(string: "\(iconCapable.iprefix)\(size)\(iconCapable.isuffix)") {
         return getImageIdentifier(url)
     }
     return nil

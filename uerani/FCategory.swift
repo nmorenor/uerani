@@ -20,12 +20,12 @@ public class FCategory: Object, IconCapable {
     public dynamic var topCategory = false
     public dynamic var categories = List<FSubCategory>()
     
-    public var iconPrefix:String {
+    public var iprefix:String {
         get {
             return self.icon!.prefix
         }
     }
-    public var iconSuffix:String {
+    public var isuffix:String {
         get {
             return self.icon!.suffix
         }

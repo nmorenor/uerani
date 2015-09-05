@@ -67,11 +67,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wnH-GA-Z0X" customClass="BorderedButton" customModule="uerani" customModuleProvider="target">
-                                <rect key="frame" x="254" y="471" width="92" height="30"/>
+                                <rect key="frame" x="244" y="468" width="112" height="34"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="92" id="8vi-gb-BHG"/>
-                                    <constraint firstAttribute="height" constant="30" id="PXf-jw-IOf"/>
+                                    <constraint firstAttribute="width" constant="112" id="8vi-gb-BHG"/>
+                                    <constraint firstAttribute="height" constant="34" id="PXf-jw-IOf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="Logout">
@@ -86,7 +86,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wnH-GA-Z0X" firstAttribute="centerX" secondItem="1pa-Ty-oPB" secondAttribute="centerX" id="Fyn-NQ-gzJ"/>
-                            <constraint firstItem="nru-uW-2sx" firstAttribute="top" secondItem="wnH-GA-Z0X" secondAttribute="bottom" constant="50" id="ZQw-oh-Of7"/>
+                            <constraint firstItem="nru-uW-2sx" firstAttribute="top" secondItem="wnH-GA-Z0X" secondAttribute="bottom" constant="49" id="ZQw-oh-Of7"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="user" id="QWQ-xi-K3K">

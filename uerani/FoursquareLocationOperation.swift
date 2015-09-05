@@ -106,7 +106,7 @@ public class FoursquareLocationOperation: NSOperation {
             
             for nextCat in nextVenue.categories {
                 var downloadCategoryImage = true
-                if let imageid = getCategoryImageIdentifier(FIcon.FIconSize.S32.description, nextCat), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
+                if let imageid = getImageIdentifier(FIcon.FIconSize.S32.description, nextCat), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
                     downloadCategoryImage = false
                 }
                 if downloadCategoryImage {

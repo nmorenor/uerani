@@ -71,9 +71,8 @@ class UserViewModel {
         
         self.width  = asize.width > 100 ? asize.width : 100
         
-        var photoURL = "\(user.photo!.prefix)100x100\(user.photo!.suffix)"
-        let url = NSURL(string: photoURL)!
-        self.imageIdentifier = "user_\(user.id)_\(url.lastPathComponent!)"
+        var identifier = getImageIdentifier("100x100", user.photo!)
+        self.imageIdentifier = "user_\(user.id)_\(identifier)"
     }
     
     private func setDefaults() {

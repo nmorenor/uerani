@@ -53,9 +53,9 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         self.coordinate = CLLocationCoordinate2D(latitude: venue.location!.lat, longitude: venue.location!.lng)
         self.venue = venue
         if let category = FoursquareLocationMapAnnotation.getBestCategory(venue) {
-            categoryImageName = getCategoryImageIdentifier(FIcon.FIconSize.S32.description, category)
-            categoryImageName64 = getCategoryImageIdentifier(FIcon.FIconSize.S64.description, category)
-            categoryImageName12 = getCategoryImageIdentifier("12", category)
+            categoryImageName = getImageIdentifier(FIcon.FIconSize.S32.description, category)
+            categoryImageName64 = getImageIdentifier(FIcon.FIconSize.S64.description, category)
+            categoryImageName12 = getImageIdentifier("12", category)
             
             self.categoryPrefix = category.icon!.prefix
             self.categorySuffix = category.icon!.suffix

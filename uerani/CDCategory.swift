@@ -36,12 +36,12 @@ public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconC
         }
     }
     
-    public var iconPrefix:String {
+    public var iprefix:String {
         get {
             return self.icon.prefix
         }
     }
-    public var iconSuffix:String {
+    public var isuffix:String {
         get {
             return self.icon.suffix
         }

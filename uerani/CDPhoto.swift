@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDPhoto)
 
-public class CDPhoto : NSManagedObject, Equatable {
+public class CDPhoto : NSManagedObject, Equatable, IconCapable {
     
     @NSManaged public var id:String
     @NSManaged public var prefix:String
@@ -21,6 +21,17 @@ public class CDPhoto : NSManagedObject, Equatable {
     @NSManaged public var venue:CDVenue?
     @NSManaged public var venueBestPhoto:CDVenue?
     @NSManaged public var user:CDUser?
+    
+    public var iprefix:String {
+        get {
+            return self.prefix
+        }
+    }
+    public var isuffix:String {
+        get {
+            return self.suffix
+        }
+    }
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)

@@ -25,7 +25,7 @@ public class VenueDetailOperation:NSOperation {
     var imageSemaphore = dispatch_semaphore_create(0)
     var success = false
     
-    init(venueId:String, imageSize:CGSize, delegate:VenueDetailsDelegate) {
+    init(venueId:String, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
         self.venueId = venueId
         self.venueDetailDelegate = delegate
         self.size = "\(imageSize.width.getIntValue())x\(imageSize.height.getIntValue())"
@@ -53,9 +53,10 @@ public class VenueDetailOperation:NSOperation {
             }
             
             if let photo = photo {
+                var identifier = getImageIdentifier(self.size, photo)
                 var photoURL = "\(photo.prefix)\(self.size)\(photo.suffix)"
-                if let url = NSURL(string: photoURL) {
-                    var imageCacheName = "venue_\(self.venueId)_\(self.size)_\(url.lastPathComponent!)"
+                if let url = NSURL(string: photoURL), let identifier = identifier {
+                    var imageCacheName = "venue_\(self.venueId)_\(self.size)_\(identifier)"
                     let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
                     
                     if nextImage == nil {

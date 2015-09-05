@@ -16,6 +16,8 @@ class UserViewController : UIViewController, UserRefreshDelegate {
     
     @IBOutlet weak var logoutButton: BorderedButton! {
         didSet {
+            self.logoutButton.layer.borderColor = UIColor.whiteColor().CGColor
+            self.logoutButton.layer.borderWidth = 1.5
             self.logoutButton.highlightedBackingColor = UIColor.ueraniBlackJetColor()
             self.logoutButton.backingColor = UIColor.blackColor()
             self.logoutButton.backgroundColor = UIColor.blackColor()

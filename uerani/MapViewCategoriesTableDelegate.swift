@@ -53,7 +53,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
         cell.imageView!.image = nil
         
         // Set the category image
-        if let imageid = getCategoryImageIdentifier(FIcon.FIconSize.S64.description, category), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
+        if let imageid = getImageIdentifier(FIcon.FIconSize.S64.description, category), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
             categoryImage = image
         }
         

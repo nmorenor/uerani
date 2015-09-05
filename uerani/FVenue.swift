@@ -15,7 +15,7 @@ public class FVenue: Object {
     public dynamic var name = ""
     public dynamic var completeVenue = false
     public dynamic var location:FLocation?
-    public dynamic var cotact:FContact?
+    public dynamic var contact:FContact?
     public dynamic var categories = List<FCategory>()
     public dynamic var verified = false
     public dynamic var url = ""
@@ -23,6 +23,8 @@ public class FVenue: Object {
     public dynamic var photos = List<FPhoto>()
     public dynamic var bestPhoto:FPhoto?
     public dynamic var rating:Float = 0.0
+    public dynamic var price:FPrice?
+    public dynamic var hours:FHours?
     
     public static override func primaryKey() -> String? {
         return "id"
