@@ -14,7 +14,13 @@ let UERANI_LOGOUT = "logout"
 
 class UserViewController : UIViewController, UserRefreshDelegate {
     
-    @IBOutlet weak var logoutButton: BorderedButton!
+    @IBOutlet weak var logoutButton: BorderedButton! {
+        didSet {
+            self.logoutButton.highlightedBackingColor = UIColor.ueraniBlackJetColor()
+            self.logoutButton.backingColor = UIColor.blackColor()
+            self.logoutButton.backgroundColor = UIColor.blackColor()
+        }
+    }
     private var userViewTop:UserViewTop!
     private var userPhotoView:UserPhotoView!
     private var userViewModel:UserViewModel!
@@ -22,8 +28,6 @@ class UserViewController : UIViewController, UserRefreshDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.ueraniYellowColor()
-        self.logoutButton.backingColor = UIColor.blackColor()
-        self.logoutButton.highlightedBackingColor = UIColor.blackColor()
         let viewFrame = self.view.frame
         let userViewFrame = CGRectMake(0, 0, viewFrame.size.width, CGFloat(viewFrame.size.height * 0.35))
         self.userViewTop = UserViewTop(frame: userViewFrame)
