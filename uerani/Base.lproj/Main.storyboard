@@ -67,12 +67,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wnH-GA-Z0X" customClass="BorderedButton" customModule="uerani" customModuleProvider="target">
-                                <rect key="frame" x="268" y="468" width="64" height="30"/>
+                                <rect key="frame" x="254" y="471" width="92" height="30"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="64" id="gIs-xZ-UmZ"/>
+                                    <constraint firstAttribute="width" constant="92" id="8vi-gb-BHG"/>
+                                    <constraint firstAttribute="height" constant="30" id="PXf-jw-IOf"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="Logout">
                                     <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -84,8 +85,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="wnH-GA-Z0X" secondAttribute="centerX" id="4UU-v9-HoQ"/>
-                            <constraint firstItem="nru-uW-2sx" firstAttribute="top" secondItem="wnH-GA-Z0X" secondAttribute="bottom" constant="53" id="EqZ-Fe-Lga"/>
+                            <constraint firstItem="wnH-GA-Z0X" firstAttribute="centerX" secondItem="1pa-Ty-oPB" secondAttribute="centerX" id="Fyn-NQ-gzJ"/>
+                            <constraint firstItem="nru-uW-2sx" firstAttribute="top" secondItem="wnH-GA-Z0X" secondAttribute="bottom" constant="50" id="ZQw-oh-Of7"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="user" id="QWQ-xi-K3K">
@@ -242,10 +243,10 @@
             </objects>
             <point key="canvasLocation" x="1678" y="-1615"/>
         </scene>
-        <!--View Controller-->
+        <!--Venue Detail Controller-->
         <scene sceneID="5sV-kc-ugk">
             <objects>
-                <viewController id="TrI-LW-zlZ" sceneMemberID="viewController">
+                <viewController id="TrI-LW-zlZ" customClass="VenueDetailController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sRU-au-sax"/>
                         <viewControllerLayoutGuide type="bottom" id="O0I-AS-FO9"/>

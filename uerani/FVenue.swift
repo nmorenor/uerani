@@ -21,6 +21,8 @@ public class FVenue: Object {
     public dynamic var url = ""
     public dynamic var tags = List<FTag>()
     public dynamic var photos = List<FPhoto>()
+    public dynamic var bestPhoto:FPhoto?
+    public dynamic var rating:Float = 0.0
     
     public static override func primaryKey() -> String? {
         return "id"

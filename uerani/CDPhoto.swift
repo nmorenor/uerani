@@ -19,6 +19,7 @@ public class CDPhoto : NSManagedObject, Equatable {
     @NSManaged public var visibility:String
     
     @NSManaged public var venue:CDVenue?
+    @NSManaged public var venueBestPhoto:CDVenue?
     @NSManaged public var user:CDUser?
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {

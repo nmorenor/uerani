@@ -23,7 +23,9 @@ public class CDVenue : NSManagedObject, Equatable {
     @NSManaged public var url:String
     @NSManaged public var tags:[CDTag]
     @NSManaged public var photos:[CDPhoto]
+    @NSManaged public var bestPhoto:CDPhoto
     @NSManaged public var venueLists:[CDVenueList]
+    @NSManaged public var rating:Float
     
     @NSManaged public var lastUpdate:NSDate
     

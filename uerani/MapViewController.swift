@@ -96,7 +96,7 @@ class MapViewController: UIViewController, CategoriesReady {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        unsubscribeFromKeyboardNotifications()
+        subscribeToKeyboardNotifications()
         if self.isRefreshReady {
             self.searchMediator.updateUI()
         }

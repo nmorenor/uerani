@@ -9,7 +9,7 @@
 import UIKit
 
 let borderedButtonHeight : CGFloat = 44.0
-let borderedButtonCornerRadius : CGFloat = 4.0
+let borderedButtonCornerRadius : CGFloat = 6.0
 let padBorderedButtonExtraPadding : CGFloat = 20.0
 let phoneBorderedButtonExtraPadding : CGFloat = 14.0
 
