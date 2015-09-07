@@ -123,4 +123,13 @@ public class VenueDetailViewModel<T:Venue> {
             }
         }
     }
+    
+    func setupImageView(view:VenueImageView) {
+        if let imageIdentifier = self.photoIdentifier, let image = ImageCache.sharedInstance().imageWithIdentifier(imageIdentifier) {
+            println("with image")
+            view.image = image
+        } else {
+            println("no image")
+        }
+    }
 }

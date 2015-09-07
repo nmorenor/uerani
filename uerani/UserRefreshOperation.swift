@@ -68,7 +68,7 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
             if let photo = user.photo {
                 var photoURL = "\(photo.prefix)100x100\(photo.suffix)"
                 if let url = NSURL(string: photoURL) {
-                    var imageCacheName = "user_\(user.id)_\(url.lastPathComponent!)"
+                    var imageCacheName = "user_\(user.id)_\(getImageIdentifier(url)!)"
                     let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
                     
                     if nextImage == nil {

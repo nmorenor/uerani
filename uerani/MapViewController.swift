@@ -53,7 +53,7 @@ class MapViewController: UIViewController, CategoriesReady {
         let locationRequestManager = LocationRequestManager.sharedInstance()
         self.isRefreshReady = locationRequestManager.authorized
         self.searchMediator = VenueLocationSearchMediator(mapView: self.mapView)
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         if let location = locationRequestManager.location {
             self.searchMediator.displayLocation(location)
         }

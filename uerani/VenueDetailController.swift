@@ -11,21 +11,5 @@ import UIKit
 
 public class VenueDetailController : UIViewController {
     
-    //MARK: LifeCycle
     
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    public override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    public override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
-    public override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 }

@@ -115,6 +115,6 @@ public class VenueDetailOperation:NSOperation {
 extension CGFloat {
     
     func getIntValue() -> Int {
-        return NSString(format: "%d", self).integerValue
+        return Int(self)
     }
 }

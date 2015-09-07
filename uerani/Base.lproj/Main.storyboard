@@ -243,10 +243,10 @@
             </objects>
             <point key="canvasLocation" x="1678" y="-1615"/>
         </scene>
-        <!--Venue Detail Controller-->
+        <!--Realm Venue Detail View Controller-->
         <scene sceneID="5sV-kc-ugk">
             <objects>
-                <viewController id="TrI-LW-zlZ" customClass="VenueDetailController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RealmDetailsViewController" id="TrI-LW-zlZ" customClass="RealmVenueDetailViewController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sRU-au-sax"/>
                         <viewControllerLayoutGuide type="bottom" id="O0I-AS-FO9"/>

@@ -71,7 +71,7 @@ class UserViewModel {
         
         self.width  = asize.width > 100 ? asize.width : 100
         
-        var identifier = getImageIdentifier("100x100", user.photo!)
+        var identifier = getImageIdentifier("100x100", user.photo!)!
         self.imageIdentifier = "user_\(user.id)_\(identifier)"
     }
     

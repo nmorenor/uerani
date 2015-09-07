@@ -102,7 +102,9 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
         if let annotation = view.annotation as? FoursquareLocationMapAnnotation {
-            self.performSegueWithIdentifier("VenueDetailsMap", sender: self)
+            var detailsController = self.storyboard?.instantiateViewControllerWithIdentifier("RealmDetailsViewController") as! RealmVenueDetailViewController
+            detailsController.venueId = annotation.venueId
+            self.navigationController?.pushViewController(detailsController, animated: true)
             println("\(annotation.venueId)")
         }
     }
