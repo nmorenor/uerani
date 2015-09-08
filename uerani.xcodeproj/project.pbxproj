@@ -19,7 +19,6 @@
 		66382C271B6C4AFA00F5644C /* BasicMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C261B6C4AFA00F5644C /* BasicMapAnnotationView.swift */; };
 		66382C291B6D103100F5644C /* default_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 66382C281B6D103100F5644C /* default_64.png */; };
 		66382C2B1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C2A1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift */; };
-		66418A701B9A577700345AF6 /* VenueDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A6F1B9A577700345AF6 /* VenueDetailController.swift */; };
 		66418A731B9A620B00345AF6 /* VenueDetailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A721B9A620B00345AF6 /* VenueDetailOperation.swift */; };
 		66418A751B9A6EA900345AF6 /* VenueDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A741B9A6EA900345AF6 /* VenueDetailViewModel.swift */; };
 		66418A791B9B519A00345AF6 /* FHours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A781B9B519A00345AF6 /* FHours.swift */; };
@@ -142,7 +141,6 @@
 		66382C261B6C4AFA00F5644C /* BasicMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicMapAnnotationView.swift; sourceTree = "<group>"; };
 		66382C281B6D103100F5644C /* default_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_64.png; sourceTree = "<group>"; };
 		66382C2A1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareAnnotationVenueInformationView.swift; sourceTree = "<group>"; };
-		66418A6F1B9A577700345AF6 /* VenueDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueDetailController.swift; sourceTree = "<group>"; };
 		66418A721B9A620B00345AF6 /* VenueDetailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueDetailOperation.swift; sourceTree = "<group>"; };
 		66418A741B9A6EA900345AF6 /* VenueDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueDetailViewModel.swift; sourceTree = "<group>"; };
 		66418A781B9B519A00345AF6 /* FHours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHours.swift; sourceTree = "<group>"; };
@@ -299,7 +297,6 @@
 			children = (
 				66418A8A1B9DDB1000345AF6 /* views */,
 				66418A711B9A61E200345AF6 /* operations */,
-				66418A6F1B9A577700345AF6 /* VenueDetailController.swift */,
 				66418A8D1B9DE6C300345AF6 /* RealmVenueDetailModelCapable.swift */,
 				66418A741B9A6EA900345AF6 /* VenueDetailViewModel.swift */,
 			);
@@ -446,11 +443,11 @@
 				66382C201B6996DF00F5644C /* Regex.swift */,
 				66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */,
 				6657BF021B5D565B00C94677 /* ImageCache.swift */,
+				66A7FC8C1B5AD71D0012358D /* Model */,
 				66418A6E1B9A575900345AF6 /* venueDetail */,
 				66A2656E1B8A6405005C4970 /* User */,
 				66A265671B8A5665005C4970 /* TabBar */,
 				6684E4D01B82B26000B67B0A /* view */,
-				66A7FC8C1B5AD71D0012358D /* Model */,
 				66A7FCA41B5AD76A0012358D /* Map */,
 				6684E4CD1B82AFC400B67B0A /* login */,
 				66A7FC681B5AD6B30012358D /* Supporting Files */,
@@ -863,7 +860,6 @@
 				66F55ACA1B8E4040005C2F49 /* SymbolGraph.swift in Sources */,
 				66A1162D1B72E2E500498070 /* Uerani.xcdatamodeld in Sources */,
 				6684E4D21B82B27600B67B0A /* FSButtonButton.swift in Sources */,
-				66418A701B9A577700345AF6 /* VenueDetailController.swift in Sources */,
 				66382C271B6C4AFA00F5644C /* BasicMapAnnotationView.swift in Sources */,
 				6693062E1B92AD9900E148DF /* UserRefreshOperation.swift in Sources */,
 				66A2657A1B8A9DD7005C4970 /* CDLocation.swift in Sources */,

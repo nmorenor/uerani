@@ -50,23 +50,12 @@ public class VenueDetailOperation:NSOperation {
                 photo = bestPhoto
             } else if let fphoto = venue.photos.first {
                 photo = fphoto
-            }
-            
-            if let photo = photo {
-                var identifier = getImageIdentifier(self.size, photo)
-                var photoURL = "\(photo.prefix)\(self.size)\(photo.suffix)"
-                if let url = NSURL(string: photoURL), let identifier = identifier {
-                    var imageCacheName = "venue_\(self.venueId)_\(self.size)_\(identifier)"
-                    let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
-                    
-                    if nextImage == nil {
-                        var downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: NSOperationQueue(), finishHandler: self.unlockImage)
-                        downloadImage.performDownload(url)
-                        //wait for the download
-                        dispatch_semaphore_wait(imageSemaphore, DISPATCH_TIME_FOREVER)
-                    }
+                realm.write() {
+                    realm.add(venue, update: true)
                 }
             }
+            
+            self.downloadPhoto(photo)
             
             self.venueDetailDelegate?.refreshVenueDetails(self.venueId)
         } else {
@@ -74,8 +63,22 @@ public class VenueDetailOperation:NSOperation {
         }
     }
     
-    private func downloadPhoto(photo:FPhoto) {
-        
+    private func downloadPhoto(photo:FPhoto?) {
+        if let photo = photo {
+            var identifier = getImageIdentifier(self.size, photo)
+            var photoURL = "\(photo.prefix)\(self.size)\(photo.suffix)"
+            if let url = NSURL(string: photoURL), let identifier = identifier {
+                var imageCacheName = "venue_\(self.venueId)_\(self.size)_\(identifier)"
+                let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
+                
+                if nextImage == nil {
+                    var downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: NSOperationQueue(), finishHandler: self.unlockImage)
+                    downloadImage.performDownload(url)
+                    //wait for the download
+                    dispatch_semaphore_wait(imageSemaphore, DISPATCH_TIME_FOREVER)
+                }
+            }
+        }
     }
     
     private func foursquareClientHandler(success:Bool, result:[String:AnyObject]?, errorString:String?) {

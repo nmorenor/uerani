@@ -10,13 +10,14 @@ import Foundation
 import UIKit
 import QuartzCore
 
+@IBDesignable
 public class VenueImageView : UIView {
     
     let photoLayer = CALayer()
     let polygonLayer = CAShapeLayer()
     let maskLayer = CAShapeLayer()
     
-    var topPath:UIBezierPath!
+    var topPath:UIBezierPath?
     
     var image: UIImage? {
         didSet {
@@ -28,25 +29,15 @@ public class VenueImageView : UIView {
         }
     }
     
-    public required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.createBezierPath(frame)
-        self.backgroundColor = UIColor.clearColor()
-    }
-    
     func createBezierPath(rect: CGRect) {
         self.topPath = UIBezierPath()
-        self.topPath.moveToPoint(CGPointMake(rect.size.width, rect.origin.y + rect.height))
-        self.topPath.addLineToPoint(CGPointMake(rect.size.width, rect.origin.y))
-        self.topPath.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y))
-        self.topPath.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y + rect.height))
-        
-        var arcHeight:CGFloat = rect.size.height * 0.15
-        var arcRect:CGRect = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height - arcHeight, rect.size.width, arcHeight)
+        self.topPath!.moveToPoint(CGPointMake(rect.size.width, rect.origin.y + rect.height))
+        self.topPath!.addLineToPoint(CGPointMake(rect.size.width, rect.origin.y))
+        self.topPath!.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y))
+        self.topPath!.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y + rect.height))
+    
+        var arcHeight:CGFloat = rect.size.height * (self.image == nil ?  0.15 : 0.30)
+        var arcRect:CGRect = CGRectMake(rect.origin.x + (self.image == nil ?  0 : -20), rect.origin.y + rect.size.height - arcHeight, rect.size.width + (self.image == nil ?  0 : 40), arcHeight)
         
         var arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
         var arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)
@@ -54,8 +45,8 @@ public class VenueImageView : UIView {
         var angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
         var startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
         var endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
-        self.topPath.addArcWithCenter(arcCenter, radius: arcRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
-        self.topPath.closePath()
+        self.topPath!.addArcWithCenter(arcCenter, radius: arcRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        self.topPath!.closePath()
     }
     
     override public func didMoveToWindow() {
@@ -66,18 +57,19 @@ public class VenueImageView : UIView {
     }
     
     override public func layoutSubviews() {
+        self.createBezierPath(self.frame)
         
         //Size the avatar image to fit
         if let image = self.image {
             photoLayer.frame = CGRect(
-                x: (bounds.size.width - image.size.width)/2,
-                y: (bounds.size.height - image.size.height)/2,
+                x: 0,
+                y: 0,
                 width: image.size.width,
                 height: image.size.height)
         }
         
-        polygonLayer.path = self.topPath.CGPath
-        polygonLayer.fillColor = self.image == nil ? UIColor.ueraniYellowColor().CGColor : UIColor.clearColor().CGColor
+        polygonLayer.path = self.topPath!.CGPath
+        polygonLayer.fillColor = self.image == nil ? UIColor.blackColor().CGColor : UIColor.clearColor().CGColor
         
         //Size the layer
         maskLayer.path = polygonLayer.path

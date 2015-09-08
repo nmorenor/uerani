@@ -32,10 +32,8 @@ public class VenueDetailViewModel<T:Venue> {
         self.loadData(venue)
         if let delegate = delegate where !venue.completeVenue {
             VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
-        } else if venue.c_bestPhoto == nil {
-            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
-        } else {
-            if let identifier = VenueDetailViewModel.getBestPhotoIdentifier(venue.id, imageSize:imageSize, bestPhoto: venue.c_bestPhoto!) {
+        } else if let bestPhoto = venue.c_bestPhoto {
+            if let identifier = VenueDetailViewModel.getBestPhotoIdentifier(venue.id, imageSize:imageSize, bestPhoto: bestPhoto) {
                 var image = ImageCache.sharedInstance().imageWithIdentifier(identifier)
                 if image == nil {
                     VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
@@ -44,7 +42,17 @@ public class VenueDetailViewModel<T:Venue> {
                 VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
             }
         }
+        
+        if daysSinceLastUpdate(venue) > 7 {
+            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
+        }
     }
+    
+    private func daysSinceLastUpdate(venue:T) -> Int? {
+        var timeInterval = NSDate().timeIntervalSinceDate(venue.lastUpdate)
+        return Int(timeInterval / (60*60*24))
+    }
+
     
     static func getBestPhotoIdentifier(venueId:String, imageSize:CGSize, bestPhoto:Photo) -> String? {
         var size = "\(imageSize.width.getIntValue())x\(imageSize.height.getIntValue())"
@@ -126,10 +134,7 @@ public class VenueDetailViewModel<T:Venue> {
     
     func setupImageView(view:VenueImageView) {
         if let imageIdentifier = self.photoIdentifier, let image = ImageCache.sharedInstance().imageWithIdentifier(imageIdentifier) {
-            println("with image")
             view.image = image
-        } else {
-            println("no image")
         }
     }
 }

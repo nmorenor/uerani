@@ -26,26 +26,23 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     var venue:FVenue!
     var venueId:String!
     var venueDetailModel:VenueDetailViewModel<FVenue>!
-    var imageViewTop:VenueImageView!
+    @IBOutlet var imageViewTop:VenueImageView!
     var realm:Realm!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.ueraniYellowColor()
         self.realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         self.venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)
-        
-        var rect = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height * 0.20)
-        self.imageViewTop = VenueImageView(frame: rect)
-        
-        self.venueDetailModel = self.getVenueDetailModel()
-        self.navigationItem.title = venueDetailModel.name
-        
-        self.venueDetailModel.setupImageView(self.imageViewTop)
-        self.view.addSubview(self.imageViewTop)
+        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.venueDetailModel = self.getVenueDetailModel()
+        self.navigationItem.title = venueDetailModel.name
+        self.venueDetailModel.setupImageView(self.imageViewTop)
+        //self.view.layoutSubviews()
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -56,11 +53,16 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         super.didReceiveMemoryWarning()
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+    }
+    
     public func getVenueDetailModel() -> VenueDetailViewModel<FVenue> {
         if let model = self.venueDetailModel {
             return model
         }
-        self.venueDetailModel = VenueDetailViewModel(venue: self.venue, imageSize: CGSizeMake(self.view.frame.size.width, self.view.frame.size.height * 0.20), delegate: self)
+        self.venueDetailModel = VenueDetailViewModel(venue: self.venue, imageSize: CGSizeMake(self.imageViewTop.frame.size.width, self.imageViewTop.frame.size.height), delegate: self)
         //return self.venueDetailModel!
         return self.venueDetailModel!
     }

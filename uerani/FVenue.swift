@@ -25,6 +25,8 @@ public protocol Venue : class {
     var c_price:Price? {get}
     var c_hours:Hours? {get}
     var c_location:Location? {get}
+    
+    var lastUpdate:NSDate {get}
 }
 
 public class FVenue: Object, Venue {
@@ -43,6 +45,12 @@ public class FVenue: Object, Venue {
     public dynamic var rating:Float = 0.0
     public dynamic var price:FPrice?
     public dynamic var hours:FHours?
+    
+    public var lastUpdate:NSDate {
+        get {
+            return NSDate()
+        }
+    }
     
     public var c_contact:Contact? {
         return self.contact
