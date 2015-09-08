@@ -28,7 +28,7 @@ public class VenueDetailOperation:NSOperation {
     init(venueId:String, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
         self.venueId = venueId
         self.venueDetailDelegate = delegate
-        self.size = "\(imageSize.width.getIntValue())x\(imageSize.height.getIntValue())"
+        self.size = "\(imageSize.width.getIntValue())x\((imageSize.height * 1.15).getIntValue())"
         super.init()
         //schedule the operation
         NSOperationQueue().addOperation(self)
@@ -68,7 +68,7 @@ public class VenueDetailOperation:NSOperation {
             var identifier = getImageIdentifier(self.size, photo)
             var photoURL = "\(photo.prefix)\(self.size)\(photo.suffix)"
             if let url = NSURL(string: photoURL), let identifier = identifier {
-                var imageCacheName = "venue_\(self.venueId)_\(self.size)_\(identifier)"
+                var imageCacheName = "venue_\(self.venueId)_\(identifier)"
                 let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
                 
                 if nextImage == nil {

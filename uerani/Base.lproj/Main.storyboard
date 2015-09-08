@@ -263,7 +263,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oRH-C7-aVc" customClass="VenueImageView" customModule="uerani" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="-6" width="600" height="120"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="108"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                         </subviews>
@@ -273,7 +273,7 @@
                                             <constraint firstAttribute="centerX" secondItem="oRH-C7-aVc" secondAttribute="centerX" id="End-bp-Shz"/>
                                             <constraint firstAttribute="bottom" secondItem="oRH-C7-aVc" secondAttribute="centerY" multiplier="9" constant="1" id="rcG-D1-6GM"/>
                                             <constraint firstItem="oRH-C7-aVc" firstAttribute="trailing" secondItem="R8p-fV-TRD" secondAttribute="trailing" id="uVg-hJ-rhc"/>
-                                            <constraint firstAttribute="top" secondItem="oRH-C7-aVc" secondAttribute="top" constant="6" id="yru-Jr-CwL"/>
+                                            <constraint firstAttribute="top" secondItem="oRH-C7-aVc" secondAttribute="top" id="yru-Jr-CwL"/>
                                         </constraints>
                                     </view>
                                 </subviews>

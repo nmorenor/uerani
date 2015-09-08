@@ -55,10 +55,10 @@ public class VenueDetailViewModel<T:Venue> {
 
     
     static func getBestPhotoIdentifier(venueId:String, imageSize:CGSize, bestPhoto:Photo) -> String? {
-        var size = "\(imageSize.width.getIntValue())x\(imageSize.height.getIntValue())"
+        var size = "\(imageSize.width.getIntValue())x\((imageSize.height * 1.15).getIntValue())"
         let url = NSURL(string: "\(bestPhoto.iprefix)\(size)\(bestPhoto.isuffix)")!
         if let identifier = getImageIdentifier(url) {
-            return "venue_\(venueId)_\(size)_\(identifier)"
+            return "venue_\(venueId)_\(identifier)"
         }
         return nil
     }
