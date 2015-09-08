@@ -21,6 +21,13 @@ func getImageIdentifier<T:IconCapable>(size:String, iconCapable:T) -> String? {
     return nil
 }
 
+func getImageIdentifier(size:String, iconCapable:IconCapable) -> String? {
+    if let url = NSURL(string: "\(iconCapable.iprefix)\(size)\(iconCapable.isuffix)") {
+        return getImageIdentifier(url)
+    }
+    return nil
+}
+
 func getImageIdentifier(url:NSURL) -> String? {
     if let name = url.lastPathComponent, let pathComponents = url.pathComponents {
         let prefix_image_name = pathComponents[pathComponents.count - 2] as! String

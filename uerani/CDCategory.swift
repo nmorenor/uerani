@@ -47,6 +47,12 @@ public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconC
         }
     }
     
+    public var c_icon:Icon? {
+        get {
+            return self.icon
+        }
+    }
+    
     public var c_categories:GeneratorOf<Category> {
         get {
             var queue = Queue<Category>()

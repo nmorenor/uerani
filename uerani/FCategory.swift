@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-public protocol Category : class {
+public protocol Category : IconCapable {
     
     var id:String {get}
     var name:String {get}
@@ -19,6 +19,7 @@ public protocol Category : class {
     var topCategory: Bool {get}
     
     var c_categories:GeneratorOf<Category> {get}
+    var c_icon:Icon? {get}
     
 }
 
@@ -32,6 +33,12 @@ public class FCategory: Object, IconCapable, Category {
     public dynamic var primary = false
     public dynamic var topCategory = false
     public dynamic var categories = List<FSubCategory>()
+    
+    public var c_icon:Icon? {
+        get {
+            return self.icon
+        }
+    }
     
     public var iprefix:String {
         get {

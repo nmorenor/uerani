@@ -36,8 +36,8 @@ public class VenueImageView : UIView {
         self.topPath!.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y))
         self.topPath!.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y + rect.height))
     
-        var arcHeight:CGFloat = rect.size.height * (self.image == nil ?  0.15 : 0.30)
-        var arcRect:CGRect = CGRectMake(rect.origin.x + (self.image == nil ?  0 : -20), rect.origin.y + rect.size.height - arcHeight, rect.size.width + (self.image == nil ?  0 : 40), arcHeight)
+        var arcHeight:CGFloat = rect.size.height * (self.image == nil ?  0.15 : 0.20)
+        var arcRect:CGRect = CGRectMake(rect.origin.x + (self.image == nil ?  0 : -37), rect.origin.y + rect.size.height - arcHeight, rect.size.width + (self.image == nil ?  0 : 67), arcHeight)
         
         var arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
         var arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)

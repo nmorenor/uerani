@@ -22,7 +22,7 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
     var venueId:String
     var city:String
     var state:String
-    weak var venue:FVenue?
+    weak var venue:Venue?
     
     override var hashValue: Int {
         get {
@@ -43,22 +43,22 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         return self.hashValue
     }
     
-    init(venue:FVenue) {
+    init(venue:Venue) {
         self.title = venue.name
-        self.subtitle = venue.location!.address
-        self.state = venue.location!.state
-        self.city = venue.location!.city
+        self.subtitle = venue.c_location!.address
+        self.state = venue.c_location!.state
+        self.city = venue.c_location!.city
         self.venueId = venue.id
         
-        self.coordinate = CLLocationCoordinate2D(latitude: venue.location!.lat, longitude: venue.location!.lng)
+        self.coordinate = CLLocationCoordinate2D(latitude: venue.c_location!.lat, longitude: venue.c_location!.lng)
         self.venue = venue
         if let category = FoursquareLocationMapAnnotation.getBestCategory(venue) {
             categoryImageName = getImageIdentifier(FIcon.FIconSize.S32.description, category)
             categoryImageName64 = getImageIdentifier(FIcon.FIconSize.S64.description, category)
             categoryImageName12 = getImageIdentifier("12", category)
             
-            self.categoryPrefix = category.icon!.prefix
-            self.categorySuffix = category.icon!.suffix
+            self.categoryPrefix = category.c_icon!.prefix
+            self.categorySuffix = category.c_icon!.suffix
         }
     }
     
@@ -70,15 +70,18 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         return result
     }
     
-    private static func getBestCategory(venue:FVenue) -> FCategory? {
-        for nextCat in venue.categories {
-            if let url = NSURL(string: "\(nextCat.icon!.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.icon!.suffix)"), let imageName = getImageIdentifier(url) {
+    private static func getBestCategory(venue:Venue) -> Category? {
+        for nextCat in venue.c_categories {
+            if let url = NSURL(string: "\(nextCat.c_icon!.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.c_icon!.suffix)"), let imageName = getImageIdentifier(url) {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(imageName) {
                     return nextCat
                 }
             }
         }
-        return venue.categories.first
+        for nextCat in venue.c_categories {
+            return nextCat
+        }
+        return nil
     }
 }
 
