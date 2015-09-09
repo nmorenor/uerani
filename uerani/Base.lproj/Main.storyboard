@@ -256,7 +256,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UCu-0a-AI2">
+                            <scrollView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UCu-0a-AI2">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R8p-fV-TRD">
@@ -296,7 +296,9 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="contentView" destination="R8p-fV-TRD" id="GlY-ex-lMl"/>
                         <outlet property="imageViewTop" destination="oRH-C7-aVc" id="caG-hx-dnf"/>
+                        <outlet property="scrollView" destination="UCu-0a-AI2" id="uAh-0r-3Iu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2D5-N4-XF1" userLabel="First Responder" sceneMemberID="firstResponder"/>

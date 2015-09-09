@@ -29,6 +29,15 @@ public class CategroyVenueFilter {
                 self.catFilter.setCategories(next)
             }
         }
+        let sresults = realm.objects(FSubCategory)
+        for next in sresults {
+            var nextFilter = CategoryFilter(id: next.id)
+            filterGraph.append(nextFilter)
+            if next.id == filter.id {
+                self.catFilter.setCategories(next)
+            }
+        }
+        
         self.symbolGraph = SymbolGraph(keys: filterGraph, p:self.catFilter)
         
         var index = symbolGraph.indexOf(filter)

@@ -64,6 +64,10 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
     
     override func drawRect(rect: CGRect) {
         var context:CGContextRef = UIGraphicsGetCurrentContext()
+        drawInContext(context)
+    }
+    
+    func drawInContext(context:CGContextRef) {
         UIColor.ueraniYellowColor().setFill()
         UIColor.blackColor().setStroke()
         var path:CGMutablePathRef = CGPathCreateMutable()

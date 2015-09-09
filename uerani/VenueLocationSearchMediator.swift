@@ -53,7 +53,7 @@ public class VenueLocationSearchMediator {
     }
     
     func displayLocation(location:CLLocation) {
-        var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+        var region:MKCoordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 400.0, 40.0)
         dispatch_async(dispatch_get_main_queue()) {
             self.mapView.setRegion(region, animated: true)
         }
@@ -65,7 +65,7 @@ public class VenueLocationSearchMediator {
                 LocationRequestManager.sharedInstance().operationQueue.cancelAllOperations()
                 self.cleanRunningSearches()
                 if let location = LocationRequestManager.sharedInstance().location where self.searchBox == nil && useLocation {
-                    var region:MKCoordinateRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+                    var region:MKCoordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 400.0, 400.0)
                     region.center = location.coordinate
                     self.calculateSearchBox(region, useCenter:true)
                 } else {
@@ -96,7 +96,7 @@ public class VenueLocationSearchMediator {
     func shouldUseCluster() -> Bool {
         if let searchBox = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            var maxDistanceForNonClustered = (VenueLocationSearchMediator.locationSearchDistance * 0.8) + 1
+            var maxDistanceForNonClustered = (VenueLocationSearchMediator.locationSearchDistance * 0.5) + 1
             return mapRegionDistance > maxDistanceForNonClustered
         }
         return true

@@ -22,6 +22,8 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     
     typealias DetailModelType = VenueDetailViewModel<FVenue>
     typealias VenueType = FVenue
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
     
     var venue:FVenue!
     var venueId:String!
