@@ -43,6 +43,20 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         return self.hashValue
     }
     
+    init(venueAnnotation:FVenueMapAnnotation) {
+        self.title = venueAnnotation.title
+        self.subtitle = venueAnnotation.subtitle
+        self.city = venueAnnotation.city
+        self.state = venueAnnotation.state
+        self.venueId = venueAnnotation.venueId
+        self.coordinate = venueAnnotation.coordinate
+        self.categoryImageName = venueAnnotation.categoryImageName
+        self.categoryImageName12 = venueAnnotation.categoryImageName12
+        self.categoryImageName64 = venueAnnotation.categoryImageName64
+        self.categoryPrefix = venueAnnotation.categoryPrefix
+        self.categorySuffix = venueAnnotation.categorySuffix
+    }
+    
     init(venue:Venue) {
         self.title = venue.name
         self.subtitle = venue.c_location!.address

@@ -32,6 +32,7 @@
 		66418A8C1B9DDB3400345AF6 /* VenueImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A8B1B9DDB3400345AF6 /* VenueImageView.swift */; };
 		66418A8E1B9DE6C300345AF6 /* RealmVenueDetailModelCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A8D1B9DE6C300345AF6 /* RealmVenueDetailModelCapable.swift */; };
 		664829D11B9F66A30060CACB /* VenueDetailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664829D01B9F66A30060CACB /* VenueDetailOperation.swift */; };
+		664829D31BA0CFE30060CACB /* FVenueMapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664829D21BA0CFE30060CACB /* FVenueMapAnnotation.swift */; };
 		664C5D7F1B7FDC7B00EDA856 /* MapViewDelegateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664C5D7E1B7FDC7B00EDA856 /* MapViewDelegateController.swift */; };
 		664C5D811B7FDCFF00EDA856 /* MapViewCategoriesTableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664C5D801B7FDCFF00EDA856 /* MapViewCategoriesTableDelegate.swift */; };
 		664C5D831B7FDE1100EDA856 /* MapViewSearchDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664C5D821B7FDE1100EDA856 /* MapViewSearchDelegate.swift */; };
@@ -154,6 +155,7 @@
 		66418A8B1B9DDB3400345AF6 /* VenueImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueImageView.swift; sourceTree = "<group>"; };
 		66418A8D1B9DE6C300345AF6 /* RealmVenueDetailModelCapable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmVenueDetailModelCapable.swift; sourceTree = "<group>"; };
 		664829D01B9F66A30060CACB /* VenueDetailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueDetailOperation.swift; sourceTree = "<group>"; };
+		664829D21BA0CFE30060CACB /* FVenueMapAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FVenueMapAnnotation.swift; sourceTree = "<group>"; };
 		664C5D7E1B7FDC7B00EDA856 /* MapViewDelegateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewDelegateController.swift; sourceTree = "<group>"; };
 		664C5D801B7FDCFF00EDA856 /* MapViewCategoriesTableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewCategoriesTableDelegate.swift; sourceTree = "<group>"; };
 		664C5D821B7FDE1100EDA856 /* MapViewSearchDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewSearchDelegate.swift; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 				66418A781B9B519A00345AF6 /* FHours.swift */,
 				66418A7A1B9B530A00345AF6 /* FTimeFrames.swift */,
 				66418A7C1B9B549E00345AF6 /* FPrice.swift */,
+				664829D21BA0CFE30060CACB /* FVenueMapAnnotation.swift */,
 			);
 			name = realm;
 			sourceTree = "<group>";
@@ -891,6 +894,7 @@
 				66A7FC9A1B5AD7470012358D /* FPhoto.swift in Sources */,
 				669306321B9524FC00E148DF /* DownloadImageUtil.swift in Sources */,
 				66F55AD21B8E5E62005C2F49 /* CategroyVenueFilter.swift in Sources */,
+				664829D31BA0CFE30060CACB /* FVenueMapAnnotation.swift in Sources */,
 				66A7FCB91B5AD7CA0012358D /* LocationRequestManager.swift in Sources */,
 				664829D11B9F66A30060CACB /* VenueDetailOperation.swift in Sources */,
 				66382C2B1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift in Sources */,

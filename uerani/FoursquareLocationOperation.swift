@@ -119,7 +119,7 @@ public class FoursquareLocationOperation: NSOperation {
         if cancelled {
             return
         }
-        self.addAnnotationsToCluster(annotations)
+        self.addAnnotationsToCluster(annotations, realm: realm)
         if cancelled {
             return
         }
@@ -175,7 +175,7 @@ public class FoursquareLocationOperation: NSOperation {
                 }
                 //filter with category predicate
             
-                self.addAnnotationsToCluster(annotations)
+                self.addAnnotationsToCluster(annotations, realm: realm)
                 if cancelled {
                     return
                 }
@@ -198,7 +198,7 @@ public class FoursquareLocationOperation: NSOperation {
         }
     }
     
-    private func addAnnotationsToCluster(annotations:Array<FoursquareLocationMapAnnotation>) {
+    private func addAnnotationsToCluster(annotations:Array<FoursquareLocationMapAnnotation>, realm:Realm) {
        
         objc_sync_enter(searchMediator.clusteringManager)
         //avoid any possible thread lock in here
@@ -211,12 +211,17 @@ public class FoursquareLocationOperation: NSOperation {
             objc_sync_exit(searchMediator.clusteringManager)
             return
         }
-        searchMediator.allAnnotations.unionSet(annotationSet as Set<NSObject>)
+        searchMediator.addCurrentVenues(annotations, realm: realm)
         if cancelled {
             objc_sync_exit(searchMediator.clusteringManager)
             return
         }
-        searchMediator.clusteringManager.setAnnotations(searchMediator.allAnnotations.allObjects)
+        let results = realm.objects(FVenueMapAnnotation.self)
+        var allAnnotations = [FoursquareLocationMapAnnotation]()
+        for next in results {
+            allAnnotations.append(FoursquareLocationMapAnnotation(venueAnnotation: next))
+        }
+        searchMediator.clusteringManager.setAnnotations(allAnnotations)
         objc_sync_exit(searchMediator.clusteringManager)
     }
 }

@@ -31,10 +31,7 @@ public class VenueLocationSearchMediator {
     }
     
     var mutex:NSObject = NSObject()
-    
-    //performance of NSSet is better than swift Set
     var gridBox:NSMutableSet = NSMutableSet()
-    var allAnnotations:NSMutableSet = NSMutableSet()
     var runningSearchLocations:NSMutableSet = NSMutableSet()
     var categoryFilter:CategoryFilter? {
         didSet {
@@ -181,7 +178,11 @@ public class VenueLocationSearchMediator {
         LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
         self.cleanRunningSearches()
         objc_sync_enter(self.clusteringManager)
-        self.allAnnotations.removeAllObjects()
+        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        realm.write() {
+            var results = realm.objects(FVenueMapAnnotation.self)
+            realm.delete(results)
+        }
         self.clusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
         dispatch_async(dispatch_get_main_queue()) {
             self.mapView.removeAnnotations(self.mapView.annotations)
@@ -239,5 +240,18 @@ public class VenueLocationSearchMediator {
         result = self.filter
         objc_sync_exit(self.mutex)
         return result
+    }
+    
+    func addCurrentVenues(annotations:Array<FoursquareLocationMapAnnotation>, realm:Realm) {
+        realm.write() {
+            for next in annotations {
+                var currentVenue = realm.objectForPrimaryKey(FVenueMapAnnotation.self, key: next.venueId)
+                if let currentVenue = currentVenue {
+                    continue
+                }
+                currentVenue = FVenueMapAnnotation.loadData(next)
+                realm.add(currentVenue!, update: true)
+            }
+        }
     }
 }
