@@ -23,12 +23,20 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     typealias DetailModelType = VenueDetailViewModel<FVenue>
     typealias VenueType = FVenue
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var contentView: UIView! {
+        didSet {
+            self.contentView.backgroundColor = UIColor.ueraniYellowColor()
+        }
+    }
     
     var venue:FVenue!
     var venueId:String!
     var venueDetailModel:VenueDetailViewModel<FVenue>!
-    @IBOutlet var imageViewTop:VenueImageView!
+    @IBOutlet var imageViewTop:VenueImageView! {
+        didSet {
+            self.imageViewTop.backgroundColor = UIColor.ueraniYellowColor()
+        }
+    }
     var realm:Realm!
     
     public override func viewDidLoad() {
@@ -36,15 +44,26 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         self.view.backgroundColor = UIColor.ueraniYellowColor()
         self.realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         self.venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)
+        
+        self.venueDetailModel = self.getVenueDetailModel()
+        self.navigationItem.title = venueDetailModel.name
+        self.venueDetailModel.setupImageView(self.imageViewTop)
+        
+        var image = self.venueDetailModel.getMapImage()
+        var imageView = UIImageView(frame: CGRectMake((self.view.frame.size.width/2) - image.size.width/2, (self.imageViewTop.frame.size.height + (self.imageViewTop.frame.size.height * 0.45)), image.size.width, image.size.height))
+        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.image = image
+        imageView.layer.cornerRadius = 6.0
+        imageView.clipsToBounds = true
+        
+        self.contentView.addSubview(imageView)
+        
         self.automaticallyAdjustsScrollViewInsets = false
     }
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.venueDetailModel = self.getVenueDetailModel()
-        self.navigationItem.title = venueDetailModel.name
-        self.venueDetailModel.setupImageView(self.imageViewTop)
-        //self.view.layoutSubviews()
+        
     }
     
     public override func viewWillDisappear(animated: Bool) {

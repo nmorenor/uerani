@@ -16,7 +16,6 @@ public class VenueImageView : UIView {
     let photoLayer = CALayer()
     let polygonLayer = CAShapeLayer()
     let maskLayer = CAShapeLayer()
-    
     var topPath:UIBezierPath?
     
     var image: UIImage? {

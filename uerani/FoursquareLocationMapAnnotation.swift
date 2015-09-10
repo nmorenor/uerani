@@ -15,6 +15,7 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
     let subtitle:String
     let coordinate:CLLocationCoordinate2D
     var categoryImageName:String?
+    var categoryImageName8:String?
     var categoryImageName12:String?
     var categoryImageName64:String?
     var categoryPrefix:String?
@@ -51,6 +52,7 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         self.venueId = venueAnnotation.venueId
         self.coordinate = venueAnnotation.coordinate
         self.categoryImageName = venueAnnotation.categoryImageName
+        self.categoryImageName8 = venueAnnotation.categoryImageName8
         self.categoryImageName12 = venueAnnotation.categoryImageName12
         self.categoryImageName64 = venueAnnotation.categoryImageName64
         self.categoryPrefix = venueAnnotation.categoryPrefix
@@ -70,6 +72,7 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
             categoryImageName = getImageIdentifier(FIcon.FIconSize.S32.description, category)
             categoryImageName64 = getImageIdentifier(FIcon.FIconSize.S64.description, category)
             categoryImageName12 = getImageIdentifier("12", category)
+            categoryImageName8 = getImageIdentifier("8", category)
             
             self.categoryPrefix = category.c_icon!.prefix
             self.categorySuffix = category.c_icon!.suffix

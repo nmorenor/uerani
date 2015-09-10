@@ -35,27 +35,27 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
     }
     
     func prepareFrameSize() {
-        self.frame = CGRectMake(0, 0, image.size.width + 5, image.size.height + 10)
+        self.frame = CGRectMake(0, 0, image.size.width + ((image.size.width/2) * 0.4), image.size.height + ((image.size.width/2) * 0.8))
     }
     
-    func configure(foursquareAnnotation:FoursquareLocationMapAnnotation) {
+    func configure(foursquareAnnotation:FoursquareLocationMapAnnotation, scaledImageIdentifier:String, size:CGSize) {
         if let categoryImageName = foursquareAnnotation.categoryImageName {
             if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
-                if let image12 = ImageCache.sharedInstance().imageWithIdentifier(foursquareAnnotation.categoryImageName12) {
-                    self.image = image12
+                if let imageSize = ImageCache.sharedInstance().imageWithIdentifier(scaledImageIdentifier) {
+                    self.image = imageSize
                 } else {
-                    var image12 = image.resizeImage(CGSizeMake(12, 12))
-                    ImageCache.sharedInstance().storeImage(image12, withIdentifier: foursquareAnnotation.categoryImageName12!)
-                    self.image = image12
+                    var imageSize = image.resizeImage(size)
+                    ImageCache.sharedInstance().storeImage(imageSize, withIdentifier: scaledImageIdentifier)
+                    self.image = imageSize
                 }
             } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix {
                 FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
                 if let image = UIImage(named: defaultPinImage) {
-                    self.image = image.resizeImage(CGSizeMake(12, 12))
+                    self.image = image.resizeImage(size)
                 }
             } else {
                 if let image = UIImage(named: defaultPinImage) {
-                    self.image = image.resizeImage(CGSizeMake(12, 12))
+                    self.image = image.resizeImage(size)
                 }
             }
         }
@@ -79,7 +79,8 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         nrect.origin.y += stroke / 2.0
         
         CGContextSetLineWidth(context, stroke)
-        var radius:CGFloat = 5.0
+        
+        var radius:CGFloat =  (image.size.width/2) * 0.412
         
         //reference point for triangle
         var originX:CGFloat = nrect.size.width / 2
@@ -88,9 +89,9 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         CGPathAddLineToPoint(path, nil, nrect.origin.x, nrect.origin.y + nrect.size.height - radius)
         CGPathAddArc(path, nil, nrect.origin.x + radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI), CGFloat(M_PI_2), true)
         //draw triangle
-        CGPathAddLineToPoint(path, nil, originX - 5, nrect.origin.y + nrect.size.height)
-        CGPathAddLineToPoint(path, nil, originX, nrect.origin.y + nrect.size.height + 8)
-        CGPathAddLineToPoint(path, nil, originX + 5, nrect.origin.y + nrect.size.height)
+        CGPathAddLineToPoint(path, nil, originX - (nrect.size.width * 0.25), nrect.origin.y + nrect.size.height)
+        CGPathAddLineToPoint(path, nil, originX, nrect.origin.y + nrect.size.height + (nrect.size.height * 0.3))
+        CGPathAddLineToPoint(path, nil, originX + (nrect.size.width * 0.25), nrect.origin.y + nrect.size.height)
         CGPathAddLineToPoint(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + nrect.size.height)
         CGPathAddArc(path, nil, nrect.origin.x + nrect.size.width - radius, nrect.origin.y + nrect.size.height - radius, radius, CGFloat(M_PI_2), 0.0, true)
         CGPathAddLineToPoint(path, nil, nrect.origin.x + nrect.size.width, nrect.origin.y + radius)

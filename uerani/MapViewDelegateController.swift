@@ -50,11 +50,11 @@ extension MapViewController: MKMapViewDelegate {
         } else if let foursquareAnnotation = annotation as? FoursquareLocationMapAnnotation {
             if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? CategoryPinAnnotationView {
                 dequeuedView.annotation = annotation
-                dequeuedView.configure(foursquareAnnotation)
+                dequeuedView.configure(foursquareAnnotation, scaledImageIdentifier: foursquareAnnotation.categoryImageName12!, size: CGSizeMake(12, 12))
                 view = dequeuedView
             } else {
                 var annotationView = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView.configure(foursquareAnnotation)
+                annotationView.configure(foursquareAnnotation, scaledImageIdentifier: foursquareAnnotation.categoryImageName12!, size: CGSizeMake(12, 12))
                 view = annotationView
             }
         } else {
@@ -120,8 +120,11 @@ extension MapViewController: MKMapViewDelegate {
     
     private func getSnapshotter(annotation:FoursquareLocationMapAnnotation) -> MKMapSnapshotter {
         var options = MKMapSnapshotOptions()
-        var rect = CGRectMake(0, 0, (self.view.frame.size.width - 40) / 2, self.view.frame.size.height * 0.20)
-        options.size = rect.size
+        var width:CGFloat = self.view.frame.size.width/2 - ((self.view.frame.size.width/2) * 0.20)
+        
+        var size = CGSizeMake(width, (self.view.frame.size.height * 0.25)/2)
+
+        options.size = size
         options.scale = UIScreen.mainScreen().scale
         options.region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, 500.0, 500.0)
         
@@ -134,15 +137,15 @@ extension MapViewController: MKMapViewDelegate {
         } else {
             var image = snapshot.image
             var annotationView = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: self.identifier)
-            annotationView.configure(annotation)
+            annotationView.configure(annotation, scaledImageIdentifier: annotation.categoryImageName8!, size: CGSizeMake(8, 8))
             
-            UIGraphicsBeginImageContextWithOptions(CGSizeMake(annotationView.image.size.width + 5, annotationView.image.size.height + 10), false, image.scale)
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(annotationView.image.size.width + 5, annotationView.image.size.height + 10), false, UIScreen.mainScreen().scale)
             var context:CGContextRef = UIGraphicsGetCurrentContext()
             annotationView.drawInContext(context)
             var annotationImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            UIGraphicsBeginImageContextWithOptions(image.size, true, image.scale)
+            UIGraphicsBeginImageContextWithOptions(image.size, true, UIScreen.mainScreen().scale)
             image.drawAtPoint(CGPointMake(0, 0))
             
             var point = snapshot.pointForCoordinate(annotation.coordinate)

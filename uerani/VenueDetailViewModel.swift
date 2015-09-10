@@ -11,6 +11,7 @@ import RealmSwift
 
 public class VenueDetailViewModel<T:Venue> {
     
+    var id:String!
     var name:String!
     var imageSize:CGSize!
     var email:String?
@@ -29,6 +30,7 @@ public class VenueDetailViewModel<T:Venue> {
     
     init(venue:T, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
         self.imageSize = imageSize
+        self.id = venue.id
         self.loadData(venue)
         if let delegate = delegate where !venue.completeVenue {
             VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
@@ -136,5 +138,9 @@ public class VenueDetailViewModel<T:Venue> {
         if let imageIdentifier = self.photoIdentifier, let image = ImageCache.sharedInstance().imageWithIdentifier(imageIdentifier) {
             view.image = image
         }
+    }
+    
+    func getMapImage() -> UIImage {
+        return ImageCache.sharedInstance().imageWithIdentifier("venue_map_\(self.id)")!
     }
 }

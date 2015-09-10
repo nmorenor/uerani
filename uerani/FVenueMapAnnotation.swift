@@ -17,6 +17,7 @@ public class FVenueMapAnnotation : Object {
     public dynamic var lat:Double = 0.0
     public dynamic var lng:Double = 0.0
     public dynamic var categoryImageName:String = ""
+    public dynamic var categoryImageName8:String = ""
     public dynamic var categoryImageName12:String = ""
     public dynamic var categoryImageName64:String = ""
     public dynamic var categoryPrefix:String = ""
@@ -55,6 +56,9 @@ public class FVenueMapAnnotation : Object {
         
         if let categoryImageName = annotation.categoryImageName {
             result.categoryImageName = categoryImageName
+        }
+        if let categoryImageName8 = annotation.categoryImageName8 {
+            result.categoryImageName8 = categoryImageName8
         }
         if let categoryImageName12 = annotation.categoryImageName12 {
             result.categoryImageName12 = categoryImageName12
