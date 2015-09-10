@@ -120,9 +120,8 @@ extension MapViewController: MKMapViewDelegate {
     
     private func getSnapshotter(annotation:FoursquareLocationMapAnnotation) -> MKMapSnapshotter {
         var options = MKMapSnapshotOptions()
-        var width:CGFloat = self.view.frame.size.width/2 - ((self.view.frame.size.width/2) * 0.20)
         
-        var size = CGSizeMake(width, (self.view.frame.size.height * 0.25)/2)
+        var size = CGSizeMake(self.view.frame.size.width/2, (108.0 + (108*0.15))/2)
 
         options.size = size
         options.scale = UIScreen.mainScreen().scale

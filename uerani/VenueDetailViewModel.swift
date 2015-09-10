@@ -144,13 +144,8 @@ public class VenueDetailViewModel<T:Venue> {
         view.rating = String(format: "%.1f", self.rating)
     }
     
-    func setupMapImageView(size:CGSize) -> UIImageView {
+    func setupMapImageView(view:VenueMapView) {
         var image = ImageCache.sharedInstance().imageWithIdentifier("venue_map_\(self.id)")!
-        var imageView = UIImageView(frame: CGRectMake((size.width/2) - image.size.width/2, (size.height + (size.height * 0.45)), image.size.width, image.size.height))
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
-        imageView.image = image
-        imageView.layer.cornerRadius = 6.0
-        imageView.clipsToBounds = true
-        return imageView
+        view.image = image
     }
 }
