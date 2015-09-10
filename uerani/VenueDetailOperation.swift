@@ -28,7 +28,7 @@ public class VenueDetailOperation:NSOperation {
     init(venueId:String, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
         self.venueId = venueId
         self.venueDetailDelegate = delegate
-        self.size = "\(imageSize.width.getIntValue())x\((imageSize.height * 1.15).getIntValue())"
+        self.size = "\(imageSize.width.getIntValue())x\(((imageSize.height/2) * 1.15).getIntValue())"
         super.init()
         //schedule the operation
         NSOperationQueue().addOperation(self)

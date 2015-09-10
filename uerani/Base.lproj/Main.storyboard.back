@@ -263,8 +263,15 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oRH-C7-aVc" customClass="VenueImageView" customModule="uerani" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="242"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="108"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rmZ-jX-TJ8" customClass="VenueMapView" customModule="uerani" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="109" width="600" height="108"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="108" id="xpY-fT-cdi"/>
+                                                </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q0i-3Q-hZZ" customClass="VenueRatingView" customModule="uerani" customModuleProvider="target">
                                                 <rect key="frame" x="276" y="77" width="48" height="48"/>
@@ -281,14 +288,24 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstItem="rmZ-jX-TJ8" firstAttribute="leading" secondItem="R8p-fV-TRD" secondAttribute="leading" id="B4D-8R-3Fg"/>
+                                            <constraint firstAttribute="trailing" secondItem="rmZ-jX-TJ8" secondAttribute="trailing" id="CG1-a6-zfa"/>
                                             <constraint firstAttribute="leading" secondItem="oRH-C7-aVc" secondAttribute="leading" id="D8O-qe-lhj"/>
                                             <constraint firstAttribute="centerX" secondItem="oRH-C7-aVc" secondAttribute="centerX" id="End-bp-Shz"/>
+                                            <constraint firstItem="rmZ-jX-TJ8" firstAttribute="top" secondItem="oRH-C7-aVc" secondAttribute="bottom" constant="1" id="Hh1-Ne-xZN"/>
                                             <constraint firstItem="Q0i-3Q-hZZ" firstAttribute="top" secondItem="oRH-C7-aVc" secondAttribute="top" constant="77" id="e62-Td-Y0W"/>
+                                            <constraint firstItem="oRH-C7-aVc" firstAttribute="bottom" secondItem="rmZ-jX-TJ8" secondAttribute="top" constant="-1" id="gRf-Xw-84S"/>
                                             <constraint firstItem="Q0i-3Q-hZZ" firstAttribute="centerX" secondItem="oRH-C7-aVc" secondAttribute="centerX" id="hj1-3t-uZi"/>
-                                            <constraint firstAttribute="bottom" secondItem="oRH-C7-aVc" secondAttribute="centerY" multiplier="4" constant="2" id="rcG-D1-6GM"/>
+                                            <constraint firstAttribute="bottom" secondItem="oRH-C7-aVc" secondAttribute="centerY" multiplier="9" constant="1" id="rcG-D1-6GM"/>
                                             <constraint firstItem="oRH-C7-aVc" firstAttribute="trailing" secondItem="R8p-fV-TRD" secondAttribute="trailing" id="uVg-hJ-rhc"/>
+                                            <constraint firstItem="oRH-C7-aVc" firstAttribute="centerX" secondItem="rmZ-jX-TJ8" secondAttribute="centerX" id="vNH-au-yDb"/>
                                             <constraint firstAttribute="top" secondItem="oRH-C7-aVc" secondAttribute="top" id="yru-Jr-CwL"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="gRf-Xw-84S"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -313,6 +330,7 @@
                         <outlet property="contentView" destination="R8p-fV-TRD" id="GlY-ex-lMl"/>
                         <outlet property="imageViewTop" destination="oRH-C7-aVc" id="caG-hx-dnf"/>
                         <outlet property="scrollView" destination="UCu-0a-AI2" id="uAh-0r-3Iu"/>
+                        <outlet property="venueImageMapView" destination="rmZ-jX-TJ8" id="8GL-JP-kwq"/>
                         <outlet property="venueRating" destination="Q0i-3Q-hZZ" id="vrF-XQ-HbQ"/>
                     </connections>
                 </viewController>

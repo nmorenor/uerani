@@ -29,7 +29,6 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         }
     }
     @IBOutlet weak var venueRating: VenueRatingView!
-    @IBOutlet weak var venueImageMapView: VenueMapView!
     
     var venue:FVenue!
     var venueId:String!
@@ -49,10 +48,10 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         
         self.venueDetailModel = self.getVenueDetailModel()
         self.navigationItem.title = venueDetailModel.name
-        self.venueDetailModel.setupImageView(self.imageViewTop)
+        self.venueDetailModel.setupImageView(self.imageViewTop, venue:venue)
         
         self.venueDetailModel.setupRatingView(self.venueRating)
-        self.venueDetailModel.setupMapImageView(self.venueImageMapView)
+        //self.venueDetailModel.setupMapImageView(self.venueImageMapView)
         
         self.automaticallyAdjustsScrollViewInsets = false
     }
@@ -95,7 +94,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
             self.venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)
             self.venueDetailModel.loadData(self.venue)
             self.navigationItem.title = self.venueDetailModel.name
-            self.venueDetailModel.setupImageView(self.imageViewTop)
+            self.venueDetailModel.setupImageView(self.imageViewTop, venue: self.venue)
             self.venueDetailModel.setupRatingView(self.venueRating)
             self.venueRating.layoutSubviews()
             self.imageViewTop.layoutSubviews()

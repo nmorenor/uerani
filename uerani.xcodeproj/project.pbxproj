@@ -11,7 +11,6 @@
 		6603AD9C1B7A3A1000ABF2F6 /* SearchViewProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6603AD9B1B7A3A1000ABF2F6 /* SearchViewProgress.swift */; };
 		66104FD01B7D741A004E32A6 /* ClusteredPinAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66104FCF1B7D741A004E32A6 /* ClusteredPinAnnotationView.swift */; };
 		66104FD21B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66104FD11B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift */; };
-		66157CAF1BA138580031CD48 /* VenueMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66157CAE1BA138580031CD48 /* VenueMapView.swift */; };
 		661B6D021B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661B6D011B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift */; };
 		661B6D041B82A68B00E710B4 /* foursquare-wordmark-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */; };
 		66382C211B6996DF00F5644C /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C201B6996DF00F5644C /* Regex.swift */; };
@@ -136,7 +135,6 @@
 		6603AD9B1B7A3A1000ABF2F6 /* SearchViewProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewProgress.swift; sourceTree = "<group>"; };
 		66104FCF1B7D741A004E32A6 /* ClusteredPinAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusteredPinAnnotationView.swift; sourceTree = "<group>"; };
 		66104FD11B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPinAnnotaitonView.swift; sourceTree = "<group>"; };
-		66157CAE1BA138580031CD48 /* VenueMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueMapView.swift; sourceTree = "<group>"; };
 		661B6D011B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareVenueDetailsAnnotationView.swift; sourceTree = "<group>"; };
 		661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "foursquare-wordmark-white.pdf"; sourceTree = "<group>"; };
 		66382C201B6996DF00F5644C /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
@@ -322,7 +320,6 @@
 			children = (
 				66418A8B1B9DDB3400345AF6 /* VenueImageView.swift */,
 				6676DD731BA1295F00045C33 /* VenueRatingView.swift */,
-				66157CAE1BA138580031CD48 /* VenueMapView.swift */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -867,7 +864,6 @@
 				6688F12D1B911E37008BF82B /* FContact.swift in Sources */,
 				66A7FCAA1B5AD7A70012358D /* FoursquareClient.swift in Sources */,
 				66F55ACA1B8E4040005C2F49 /* SymbolGraph.swift in Sources */,
-				66157CAF1BA138580031CD48 /* VenueMapView.swift in Sources */,
 				66A1162D1B72E2E500498070 /* Uerani.xcdatamodeld in Sources */,
 				6684E4D21B82B27600B67B0A /* FSButtonButton.swift in Sources */,
 				66382C271B6C4AFA00F5644C /* BasicMapAnnotationView.swift in Sources */,

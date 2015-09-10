@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import MapKit
 
 public class VenueDetailViewModel<T:Venue> {
     
@@ -57,7 +58,7 @@ public class VenueDetailViewModel<T:Venue> {
 
     
     static func getBestPhotoIdentifier(venueId:String, imageSize:CGSize, bestPhoto:Photo) -> String? {
-        var size = "\(imageSize.width.getIntValue())x\((imageSize.height * 1.15).getIntValue())"
+        var size = "\(imageSize.width.getIntValue())x\(((imageSize.height/2) * 1.15).getIntValue())"
         let url = NSURL(string: "\(bestPhoto.iprefix)\(size)\(bestPhoto.isuffix)")!
         if let identifier = getImageIdentifier(url) {
             return "venue_\(venueId)_\(identifier)"
@@ -134,9 +135,18 @@ public class VenueDetailViewModel<T:Venue> {
         }
     }
     
-    func setupImageView(view:VenueImageView) {
+    func setupImageView(view:VenueImageView, venue:T) {
         if let imageIdentifier = self.photoIdentifier, let image = ImageCache.sharedInstance().imageWithIdentifier(imageIdentifier) {
             view.image = image
+        }
+        if let image = ImageCache.sharedInstance().imageWithIdentifier("venue_map_\(self.id)") {
+            view.mapImage = image
+        } else {
+            var annotation = FoursquareLocationMapAnnotation(venue: venue)
+            var snapshotter = self.getSnapshotter(annotation)
+            snapshotter.startWithQueue(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { snapshot, error in
+                self.generateVenueMapImage(annotation, snapshot: snapshot, error: error)
+            }
         }
     }
     
@@ -144,8 +154,52 @@ public class VenueDetailViewModel<T:Venue> {
         view.rating = String(format: "%.1f", self.rating)
     }
     
-    func setupMapImageView(view:VenueMapView) {
-        var image = ImageCache.sharedInstance().imageWithIdentifier("venue_map_\(self.id)")!
-        view.image = image
+    private func getSnapshotter(annotation:FoursquareLocationMapAnnotation) -> MKMapSnapshotter {
+        var options = MKMapSnapshotOptions()
+        
+        var size = CGSizeMake(imageSize.width/3, imageSize.height * 0.85)
+        
+        options.size = size
+        options.scale = UIScreen.mainScreen().scale
+        options.region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, 900.0, 900.0)
+        
+        return MKMapSnapshotter(options: options)
+    }
+    
+    private func generateVenueMapImage(annotation:FoursquareLocationMapAnnotation, snapshot:MKMapSnapshot, error:NSError?) {
+        if let error = error {
+            println("Error taking map snapshot image")
+        } else {
+            var image = snapshot.image
+            var annotationView = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: "foursquarePin")
+            annotationView.configure(annotation, scaledImageIdentifier: annotation.categoryImageName8!, size: CGSizeMake(8, 8))
+            
+            var scale = UIScreen.mainScreen().scale
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(annotationView.image.size.width + 5, annotationView.image.size.height + 10), false, scale)
+            var context:CGContextRef = UIGraphicsGetCurrentContext()
+            annotationView.drawInContext(context)
+            var annotationImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            UIGraphicsBeginImageContextWithOptions(image.size, true, scale)
+            image.drawAtPoint(CGPointMake(0, 0))
+            
+            var point = snapshot.pointForCoordinate(annotation.coordinate)
+            var pinCenterOffset = annotationView.centerOffset;
+            point.x -= annotationImage.size.width / 2;
+            point.y -= annotationImage.size.height / 2;
+            //extract the triangle height
+            point.y -= annotationView.image.size.height * 0.4
+            point.x += pinCenterOffset.x;
+            
+            point.y += pinCenterOffset.y;
+            
+            annotationImage.drawAtPoint(point)
+            var finalImage = UIGraphicsGetImageFromCurrentImageContext()
+            
+            ImageCache.sharedInstance().storeImage(finalImage, withIdentifier: "venue_map_\(annotation.venueId)")
+            
+            UIGraphicsEndImageContext()
+        }
     }
 }

@@ -103,69 +103,9 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
         if let annotation = view.annotation as? FoursquareLocationMapAnnotation {
-            
-            var image = ImageCache.sharedInstance().imageWithIdentifier("venue_map_\(annotation.venueId)")
-            if let image = image {
-                self.displayVenueDetailViewController(annotation)
-            } else {
-                var snapshotter = self.getSnapshotter(annotation)
-                snapshotter.startWithQueue(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { snapshot, error in
-                    self.generateVenueMapImageAndDisplayDetails(annotation, snapshot: snapshot, error: error)
-                }
-            }
+            self.displayVenueDetailViewController(annotation)
             
             println("\(annotation.venueId)")
-        }
-    }
-    
-    private func getSnapshotter(annotation:FoursquareLocationMapAnnotation) -> MKMapSnapshotter {
-        var options = MKMapSnapshotOptions()
-        
-        var size = CGSizeMake(self.view.frame.size.width/2, (108.0 + (108*0.15))/2)
-
-        options.size = size
-        options.scale = UIScreen.mainScreen().scale
-        options.region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, 500.0, 500.0)
-        
-        return MKMapSnapshotter(options: options)
-    }
-    
-    private func generateVenueMapImageAndDisplayDetails(annotation:FoursquareLocationMapAnnotation, snapshot:MKMapSnapshot, error:NSError?) {
-        if let error = error {
-            println("Error taking map snapshot image")
-        } else {
-            var image = snapshot.image
-            var annotationView = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: self.identifier)
-            annotationView.configure(annotation, scaledImageIdentifier: annotation.categoryImageName8!, size: CGSizeMake(8, 8))
-            
-            UIGraphicsBeginImageContextWithOptions(CGSizeMake(annotationView.image.size.width + 5, annotationView.image.size.height + 10), false, UIScreen.mainScreen().scale)
-            var context:CGContextRef = UIGraphicsGetCurrentContext()
-            annotationView.drawInContext(context)
-            var annotationImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            UIGraphicsBeginImageContextWithOptions(image.size, true, UIScreen.mainScreen().scale)
-            image.drawAtPoint(CGPointMake(0, 0))
-            
-            var point = snapshot.pointForCoordinate(annotation.coordinate)
-            var pinCenterOffset = annotationView.centerOffset;
-            point.x -= annotationImage.size.width / 2;
-            point.y -= annotationImage.size.height / 2;
-            //extract the triangle height
-            point.y -= annotationView.image.size.height * 0.4
-            point.x += pinCenterOffset.x;
-            
-            point.y += pinCenterOffset.y;
-            
-            annotationImage.drawAtPoint(point)
-            var finalImage = UIGraphicsGetImageFromCurrentImageContext()
-            
-            ImageCache.sharedInstance().storeImage(finalImage, withIdentifier: "venue_map_\(annotation.venueId)")
-            
-            UIGraphicsEndImageContext()
-        }
-        dispatch_async(dispatch_get_main_queue()) {
-            self.displayVenueDetailViewController(annotation)
         }
     }
     

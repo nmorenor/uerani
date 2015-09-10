@@ -18,7 +18,7 @@ class VenueRatingView : UIView {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 22.0)
         label.textAlignment = .Center
-        label.textColor = UIColor.whiteColor()
+        label.textColor = UIColor.ueraniYellowColor()
         return label
         }()
     
@@ -36,7 +36,7 @@ class VenueRatingView : UIView {
     
     override func layoutSubviews() {
         squareLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 5.0).CGPath
-        squareLayer.strokeColor = UIColor.whiteColor().CGColor
+        squareLayer.strokeColor = UIColor.ueraniYellowColor().CGColor
         squareLayer.lineWidth = 3.5
         squareLayer.fillColor = UIColor.blackColor().CGColor
         
