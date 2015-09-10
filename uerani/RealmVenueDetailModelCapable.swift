@@ -28,6 +28,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
             self.contentView.backgroundColor = UIColor.ueraniYellowColor()
         }
     }
+    @IBOutlet weak var venueRating: VenueRatingView!
     
     var venue:FVenue!
     var venueId:String!
@@ -49,13 +50,9 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         self.navigationItem.title = venueDetailModel.name
         self.venueDetailModel.setupImageView(self.imageViewTop)
         
-        var image = self.venueDetailModel.getMapImage()
-        var imageView = UIImageView(frame: CGRectMake((self.view.frame.size.width/2) - image.size.width/2, (self.imageViewTop.frame.size.height + (self.imageViewTop.frame.size.height * 0.45)), image.size.width, image.size.height))
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
-        imageView.image = image
-        imageView.layer.cornerRadius = 6.0
-        imageView.clipsToBounds = true
+        self.venueDetailModel.setupRatingView(self.venueRating)
         
+        var imageView = self.venueDetailModel.setupMapImageView(CGSizeMake(self.view.frame.size.width, self.imageViewTop.frame.size.height))
         self.contentView.addSubview(imageView)
         
         self.automaticallyAdjustsScrollViewInsets = false
@@ -100,6 +97,8 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
             self.venueDetailModel.loadData(self.venue)
             self.navigationItem.title = self.venueDetailModel.name
             self.venueDetailModel.setupImageView(self.imageViewTop)
+            self.venueDetailModel.setupRatingView(self.venueRating)
+            self.venueRating.layoutSubviews()
             self.imageViewTop.layoutSubviews()
             self.view.layoutIfNeeded()
         }

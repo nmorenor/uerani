@@ -153,8 +153,9 @@ extension MapViewController: MKMapViewDelegate {
             point.x -= annotationImage.size.width / 2;
             point.y -= annotationImage.size.height / 2;
             //extract the triangle height
-            point.y -= 13
+            point.y -= annotationView.image.size.height * 0.4
             point.x += pinCenterOffset.x;
+            
             point.y += pinCenterOffset.y;
             
             annotationImage.drawAtPoint(point)
