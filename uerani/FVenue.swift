@@ -16,6 +16,7 @@ public protocol Venue : class {
     var completeVenue:Bool {get}
     var verified:Bool {get}
     var rating:Float {get}
+    var venueDescription:String {get}
     
     var c_contact:Contact? {get}
     var c_categories:GeneratorOf<Category> {get}
@@ -37,6 +38,7 @@ public class FVenue: Object, Venue {
     public dynamic var location:FLocation?
     public dynamic var contact:FContact?
     public dynamic var categories = List<FCategory>()
+    public dynamic var venueDescription = ""
     public dynamic var verified = false
     public dynamic var url = ""
     public dynamic var tags = List<FTag>()

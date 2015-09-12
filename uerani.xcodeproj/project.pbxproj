@@ -19,6 +19,8 @@
 		66382C271B6C4AFA00F5644C /* BasicMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C261B6C4AFA00F5644C /* BasicMapAnnotationView.swift */; };
 		66382C291B6D103100F5644C /* default_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 66382C281B6D103100F5644C /* default_64.png */; };
 		66382C2B1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C2A1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift */; };
+		6640007C1BA3A63C0084C76E /* VenueDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6640007B1BA3A63C0084C76E /* VenueDetailsView.swift */; };
+		6640007E1BA3AB800084C76E /* VenueDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6640007D1BA3AB800084C76E /* VenueDetailView.swift */; };
 		66418A751B9A6EA900345AF6 /* VenueDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A741B9A6EA900345AF6 /* VenueDetailViewModel.swift */; };
 		66418A791B9B519A00345AF6 /* FHours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A781B9B519A00345AF6 /* FHours.swift */; };
 		66418A7B1B9B530A00345AF6 /* FTimeFrames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66418A7A1B9B530A00345AF6 /* FTimeFrames.swift */; };
@@ -143,6 +145,8 @@
 		66382C261B6C4AFA00F5644C /* BasicMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicMapAnnotationView.swift; sourceTree = "<group>"; };
 		66382C281B6D103100F5644C /* default_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_64.png; sourceTree = "<group>"; };
 		66382C2A1B6D312B00F5644C /* FoursquareAnnotationVenueInformationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareAnnotationVenueInformationView.swift; sourceTree = "<group>"; };
+		6640007B1BA3A63C0084C76E /* VenueDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueDetailsView.swift; sourceTree = "<group>"; };
+		6640007D1BA3AB800084C76E /* VenueDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueDetailView.swift; sourceTree = "<group>"; };
 		66418A741B9A6EA900345AF6 /* VenueDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueDetailViewModel.swift; sourceTree = "<group>"; };
 		66418A781B9B519A00345AF6 /* FHours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHours.swift; sourceTree = "<group>"; };
 		66418A7A1B9B530A00345AF6 /* FTimeFrames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTimeFrames.swift; sourceTree = "<group>"; };
@@ -320,6 +324,8 @@
 			children = (
 				66418A8B1B9DDB3400345AF6 /* VenueImageView.swift */,
 				6676DD731BA1295F00045C33 /* VenueRatingView.swift */,
+				6640007B1BA3A63C0084C76E /* VenueDetailsView.swift */,
+				6640007D1BA3AB800084C76E /* VenueDetailView.swift */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -846,6 +852,7 @@
 				66418A8C1B9DDB3400345AF6 /* VenueImageView.swift in Sources */,
 				66418A851B9B58EA00345AF6 /* CDPrice.swift in Sources */,
 				664C5D831B7FDE1100EDA856 /* MapViewSearchDelegate.swift in Sources */,
+				6640007C1BA3A63C0084C76E /* VenueDetailsView.swift in Sources */,
 				66A265701B8A642D005C4970 /* UserViewController.swift in Sources */,
 				66A7FCAD1B5AD7A70012358D /* FoursquareConvenience.swift in Sources */,
 				6688F1391B9204CA008BF82B /* UserViewTop.swift in Sources */,
@@ -905,6 +912,7 @@
 				66F55ACC1B8E4169005C2F49 /* Queue.swift in Sources */,
 				66418A7F1B9B55B600345AF6 /* CDHours.swift in Sources */,
 				66A116371B72E79000498070 /* CDIcon.swift in Sources */,
+				6640007E1BA3AB800084C76E /* VenueDetailView.swift in Sources */,
 				6688F1371B920221008BF82B /* UserPhotoView.swift in Sources */,
 				66418A831B9B571200345AF6 /* CDTimeOpenFrames.swift in Sources */,
 				667940681B70324E003A29A9 /* VenueCategoriesOperation.swift in Sources */,

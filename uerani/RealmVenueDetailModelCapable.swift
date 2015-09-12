@@ -18,7 +18,7 @@ public protocol VenueDetailModelCapable : class {
     func getVenue() -> VenueType
 }
 
-public class RealmVenueDetailViewController : UIViewController, VenueDetailModelCapable, VenueDetailsDelegate {
+public class RealmVenueDetailViewController : UIViewController, VenueDetailModelCapable, VenueDetailsDelegate, VenueMapImageDelegate {
     
     typealias DetailModelType = VenueDetailViewModel<FVenue>
     typealias VenueType = FVenue
@@ -48,10 +48,9 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         
         self.venueDetailModel = self.getVenueDetailModel()
         self.navigationItem.title = venueDetailModel.name
-        self.venueDetailModel.setupImageView(self.imageViewTop, venue:venue)
+        self.venueDetailModel.setupImageView(self.imageViewTop, imageMapDelegate:self, venue:venue)
         
         self.venueDetailModel.setupRatingView(self.venueRating)
-        //self.venueDetailModel.setupMapImageView(self.venueImageMapView)
         
         self.automaticallyAdjustsScrollViewInsets = false
     }
@@ -94,9 +93,17 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
             self.venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)
             self.venueDetailModel.loadData(self.venue)
             self.navigationItem.title = self.venueDetailModel.name
-            self.venueDetailModel.setupImageView(self.imageViewTop, venue: self.venue)
+            self.venueDetailModel.setupImageView(self.imageViewTop, imageMapDelegate:self, venue: self.venue)
             self.venueDetailModel.setupRatingView(self.venueRating)
             self.venueRating.layoutSubviews()
+            self.imageViewTop.layoutSubviews()
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    public func refreshMapImage() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.venueDetailModel.setupImageView(self.imageViewTop, imageMapDelegate:self, venue: self.venue)
             self.imageViewTop.layoutSubviews()
             self.view.layoutIfNeeded()
         }

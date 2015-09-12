@@ -54,6 +54,7 @@ class MapViewController: UIViewController, CategoriesReady {
         self.isRefreshReady = locationRequestManager.authorized
         self.searchMediator = VenueLocationSearchMediator(mapView: self.mapView)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         if let location = locationRequestManager.location {
             self.searchMediator.displayLocation(location)
         }

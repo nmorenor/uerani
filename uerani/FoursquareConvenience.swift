@@ -94,6 +94,11 @@ extension FoursquareClient {
                         }
                     }
                     
+                    if let description = completionResult[FoursquareClient.RespnoseKeys.DESCRIPTION] as? String {
+                        completionResult[FoursquareClient.RespnoseKeys.VENUE_DESCRIPTION] = description
+                        completionResult[FoursquareClient.RespnoseKeys.DESCRIPTION] = nil
+                    }
+                    
                     completionResult[FoursquareClient.RespnoseKeys.TAGS] = completionTags ?? nil
                     completionResult[FoursquareClient.RespnoseKeys.PHOTOS] = completionPhotos ?? nil
                     completionHandler(success: true, result: completionResult, errorString: nil)

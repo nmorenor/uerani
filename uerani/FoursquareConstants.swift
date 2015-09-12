@@ -75,6 +75,8 @@ extension FoursquareClient {
         static let PHONE = "phone"
         static let FORMATED_PHONE = "formated_phone"
         static let EMAIL = "email"
+        static let DESCRIPTION = "description"
+        static let VENUE_DESCRIPTION = "venueDescription"
         
         static let PHOTOS = "photos"
         static let GROUPS = "groups"

@@ -28,6 +28,7 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
     @NSManaged public var rating:Float
     @NSManaged public var hours:CDHours?
     @NSManaged public var price:CDPrice?
+    @NSManaged public var venueDescription:String
     
     @NSManaged public var lastUpdate:NSDate
     

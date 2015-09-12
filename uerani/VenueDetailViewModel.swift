@@ -10,6 +10,11 @@ import Foundation
 import RealmSwift
 import MapKit
 
+public protocol VenueMapImageDelegate : class {
+    
+    func refreshMapImage()
+}
+
 public class VenueDetailViewModel<T:Venue> {
     
     var id:String!
@@ -135,7 +140,7 @@ public class VenueDetailViewModel<T:Venue> {
         }
     }
     
-    func setupImageView(view:VenueImageView, venue:T) {
+    func setupImageView(view:VenueImageView, imageMapDelegate:VenueMapImageDelegate, venue:T) {
         if let imageIdentifier = self.photoIdentifier, let image = ImageCache.sharedInstance().imageWithIdentifier(imageIdentifier) {
             view.image = image
         }
@@ -145,13 +150,18 @@ public class VenueDetailViewModel<T:Venue> {
             var annotation = FoursquareLocationMapAnnotation(venue: venue)
             var snapshotter = self.getSnapshotter(annotation)
             snapshotter.startWithQueue(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { snapshot, error in
-                self.generateVenueMapImage(annotation, snapshot: snapshot, error: error)
+                self.generateVenueMapImage(annotation, imageMapDelegate: imageMapDelegate, snapshot: snapshot, error: error)
             }
         }
     }
     
     func setupRatingView(view:VenueRatingView) {
         view.rating = String(format: "%.1f", self.rating)
+        if view.rating == "0.0" {
+            view.hidden = true
+        } else {
+            view.hidden = false
+        }
     }
     
     private func getSnapshotter(annotation:FoursquareLocationMapAnnotation) -> MKMapSnapshotter {
@@ -166,7 +176,7 @@ public class VenueDetailViewModel<T:Venue> {
         return MKMapSnapshotter(options: options)
     }
     
-    private func generateVenueMapImage(annotation:FoursquareLocationMapAnnotation, snapshot:MKMapSnapshot, error:NSError?) {
+    private func generateVenueMapImage(annotation:FoursquareLocationMapAnnotation, imageMapDelegate:VenueMapImageDelegate, snapshot:MKMapSnapshot, error:NSError?) {
         if let error = error {
             println("Error taking map snapshot image")
         } else {
@@ -200,6 +210,8 @@ public class VenueDetailViewModel<T:Venue> {
             ImageCache.sharedInstance().storeImage(finalImage, withIdentifier: "venue_map_\(annotation.venueId)")
             
             UIGraphicsEndImageContext()
+            
+            imageMapDelegate.refreshMapImage()
         }
     }
 }

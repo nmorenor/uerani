@@ -23,6 +23,28 @@ public class VenueImageView : UIView {
     let mapMaskLayer = CAShapeLayer()
     var mapPath:UIBezierPath?
     
+    let gradientLayer: CAGradientLayer = {
+        let gradientLayer = CAGradientLayer()
+        
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
+        
+        let colors = [
+            UIColor.ueraniBlackJetColor().CGColor,
+            UIColor.ueraniYellowColor().CGColor
+        ]
+        
+        let locations = [
+            0.0,
+            0.5
+        ]
+        
+        gradientLayer.colors = colors
+        gradientLayer.locations = locations
+        
+        return gradientLayer
+        }()
+    
     var image: UIImage? {
         didSet {
             if let image = self.image {
@@ -63,6 +85,7 @@ public class VenueImageView : UIView {
         self.topPath!.closePath()
     }
     
+    //basically the same but different points and arcRect
     func createMapBezierPath(rect: CGRect) {
         self.mapPath = UIBezierPath()
         
@@ -119,6 +142,8 @@ public class VenueImageView : UIView {
         
         if let image = self.mapImage {
             mapPhotoLayer.frame = CGRectMake(0, 0, image.size.width, image.size.height)
+            gradientLayer.frame = CGRectMake(0, self.frame.size.height - 10, mapPhotoLayer.frame.size.width, 10)
+            layer.addSublayer(gradientLayer)
         }
         
         mapPolygonLayer.path = self.mapPath!.CGPath

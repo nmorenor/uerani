@@ -278,14 +278,22 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="rating" value="0.0"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzm-YD-Sfj" customClass="VenueDetailsView" customModule="uerani" customModuleProvider="target">
+                                                <rect key="frame" x="29" y="262" width="542" height="210"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Qzm-YD-Sfj" secondAttribute="bottom" constant="15" id="7Eu-d2-b2i"/>
+                                            <constraint firstAttribute="trailing" secondItem="Qzm-YD-Sfj" secondAttribute="trailing" constant="29" id="CYs-Zj-2IH"/>
                                             <constraint firstAttribute="leading" secondItem="oRH-C7-aVc" secondAttribute="leading" id="D8O-qe-lhj"/>
                                             <constraint firstAttribute="centerX" secondItem="oRH-C7-aVc" secondAttribute="centerX" id="End-bp-Shz"/>
+                                            <constraint firstAttribute="centerX" secondItem="Qzm-YD-Sfj" secondAttribute="centerX" id="bqe-e0-un7"/>
                                             <constraint firstItem="Q0i-3Q-hZZ" firstAttribute="top" secondItem="oRH-C7-aVc" secondAttribute="top" constant="77" id="e62-Td-Y0W"/>
                                             <constraint firstItem="Q0i-3Q-hZZ" firstAttribute="centerX" secondItem="oRH-C7-aVc" secondAttribute="centerX" id="hj1-3t-uZi"/>
                                             <constraint firstAttribute="bottom" secondItem="oRH-C7-aVc" secondAttribute="centerY" multiplier="4" constant="2" id="rcG-D1-6GM"/>
+                                            <constraint firstItem="Qzm-YD-Sfj" firstAttribute="top" secondItem="oRH-C7-aVc" secondAttribute="bottom" constant="20" id="sXh-5B-MWB"/>
                                             <constraint firstItem="oRH-C7-aVc" firstAttribute="trailing" secondItem="R8p-fV-TRD" secondAttribute="trailing" id="uVg-hJ-rhc"/>
                                             <constraint firstAttribute="top" secondItem="oRH-C7-aVc" secondAttribute="top" id="yru-Jr-CwL"/>
                                         </constraints>
