@@ -111,10 +111,18 @@ public class VenueImageView : UIView {
     override public func didMoveToWindow() {
         photoLayer.mask = maskLayer
         
+        photoLayer.contentsScale = UIScreen.mainScreen().scale
+        polygonLayer.contentsScale = UIScreen.mainScreen().scale
+        maskLayer.contentsScale = UIScreen.mainScreen().scale
+        
         layer.addSublayer(photoLayer)
         layer.addSublayer(polygonLayer)
         
         mapPhotoLayer.mask = mapMaskLayer
+        
+        mapPhotoLayer.contentsScale = UIScreen.mainScreen().scale
+        mapPolygonLayer.contentsScale = UIScreen.mainScreen().scale
+        mapMaskLayer.contentsScale = UIScreen.mainScreen().scale
         
         layer.addSublayer(mapPhotoLayer)
         layer.addSublayer(mapPolygonLayer)

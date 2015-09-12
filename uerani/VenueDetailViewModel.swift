@@ -164,6 +164,34 @@ public class VenueDetailViewModel<T:Venue> {
         }
     }
     
+    func setupDetailsView(view:VenueDetailsView) {
+        if let locationView = view.locationView {
+            locationView.text = getFormattedLocation()
+            locationView.image = UIImage(named: "map_pin_black_64")!.resizeImageWithScale(0.25)
+        } else {
+            view.locationView = VenueDetailView()
+            view.locationView!.text = getFormattedLocation()
+            view.locationView!.image = UIImage(named: "map_pin_black_64")!.resizeImageWithScale(0.25)
+        }
+        view.layoutSubviews()
+    }
+    
+    func getFormattedLocation() -> String {
+        var result = "\(self.name)\n"
+        if let address = self.address {
+            result += "\(address)\n"
+        }
+        if let city = self.city, let state = self.state {
+            result += "\(city), \(state)"
+        } else if let city = self.city {
+            result += "\(city)"
+        } else if let state = self.state {
+            result += "\(state)"
+        }
+        
+        return result
+    }
+    
     private func getSnapshotter(annotation:FoursquareLocationMapAnnotation) -> MKMapSnapshotter {
         var options = MKMapSnapshotOptions()
         

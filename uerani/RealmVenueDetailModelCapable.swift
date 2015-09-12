@@ -30,6 +30,8 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     }
     @IBOutlet weak var venueRating: VenueRatingView!
     
+    @IBOutlet weak var venueDetailsView: VenueDetailsView!
+    
     var venue:FVenue!
     var venueId:String!
     var venueDetailModel:VenueDetailViewModel<FVenue>!
@@ -51,6 +53,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         self.venueDetailModel.setupImageView(self.imageViewTop, imageMapDelegate:self, venue:venue)
         
         self.venueDetailModel.setupRatingView(self.venueRating)
+        self.venueDetailModel.setupDetailsView(self.venueDetailsView)
         
         self.automaticallyAdjustsScrollViewInsets = false
     }
