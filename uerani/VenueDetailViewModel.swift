@@ -95,9 +95,20 @@ public class VenueDetailViewModel<T:Venue> {
                 var frame = "\(next.days)"
                 var openFrames = next.c_open
                 
+                var frames:[String] = [String]()
                 for nextFrame in openFrames {
-                    frame += " - \(nextFrame.renderedTime)"
+                    frames.append(nextFrame.renderedTime)
                 }
+                if !frames.isEmpty {
+                    frame += ": "
+                    for i in 0..<frames.count {
+                        if i > 0 {
+                            frame += " - "
+                        }
+                        frame += "\(frames[i])"
+                    }
+                }
+                
                 times.append(frame)
             }
             if !times.isEmpty {

@@ -67,7 +67,7 @@ class VenueDetailView: UIView {
         self.textLayer.string = getAttributedString()
         
         borderLayer.frame = CGRectMake(0, self.frame.size.height - 1, self.frame.size.width, 1)
-        borderLayer.backgroundColor = UIColor.blackColor().CGColor
+        borderLayer.backgroundColor = UIColor.ueraniDarkYellowColor().CGColor
     }
     
     func getAttributedString() -> NSAttributedString {

@@ -105,9 +105,9 @@ class VenueDetailsView : UIView {
         if let image = view.image where image.size.height > size.height {
             size = CGSizeMake(size.width, image.size.height)
         }
-        view.frame = CGRectMake(0, point.y, self.frame.size.width, size.height + 8)
+        view.frame = CGRectMake(0, point.y, self.frame.size.width, size.height + 20)
         view.layoutSubviews()
         
-        return CGPointMake(point.x, (point.y + size.height + 8) + 6)
+        return CGPointMake(point.x, (point.y + size.height + 20))
     }
 }
