@@ -106,6 +106,8 @@
 		66A7FCBF1B5AD8810012358D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7FCBE1B5AD8810012358D /* MapKit.framework */; };
 		66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */; };
 		66AFDC5D1B60692C002413DB /* CalloutMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */; };
+		66C008561BA47E22002385B9 /* message.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66C008541BA47E22002385B9 /* message.pdf */; };
+		66C008571BA47E22002385B9 /* phone.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66C008551BA47E22002385B9 /* phone.pdf */; };
 		66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */; };
 		66F55A981B8BE23B005C2F49 /* CategoryFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A971B8BE23B005C2F49 /* CategoryFilter.png */; };
 		66F55A9A1B8BE253005C2F49 /* MapView.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A991B8BE253005C2F49 /* MapView.png */; };
@@ -236,6 +238,8 @@
 		66A7FCBE1B5AD8810012358D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutAnnotation.swift; sourceTree = "<group>"; };
 		66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutMapAnnotationView.swift; sourceTree = "<group>"; };
+		66C008541BA47E22002385B9 /* message.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = message.pdf; sourceTree = "<group>"; };
+		66C008551BA47E22002385B9 /* phone.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = phone.pdf; sourceTree = "<group>"; };
 		66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewWtihProgress.swift; sourceTree = "<group>"; };
 		66F55A971B8BE23B005C2F49 /* CategoryFilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategoryFilter.png; sourceTree = "<group>"; };
 		66F55A991B8BE253005C2F49 /* MapView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapView.png; sourceTree = "<group>"; };
@@ -281,6 +285,8 @@
 		66382C1D1B69899C00F5644C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				66C008541BA47E22002385B9 /* message.pdf */,
+				66C008551BA47E22002385B9 /* phone.pdf */,
 				66418A861B9B59BE00345AF6 /* map_pin_64_white.pdf */,
 				66418A871B9B59BE00345AF6 /* map_pin_64_black.pdf */,
 				66F55AC51B8BF9CB005C2F49 /* ConnectToFoursquare.png */,
@@ -721,6 +727,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66C008561BA47E22002385B9 /* message.pdf in Resources */,
 				66F55AC21B8BF221005C2F49 /* CustomCallout.png in Resources */,
 				66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */,
 				6684E4CB1B82AC9100B67B0A /* foursquare-logomark-white.pdf in Resources */,
@@ -739,6 +746,7 @@
 				66A2655E1B88FCF0005C4970 /* Images.xcassets in Resources */,
 				66382C231B69A62C00F5644C /* default_32.png in Resources */,
 				6684E4CC1B82AC9100B67B0A /* foursquare-logomark.pdf in Resources */,
+				66C008571BA47E22002385B9 /* phone.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

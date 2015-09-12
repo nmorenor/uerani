@@ -78,7 +78,7 @@ extension UIImage {
     }
     
     public func resizeImageWithScale(scale:CGFloat) -> UIImage {
-        let newSize = CGSizeApplyAffineTransform(self.size, CGAffineTransformMakeScale(scale, scale))
+        var newSize = CGSizeApplyAffineTransform(self.size, CGAffineTransformMakeScale(scale, scale))
         var newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
         var imageRef:CGImageRef = self.CGImage
         

@@ -33,6 +33,8 @@ public class VenueDetailViewModel<T:Venue> {
     var price:String?
     var isOpen:Bool?
     var status:String?
+    var timeFrames:String?
+    var venueDescription:String?
     
     init(venue:T, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
         self.imageSize = imageSize
@@ -79,10 +81,39 @@ public class VenueDetailViewModel<T:Venue> {
         self.loadTagData(venue)
         self.loadPriceData(venue)
         
+        if !venue.venueDescription.isEmpty {
+            self.venueDescription = venue.venueDescription
+        }
+        
         if let hours = venue.c_hours {
             if !hours.status.isEmpty {
                 self.status = hours.status
             }
+            var timeFrames = hours.c_timeFrames
+            var times = [String]()
+            for next in timeFrames {
+                var frame = "\(next.days)"
+                var openFrames = next.c_open
+                
+                for nextFrame in openFrames {
+                    frame += " - \(nextFrame.renderedTime)"
+                }
+                times.append(frame)
+            }
+            if !times.isEmpty {
+                var result = ""
+                for i in 0..<times.count {
+                    result += "\(times[i])"
+                    if i < (times.count - 1) {
+                        result += "\n"
+                    }
+                }
+                
+                if !result.isEmpty {
+                    self.timeFrames = "Hours:\n\n\(result)"
+                }
+            }
+            
             self.isOpen = hours.isOpen
         }
         
@@ -165,14 +196,64 @@ public class VenueDetailViewModel<T:Venue> {
     }
     
     func setupDetailsView(view:VenueDetailsView) {
-        if let locationView = view.locationView {
-            locationView.text = getFormattedLocation()
-            locationView.image = UIImage(named: "map_pin_black_64")!.resizeImageWithScale(0.25)
+        
+        var locationView:VenueDetailView!
+        if let view = view.locationView {
+            locationView = view
         } else {
-            view.locationView = VenueDetailView()
-            view.locationView!.text = getFormattedLocation()
-            view.locationView!.image = UIImage(named: "map_pin_black_64")!.resizeImageWithScale(0.25)
+            locationView = VenueDetailView()
+            view.locationView = locationView
         }
+        
+        locationView.text = getFormattedLocation()
+        locationView.image = UIImage(named: "map_pin_black_64")!.resizeImageWithScale(0.25)
+        
+        if let phone = self.phone {
+            var phoneView:VenueDetailView!
+            if let view = view.phoneView {
+                phoneView = view
+            } else {
+                phoneView = VenueDetailView()
+                view.phoneView = phoneView
+            }
+            phoneView.text = phone
+            phoneView.image = UIImage(named: "phone")!.resizeImageWithScale(0.25)
+        }
+        
+        if let mail = self.email {
+            var mailView:VenueDetailView!
+            if let view = view.mailView {
+                mailView = view
+            } else {
+                mailView = VenueDetailView()
+                view.mailView = mailView
+            }
+            mailView.text = mail
+            mailView.image = UIImage(named: "message")?.resizeImageWithScale(0.25)
+        }
+        
+        if let hours = self.timeFrames {
+            var hoursView:VenueDetailView!
+            if let view = view.hoursView {
+                hoursView = view
+            } else {
+                hoursView = VenueDetailView()
+                view.hoursView = hoursView
+            }
+            hoursView.text = hours
+        }
+        
+        if let venueDescription = self.venueDescription {
+            var descriptionView:VenueDetailView!
+            if let view = view.descriptionView {
+                descriptionView = view
+            } else {
+                descriptionView = VenueDetailView()
+                view.descriptionView = descriptionView
+            }
+            descriptionView.text = venueDescription
+        }
+        
         view.layoutSubviews()
     }
     
@@ -181,7 +262,9 @@ public class VenueDetailViewModel<T:Venue> {
         if let address = self.address {
             result += "\(address)\n"
         }
-        if let city = self.city, let state = self.state {
+        if let postalCode = self.postalCode, let city = self.city, let state = self.state {
+            result += "\(postalCode), \(city), \(state)"
+        } else if let city = self.city, let state = self.state  {
             result += "\(city), \(state)"
         } else if let city = self.city {
             result += "\(city)"

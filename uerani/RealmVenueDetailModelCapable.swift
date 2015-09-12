@@ -31,6 +31,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     @IBOutlet weak var venueRating: VenueRatingView!
     
     @IBOutlet weak var venueDetailsView: VenueDetailsView!
+    @IBOutlet weak var venueDetailsHeightConstraint: NSLayoutConstraint!
     
     var venue:FVenue!
     var venueId:String!
@@ -54,8 +55,12 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         
         self.venueDetailModel.setupRatingView(self.venueRating)
         self.venueDetailModel.setupDetailsView(self.venueDetailsView)
-        
-        self.automaticallyAdjustsScrollViewInsets = false
+        self.venueDetailsHeightConstraint.constant = self.venueDetailsView.frame.size.height * 1.25
+        //self.automaticallyAdjustsScrollViewInsets = true
+        //self.scrollView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        self.view.setNeedsLayout()
+        self.view.setNeedsUpdateConstraints()
+        self.view.layoutIfNeeded()
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -98,8 +103,14 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
             self.navigationItem.title = self.venueDetailModel.name
             self.venueDetailModel.setupImageView(self.imageViewTop, imageMapDelegate:self, venue: self.venue)
             self.venueDetailModel.setupRatingView(self.venueRating)
+            self.venueDetailModel.setupDetailsView(self.venueDetailsView)
             self.venueRating.layoutSubviews()
             self.imageViewTop.layoutSubviews()
+            
+            self.venueDetailsHeightConstraint.constant = self.venueDetailsView.frame.size.height * 1.25
+            
+            self.view.setNeedsLayout()
+            self.view.setNeedsUpdateConstraints()
             self.view.layoutIfNeeded()
         }
     }

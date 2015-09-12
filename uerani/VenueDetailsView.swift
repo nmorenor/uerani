@@ -12,13 +12,74 @@ import UIKit
 class VenueDetailsView : UIView {
     
     var locationView:VenueDetailView? {
+        willSet (value) {
+            if value == nil {
+                self.locationView?.removeFromSuperview()
+            }
+        }
+        
         didSet {
             if let locationView = self.locationView {
                 self.addSubview(locationView)
             }
         }
     }
-    var locationViewBorder:CALayer?
+    
+    var phoneView:VenueDetailView? {
+        willSet (value) {
+            if value == nil {
+                self.phoneView?.removeFromSuperview()
+            }
+        }
+        
+        didSet {
+            if let phoneView = self.phoneView {
+                self.addSubview(phoneView)
+            }
+        }
+    }
+    
+    var mailView:VenueDetailView? {
+        willSet (value) {
+            if value == nil {
+                self.mailView?.removeFromSuperview()
+            }
+        }
+        
+        didSet {
+            if let mailView = self.mailView {
+                self.addSubview(mailView)
+            }
+        }
+    }
+    
+    var hoursView:VenueDetailView? {
+        willSet (value) {
+            if value == nil {
+                self.hoursView?.removeFromSuperview()
+            }
+        }
+        
+        didSet {
+            if let hoursView = self.hoursView {
+                self.addSubview(hoursView)
+            }
+        }
+    }
+    
+    var descriptionView:VenueDetailView? {
+        willSet (value) {
+            if value == nil {
+                self.descriptionView?.removeFromSuperview()
+            }
+        }
+        
+        didSet {
+            if let descriptionView = self.descriptionView {
+                self.addSubview(descriptionView)
+            }
+        }
+    }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -31,26 +92,22 @@ class VenueDetailsView : UIView {
     }
     
     override func layoutSubviews() {
-        if let locationView = self.locationView {
-            var size = self.calculateSizeForText(self.frame.size.width - 20, text: locationView.text, attributedString: self.getAttributedString(locationView.text))
-            locationView.frame = CGRectMake(10, 0, self.frame.size.width - 20, size.height)
-            locationView.layoutSubviews()
-            
-            if self.locationViewBorder == nil {
-                locationViewBorder = CALayer()
-                layer.addSublayer(self.locationViewBorder!)
+        var nextPoint:CGPoint = CGPointMake(0, 0)
+        for next in self.subviews {
+            if let detailView = next as? VenueDetailView {
+                nextPoint = self.setupDetailViewLayout(detailView, point:nextPoint)
             }
-            locationViewBorder!.frame = CGRectMake(0, size.height + 3, self.frame.size.width, 1)
-            locationViewBorder!.backgroundColor = UIColor.blackColor().CGColor
         }
     }
     
-    func getAttributedString(text:String) -> NSAttributedString {
-        let fontName = "HelveticaNeue"
-        var font = UIFont(name: fontName, size: 14.0)!
-        var paraStyle = NSMutableParagraphStyle()
-        paraStyle.lineSpacing = 6.0
-        var attributedString = NSAttributedString(string: text, attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: UIColor.blackColor(), NSParagraphStyleAttributeName : paraStyle])
-        return attributedString
+    private func setupDetailViewLayout(view:VenueDetailView, point:CGPoint) -> CGPoint {
+        var size = self.calculateSizeForText(self.frame.size.width - 20, attributedString: view.getAttributedString())
+        if let image = view.image where image.size.height > size.height {
+            size = CGSizeMake(size.width, image.size.height)
+        }
+        view.frame = CGRectMake(0, point.y, self.frame.size.width, size.height + 8)
+        view.layoutSubviews()
+        
+        return CGPointMake(point.x, (point.y + size.height + 8) + 6)
     }
 }

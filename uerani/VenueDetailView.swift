@@ -51,16 +51,23 @@ class VenueDetailView: UIView {
     }
     
     override func layoutSubviews() {
+        self.textLayer.wrapped = true
         if let image = image {
-            var imageRect = CGRectMake(0, (self.frame.size.height/2) - (image.size.height/2), image.size.width, image.size.width)
+            var imageRect = CGRectMake(10, (self.frame.size.height/2) - (image.size.height/2), image.size.width, image.size.height)
             self.imageLayer.frame = imageRect
-            self.textLayer.frame = CGRectMake(image.size.width + 8, 0, self.frame.width - 8, self.frame.size.height)
+            
+            var textSize = calculateSizeForText(self.frame.width - 40, attributedString: getAttributedString())
+            
+            self.textLayer.frame = CGRectMake(image.size.width + 20, (self.frame.size.height/2) - (textSize.height/2), self.frame.width - 30, self.frame.size.height)
         } else {
-            self.textLayer.frame = CGRectMake(0, 0, self.frame.width, self.frame.size.height)
+            var textSize = calculateSizeForText(self.frame.width - 20, attributedString: getAttributedString())
+            
+            self.textLayer.frame = CGRectMake(10, (self.frame.size.height/2) - (textSize.height/2), self.frame.width - 20, self.frame.size.height)
         }
         self.textLayer.string = getAttributedString()
         
-        
+        borderLayer.frame = CGRectMake(0, self.frame.size.height - 1, self.frame.size.width, 1)
+        borderLayer.backgroundColor = UIColor.blackColor().CGColor
     }
     
     func getAttributedString() -> NSAttributedString {
@@ -74,7 +81,7 @@ class VenueDetailView: UIView {
 }
 
 extension UIView {
-    func calculateSizeForText(width:CGFloat, text:String, attributedString:NSAttributedString) -> CGSize {
+    func calculateSizeForText(width:CGFloat, attributedString:NSAttributedString) -> CGSize {
         var stringRef = attributedString as CFAttributedStringRef
         
         var typesetter = CTTypesetterCreateWithAttributedString(stringRef)
