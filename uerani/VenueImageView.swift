@@ -18,6 +18,9 @@ public class VenueImageView : UIView {
     let maskLayer = CAShapeLayer()
     var topPath:UIBezierPath?
     
+    let lineLayer = CAShapeLayer()
+    var linePath:UIBezierPath?
+    
     let mapPhotoLayer = CALayer()
     let mapPolygonLayer = CAShapeLayer()
     let mapMaskLayer = CAShapeLayer()
@@ -85,6 +88,21 @@ public class VenueImageView : UIView {
         self.topPath!.closePath()
     }
     
+    func createLineBezierPaht(rect: CGRect) {
+        self.linePath = UIBezierPath()
+        
+        var arcHeight:CGFloat = rect.size.height *  0.15
+        var arcRect:CGRect = CGRectMake(rect.origin.x, rect.height - arcHeight, rect.size.width, arcHeight)
+        
+        var arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
+        var arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)
+        
+        var angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
+        var startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
+        var endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
+        self.linePath!.addArcWithCenter(arcCenter, radius: arcRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+    }
+    
     //basically the same but different points and arcRect
     func createMapBezierPath(rect: CGRect) {
         self.mapPath = UIBezierPath()
@@ -126,11 +144,15 @@ public class VenueImageView : UIView {
         
         layer.addSublayer(mapPhotoLayer)
         layer.addSublayer(mapPolygonLayer)
+        
+        lineLayer.contentsScale = UIScreen.mainScreen().scale
+        layer.addSublayer(lineLayer)
     }
     
     override public func layoutSubviews() {
         self.createBezierPath(CGRectMake(0, 0, self.frame.size.width, self.frame.size.height/2))
         self.createMapBezierPath(CGRectMake(0, self.frame.size.height/2, self.frame.size.width, self.frame.size.height/2))
+        self.createLineBezierPaht(CGRectMake(0, self.frame.size.height/2, self.frame.size.width, self.frame.size.height/2))
         
         //Size the avatar image to fit
         if let image = self.image {
@@ -161,5 +183,9 @@ public class VenueImageView : UIView {
         mapMaskLayer.path = mapPolygonLayer.path
         mapMaskLayer.position = CGPoint(x: 0.0, y: 0.0)
         
+        self.lineLayer.path = self.linePath!.CGPath
+        self.lineLayer.fillColor = nil
+        self.lineLayer.strokeColor = UIColor.ueraniDarkYellowColor().CGColor
+        self.lineLayer.lineWidth = 3
     }
 }

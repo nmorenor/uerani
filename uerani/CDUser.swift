@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDUser)
 
-public class CDUser : NSManagedObject, Equatable, Printable {
+public class CDUser : NSManagedObject, Hashable, Equatable, Printable {
     
     @NSManaged public var id:String
     @NSManaged public var firstName:String
@@ -22,6 +22,12 @@ public class CDUser : NSManagedObject, Equatable, Printable {
     @NSManaged public var photo:CDPhoto?
     
     @NSManaged public var venueLists:[CDVenueList]
+    
+    override public var hashValue:Int {
+        get {
+            return self.id.hashValue
+        }
+    }
     
     override public var description:String {
         get {

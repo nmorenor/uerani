@@ -98,8 +98,9 @@
         <relationship name="venueLists" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDVenueList" inverseName="venues" inverseEntity="CDVenueList" syncable="YES"/>
     </entity>
     <entity name="CDVenueList" representedClassName="CDVenueList" syncable="YES">
-        <relationship name="user" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDUser" inverseName="venueLists" inverseEntity="CDUser" syncable="YES"/>
-        <relationship name="venues" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDVenue" inverseName="venueLists" inverseEntity="CDVenue" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="user" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="CDUser" inverseName="venueLists" inverseEntity="CDUser" syncable="YES"/>
+        <relationship name="venues" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDVenue" inverseName="venueLists" inverseEntity="CDVenue" syncable="YES"/>
     </entity>
     <elements>
         <element name="CDCategory" positionX="-63" positionY="-18" width="128" height="178"/>
@@ -115,6 +116,6 @@
         <element name="CDTimeOpenFrames" positionX="-9" positionY="162" width="128" height="75"/>
         <element name="CDUser" positionX="-54" positionY="54" width="128" height="178"/>
         <element name="CDVenue" positionX="0" positionY="144" width="128" height="300"/>
-        <element name="CDVenueList" positionX="-27" positionY="81" width="128" height="30"/>
+        <element name="CDVenueList" positionX="-27" positionY="81" width="128" height="90"/>
     </elements>
 </model>

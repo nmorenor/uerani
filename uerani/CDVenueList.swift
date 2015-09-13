@@ -11,12 +11,43 @@ import CoreData
 
 @objc(CDVenueList)
 
-public class CDVenueList : NSManagedObject {
+public class CDVenueList : NSManagedObject, Equatable, Hashable, Printable {
     
     @NSManaged public var venues:[CDVenue]
-    @NSManaged public var user:CDUser?
+    @NSManaged public var user:CDUser
+    
+    @NSManaged public var name:String
+    
+    override public var hashValue:Int {
+        get {
+            let prime:Int = 31
+            var result:Int = 1
+            result = prime * result + self.user.hashValue
+            result = prime * result + self.name.hashValue
+            return result
+        }
+    }
+    
+    override public var description:String {
+        get {
+            return "list_\(self.user.id)_\(self.name)"
+        }
+    }
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
+    
+    init(name:String, user:CDUser, context:NSManagedObjectContext) {
+        let name = self.dynamicType.entityName()
+        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
+        
+        self.name = name
+        self.user = user
+    }
+}
+
+public func ==(lhs:CDVenueList, rhs:CDVenueList) -> Bool {
+    return lhs.name == rhs.name && lhs.user == rhs.user
 }

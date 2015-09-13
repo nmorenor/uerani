@@ -289,7 +289,7 @@ public class VenueDetailViewModel<T:Venue> {
     private func getSnapshotter(annotation:FoursquareLocationMapAnnotation) -> MKMapSnapshotter {
         var options = MKMapSnapshotOptions()
         
-        var size = CGSizeMake(imageSize.width/3, imageSize.height * 0.85)
+        var size = CGSizeMake(imageSize.width/3, imageSize.height * 0.75)
         
         options.size = size
         options.scale = UIScreen.mainScreen().scale

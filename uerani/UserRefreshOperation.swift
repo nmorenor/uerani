@@ -31,10 +31,38 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
     override public func main() {
         FoursquareClient.sharedInstance().loadUserData(self.userDataResponseHandler)
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        self.createFavoriteListIfNeeded()
         self.downloadUserPhoto(self.user)
         if let user = self.user {
             FoursquareClient.sharedInstance().userId = user.id
             self.refreshDelegate?.refreshUserData(user)
+        }
+    }
+    
+    func createFavoriteListIfNeeded() {
+        if let user = self.user {
+            var request = NSFetchRequest(entityName: "CDVenueList")
+            request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
+            request.predicate = NSPredicate(format: "ANY user == %@", user)
+            
+            var error:NSError? = nil
+            var result = self.sharedModelContext.executeFetchRequest(request, error: &error)
+            if let error = error {
+                println("Can not find favorite list for user")
+            } else {
+                var createFavoriteList = true
+                if let result = result {
+                    if !result.isEmpty {
+                        createFavoriteList = false
+                    }
+                }
+                if createFavoriteList {
+                    let list = CDVenueList(name: "Favorites", user: user, context: self.sharedModelContext)
+                    saveContext(self.sharedModelContext) { success in
+                        //do nothing
+                    }
+                }
+            }
         }
     }
     
