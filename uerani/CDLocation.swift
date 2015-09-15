@@ -32,14 +32,12 @@ public class CDLocation : NSManagedObject, Location {
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
-        
-    }
-    
-    init(data:[String:AnyObject], context:NSManagedObjectContext) {
-        let name = self.dynamicType.entityName()
-        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
-        
-        //TODO
+        self.lat = location.lat
+        self.lng = location.lng
+        self.address = location.address
+        self.city = location.city
+        self.state = location.state
+        self.postalCode = location.postalCode
+        self.country = location.country
     }
 }

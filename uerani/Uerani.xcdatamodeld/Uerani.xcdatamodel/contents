@@ -19,7 +19,7 @@
     <entity name="CDHours" representedClassName="CDHours" syncable="YES">
         <attribute name="isOpen" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="timeframes" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDTimeFrames" inverseName="hours" inverseEntity="CDTimeFrames" syncable="YES"/>
+        <relationship name="timeframes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDTimeFrames" inverseName="hours" inverseEntity="CDTimeFrames" syncable="YES"/>
         <relationship name="venue" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDVenue" inverseName="hours" inverseEntity="CDVenue" syncable="YES"/>
     </entity>
     <entity name="CDIcon" representedClassName="CDIcon" syncable="YES">
@@ -61,7 +61,7 @@
     <entity name="CDTimeFrames" representedClassName="CDTimeFrames" syncable="YES">
         <attribute name="days" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="hours" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDHours" inverseName="timeframes" inverseEntity="CDHours" syncable="YES"/>
-        <relationship name="open" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDTimeOpenFrames" inverseName="timeFrames" inverseEntity="CDTimeOpenFrames" syncable="YES"/>
+        <relationship name="open" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDTimeOpenFrames" inverseName="timeFrames" inverseEntity="CDTimeOpenFrames" syncable="YES"/>
     </entity>
     <entity name="CDTimeOpenFrames" representedClassName="CDTimeOpenFrames" syncable="YES">
         <attribute name="renderedTime" optional="YES" attributeType="String" syncable="YES"/>

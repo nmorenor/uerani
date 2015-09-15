@@ -34,12 +34,4 @@ public class CDTag : NSManagedObject, Printable, Tag {
         
         self.tagvalue = tag.tagvalue
     }
-    
-    init(data:[String:AnyObject], context:NSManagedObjectContext) {
-        let name = self.dynamicType.entityName()
-        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
-        
-        //TODO
-    }
 }

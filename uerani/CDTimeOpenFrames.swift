@@ -25,13 +25,6 @@ public class CDTimeOpenFrames : NSManagedObject, TimeOpenFrames {
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
-    }
-    
-    init(data:[String:AnyObject], context:NSManagedObjectContext) {
-        let name = self.dynamicType.entityName()
-        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
-        
-        //TODO
+        self.renderedTime = openFrames.renderedTime
     }
 }

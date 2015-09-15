@@ -14,7 +14,7 @@ import CoreData
 public class CDTimeFrames : NSManagedObject, TimeFrames {
 
     @NSManaged public var days:String
-    @NSManaged public var open:[FTimeOpenFrames]
+    @NSManaged public var open:[CDTimeOpenFrames]
     
     @NSManaged public var hours:CDHours?
     
@@ -36,14 +36,14 @@ public class CDTimeFrames : NSManagedObject, TimeFrames {
         let name = self.dynamicType.entityName()
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.days = timeFrames.days
         
-    }
-    
-    init(data:[String:AnyObject], context:NSManagedObjectContext) {
-        let name = self.dynamicType.entityName()
-        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
-        
-        //TODO
+        var ourFrames:[CDTimeOpenFrames] = [CDTimeOpenFrames]()
+        for nextFrame in timeFrames.open {
+            var openFrame = CDTimeOpenFrames(openFrames: nextFrame, context: context)
+            openFrame.timeFrames = self
+            ourFrames.append(openFrame)
+        }
+        self.open = ourFrames
     }
 }

@@ -38,13 +38,14 @@ public class CDHours : NSManagedObject, Hours {
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
+        self.status = hours.status
+        self.isOpen = hours.isOpen
+        
+        var timeFrames:[CDTimeFrames] = [CDTimeFrames]()
+        for nextTimeFrame in hours.timeframes {
+            var frame = CDTimeFrames(timeFrames: nextTimeFrame, context: context)
+            frame.hours = self
+        }
     }
     
-    init(data:[String:AnyObject], context:NSManagedObjectContext) {
-        let name = self.dynamicType.entityName()
-        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
-        
-        //TODO
-    }
 }

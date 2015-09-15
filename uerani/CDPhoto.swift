@@ -42,8 +42,10 @@ public class CDPhoto : NSManagedObject, Equatable, IconCapable, Photo {
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
+        self.id = photo.id
         self.prefix = photo.prefix
         self.suffix = photo.suffix
+        self.visibility = photo.visibility
     }
     
     init(data:[String:AnyObject], context:NSManagedObjectContext) {
