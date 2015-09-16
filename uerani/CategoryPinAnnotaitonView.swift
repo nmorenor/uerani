@@ -48,7 +48,7 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
                     ImageCache.sharedInstance().storeImage(imageSize, withIdentifier: scaledImageIdentifier)
                     self.image = imageSize
                 }
-            } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix {
+            } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix where !prefix.isEmpty && !suffix.isEmpty {
                 FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
                 if let image = UIImage(named: defaultPinImage) {
                     self.image = image.resizeImage(size)

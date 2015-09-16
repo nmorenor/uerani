@@ -84,7 +84,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         if let model = self.venueDetailModel {
             return model
         }
-        self.venueDetailModel = VenueDetailViewModel(venue: self.venue, imageSize: CGSizeMake(self.imageViewTop.frame.size.width, self.imageViewTop.frame.size.height), delegate: self)
+        self.venueDetailModel = VenueDetailViewModel(venue: self.venue, imageSize: CGSizeMake(self.imageViewTop.frame.size.width, self.imageViewTop.frame.size.height), updateCoreData:false, delegate: self)
         //return self.venueDetailModel!
         return self.venueDetailModel!
     }

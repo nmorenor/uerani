@@ -36,25 +36,29 @@ public class VenueDetailViewModel<T:Venue> {
     var timeFrames:String?
     var venueDescription:String?
     
-    init(venue:T, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
+    init(venue:T, imageSize:CGSize, updateCoreData:Bool, delegate:VenueDetailsDelegate?) {
         self.imageSize = imageSize
         self.id = venue.id
         self.loadData(venue)
+        var updated = false
         if let delegate = delegate where !venue.completeVenue {
-            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:true, delegate: delegate)
+            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:updateCoreData, delegate: delegate)
+            updated = true
         } else if let bestPhoto = venue.c_bestPhoto {
             if let identifier = VenueDetailViewModel.getBestPhotoIdentifier(venue.id, imageSize:imageSize, bestPhoto: bestPhoto) {
                 var image = ImageCache.sharedInstance().imageWithIdentifier(identifier)
                 if image == nil {
-                    VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:true, delegate: delegate)
+                    VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:updateCoreData, delegate: delegate)
+                    updated = true
                 }
             } else {
-                VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:true, delegate: delegate)
+                VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:updateCoreData, delegate: delegate)
+                updated = true
             }
         }
         
-        if daysSinceLastUpdate(venue) > 7 {
-            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:true, delegate: delegate)
+        if !updated && daysSinceLastUpdate(venue) > 7 {
+            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:updateCoreData, delegate: delegate)
         }
     }
     
@@ -121,7 +125,7 @@ public class VenueDetailViewModel<T:Venue> {
                 }
                 
                 if !result.isEmpty {
-                    self.timeFrames = "Hours:\n\n\(result)"
+                    self.timeFrames = "Hours:\n\(result)"
                 }
             }
             

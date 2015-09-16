@@ -159,6 +159,7 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
         }
         
         cvenue.venueDescription = venue.venueDescription
+        cvenue.lastUpdate = NSDate()
         
         CDVenue.updateVenueCategoriesAndTags(cvenue, venue: venue, context: context)
     }
