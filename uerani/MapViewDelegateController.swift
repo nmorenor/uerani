@@ -48,13 +48,17 @@ extension MapViewController: MKMapViewDelegate {
                 view = ClusteredPinAnnotationView(annotation: annotation, reuseIdentifier: clusterPin)
             }
         } else if let foursquareAnnotation = annotation as? FoursquareLocationMapAnnotation {
-            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? CategoryPinAnnotationView {
+            if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? CategoryPinAnnotationView, let imageName = foursquareAnnotation.categoryImageName12 {
                 dequeuedView.annotation = annotation
-                dequeuedView.configure(foursquareAnnotation, scaledImageIdentifier: foursquareAnnotation.categoryImageName12!, size: CGSizeMake(12, 12))
+                dequeuedView.configure(foursquareAnnotation, scaledImageIdentifier: imageName, size: CGSizeMake(12, 12))
                 view = dequeuedView
+            } else if let imageName = foursquareAnnotation.categoryImageName12 {
+                var annotationView = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView.configure(foursquareAnnotation, scaledImageIdentifier: imageName, size: CGSizeMake(12, 12))
+                view = annotationView
             } else {
                 var annotationView = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView.configure(foursquareAnnotation, scaledImageIdentifier: foursquareAnnotation.categoryImageName12!, size: CGSizeMake(12, 12))
+                annotationView.configure(foursquareAnnotation, scaledImageIdentifier: defaultPinImage, size: CGSizeMake(12, 12))
                 view = annotationView
             }
         } else {

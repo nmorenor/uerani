@@ -41,20 +41,20 @@ public class VenueDetailViewModel<T:Venue> {
         self.id = venue.id
         self.loadData(venue)
         if let delegate = delegate where !venue.completeVenue {
-            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
+            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:true, delegate: delegate)
         } else if let bestPhoto = venue.c_bestPhoto {
             if let identifier = VenueDetailViewModel.getBestPhotoIdentifier(venue.id, imageSize:imageSize, bestPhoto: bestPhoto) {
                 var image = ImageCache.sharedInstance().imageWithIdentifier(identifier)
                 if image == nil {
-                    VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
+                    VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:true, delegate: delegate)
                 }
             } else {
-                VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
+                VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:true, delegate: delegate)
             }
         }
         
         if daysSinceLastUpdate(venue) > 7 {
-            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, delegate: delegate)
+            VenueDetailOperation(venueId: venue.id, imageSize: imageSize, updateCoreData:true, delegate: delegate)
         }
     }
     

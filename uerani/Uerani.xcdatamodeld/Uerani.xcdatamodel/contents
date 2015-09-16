@@ -7,11 +7,12 @@
         <attribute name="primary" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="topCategory" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <relationship name="categories" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDSubCategory" inverseName="parentCategory" inverseEntity="CDSubCategory" syncable="YES"/>
+        <relationship name="categories" toMany="YES" deletionRule="Cascade" destinationEntity="CDSubCategory" inverseName="parentCategory" inverseEntity="CDSubCategory" syncable="YES"/>
         <relationship name="icon" maxCount="1" deletionRule="Cascade" destinationEntity="CDIcon" inverseName="category" inverseEntity="CDIcon" syncable="YES"/>
         <relationship name="venues" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDVenue" inverseName="categories" inverseEntity="CDVenue" syncable="YES"/>
     </entity>
     <entity name="CDContact" representedClassName="CDContact" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="formattedPhone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="venue" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDVenue" inverseName="contact" inverseEntity="CDVenue" syncable="YES"/>
@@ -56,7 +57,7 @@
     </entity>
     <entity name="CDTag" representedClassName="CDTag" syncable="YES">
         <attribute name="tagvalue" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="venues" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDVenue" inverseName="tags" inverseEntity="CDVenue" syncable="YES"/>
+        <relationship name="venues" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDVenue" inverseName="tags" inverseEntity="CDVenue" syncable="YES"/>
     </entity>
     <entity name="CDTimeFrames" representedClassName="CDTimeFrames" syncable="YES">
         <attribute name="days" optional="YES" attributeType="String" syncable="YES"/>
@@ -88,13 +89,13 @@
         <attribute name="venueDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="verified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="bestPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPhoto" inverseName="venueBestPhoto" inverseEntity="CDPhoto" syncable="YES"/>
-        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDCategory" inverseName="venues" inverseEntity="CDCategory" syncable="YES"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDCategory" inverseName="venues" inverseEntity="CDCategory" syncable="YES"/>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDContact" inverseName="venue" inverseEntity="CDContact" syncable="YES"/>
         <relationship name="hours" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDHours" inverseName="venue" inverseEntity="CDHours" syncable="YES"/>
         <relationship name="location" maxCount="1" deletionRule="Cascade" destinationEntity="CDLocation" inverseName="venue" inverseEntity="CDLocation" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDPhoto" inverseName="venue" inverseEntity="CDPhoto" syncable="YES"/>
         <relationship name="price" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDPrice" inverseName="venue" inverseEntity="CDPrice" syncable="YES"/>
-        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDTag" inverseName="venues" inverseEntity="CDTag" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDTag" inverseName="venues" inverseEntity="CDTag" syncable="YES"/>
         <relationship name="venueLists" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDVenueList" inverseName="venues" inverseEntity="CDVenueList" syncable="YES"/>
     </entity>
     <entity name="CDVenueList" representedClassName="CDVenueList" syncable="YES">
@@ -103,8 +104,8 @@
         <relationship name="venues" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDVenue" inverseName="venueLists" inverseEntity="CDVenue" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CDCategory" positionX="-63" positionY="-18" width="128" height="178"/>
-        <element name="CDContact" positionX="-18" positionY="117" width="128" height="90"/>
+        <element name="CDCategory" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="CDContact" positionX="-18" positionY="117" width="128" height="105"/>
         <element name="CDHours" positionX="-18" positionY="135" width="128" height="105"/>
         <element name="CDIcon" positionX="-54" positionY="0" width="128" height="90"/>
         <element name="CDLocation" positionX="-36" positionY="90" width="128" height="165"/>

@@ -22,7 +22,7 @@ public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconC
     @NSManaged public var topCategory:Bool
     @NSManaged public var categories:[CDSubCategory]
     
-    @NSManaged public var venues:[CDVenue]
+    @NSManaged public var venues:NSMutableSet
     
     override public var description:String {
         get {

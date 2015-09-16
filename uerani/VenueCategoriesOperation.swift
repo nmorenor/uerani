@@ -13,6 +13,7 @@ import CoreData
 class VenueCategoriesOperation : AbstractCoreDataOperation {
     
     weak var delegate:CategoriesReady?
+    var foursquareApiSemaphore = dispatch_semaphore_create(0)
     
     init(delegate:CategoriesReady) {
         self.delegate = delegate;
@@ -47,10 +48,10 @@ class VenueCategoriesOperation : AbstractCoreDataOperation {
             } else {
                 venueCategories = result!
             }
-            self.unlock()
+            self.unlockFoursquareAPISemephore()
         }
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        dispatch_semaphore_wait(foursquareApiSemaphore, DISPATCH_TIME_FOREVER)
         
         var categories:[FCategory] = [FCategory]()
         realm.write() {
@@ -71,6 +72,10 @@ class VenueCategoriesOperation : AbstractCoreDataOperation {
             //do nothing
         }
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    }
+    
+    func unlockFoursquareAPISemephore() {
+        dispatch_semaphore_signal(foursquareApiSemaphore)
     }
     
     func createChildrenCategories(parentCategory:CDCategory, categories:List<FSubCategory>) {

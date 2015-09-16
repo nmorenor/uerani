@@ -15,7 +15,7 @@ public class CDTag : NSManagedObject, Printable, Tag {
     
     @NSManaged public var tagvalue:String
     
-    @NSManaged public var venues:[CDVenue]
+    @NSManaged public var venues:NSMutableSet
     
     override public var description:String {
         get {

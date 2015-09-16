@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import CoreData
 
 public protocol VenueDetailsDelegate : class {
     
@@ -16,27 +17,27 @@ public protocol VenueDetailsDelegate : class {
     func refreshVenueDetailsError(errorString:String)
 }
 
-public class VenueDetailOperation:NSOperation {
+public class VenueDetailOperation:AbstractCoreDataOperation {
     
     var venueId:String
     var size:String
     weak var venueDetailDelegate:VenueDetailsDelegate?
-    var semaphore = dispatch_semaphore_create(0)
+    var completeVenueSemaphore = dispatch_semaphore_create(0)
     var imageSemaphore = dispatch_semaphore_create(0)
     var success = false
+    var updateCoreData:Bool
     
-    init(venueId:String, imageSize:CGSize, delegate:VenueDetailsDelegate?) {
+    init(venueId:String, imageSize:CGSize, updateCoreData:Bool, delegate:VenueDetailsDelegate?) {
         self.venueId = venueId
         self.venueDetailDelegate = delegate
+        self.updateCoreData = updateCoreData
         self.size = "\(imageSize.width.getIntValue())x\(((imageSize.height/2) * 1.15).getIntValue())"
-        super.init()
-        //schedule the operation
-        NSOperationQueue().addOperation(self)
+        super.init(operationQueue: NSOperationQueue())
     }
     
     override public func main() {
         FoursquareClient.sharedInstance().getVenueDetail(self.venueId, completionHandler: self.foursquareClientHandler)
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        dispatch_semaphore_wait(completeVenueSemaphore, DISPATCH_TIME_FOREVER)
         if success {
             self.downloadImageAndNotify()
         }
@@ -53,6 +54,31 @@ public class VenueDetailOperation:NSOperation {
                 realm.write() {
                     realm.add(venue, update: true)
                 }
+            }
+            
+            if self.updateCoreData {
+                let fetchRequest = NSFetchRequest(entityName: "CDVenue")
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+                fetchRequest.predicate = NSPredicate(format: "id = %@", venue.id)
+                
+                var error:NSError? = nil
+                var results = self.sharedModelContext.executeFetchRequest(fetchRequest, error: &error)
+                var result:CDVenue!
+                if let error = error {
+                    println("can not find venue \(venue.id)")
+                    result = CDVenue(venue: venue, context: self.sharedModelContext)
+                } else if let results = results where !results.isEmpty {
+                    result = results.first as! CDVenue
+                } else {
+                    result = CDVenue(venue: venue, context: self.sharedModelContext)
+                }
+                CDVenue.updateVenue(result, venue: venue, context: self.sharedModelContext)
+                
+                saveContext(self.sharedModelContext) { success in
+                    //do nothing
+                }
+                //wait to merge main context
+                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
             }
             
             self.downloadPhoto(photo)
@@ -103,11 +129,11 @@ public class VenueDetailOperation:NSOperation {
         } else {
             self.venueDetailDelegate?.refreshVenueDetailsError("Error while doing Foursquare data request")
         }
-        self.unlock()
+        self.unlockCompleteVenue()
     }
     
-    func unlock() {
-        dispatch_semaphore_signal(semaphore)
+    func unlockCompleteVenue() {
+        dispatch_semaphore_signal(completeVenueSemaphore)
     }
     
     func unlockImage() {

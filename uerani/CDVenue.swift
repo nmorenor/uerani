@@ -18,10 +18,10 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
     @NSManaged public var completeVenue:Bool
     @NSManaged public var contact:CDContact?
     @NSManaged public var location:CDLocation
-    @NSManaged public var categories:[CDCategory]
+    @NSManaged public var categories:NSMutableSet
     @NSManaged public var verified:Bool
     @NSManaged public var url:String
-    @NSManaged public var tags:[CDTag]
+    @NSManaged public var tags:NSMutableSet
     @NSManaged public var photos:[CDPhoto]
     @NSManaged public var bestPhoto:CDPhoto?
     @NSManaged public var venueLists:[CDVenueList]
@@ -59,8 +59,8 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
     public var c_categories:GeneratorOf<Category> {
         get {
             var queue = Queue<Category>()
-            for next in self.categories {
-                queue.enqueue(next)
+            for next in self.categories.allObjects {
+                queue.enqueue(next as! CDCategory)
             }
             return GeneratorOf<Category>(queue.generate())
         }
@@ -69,8 +69,8 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
     public var c_tags:GeneratorOf<Tag> {
         get {
             var queue = Queue<Tag>()
-            for next in self.tags {
-                queue.enqueue(next)
+            for next in self.tags.allObjects {
+                queue.enqueue(next as! CDTag)
             }
             return GeneratorOf<Tag>(queue.generate())
         }
@@ -96,7 +96,6 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
         self.id = venue.id
-        
     }
     
     static func updateVenue(cvenue:CDVenue, venue:FVenue, context:NSManagedObjectContext) {
@@ -111,41 +110,19 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
             cvenue.location.venue = cvenue
         }
         cvenue.verified = venue.verified
-        
-        var categories = [CDCategory]()
-        for nextCat in venue.categories {
-            var category = CDVenue.getCategory(nextCat, context: context)
-            if let category = category {
-                category.venues.append(cvenue)
-                categories.append(category)
-            }
-        }
-        cvenue.categories = categories
         cvenue.url = venue.url
         
-        var tags = [CDTag]()
-        for nextTag in venue.tags {
-            var tag = CDVenue.getTag(nextTag, context: context)
-            tag.venues.append(cvenue)
-            tags.append(tag)
-        }
-        cvenue.tags = tags
-        
-        var photos = [CDPhoto]()
         for nextPhoto in venue.photos {
             var photo = CDVenue.getPhoto(nextPhoto, context: context)
             photo.venue = cvenue
-            photos.append(photo)
         }
-        //this is not required :)
-        cvenue.photos = photos
         
         if let bestPhoto = cvenue.bestPhoto {
             bestPhoto.venueBestPhoto = nil
         }
         
-        if let bestPhoto = venue.bestPhoto {
-            cvenue.bestPhoto = CDVenue.getPhoto(bestPhoto, context: context)
+        if let fbestPhoto = venue.bestPhoto {
+            cvenue.bestPhoto = CDVenue.getPhoto(fbestPhoto, context: context)
             cvenue.bestPhoto!.venueBestPhoto = cvenue
         }
         cvenue.rating = venue.rating
@@ -155,7 +132,6 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
                 hours.status = fhours.status
                 hours.isOpen = fhours.isOpen
                 for next in hours.timeframes {
-                    next.hours = nil
                     context.delete(next)
                 }
                 for nextFrame in fhours.timeframes {
@@ -163,7 +139,6 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
                     frame.hours = hours
                 }
             } else {
-                cvenue.hours = nil
                 context.delete(hours)
             }
         } else if let fhours = venue.hours {
@@ -176,7 +151,6 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
                 price.tier = fprice.tier
                 price.message = fprice.message
             } else {
-                cvenue.price = nil
                 context.delete(price)
             }
         } else if let fprice = venue.price {
@@ -185,12 +159,34 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
         }
         
         cvenue.venueDescription = venue.venueDescription
+        
+        CDVenue.updateVenueCategoriesAndTags(cvenue, venue: venue, context: context)
+    }
+    
+    static func updateVenueCategoriesAndTags(cvenue:CDVenue, venue:FVenue, context:NSManagedObjectContext) {
+        //var categories = NSMutableSet()
+        for nextCat in venue.categories {
+            var category = CDVenue.getCategory(nextCat, context: context)
+            if let category = category {
+                category.venues.addObject(category)
+                cvenue.categories.addObject(category)
+            }
+        }
+        //cvenue.categories = categories
+        
+        //var tags = NSMutableSet()
+        for nextTag in venue.tags {
+            var tag = CDVenue.getTag(nextTag, context: context)
+            tag.venues.addObject(cvenue)
+            cvenue.tags.addObject(nextTag)
+        }
+        //cvenue.tags = tags
     }
     
     static func getPhoto(photo:FPhoto, context:NSManagedObjectContext) -> CDPhoto {
         let fetchRequest = NSFetchRequest(entityName: "CDPhoto")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "id", photo.id)
+        fetchRequest.predicate = NSPredicate(format: "id = %@", photo.id)
         
         var error:NSError? = nil
         var results = context.executeFetchRequest(fetchRequest, error: &error)
@@ -209,7 +205,7 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
     static func getTag(tag:FTag, context:NSManagedObjectContext) -> CDTag {
         let fetchRequest = NSFetchRequest(entityName: "CDTag")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "tagvalue", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "tagvalue", tag.tagvalue)
+        fetchRequest.predicate = NSPredicate(format: "tagvalue = %@", tag.tagvalue)
         
         var error:NSError? = nil
         var results = context.executeFetchRequest(fetchRequest, error: &error)
@@ -229,7 +225,7 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
     static func getCategory(category:FCategory, context:NSManagedObjectContext) -> CDCategory? {
         let fetchRequest = NSFetchRequest(entityName: "CDCategory")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "id", category.id)
+        fetchRequest.predicate = NSPredicate(format: "id = %@", category.id)
         
         var error:NSError? = nil
         var results = context.executeFetchRequest(fetchRequest, error: &error)
