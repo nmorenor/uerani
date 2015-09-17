@@ -25,8 +25,8 @@ public class AddVenueToListController : UIViewController {
     
     var viewWidth:CGFloat?
     var viewHeight:CGFloat?
-    var tapRecognizer: UITapGestureRecognizer? = nil
-    var shouldRetry:Bool = false
+    var tapRecognizer: UITapGestureRecognizer!
+    var dialogView:VenueListsDialogView!
     
     public class DialogViewResponder {
         
@@ -58,53 +58,39 @@ public class AddVenueToListController : UIViewController {
     }
     
     override public func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        let size = UIScreen.mainScreen().bounds.size
-//        self.viewWidth = size.width
-//        self.viewHeight = (self.retryButton == nil) ? baseHeight + 8 : baseHeight + 33
-//        
-//        var yPos:CGFloat = 0.0
-//        var contentWidth:CGFloat = self.viewWidth!
-//        
-//        let titleString = messageLabel.text! as NSString
-//        let titleAttr = [NSFontAttributeName:messageLabel.font]
-//        
-//        let titleSize = CGSize(width: contentWidth, height: (self.viewHeight! + 25))
-//        let titleRect = titleString.boundingRectWithSize(titleSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: titleAttr, context: nil)
-//        yPos += padding
-//        self.messageLabel.frame = CGRect(x: padding * 2, y: yPos + 4, width: size.width - ((padding * 3) + 5), height: ceil(titleRect.size.height + 8))
-//        self.messageLabel.backgroundColor = backgroundColor
-//        self.messageLabel.layer.cornerRadius = 3
-//        self.messageLabel.layer.masksToBounds = true
-//        yPos += ceil(titleRect.size.height + 8)
-//        
-//        if let button = self.retryButton {
-//            button.frame = CGRect(x: padding * 2, y: yPos + 4, width: self.messageLabel.frame.width, height: 33)
-//            button.layer.cornerRadius = 2
-//            button.layer.masksToBounds = true
-//            
-//            self.retryButtonLabel!.frame = CGRect(x: self.padding, y: (33/2) - 12, width: self.messageLabel.frame.width - (padding * 3), height: 30)
-//            self.retryButtonLabel!.font = UIFont(name: self.fontName, size: 17)
-//            yPos += 41
-//        }
-//        
-//        self.containerView.frame = CGRect(x: 0, y: (self.viewHeight! - yPos)/2, width: self.viewWidth!, height: yPos)
+        super.viewDidLayoutSubviews()
+    }
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
+        tapRecognizer.numberOfTapsRequired = 1
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.rootViewController.view.addGestureRecognizer(self.tapRecognizer)
+        
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.rootViewController.view.removeGestureRecognizer(self.tapRecognizer)
     }
     
     public func addCloseAction(action: ()->Void) {
         self.closeAction = action
     }
     
-    public func show(viewController: UIViewController, text:String, retry:Bool) -> DialogViewResponder {
+    public func show(viewController: UIViewController) -> DialogViewResponder {
         self.rootViewController = viewController
         self.rootViewController.addChildViewController(self)
-        self.rootViewController.view.addSubview(view)
         
-        self.view.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.0)
-        var textColor = UIColor.whiteColor()
+        self.rootViewController.view.addSubview(view)
         
         let size = UIScreen.mainScreen().bounds.size
         self.viewWidth = size.width
+        self.viewHeight = size.height
         
         self.containerView = UIView()
         self.containerView.layer.shadowOffset = CGSizeMake(3, 3)
@@ -117,8 +103,12 @@ public class AddVenueToListController : UIViewController {
         UIView.animateWithDuration(0.2, animations: {
             self.view.alpha = 1
         })
-        self.containerView.frame.origin.x = self.rootViewController.view.center.x
-        self.containerView.center.y = -500
+        self.containerView.frame = self.view.frame
+        
+        let dialogHieght:CGFloat = self.view.frame.size.height * 0.5
+        self.dialogView = VenueListsDialogView(frame: CGRectMake(25, (self.view.frame.size.height/6) - 35, self.view.frame.size.width - 50, dialogHieght))
+        self.containerView.addSubview(self.dialogView)
+        
         UIView.animateWithDuration(0.5, delay: 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: nil, animations: {
             self.containerView.center = self.rootViewController.view.center
             }, completion: { finished in
@@ -147,8 +137,7 @@ public class AddVenueToListController : UIViewController {
         })
     }
     
-    func handleRetry(button:UIButton) {
-        self.shouldRetry = true
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
         self.closeView(true)
     }
     

@@ -36,6 +36,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     var venue:FVenue!
     var venueId:String!
     var venueDetailModel:VenueDetailViewModel<FVenue>!
+    var listDialogController:AddVenueToListController?
     @IBOutlet var imageViewTop:VenueImageView! {
         didSet {
             self.imageViewTop.backgroundColor = UIColor.ueraniYellowColor()
@@ -49,6 +50,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         self.realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         self.venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)
         
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "handleAddList:")
         self.venueDetailModel = self.getVenueDetailModel()
         self.navigationItem.title = venueDetailModel.name
         self.venueDetailModel.setupImageView(self.imageViewTop, imageMapDelegate:self, venue:venue)
@@ -60,6 +62,19 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         self.view.setNeedsLayout()
         self.view.setNeedsUpdateConstraints()
         self.view.layoutIfNeeded()
+    }
+    
+    func handleAddList(button:UIBarButtonItem) {
+        self.listDialogController = AddVenueToListController()
+        self.listDialogController?.addCloseAction(self.closeDialog)
+        self.listDialogController?.show(self)
+    }
+    
+    func closeDialog() {
+        if let alertView = self.listDialogController {
+            
+        }
+        self.listDialogController = nil
     }
     
     public override func viewWillAppear(animated: Bool) {

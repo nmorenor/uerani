@@ -15,7 +15,7 @@ public class VenueListDialogHeaderView : UIView {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 14.0)
         label.textAlignment = .Center
-        label.textColor = UIColor.blackColor()
+        label.textColor = UIColor.whiteColor()
         return label
         }()
     
@@ -32,6 +32,7 @@ public class VenueListDialogHeaderView : UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.blackColor()
+        self.layer.cornerRadius = 6.0
     }
     
     public override func didMoveToSuperview() {

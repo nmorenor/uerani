@@ -19,12 +19,12 @@ public class VenueListDialogButtonBarView : UIView {
     }
     
     override init(frame: CGRect) {
-        var cancelButtonFrame = CGRectMake(0, 5, (frame.width/2) - 40, frame.size.height)
-        var okButtonFrame = CGRectMake((frame.width/2) + 30, 5, (frame.width/2) - 40, frame.size.height)
+        var cancelButtonFrame = CGRectMake(10, 5, (frame.width/2) - 20, frame.size.height - 10)
+        var okButtonFrame = CGRectMake((frame.width/2) + 10, 5, (frame.width/2) - 20, frame.size.height - 10)
         self.okButton = BorderedButton(frame: okButtonFrame)
         self.cancelButton = BorderedButton(frame: cancelButtonFrame)
         super.init(frame: frame)
-        self.backgroundColor = UIColor.ueraniYellowColor()
+        self.backgroundColor = UIColor.ueraniDarkYellowColor()
     }
     
     public override func didMoveToSuperview() {
@@ -44,5 +44,6 @@ public class VenueListDialogButtonBarView : UIView {
         button.highlightedBackingColor = UIColor.ueraniBlackJetColor()
         button.backingColor = UIColor.blackColor()
         button.backgroundColor = UIColor.blackColor()
+        button.layer.cornerRadius = 6.0
     }
 }
