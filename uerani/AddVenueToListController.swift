@@ -16,12 +16,7 @@ public class AddVenueToListController : UIViewController {
     var rootViewController:UIViewController!
     
     var isAlertOpen:Bool = false
-    var fontName = "Helvetica-Neue"
     var closeAction:(()->Void)?
-    var backgroundColor = UIColor(red: 240.0/255.0, green: 72.0/255.0, blue: 10.0/255.0, alpha: 1.0)
-    
-    let baseHeight:CGFloat = 70.0
-    let padding:CGFloat = 10.0
     
     var viewWidth:CGFloat?
     var viewHeight:CGFloat?
@@ -107,6 +102,7 @@ public class AddVenueToListController : UIViewController {
         
         let dialogHieght:CGFloat = self.view.frame.size.height * 0.5
         self.dialogView = VenueListsDialogView(frame: CGRectMake(25, (self.view.frame.size.height/6) - 35, self.view.frame.size.width - 50, dialogHieght))
+        self.dialogView.closeAction = self.closeView
         self.containerView.addSubview(self.dialogView)
         
         UIView.animateWithDuration(0.5, delay: 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: nil, animations: {

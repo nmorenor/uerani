@@ -14,6 +14,11 @@ public class VenueListsDialogView : UIView {
     var headerView:VenueListDialogHeaderView
     var buttonBarView:VenueListDialogButtonBarView
     var tableView:UITableView
+    var closeAction:CloseDialogAction? {
+        didSet {
+            self.buttonBarView.closeAction = self.closeAction
+        }
+    }
     
     public required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
