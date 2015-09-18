@@ -60,15 +60,23 @@ public class AddVenueToListTableDelegate : NSObject, UITableViewDataSource, UITa
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let venueList = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDVenueList
         let CellIdentifier = "venueListCell"
+        var selected = false
+        if let currentSelection = self.selectedList where currentSelection.title == venueList.title {
+            selected = true
+        }
         
         if let cell = self.tableView.dequeueReusableCellWithIdentifier(CellIdentifier) as? UITableViewCell {
             cell.textLabel!.text = venueList.title
-            
+            if selected {
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }
             return cell
         } else {
             var cell = UITableViewCell()
             cell.textLabel!.text = venueList.title
-            
+            if selected {
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }
             return cell
         }
     }

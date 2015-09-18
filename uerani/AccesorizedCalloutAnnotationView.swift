@@ -56,7 +56,9 @@ class AccesorizedCalloutAnnotationView: CalloutMapAnnotationView {
     
     func calloutAccessoryTapped(sender: UIButton!) {
         if let mapView = self.mapView where mapView.delegate.respondsToSelector(Selector("mapView:annotationView:calloutAccessoryControlTapped:")) {
-            self.allowParentSelectionChange()
+            let parentView = self.parentAnnotationView as! BasicMapAnnotationView
+            parentView.preventSelectionChange = false
+            self.parentAnnotationView?.setSelected(false, animated: false)
             mapView.delegate.mapView!(mapView, annotationView: self.parentAnnotationView, calloutAccessoryControlTapped: sender)
         }
     }

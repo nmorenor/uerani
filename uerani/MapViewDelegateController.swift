@@ -116,6 +116,7 @@ extension MapViewController: MKMapViewDelegate {
     private func displayVenueDetailViewController(annotation:FoursquareLocationMapAnnotation) {
         var detailsController = self.storyboard?.instantiateViewControllerWithIdentifier("RealmDetailsViewController") as! RealmVenueDetailViewController
         detailsController.venueId = annotation.venueId
+        self.mapView.deselectAnnotation(annotation, animated: false)
         self.navigationController?.pushViewController(detailsController, animated: true)
     }
 }
