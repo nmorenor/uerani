@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-public class AddVenueToListController : UIViewController {
+public class AddVenueToListController : UIViewController, UIGestureRecognizerDelegate {
     
     var containerView:UIView!
     var rootViewController:UIViewController!
@@ -60,6 +60,7 @@ public class AddVenueToListController : UIViewController {
         super.viewDidLoad()
         tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
         tapRecognizer.numberOfTapsRequired = 1
+        tapRecognizer.delegate = self
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -102,7 +103,8 @@ public class AddVenueToListController : UIViewController {
         
         let dialogHieght:CGFloat = self.view.frame.size.height * 0.5
         self.dialogView = VenueListsDialogView(frame: CGRectMake(25, (self.view.frame.size.height/6) - 35, self.view.frame.size.width - 50, dialogHieght))
-        self.dialogView.closeAction = self.closeView
+        self.dialogView.okAction = self.closeViewOK
+        self.dialogView.cancelAction = self.closeViewCancel
         self.containerView.addSubview(self.dialogView)
         
         UIView.animateWithDuration(0.5, delay: 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: nil, animations: {
@@ -119,7 +121,7 @@ public class AddVenueToListController : UIViewController {
         UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: nil, animations: {
             self.containerView.center.y = -(self.viewHeight! + 10)
             }, completion: { finished in
-                UIView.animateWithDuration(0.1, animations: {
+                UIView.animateWithDuration(0.3, animations: {
                     self.view.alpha = 0
                     }, completion: { finished in
                         if withCallback == true {
@@ -133,8 +135,26 @@ public class AddVenueToListController : UIViewController {
         })
     }
     
+    func closeViewCancel(withCallback:Bool) {
+        self.closeView(withCallback)
+    }
+    
+    func closeViewOK(withCallback:Bool) {
+        if let selectedList = self.dialogView.selectedList {
+            println("\(selectedList.title)")
+        }
+        self.closeView(withCallback)
+    }
+    
     func handleSingleTap(recognizer: UITapGestureRecognizer) {
         self.closeView(true)
+    }
+    
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view.isDescendantOfView(self.dialogView) {
+            return false
+        }
+        return true
     }
     
     func removeView() {

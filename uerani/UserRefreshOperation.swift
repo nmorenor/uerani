@@ -42,7 +42,7 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
     func createFavoriteListIfNeeded() {
         if let user = self.user {
             var request = NSFetchRequest(entityName: "CDVenueList")
-            request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
+            request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false)]
             request.predicate = NSPredicate(format: "ANY user == %@", user)
             
             var error:NSError? = nil
@@ -57,7 +57,7 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
                     }
                 }
                 if createFavoriteList {
-                    let list = CDVenueList(name: "Favorites", user: user, context: self.sharedModelContext)
+                    let list = CDVenueList(title: "Favorites", user: user, context: self.sharedModelContext)
                     saveContext(self.sharedModelContext) { success in
                         //do nothing
                     }

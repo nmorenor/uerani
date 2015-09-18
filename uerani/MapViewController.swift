@@ -170,7 +170,6 @@ class MapViewController: UIViewController, CategoriesReady {
     
     func initializeSearchResults() {
         dispatch_async(dispatch_get_main_queue()) {
-            let fetchRequest = self.getTopCategoryFetchRequest()
             
             var error:NSError? = nil
             self.fetchedResultsController.performFetch(&error)

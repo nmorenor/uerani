@@ -14,9 +14,23 @@ public class VenueListsDialogView : UIView {
     var headerView:VenueListDialogHeaderView
     var buttonBarView:VenueListDialogButtonBarView
     var tableView:UITableView
-    var closeAction:CloseDialogAction? {
+    var tableDataSource:AddVenueToListTableDelegate
+    
+    var selectedList:CDVenueList? {
+        get {
+            return self.tableDataSource.selectedList
+        }
+    }
+    
+    var okAction:CloseDialogAction? {
         didSet {
-            self.buttonBarView.closeAction = self.closeAction
+            self.buttonBarView.okAction = self.okAction
+        }
+    }
+    
+    var cancelAction:CloseDialogAction? {
+        didSet {
+            self.buttonBarView.cancelAction = self.cancelAction
         }
     }
     
@@ -34,6 +48,9 @@ public class VenueListsDialogView : UIView {
         
         var tableFrame = CGRectMake(0, 35.0, frame.width, frame.size.height - (headerFrame.size.height + buttonsFrame.size.height - 5))
         self.tableView = UITableView(frame: tableFrame)
+        self.tableDataSource = AddVenueToListTableDelegate(tableView: self.tableView)
+        self.tableView.dataSource = self.tableDataSource
+        self.tableView.delegate = self.tableDataSource
         
         super.init(frame: frame)
         self.layer.cornerRadius = 6.0

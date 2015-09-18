@@ -16,21 +16,21 @@ public class CDVenueList : NSManagedObject, Equatable, Hashable, Printable {
     @NSManaged public var venues:[CDVenue]
     @NSManaged public var user:CDUser
     
-    @NSManaged public var name:String
+    @NSManaged public var title:String
     
     override public var hashValue:Int {
         get {
             let prime:Int = 31
             var result:Int = 1
             result = prime * result + self.user.hashValue
-            result = prime * result + self.name.hashValue
+            result = prime * result + self.title.hashValue
             return result
         }
     }
     
     override public var description:String {
         get {
-            return "list_\(self.user.id)_\(self.name)"
+            return "list_\(self.user.id)_\(self.title)"
         }
     }
     
@@ -38,16 +38,16 @@ public class CDVenueList : NSManagedObject, Equatable, Hashable, Printable {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
     
-    init(name:String, user:CDUser, context:NSManagedObjectContext) {
+    init(title:String, user:CDUser, context:NSManagedObjectContext) {
         let name = self.dynamicType.entityName()
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
-        self.name = name
+        self.title = title
         self.user = user
     }
 }
 
 public func ==(lhs:CDVenueList, rhs:CDVenueList) -> Bool {
-    return lhs.name == rhs.name && lhs.user == rhs.user
+    return lhs.title == rhs.title && lhs.user == rhs.user
 }

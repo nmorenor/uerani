@@ -15,7 +15,8 @@ public class VenueListDialogButtonBarView : UIView {
     
     var okButton:BorderedButton
     var cancelButton:BorderedButton
-    var closeAction:CloseDialogAction?
+    var okAction:CloseDialogAction?
+    var cancelAction:CloseDialogAction?
     
     public required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -29,12 +30,16 @@ public class VenueListDialogButtonBarView : UIView {
         super.init(frame: frame)
         self.backgroundColor = UIColor.ueraniDarkYellowColor()
         
-        self.okButton.addTarget(self, action: "handleClose:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.cancelButton.addTarget(self, action: "handleClose:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.okButton.addTarget(self, action: "handleOK:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.cancelButton.addTarget(self, action: "handleCancel:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
-    func handleClose(button:BorderedButton) {
-        self.closeAction?(true)
+    func handleOK(button:BorderedButton) {
+        self.okAction?(true)
+    }
+    
+    func handleCancel(button:BorderedButton) {
+        self.cancelAction?(true)
     }
     
     public override func didMoveToSuperview() {
