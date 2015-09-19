@@ -114,6 +114,8 @@
 		66C008561BA47E22002385B9 /* message.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66C008541BA47E22002385B9 /* message.pdf */; };
 		66C008571BA47E22002385B9 /* phone.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66C008551BA47E22002385B9 /* phone.pdf */; };
 		66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */; };
+		66DB48F31BACDD8700282FCC /* VenueListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DB48F21BACDD8700282FCC /* VenueListsViewController.swift */; };
+		66DB48F51BACEB0E00282FCC /* VenuesFromListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DB48F41BACEB0E00282FCC /* VenuesFromListViewController.swift */; };
 		66F55A981B8BE23B005C2F49 /* CategoryFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A971B8BE23B005C2F49 /* CategoryFilter.png */; };
 		66F55A9A1B8BE253005C2F49 /* MapView.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55A991B8BE253005C2F49 /* MapView.png */; };
 		66F55AC21B8BF221005C2F49 /* CustomCallout.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F55AC11B8BF221005C2F49 /* CustomCallout.png */; };
@@ -251,6 +253,8 @@
 		66C008541BA47E22002385B9 /* message.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = message.pdf; sourceTree = "<group>"; };
 		66C008551BA47E22002385B9 /* phone.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = phone.pdf; sourceTree = "<group>"; };
 		66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewWtihProgress.swift; sourceTree = "<group>"; };
+		66DB48F21BACDD8700282FCC /* VenueListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueListsViewController.swift; sourceTree = "<group>"; };
+		66DB48F41BACEB0E00282FCC /* VenuesFromListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenuesFromListViewController.swift; sourceTree = "<group>"; };
 		66F55A971B8BE23B005C2F49 /* CategoryFilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategoryFilter.png; sourceTree = "<group>"; };
 		66F55A991B8BE253005C2F49 /* MapView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MapView.png; sourceTree = "<group>"; };
 		66F55AC11B8BF221005C2F49 /* CustomCallout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CustomCallout.png; sourceTree = "<group>"; };
@@ -478,6 +482,7 @@
 				6657BF021B5D565B00C94677 /* ImageCache.swift */,
 				66A7FC8C1B5AD71D0012358D /* Model */,
 				66418A6E1B9A575900345AF6 /* venueDetail */,
+				66DB48F11BACDD5000282FCC /* VenueList */,
 				66A2656E1B8A6405005C4970 /* User */,
 				66A265671B8A5665005C4970 /* TabBar */,
 				6684E4D01B82B26000B67B0A /* view */,
@@ -629,6 +634,15 @@
 				664C5D821B7FDE1100EDA856 /* MapViewSearchDelegate.swift */,
 			);
 			name = controllers;
+			sourceTree = "<group>";
+		};
+		66DB48F11BACDD5000282FCC /* VenueList */ = {
+			isa = PBXGroup;
+			children = (
+				66DB48F21BACDD8700282FCC /* VenueListsViewController.swift */,
+				66DB48F41BACEB0E00282FCC /* VenuesFromListViewController.swift */,
+			);
+			name = VenueList;
 			sourceTree = "<group>";
 		};
 		684E991BACD8B82301B06225 /* Frameworks */ = {
@@ -906,9 +920,11 @@
 				66A116311B72E34C00498070 /* CDCategory.swift in Sources */,
 				66A265691B8A569A005C4970 /* UeraniTabBarViewController.swift in Sources */,
 				66F55AD01B8E4EBE005C2F49 /* DirectedDepthFirstSearch.swift in Sources */,
+				66DB48F51BACEB0E00282FCC /* VenuesFromListViewController.swift in Sources */,
 				66A7FC9D1B5AD7470012358D /* SearchBoxCenter.swift in Sources */,
 				66A7FCBD1B5AD7CA0012358D /* SearchBox.swift in Sources */,
 				6688F12F1B911F6F008BF82B /* CDContact.swift in Sources */,
+				66DB48F31BACDD8700282FCC /* VenueListsViewController.swift in Sources */,
 				6657BF031B5D565B00C94677 /* ImageCache.swift in Sources */,
 				66A7FCB81B5AD7CA0012358D /* GeoLocation.swift in Sources */,
 				664C5D811B7FDCFF00EDA856 /* MapViewCategoriesTableDelegate.swift in Sources */,

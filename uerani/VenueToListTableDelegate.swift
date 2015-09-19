@@ -10,13 +10,19 @@ import Foundation
 import CoreData
 import UIKit
 
+public typealias VenueListSelectionAction = (()->Void)
+
 public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITableViewDelegate {
     
     var tableView:UITableView
+    var cellIdentifier:String
+    var venueListSelectionAction:VenueListSelectionAction?
+    var selectAccessory:Bool = true
     weak var selectedList:CDVenueList?
     
-    init(tableView:UITableView) {
+    init(tableView:UITableView, cellIdentifier:String) {
         self.tableView = tableView
+        self.cellIdentifier = cellIdentifier
         super.init()
         
         var error:NSError? = nil
@@ -59,13 +65,12 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let venueList = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDVenueList
-        let CellIdentifier = "venueListCell"
         var selected = false
         if let currentSelection = self.selectedList where currentSelection.title == venueList.title {
             selected = true
         }
         
-        if let cell = self.tableView.dequeueReusableCellWithIdentifier(CellIdentifier) as? UITableViewCell {
+        if let cell = self.tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier) as? UITableViewCell {
             cell.textLabel!.text = venueList.title
             if selected {
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
@@ -82,11 +87,16 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
     }
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = UITableViewCellAccessoryType.Checkmark
+        if self.selectAccessory {
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = UITableViewCellAccessoryType.Checkmark
+        }
         self.selectedList = self.fetchedResultsController.objectAtIndexPath(indexPath) as? CDVenueList
+        self.venueListSelectionAction?()
     }
     
     public func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = UITableViewCellAccessoryType.None
+        if self.selectAccessory {
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = UITableViewCellAccessoryType.None
+        }
     }
 }

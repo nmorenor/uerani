@@ -99,6 +99,25 @@ public class HTTPClient: NSObject {
         return task;
     }
     
+    func taskForImage(size: String, url: NSURL, completionHandler: (imageData: NSData?, error: NSError?) ->  Void) -> NSURLSessionTask {
+        
+        let request = NSURLRequest(URL: url)
+        
+        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
+            
+            if let error = downloadError {
+                let userInfo = [NSLocalizedDescriptionKey : "Error downloading image"]
+                completionHandler(imageData: nil, error: NSError(domain: "Uerani Error", code: 1, userInfo: userInfo))
+            } else {
+                completionHandler(imageData: data, error: nil)
+            }
+        }
+        
+        task.resume()
+        
+        return task
+    }
+    
     class func errorForData(data: NSData?, response: NSURLResponse?, error:NSError) -> NSError {
         
         if let parsedResult = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil) as? [String:AnyObject] {
