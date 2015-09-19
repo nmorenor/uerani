@@ -54,7 +54,7 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
     lazy var fetchedResultsController:NSFetchedResultsController = {
         
         let fetchRequest = NSFetchRequest(entityName: "CDVenue")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         fetchRequest.predicate = NSPredicate(format: "venueLists.user.id contains[cd] %@ AND venueLists.title contains[cd] %@", FoursquareClient.sharedInstance().userId!, self.list.title)
         
         
@@ -127,7 +127,6 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
             self.sharedContext.refreshObject(self.list, mergeChanges: true)
             self.sharedContext.refreshObject(venue, mergeChanges: true)
             
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
             CoreDataStackManager.sharedInstance().saveContext()
         default:
             break

@@ -75,9 +75,6 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     }
     
     func closeDialog() {
-        if let alertView = self.listDialogController {
-            
-        }
         self.listDialogController = nil
     }
     

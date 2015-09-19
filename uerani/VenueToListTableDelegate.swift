@@ -25,6 +25,10 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
         self.cellIdentifier = cellIdentifier
         super.init()
         
+        self.reload()
+    }
+    
+    func reload() {
         var error:NSError? = nil
         self.fetchedResultsController.performFetch(&error)
         
@@ -45,7 +49,7 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
     lazy var fetchedResultsController:NSFetchedResultsController = {
 
         let fetchRequest = NSFetchRequest(entityName: "CDVenueList")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         fetchRequest.predicate = NSPredicate(format: "user.id == %@", FoursquareClient.sharedInstance().userId!)
         
         
