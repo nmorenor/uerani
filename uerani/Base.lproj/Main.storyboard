@@ -168,7 +168,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="venueCell" textLabel="EYm-Nh-q9W" style="IBUITableViewCellStyleDefault" id="8r4-Mj-1sp">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="venueCell" textLabel="EYm-Nh-q9W" style="IBUITableViewCellStyleDefault" id="8r4-Mj-1sp">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8r4-Mj-1sp" id="d0G-cV-aJT">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -189,6 +189,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="7Vk-fL-uWc"/>
+                    <connections>
+                        <segue destination="TrI-LW-zlZ" kind="show" identifier="showVenueDetailsView" id="wVh-rG-vDk"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CUk-Wp-1hI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -417,4 +420,7 @@
         <image name="poweredByFoursquare" width="612" height="792"/>
         <image name="user" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="wVh-rG-vDk"/>
+    </inferredMetricsTieBreakers>
 </document>

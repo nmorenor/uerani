@@ -35,9 +35,7 @@ class VenueListsViewController : UITableViewController {
     
     func venueSelected() {
         var venuesOfListController = self.storyboard?.instantiateViewControllerWithIdentifier("VenuesOfListViewController") as! VenuesFromListViewController
-        venuesOfListController.listName = self.venueListTableDelegate.selectedList!.title
+        venuesOfListController.list = self.venueListTableDelegate.selectedList!
         self.navigationController?.pushViewController(venuesOfListController, animated: true)
-        "venuesOfListSegue"
-        println(self.venueListTableDelegate.selectedList!.title)
     }
 }

@@ -99,7 +99,7 @@ public class HTTPClient: NSObject {
         return task;
     }
     
-    func taskForImage(size: String, url: NSURL, completionHandler: (imageData: NSData?, error: NSError?) ->  Void) -> NSURLSessionTask {
+    func taskForImage(url: NSURL, completionHandler: (imageData: NSData?, error: NSError?) ->  Void) -> NSURLSessionTask {
         
         let request = NSURLRequest(URL: url)
         

@@ -35,6 +35,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     
     var venue:FVenue!
     var venueId:String!
+    var updateCoreData:Bool = false
     var venueDetailModel:VenueDetailViewModel<FVenue>!
     var listDialogController:AddVenueToListController?
     @IBOutlet var imageViewTop:VenueImageView! {
@@ -50,7 +51,9 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         self.realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         self.venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "handleAddList:")
+        if !self.updateCoreData {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "handleAddList:")
+        }
         self.venueDetailModel = self.getVenueDetailModel()
         self.navigationItem.title = venueDetailModel.name
         self.venueDetailModel.setupImageView(self.imageViewTop, imageMapDelegate:self, venue:venue)
@@ -100,8 +103,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         if let model = self.venueDetailModel {
             return model
         }
-        self.venueDetailModel = VenueDetailViewModel(venue: self.venue, imageSize: CGSizeMake(self.imageViewTop.frame.size.width, self.imageViewTop.frame.size.height), updateCoreData:false, delegate: self)
-        //return self.venueDetailModel!
+        self.venueDetailModel = VenueDetailViewModel(venue: self.venue, imageSize: CGSizeMake(self.imageViewTop.frame.size.width, self.imageViewTop.frame.size.height), updateCoreData:self.updateCoreData, delegate: self)
         return self.venueDetailModel!
     }
     

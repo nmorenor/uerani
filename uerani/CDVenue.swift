@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDVenue)
 
-public class CDVenue : NSManagedObject, Equatable, Venue {
+public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
     
     @NSManaged public var id:String
     @NSManaged public var name:String
@@ -83,6 +83,12 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
                 queue.enqueue(next)
             }
             return GeneratorOf<Photo>(queue.generate())
+        }
+    }
+    
+    override public var hashValue:Int {
+        get {
+            return self.id.hashValue
         }
     }
     
