@@ -8,7 +8,11 @@
 
 import Foundation
 import UIKit
-import CoreData
+
+public protocol DialogOKDelegate : class {
+    
+    func performOK(data:String)
+}
 
 public class AddVenueToListController : UIViewController, UIGestureRecognizerDelegate {
     
@@ -22,19 +26,7 @@ public class AddVenueToListController : UIViewController, UIGestureRecognizerDel
     var viewHeight:CGFloat?
     var tapRecognizer: UITapGestureRecognizer!
     var dialogView:VenueListsDialogView!
-    
-    public class DialogViewResponder {
-        
-        let dialogView:AddVenueToListController
-        
-        init(dialogView:AddVenueToListController) {
-            self.dialogView = dialogView
-        }
-        
-        public func close() {
-            self.dialogView.closeView(false)
-        }
-    }
+    var dialogOKDelegate:DialogOKDelegate?
     
     required public init(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
@@ -78,7 +70,7 @@ public class AddVenueToListController : UIViewController, UIGestureRecognizerDel
         self.closeAction = action
     }
     
-    public func show(viewController: UIViewController) -> DialogViewResponder {
+    public func show(viewController: UIViewController) {
         self.rootViewController = viewController
         self.rootViewController.addChildViewController(self)
         
@@ -114,7 +106,6 @@ public class AddVenueToListController : UIViewController, UIGestureRecognizerDel
         })
         
         isAlertOpen = true
-        return DialogViewResponder(dialogView: self)
     }
     
     public func closeView(withCallback:Bool) {
@@ -141,7 +132,7 @@ public class AddVenueToListController : UIViewController, UIGestureRecognizerDel
     
     func closeViewOK(withCallback:Bool) {
         if let selectedList = self.dialogView.selectedList {
-            println("\(selectedList.title)")
+            self.dialogOKDelegate?.performOK(selectedList.title)
         }
         self.closeView(withCallback)
     }

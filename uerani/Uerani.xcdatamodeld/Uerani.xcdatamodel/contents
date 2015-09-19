@@ -96,12 +96,12 @@
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDPhoto" inverseName="venue" inverseEntity="CDPhoto" syncable="YES"/>
         <relationship name="price" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDPrice" inverseName="venue" inverseEntity="CDPrice" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDTag" inverseName="venues" inverseEntity="CDTag" syncable="YES"/>
-        <relationship name="venueLists" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDVenueList" inverseName="venues" inverseEntity="CDVenueList" syncable="YES"/>
+        <relationship name="venueLists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDVenueList" inverseName="venues" inverseEntity="CDVenueList" syncable="YES"/>
     </entity>
     <entity name="CDVenueList" representedClassName="CDVenueList" syncable="YES">
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="CDUser" inverseName="venueLists" inverseEntity="CDUser" syncable="YES"/>
-        <relationship name="venues" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CDVenue" inverseName="venueLists" inverseEntity="CDVenue" syncable="YES"/>
+        <relationship name="venues" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDVenue" inverseName="venueLists" inverseEntity="CDVenue" syncable="YES"/>
     </entity>
     <elements>
         <element name="CDCategory" positionX="-63" positionY="-18" width="128" height="180"/>

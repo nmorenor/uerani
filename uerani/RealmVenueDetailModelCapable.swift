@@ -18,7 +18,7 @@ public protocol VenueDetailModelCapable : class {
     func getVenue() -> VenueType
 }
 
-public class RealmVenueDetailViewController : UIViewController, VenueDetailModelCapable, VenueDetailsDelegate, VenueMapImageDelegate {
+public class RealmVenueDetailViewController : UIViewController, VenueDetailModelCapable, VenueDetailsDelegate, VenueMapImageDelegate, DialogOKDelegate {
     
     typealias DetailModelType = VenueDetailViewModel<FVenue>
     typealias VenueType = FVenue
@@ -67,6 +67,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     func handleAddList(button:UIBarButtonItem) {
         self.listDialogController = AddVenueToListController()
         self.listDialogController?.addCloseAction(self.closeDialog)
+        self.listDialogController?.dialogOKDelegate = self
         self.listDialogController?.show(self)
     }
     
@@ -140,6 +141,10 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     public func refreshVenueDetailsError(errorString:String) {
         //TODO
         println(errorString)
+    }
+    
+    public func performOK(data:String) {
+        VenueDetailOperation(venueId: self.venue.id, venueListName: data, delegate: nil)
     }
     
 }

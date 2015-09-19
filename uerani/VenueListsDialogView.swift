@@ -14,7 +14,7 @@ public class VenueListsDialogView : UIView {
     var headerView:VenueListDialogHeaderView
     var buttonBarView:VenueListDialogButtonBarView
     var tableView:UITableView
-    var tableDataSource:AddVenueToListTableDelegate
+    var tableDataSource:VenueToListTableDelegate
     
     var selectedList:CDVenueList? {
         get {
@@ -48,7 +48,7 @@ public class VenueListsDialogView : UIView {
         
         var tableFrame = CGRectMake(0, 35.0, frame.width, frame.size.height - (headerFrame.size.height + buttonsFrame.size.height - 5))
         self.tableView = UITableView(frame: tableFrame)
-        self.tableDataSource = AddVenueToListTableDelegate(tableView: self.tableView)
+        self.tableDataSource = VenueToListTableDelegate(tableView: self.tableView)
         self.tableView.dataSource = self.tableDataSource
         self.tableView.delegate = self.tableDataSource
         

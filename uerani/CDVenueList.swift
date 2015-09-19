@@ -13,7 +13,7 @@ import CoreData
 
 public class CDVenueList : NSManagedObject, Equatable, Hashable, Printable {
     
-    @NSManaged public var venues:[CDVenue]
+    @NSManaged public var venues:NSMutableSet
     @NSManaged public var user:CDUser
     
     @NSManaged public var title:String

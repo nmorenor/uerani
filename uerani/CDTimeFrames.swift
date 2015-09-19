@@ -37,13 +37,10 @@ public class CDTimeFrames : NSManagedObject, TimeFrames {
         let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         self.days = timeFrames.days
-        
-        var ourFrames:[CDTimeOpenFrames] = [CDTimeOpenFrames]()
+
         for nextFrame in timeFrames.open {
             var openFrame = CDTimeOpenFrames(openFrames: nextFrame, context: context)
             openFrame.timeFrames = self
-            ourFrames.append(openFrame)
         }
-        self.open = ourFrames
     }
 }

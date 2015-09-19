@@ -41,7 +41,6 @@ public class CDHours : NSManagedObject, Hours {
         self.status = hours.status
         self.isOpen = hours.isOpen
         
-        var timeFrames:[CDTimeFrames] = [CDTimeFrames]()
         for nextTimeFrame in hours.timeframes {
             var frame = CDTimeFrames(timeFrames: nextTimeFrame, context: context)
             frame.hours = self

@@ -1,5 +1,5 @@
 //
-//  AddVenueToListTableDelegate.swift
+//  VenueToListTableDelegate.swift
 //  uerani
 //
 //  Created by nacho on 9/17/15.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import UIKit
 
-public class AddVenueToListTableDelegate : NSObject, UITableViewDataSource, UITableViewDelegate {
+public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITableViewDelegate {
     
     var tableView:UITableView
     weak var selectedList:CDVenueList?

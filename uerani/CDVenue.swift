@@ -24,7 +24,7 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
     @NSManaged public var tags:NSMutableSet
     @NSManaged public var photos:[CDPhoto]
     @NSManaged public var bestPhoto:CDPhoto?
-    @NSManaged public var venueLists:[CDVenueList]
+    @NSManaged public var venueLists:NSMutableSet
     @NSManaged public var rating:Float
     @NSManaged public var hours:CDHours?
     @NSManaged public var price:CDPrice?
@@ -165,23 +165,19 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
     }
     
     static func updateVenueCategoriesAndTags(cvenue:CDVenue, venue:FVenue, context:NSManagedObjectContext) {
-        //var categories = NSMutableSet()
         for nextCat in venue.categories {
             var category = CDVenue.getCategory(nextCat, context: context)
             if let category = category {
-                category.venues.addObject(category)
+                category.venues.addObject(cvenue)
                 cvenue.categories.addObject(category)
             }
         }
-        //cvenue.categories = categories
         
-        //var tags = NSMutableSet()
         for nextTag in venue.tags {
             var tag = CDVenue.getTag(nextTag, context: context)
             tag.venues.addObject(cvenue)
-            cvenue.tags.addObject(nextTag)
+            cvenue.tags.addObject(tag)
         }
-        //cvenue.tags = tags
     }
     
     static func getPhoto(photo:FPhoto, context:NSManagedObjectContext) -> CDPhoto {
@@ -216,7 +212,7 @@ public class CDVenue : NSManagedObject, Equatable, Venue {
             println("can not find tag \(tag.tagvalue)")
             result = CDTag(tag: tag, context: context)
         } else if let results = results where !results.isEmpty {
-            result = results.first as? CDTag
+            result = results.first as! CDTag
         } else {
             result = CDTag(tag: tag, context: context)
         }

@@ -47,7 +47,7 @@
 		6657BF051B5D588100C94677 /* FoursquareCategoryIconWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */; };
 		6676DD741BA1295F00045C33 /* VenueRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6676DD731BA1295F00045C33 /* VenueRatingView.swift */; };
 		667940681B70324E003A29A9 /* VenueCategoriesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */; };
-		66809CBF1BAB817A00CDEB16 /* AddVenueToListTableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66809CBE1BAB817A00CDEB16 /* AddVenueToListTableDelegate.swift */; };
+		66809CBF1BAB817A00CDEB16 /* VenueToListTableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66809CBE1BAB817A00CDEB16 /* VenueToListTableDelegate.swift */; };
 		6684E4CB1B82AC9100B67B0A /* foursquare-logomark-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 6684E4C91B82AC9100B67B0A /* foursquare-logomark-white.pdf */; };
 		6684E4CC1B82AC9100B67B0A /* foursquare-logomark.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 6684E4CA1B82AC9100B67B0A /* foursquare-logomark.pdf */; };
 		6684E4CF1B82B05F00B67B0A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6684E4CE1B82B05F00B67B0A /* LoginViewController.swift */; };
@@ -180,7 +180,7 @@
 		6657BF041B5D588100C94677 /* FoursquareCategoryIconWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareCategoryIconWorker.swift; sourceTree = "<group>"; };
 		6676DD731BA1295F00045C33 /* VenueRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueRatingView.swift; sourceTree = "<group>"; };
 		667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueCategoriesOperation.swift; sourceTree = "<group>"; };
-		66809CBE1BAB817A00CDEB16 /* AddVenueToListTableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVenueToListTableDelegate.swift; sourceTree = "<group>"; };
+		66809CBE1BAB817A00CDEB16 /* VenueToListTableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueToListTableDelegate.swift; sourceTree = "<group>"; };
 		6684E4C91B82AC9100B67B0A /* foursquare-logomark-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "foursquare-logomark-white.pdf"; sourceTree = "<group>"; };
 		6684E4CA1B82AC9100B67B0A /* foursquare-logomark.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "foursquare-logomark.pdf"; sourceTree = "<group>"; };
 		6684E4CE1B82B05F00B67B0A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -344,7 +344,7 @@
 				6640007B1BA3A63C0084C76E /* VenueDetailsView.swift */,
 				6640007D1BA3AB800084C76E /* VenueDetailView.swift */,
 				6654499B1BA8FF6500CE9081 /* VenueListsDialogView.swift */,
-				66809CBE1BAB817A00CDEB16 /* AddVenueToListTableDelegate.swift */,
+				66809CBE1BAB817A00CDEB16 /* VenueToListTableDelegate.swift */,
 				6654499D1BA8FFC600CE9081 /* VenueListDialogHeaderView.swift */,
 				6654499F1BA8FFE100CE9081 /* VenueListDialogButtonBarView.swift */,
 			);
@@ -897,7 +897,7 @@
 				66A1162D1B72E2E500498070 /* Uerani.xcdatamodeld in Sources */,
 				6684E4D21B82B27600B67B0A /* FSButtonButton.swift in Sources */,
 				66382C271B6C4AFA00F5644C /* BasicMapAnnotationView.swift in Sources */,
-				66809CBF1BAB817A00CDEB16 /* AddVenueToListTableDelegate.swift in Sources */,
+				66809CBF1BAB817A00CDEB16 /* VenueToListTableDelegate.swift in Sources */,
 				6693062E1B92AD9900E148DF /* UserRefreshOperation.swift in Sources */,
 				66A2657A1B8A9DD7005C4970 /* CDLocation.swift in Sources */,
 				66A7FC961B5AD7470012358D /* FCategory.swift in Sources */,
