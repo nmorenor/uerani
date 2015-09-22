@@ -17,10 +17,10 @@ DEPENDENCIES:
   - FSOAuth
   - Locksmith (~> 1.2.2)
   - Nimble (~> 1.0.0-rc.1)
-  - OAuthSwift (~> 0.3.6)
+  - OAuthSwift (~> 0.3.7)
   - pop (~> 1.0)
   - Quick (~> 0.3.1)
-  - RealmSwift
+  - RealmSwift (~> 0.95.0)
 
 SPEC CHECKSUMS:
   FBAnnotationClustering: 8be556cf48b27262acab01ad8419bc01703615e3

@@ -25,6 +25,7 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
         var error:NSError? = nil
         self.fetchedResultsController.delegate = self
         self.fetchedResultsController.performFetch(&error)
+        self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
         
         if let error = error {
             println("Error performing initial fetch")
@@ -130,6 +131,15 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
             CoreDataStackManager.sharedInstance().saveContext()
         default:
             break
+        }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = UIColor.ueraniGrayColor()
+        } else {
+            cell.backgroundColor = UIColor.whiteColor()
         }
     }
     

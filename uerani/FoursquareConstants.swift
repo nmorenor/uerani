@@ -21,6 +21,7 @@ extension FoursquareClient {
         static let FOURSQUARE_BROWSE_INTENT = "browse"
         static let FOURSQUARE_CALLBACK_URI = "authuerani://uerani/authorized"
         static let FOURSQUARE_AUTHORIZE_URI = "https://foursquare.com/oauth2/authorize"
+        static let FOURSQUARE = "foursquare"
         
         static let FOURSQUARE_CACHE_DIR = documentsDirectoryURL().URLByAppendingPathComponent("foursquare-cache")
         
@@ -34,6 +35,7 @@ extension FoursquareClient {
         static let LL_ACCURACY = "llAcc"
         static let ALTITUDE = "alt"
         static let ALT_ACCURACY = "altAcc"
+        static let M = "m"
         static let QUERY = "query"
         static let LIMIT = "limit"
         static let INTENT = "intent"

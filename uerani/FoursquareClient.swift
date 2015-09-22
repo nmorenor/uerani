@@ -119,6 +119,7 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
 
         result[FoursquareClient.ParameterKeys.FOURSQUARE_OAUTH_TOKEN] = self.accessToken!
         result[FoursquareClient.ParameterKeys.VERSION] = FoursquareClient.Constants.FORUSQUARE_VERSION
+        result[FoursquareClient.ParameterKeys.M] = FoursquareClient.Constants.FOURSQUARE
         
         return result
     }

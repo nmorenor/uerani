@@ -11,6 +11,8 @@
 		6603AD9C1B7A3A1000ABF2F6 /* SearchViewProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6603AD9B1B7A3A1000ABF2F6 /* SearchViewProgress.swift */; };
 		66104FD01B7D741A004E32A6 /* ClusteredPinAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66104FCF1B7D741A004E32A6 /* ClusteredPinAnnotationView.swift */; };
 		66104FD21B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66104FD11B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift */; };
+		661232FE1BADE96600996409 /* UberClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661232FD1BADE96600996409 /* UberClient.swift */; };
+		661233001BB0CBF800996409 /* UberConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661232FF1BB0CBF800996409 /* UberConstants.swift */; };
 		661B6D021B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661B6D011B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift */; };
 		661B6D041B82A68B00E710B4 /* foursquare-wordmark-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */; };
 		66382C211B6996DF00F5644C /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66382C201B6996DF00F5644C /* Regex.swift */; };
@@ -149,6 +151,8 @@
 		6603AD9B1B7A3A1000ABF2F6 /* SearchViewProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewProgress.swift; sourceTree = "<group>"; };
 		66104FCF1B7D741A004E32A6 /* ClusteredPinAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClusteredPinAnnotationView.swift; sourceTree = "<group>"; };
 		66104FD11B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPinAnnotaitonView.swift; sourceTree = "<group>"; };
+		661232FD1BADE96600996409 /* UberClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberClient.swift; sourceTree = "<group>"; };
+		661232FF1BB0CBF800996409 /* UberConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberConstants.swift; sourceTree = "<group>"; };
 		661B6D011B82A23900E710B4 /* FoursquareVenueDetailsAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareVenueDetailsAnnotationView.swift; sourceTree = "<group>"; };
 		661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "foursquare-wordmark-white.pdf"; sourceTree = "<group>"; };
 		66382C201B6996DF00F5644C /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
@@ -302,6 +306,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		661232FC1BADE72600996409 /* Uber */ = {
+			isa = PBXGroup;
+			children = (
+				661232FD1BADE96600996409 /* UberClient.swift */,
+				661232FF1BB0CBF800996409 /* UberConstants.swift */,
+			);
+			name = Uber;
+			sourceTree = "<group>";
+		};
 		66382C1D1B69899C00F5644C /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -534,6 +547,7 @@
 		66A7FC8C1B5AD71D0012358D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				661232FC1BADE72600996409 /* Uber */,
 				66A7FC8D1B5AD7260012358D /* Foursquare */,
 				66A7FC9E1B5AD7600012358D /* HTTPClient.swift */,
 				66A7FC9F1B5AD7600012358D /* HttpClientConstants.swift */,
@@ -897,9 +911,11 @@
 			files = (
 				66418A8C1B9DDB3400345AF6 /* VenueImageView.swift in Sources */,
 				66418A851B9B58EA00345AF6 /* CDPrice.swift in Sources */,
+				661232FE1BADE96600996409 /* UberClient.swift in Sources */,
 				664C5D831B7FDE1100EDA856 /* MapViewSearchDelegate.swift in Sources */,
 				6640007C1BA3A63C0084C76E /* VenueDetailsView.swift in Sources */,
 				66A265701B8A642D005C4970 /* UserViewController.swift in Sources */,
+				661233001BB0CBF800996409 /* UberConstants.swift in Sources */,
 				66DB48FB1BADD02100282FCC /* BorderedTextField.swift in Sources */,
 				66A7FCAD1B5AD7A70012358D /* FoursquareConvenience.swift in Sources */,
 				6688F1391B9204CA008BF82B /* UserViewTop.swift in Sources */,

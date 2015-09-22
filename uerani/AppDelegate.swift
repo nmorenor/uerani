@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAuthSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,7 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        FoursquareClient.sharedInstance().handleURL(url)
+        if url.host == "uberuerani" {
+            OAuth2Swift.handleOpenURL(url)
+        } else if url.host == "uerani" {
+            FoursquareClient.sharedInstance().handleURL(url)
+        }
         return true
     }
 

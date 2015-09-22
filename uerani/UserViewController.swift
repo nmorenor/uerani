@@ -26,6 +26,7 @@ class UserViewController : UIViewController, UserRefreshDelegate {
     private var userViewTop:UserViewTop!
     private var userPhotoView:UserPhotoView!
     private var userViewModel:UserViewModel!
+    @IBOutlet weak var uberSwitch: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +48,12 @@ class UserViewController : UIViewController, UserRefreshDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if let token = UberClient.sharedInstance().accessToken {
+            self.uberSwitch.setOn(true, animated: false)
+        } else {
+            self.uberSwitch.setOn(false, animated: false)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -74,9 +81,16 @@ class UserViewController : UIViewController, UserRefreshDelegate {
         }
     }
     
+    @IBAction func uberStatusChanged(sender: UISwitch) {
+        if sender.on {
+            UberClient.sharedInstance().handleWebLogin()
+        } else {
+            println("logout")
+        }
+    }
+    
     func refreshUserDataError(errorString:String) {
-
-        //TODO:
+        
     }
     
     @IBAction func doLogout(sender: BorderedButton) {

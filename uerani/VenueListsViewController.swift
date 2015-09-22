@@ -21,6 +21,7 @@ public class VenueListsViewController : UITableViewController, DialogOKDelegate 
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "handleAddList:")
         self.venueListTableDelegate = VenueToListTableDelegate(tableView: self.tableView, cellIdentifier:"VenueListCell")
+        self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
         self.venueListTableDelegate.venueListSelectionAction = self.venueSelected
         self.venueListTableDelegate.selectAccessory = false
         self.tableView.dataSource = self.venueListTableDelegate

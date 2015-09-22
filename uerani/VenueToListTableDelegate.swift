@@ -90,6 +90,14 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
         }
     }
     
+    public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = UIColor.ueraniGrayColor()
+        } else {
+            cell.backgroundColor = UIColor.whiteColor()
+        }
+    }
+    
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if self.selectAccessory {
             tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = UITableViewCellAccessoryType.Checkmark

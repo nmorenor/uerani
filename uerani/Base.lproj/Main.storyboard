@@ -82,11 +82,43 @@
                                     <action selector="doLogout:" destination="nFZ-cj-VXH" eventType="touchUpInside" id="Tpr-ve-OFf"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RT7-NU-1Um">
+                                <rect key="frame" x="21" y="324" width="563" height="41"/>
+                                <subviews>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XQd-8d-i6h">
+                                        <rect key="frame" x="506" y="5" width="51" height="30"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <color key="onTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="uberStatusChanged:" destination="nFZ-cj-VXH" eventType="valueChanged" id="ptl-xL-Diu"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uber Connected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dIB-qG-wr6">
+                                        <rect key="frame" x="8" y="11" width="126" height="20"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="dIB-qG-wr6" firstAttribute="leading" secondItem="RT7-NU-1Um" secondAttribute="leading" constant="8" id="Bwb-X0-Z16"/>
+                                    <constraint firstAttribute="centerY" secondItem="dIB-qG-wr6" secondAttribute="centerY" id="DAX-ny-Juy"/>
+                                    <constraint firstAttribute="trailing" secondItem="XQd-8d-i6h" secondAttribute="trailing" constant="8" id="UNW-cX-3xM"/>
+                                    <constraint firstAttribute="bottom" secondItem="XQd-8d-i6h" secondAttribute="bottom" constant="6" id="iRN-Rj-eIL"/>
+                                    <constraint firstItem="XQd-8d-i6h" firstAttribute="top" secondItem="RT7-NU-1Um" secondAttribute="top" constant="5" id="kWa-nX-i7T"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="wnH-GA-Z0X" firstAttribute="centerX" secondItem="RT7-NU-1Um" secondAttribute="centerX" constant="-2.5" id="1Ww-Kt-yft"/>
+                            <constraint firstItem="RT7-NU-1Um" firstAttribute="trailing" secondItem="1pa-Ty-oPB" secondAttribute="trailingMargin" id="3r8-8E-gJX"/>
+                            <constraint firstItem="RT7-NU-1Um" firstAttribute="leading" secondItem="1pa-Ty-oPB" secondAttribute="leadingMargin" constant="5" id="9hZ-Td-7jS"/>
                             <constraint firstItem="wnH-GA-Z0X" firstAttribute="centerX" secondItem="1pa-Ty-oPB" secondAttribute="centerX" id="Fyn-NQ-gzJ"/>
                             <constraint firstItem="nru-uW-2sx" firstAttribute="top" secondItem="wnH-GA-Z0X" secondAttribute="bottom" constant="49" id="ZQw-oh-Of7"/>
+                            <constraint firstItem="wnH-GA-Z0X" firstAttribute="top" secondItem="RT7-NU-1Um" secondAttribute="bottom" constant="103" id="jG5-I0-v7m"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="user" id="QWQ-xi-K3K">
@@ -94,6 +126,7 @@
                     </tabBarItem>
                     <connections>
                         <outlet property="logoutButton" destination="wnH-GA-Z0X" id="8lU-2I-VGJ"/>
+                        <outlet property="uberSwitch" destination="XQd-8d-i6h" id="VDl-kV-JFO"/>
                         <segue destination="Wn7-5i-SaT" kind="show" identifier="logoutSegue" id="LqP-s3-DWs"/>
                     </connections>
                 </viewController>
