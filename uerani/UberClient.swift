@@ -14,6 +14,7 @@ public class UberClient : HTTPClientProtocol {
     
     static var instance = UberClient()
     private var inMemoryToken:String?
+    var httpClient:HTTPClient?
     weak var accessTokenLoginDelegate:AccessTokenLoginDelegate? = nil
     
     var accessToken:String? {
@@ -29,6 +30,10 @@ public class UberClient : HTTPClientProtocol {
         didSet {
             //do something
         }
+    }
+    
+    init() {
+        self.httpClient = HTTPClient(delegate: self)
     }
     
     public func getBaseURLSecure() -> String {
@@ -82,6 +87,7 @@ public class UberClient : HTTPClientProtocol {
     public func addRequestHeaders(request: NSMutableURLRequest) {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(self.accessToken!)", forHTTPHeaderField: "Authorization")
     }
     
     public func processJsonBody(jsonBody: [String : AnyObject]) -> [String : AnyObject] {
@@ -94,9 +100,6 @@ public class UberClient : HTTPClientProtocol {
     
     public func addAuthParameters(parameters:[String:AnyObject]) -> [String:AnyObject] {
         var result = parameters
-        
-        result[FoursquareClient.ParameterKeys.FOURSQUARE_OAUTH_TOKEN] = self.accessToken!
-        
         return result
     }
     
@@ -107,9 +110,13 @@ public class UberClient : HTTPClientProtocol {
             consumerKey:    UberClient.Constants.UBER_CLIENT_ID,
             consumerSecret: UberClient.Constants.UBER_SECRET,
             authorizeUrl:   UberClient.Constants.UBER_AUTHORIZE_URI,
-            responseType:   "code"
+            accessTokenUrl: UberClient.Constants.UBER_TOKEN_URI,
+            responseType:   "code",
+            contentType:    "multipart/form-data"
         )
-        oauthswift.authorizeWithCallbackURL(NSURL(string: UberClient.Constants.UBER_CALLBACK_URI)!, scope: "", state: "", params: [String:String](), success: { credential, response, parameters in
+        let state: String = generateStateWithLength(20) as String
+        let redirectURL = UberClient.Constants.UBER_CALLBACK_URI.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+        oauthswift.authorizeWithCallbackURL(NSURL(string: redirectURL!)!, scope: "profile", state: state, params: [String:String](), success: { credential, response, parameters in
                 if let refreshToken = parameters["refresh_token"] as? String {
                     self.saveToKeyChain("refresh_token", data: refreshToken)
                 }

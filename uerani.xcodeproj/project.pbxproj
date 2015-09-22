@@ -113,6 +113,8 @@
 		66A7FCBF1B5AD8810012358D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7FCBE1B5AD8810012358D /* MapKit.framework */; };
 		66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */; };
 		66AFDC5D1B60692C002413DB /* CalloutMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */; };
+		66BF4DFF1BB0E49D00A5D25B /* UberConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF4DFE1BB0E49D00A5D25B /* UberConvenience.swift */; };
+		66BF4E011BB0EAD800A5D25B /* UberPriceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF4E001BB0EAD800A5D25B /* UberPriceViewModel.swift */; };
 		66C008561BA47E22002385B9 /* message.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66C008541BA47E22002385B9 /* message.pdf */; };
 		66C008571BA47E22002385B9 /* phone.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66C008551BA47E22002385B9 /* phone.pdf */; };
 		66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */; };
@@ -257,6 +259,8 @@
 		66A7FCBE1B5AD8810012358D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutAnnotation.swift; sourceTree = "<group>"; };
 		66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutMapAnnotationView.swift; sourceTree = "<group>"; };
+		66BF4DFE1BB0E49D00A5D25B /* UberConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberConvenience.swift; sourceTree = "<group>"; };
+		66BF4E001BB0EAD800A5D25B /* UberPriceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberPriceViewModel.swift; sourceTree = "<group>"; };
 		66C008541BA47E22002385B9 /* message.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = message.pdf; sourceTree = "<group>"; };
 		66C008551BA47E22002385B9 /* phone.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = phone.pdf; sourceTree = "<group>"; };
 		66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewWtihProgress.swift; sourceTree = "<group>"; };
@@ -311,6 +315,7 @@
 			children = (
 				661232FD1BADE96600996409 /* UberClient.swift */,
 				661232FF1BB0CBF800996409 /* UberConstants.swift */,
+				66BF4DFE1BB0E49D00A5D25B /* UberConvenience.swift */,
 			);
 			name = Uber;
 			sourceTree = "<group>";
@@ -347,6 +352,7 @@
 				66418A8D1B9DE6C300345AF6 /* RealmVenueDetailModelCapable.swift */,
 				665449991BA8F6D400CE9081 /* AddVenueToListController.swift */,
 				66418A741B9A6EA900345AF6 /* VenueDetailViewModel.swift */,
+				66BF4E001BB0EAD800A5D25B /* UberPriceViewModel.swift */,
 			);
 			name = venueDetail;
 			sourceTree = "<group>";
@@ -933,6 +939,7 @@
 				6603AD9C1B7A3A1000ABF2F6 /* SearchViewProgress.swift in Sources */,
 				66A7FC991B5AD7470012358D /* FLocation.swift in Sources */,
 				6688F12D1B911E37008BF82B /* FContact.swift in Sources */,
+				66BF4E011BB0EAD800A5D25B /* UberPriceViewModel.swift in Sources */,
 				66A7FCAA1B5AD7A70012358D /* FoursquareClient.swift in Sources */,
 				66F55ACA1B8E4040005C2F49 /* SymbolGraph.swift in Sources */,
 				66A1162D1B72E2E500498070 /* Uerani.xcdatamodeld in Sources */,
@@ -944,6 +951,7 @@
 				66A7FC961B5AD7470012358D /* FCategory.swift in Sources */,
 				66A7FCA31B5AD7600012358D /* HTTPClientProtocol.swift in Sources */,
 				66418A8E1B9DE6C300345AF6 /* RealmVenueDetailModelCapable.swift in Sources */,
+				66BF4DFF1BB0E49D00A5D25B /* UberConvenience.swift in Sources */,
 				66A116311B72E34C00498070 /* CDCategory.swift in Sources */,
 				66A265691B8A569A005C4970 /* UeraniTabBarViewController.swift in Sources */,
 				66F55AD01B8E4EBE005C2F49 /* DirectedDepthFirstSearch.swift in Sources */,

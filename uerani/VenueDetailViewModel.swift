@@ -35,6 +35,7 @@ public class VenueDetailViewModel<T:Venue> {
     var status:String?
     var timeFrames:String?
     var venueDescription:String?
+    var uberPriceViewModel:UberPriceViewModel?
     
     init(venue:T, imageSize:CGSize, updateCoreData:Bool, delegate:VenueDetailsDelegate?) {
         self.imageSize = imageSize
