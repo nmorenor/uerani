@@ -15,8 +15,7 @@ class UberPriceViewModel {
     var venueId:String
     var venueLocation:CLLocationCoordinate2D
     
-    var estimate:String?
-    var currencyCode:String?
+    var value:String?
     
     init(venueId:String, venueLocation:CLLocationCoordinate2D, delegate:VenueDetailsDelegate) {
         self.venueId = venueId
@@ -34,10 +33,21 @@ class UberPriceViewModel {
         if let error = errorString {
             self.uberDetailDelegate.refreshVenueDetailsError("error on price request to uber")
         } else {
-            var price = result!.first!
-            self.estimate = price[UberClient.ResponseKeys.ESTIMATE] as? String
-            if let currencyCode = price[UberClient.ResponseKeys.CURRENCY_CODE] as? String {
-                self.currencyCode = currencyCode
+            var resultValue = ""
+            for i in 0..<result!.count {
+                let price = result![i]
+                var estimate = price[UberClient.ResponseKeys.ESTIMATE] as? String
+                var currencyCode = price[UberClient.ResponseKeys.CURRENCY_CODE] as? String
+                var displayName = price[UberClient.ResponseKeys.DISPLAY_NAME] as? String
+                if let estimate = estimate, currencyCode = currencyCode, displayName = displayName {
+                    resultValue += "\(displayName): \(estimate) \(currencyCode)"
+                }
+                if i < (result!.count - 1) {
+                    resultValue += "\n"
+                }
+            }
+            if !resultValue.isEmpty {
+                self.value = resultValue
             }
             self.uberDetailDelegate.refreshVenueDetails(self.venueId)
         }

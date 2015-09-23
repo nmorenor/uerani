@@ -25,6 +25,20 @@ class VenueDetailsView : UIView {
         }
     }
     
+    var uberView:VenueDetailView? {
+        willSet (value) {
+            if value == nil {
+                self.uberView?.removeFromSuperview()
+            }
+        }
+        
+        didSet {
+            if let uberView = self.uberView {
+                self.addSubview(uberView)
+            }
+        }
+    }
+    
     var phoneView:VenueDetailView? {
         willSet (value) {
             if value == nil {

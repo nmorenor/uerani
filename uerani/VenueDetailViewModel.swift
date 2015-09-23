@@ -228,6 +228,17 @@ public class VenueDetailViewModel<T:Venue> : VenueDetailAccessoryDelegate {
         locationView.text = getFormattedLocation()
         locationView.image = UIImage(named: "map_pin_black_64")!.resizeImageWithScale(0.25)
         
+        if let uberPriceViewModel = self.uberPriceViewModel, let priceValue = uberPriceViewModel.value {
+            var uberView:VenueDetailView!
+            if let view = view.uberView {
+                uberView = view
+            } else {
+                uberView = VenueDetailView()
+                view.uberView = uberView
+            }
+            uberView.text = priceValue
+        }
+        
         if let phone = self.phone {
             var phoneView:VenueDetailView!
             if let view = view.phoneView {

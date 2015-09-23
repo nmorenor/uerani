@@ -29,6 +29,7 @@ extension UberClient {
     struct ResponseKeys {
         static let PRICES = "prices"
         static let CURRENCY_CODE = "currency_code"
+        static let DISPLAY_NAME = "localized_display_name"
         static let ESTIMATE = "estimate"
     }
     
