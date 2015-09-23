@@ -117,6 +117,12 @@
 		66A7FCBD1B5AD7CA0012358D /* SearchBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FCB51B5AD7CA0012358D /* SearchBox.swift */; };
 		66A7FCBF1B5AD8810012358D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7FCBE1B5AD8810012358D /* MapKit.framework */; };
 		66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */; };
+		66AD35291BB25E1400392B3B /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD35271BB25E1400392B3B /* Icon-Small@2x.png */; };
+		66AD352A1BB25E1400392B3B /* Icon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD35281BB25E1400392B3B /* Icon-Small@3x.png */; };
+		66AD352D1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD352B1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png */; };
+		66AD352E1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD352C1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png */; };
+		66AD35311BB25E3E00392B3B /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD352F1BB25E3E00392B3B /* Icon-60@2x.png */; };
+		66AD35321BB25E3E00392B3B /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD35301BB25E3E00392B3B /* Icon-60@3x.png */; };
 		66AFDC5D1B60692C002413DB /* CalloutMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */; };
 		66BF4DFF1BB0E49D00A5D25B /* UberConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF4DFE1BB0E49D00A5D25B /* UberConvenience.swift */; };
 		66BF4E011BB0EAD800A5D25B /* UberPriceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF4E001BB0EAD800A5D25B /* UberPriceViewModel.swift */; };
@@ -271,6 +277,12 @@
 		66A7FCB51B5AD7CA0012358D /* SearchBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBox.swift; sourceTree = "<group>"; };
 		66A7FCBE1B5AD8810012358D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutAnnotation.swift; sourceTree = "<group>"; };
+		66AD35271BB25E1400392B3B /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
+		66AD35281BB25E1400392B3B /* Icon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@3x.png"; sourceTree = "<group>"; };
+		66AD352B1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Spotlight-40@2x.png"; sourceTree = "<group>"; };
+		66AD352C1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Spotlight-40@3x.png"; sourceTree = "<group>"; };
+		66AD352F1BB25E3E00392B3B /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@2x.png"; sourceTree = "<group>"; };
+		66AD35301BB25E3E00392B3B /* Icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@3x.png"; sourceTree = "<group>"; };
 		66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutMapAnnotationView.swift; sourceTree = "<group>"; };
 		66BF4DFE1BB0E49D00A5D25B /* UberConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberConvenience.swift; sourceTree = "<group>"; };
 		66BF4E001BB0EAD800A5D25B /* UberPriceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberPriceViewModel.swift; sourceTree = "<group>"; };
@@ -339,6 +351,12 @@
 		66382C1D1B69899C00F5644C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				66AD352F1BB25E3E00392B3B /* Icon-60@2x.png */,
+				66AD35301BB25E3E00392B3B /* Icon-60@3x.png */,
+				66AD352B1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png */,
+				66AD352C1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png */,
+				66AD35271BB25E1400392B3B /* Icon-Small@2x.png */,
+				66AD35281BB25E1400392B3B /* Icon-Small@3x.png */,
 				6654EDAF1BB2523B0063435C /* VenueDetailsView.png */,
 				6654EDB01BB2523B0063435C /* AddVenueToList.png */,
 				6654EDB11BB2523B0063435C /* VenuesOfListView.png */,
@@ -817,6 +835,7 @@
 				66BF4E051BB218C000A5D25B /* UBER_API_Badges_2x_22px.png in Resources */,
 				66382C291B6D103100F5644C /* default_64.png in Resources */,
 				66BF4E031BB218B600A5D25B /* UBER_API_Badges_1x_22px.png in Resources */,
+				66AD352D1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png in Resources */,
 				66F55AC61B8BF9CB005C2F49 /* ConnectToFoursquare.png in Resources */,
 				6654EDB81BB2523B0063435C /* UserView.png in Resources */,
 				66F55A9A1B8BE253005C2F49 /* MapView.png in Resources */,
@@ -827,15 +846,20 @@
 				6654EDB61BB2523B0063435C /* VenuesOfListView.png in Resources */,
 				66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */,
 				66418A881B9B59BE00345AF6 /* map_pin_64_white.pdf in Resources */,
+				66AD352A1BB25E1400392B3B /* Icon-Small@3x.png in Resources */,
 				66A265661B8903A0005C4970 /* notes.pdf in Resources */,
 				66A265621B890112005C4970 /* map.pdf in Resources */,
 				661B6D041B82A68B00E710B4 /* foursquare-wordmark-white.pdf in Resources */,
 				66A2655E1B88FCF0005C4970 /* Images.xcassets in Resources */,
 				6654EDB41BB2523B0063435C /* VenueDetailsView.png in Resources */,
+				66AD35291BB25E1400392B3B /* Icon-Small@2x.png in Resources */,
+				66AD35311BB25E3E00392B3B /* Icon-60@2x.png in Resources */,
 				66382C231B69A62C00F5644C /* default_32.png in Resources */,
+				66AD352E1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png in Resources */,
 				6684E4CC1B82AC9100B67B0A /* foursquare-logomark.pdf in Resources */,
 				66BF4E071BB218D800A5D25B /* UBER_API_Badges_3x_22px.png in Resources */,
 				6654EDB51BB2523B0063435C /* AddVenueToList.png in Resources */,
+				66AD35321BB25E3E00392B3B /* Icon-60@3x.png in Resources */,
 				66C008571BA47E22002385B9 /* phone.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

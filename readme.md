@@ -28,6 +28,8 @@ To use the application your Foursquare credentials are required, the app is doin
 ## TODO
 
 - Use Reactive Cocoa
+- More Unit Tests
+- Better App Icon
 
 ## License
 
