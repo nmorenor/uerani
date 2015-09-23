@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import Locksmith
 
 public class FoursquareConfig:NSObject, NSCoding {
     
@@ -55,6 +56,11 @@ public class FoursquareConfig:NSObject, NSCoding {
                     println("Can not delete \(file)")
                 }
             }
+        }
+        
+        if let userId = FoursquareClient.sharedInstance().userId {
+            //do not let uber access token expire
+            Locksmith.deleteDataForUserAccount("uber-client-\(userId)")
         }
         
         self.dateUpdated = NSDate()

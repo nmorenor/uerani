@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import MapKit
 
 public protocol VenueDetailModelCapable : class {
     
@@ -61,6 +62,10 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
         self.venueDetailModel.setupRatingView(self.venueRating)
         self.venueDetailModel.setupDetailsView(self.venueDetailsView)
         self.venueDetailsHeightConstraint.constant = self.venueDetailsView.frame.size.height * 1.35
+        
+        if self.venueDetailModel.canRequestUberFare() {
+            self.venueDetailModel.uberPriceViewModel = UberPriceViewModel(venueId: venueId, venueLocation: CLLocationCoordinate2D(latitude: venue.location!.lat, longitude: venue.location!.lng), delegate: self)
+        }
         
         self.view.setNeedsLayout()
         self.view.setNeedsUpdateConstraints()

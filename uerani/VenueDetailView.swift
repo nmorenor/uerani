@@ -9,19 +9,40 @@
 import Foundation
 import UIKit
 
+protocol VenueDetailAccessoryDelegate : class {
+    
+    func handleAccessoryTouch()
+}
+
 class VenueDetailView: UIView {
     
     let imageLayer = CALayer()
     let textLayer = CATextLayer()
     let borderLayer = CALayer()
+    let accessoryLayer = CALayer()
     let fontName = "HelveticaNeue"
+    var accessoryDelegate:VenueDetailAccessoryDelegate?
     
     var image:UIImage? {
         didSet {
+            self.imageLayer.removeFromSuperlayer()
             if let image = self.image {
                 imageLayer.contents = image.CGImage
+                layer.addSublayer(imageLayer)
             } else {
                 imageLayer.contents = nil
+            }
+        }
+    }
+    
+    var accessoryImage:UIImage? {
+        didSet {
+            self.accessoryLayer.removeFromSuperlayer()
+            if let image = self.accessoryImage {
+                accessoryLayer.contents = image.CGImage
+                layer.addSublayer(accessoryLayer)
+            } else {
+                accessoryLayer.contents = nil
             }
         }
     }
@@ -42,23 +63,28 @@ class VenueDetailView: UIView {
         textLayer.contentsScale = UIScreen.mainScreen().scale
         borderLayer.contentsScale = UIScreen.mainScreen().scale
         
-        if let image = self.image {
-            layer.addSublayer(imageLayer)
-        }
-        
         layer.addSublayer(textLayer)
         layer.addSublayer(borderLayer)
     }
     
     override func layoutSubviews() {
         self.textLayer.wrapped = true
-        if let image = image {
+        if let image = image, let accessoryImage = self.accessoryImage {
             var imageRect = CGRectMake(10, (self.frame.size.height/2) - (image.size.height/2), image.size.width, image.size.height)
             self.imageLayer.frame = imageRect
             
-            var textSize = calculateSizeForText(self.frame.width - 40, attributedString: getAttributedString())
+            var textSize = calculateSizeForText(self.frame.width - (self.imageLayer.frame.size.width + 20 + accessoryImage.size.width + 25), attributedString: getAttributedString())
             
-            self.textLayer.frame = CGRectMake(image.size.width + 20, (self.frame.size.height/2) - (textSize.height/2), self.frame.width - 30, self.frame.size.height)
+            self.textLayer.frame = CGRectMake(self.imageLayer.frame.size.width + 20, (self.frame.size.height/2) - (textSize.height/2), self.frame.width - ((self.imageLayer.frame.size.width + 20) + accessoryImage.size.width + 25), self.frame.size.height)
+            
+            self.accessoryLayer.frame = CGRectMake((self.imageLayer.frame.size.width + 20) + (self.textLayer.frame.size.width + 5), (self.frame.size.height/2) - (accessoryImage.size.height/2), accessoryImage.size.width, accessoryImage.size.height)
+        } else if let image = image {
+            var imageRect = CGRectMake(10, (self.frame.size.height/2) - (image.size.height/2), image.size.width, image.size.height)
+            self.imageLayer.frame = imageRect
+            
+            var textSize = calculateSizeForText(self.frame.width - (self.imageLayer.frame.size.width + 20), attributedString: getAttributedString())
+            
+            self.textLayer.frame = CGRectMake(self.imageLayer.frame.size.width + 20, (self.frame.size.height/2) - (textSize.height/2), self.frame.width - (self.imageLayer.frame.size.width + 20), self.frame.size.height)
         } else {
             var textSize = calculateSizeForText(self.frame.width - 20, attributedString: getAttributedString())
             
@@ -68,6 +94,16 @@ class VenueDetailView: UIView {
         
         borderLayer.frame = CGRectMake(0, self.frame.size.height - 1, self.frame.size.width, 1)
         borderLayer.backgroundColor = UIColor.ueraniDarkYellowColor().CGColor
+    }
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if let accessoryImage = self.accessoryImage {
+            let touch = touches.first! as! UITouch
+            var p:CGPoint = touch.locationInView(self)
+            if self.accessoryLayer.containsPoint(self.layer.convertPoint(p, toLayer: self.accessoryLayer)) {
+                self.accessoryDelegate?.handleAccessoryTouch()
+            }
+        }
     }
     
     func getAttributedString() -> NSAttributedString {

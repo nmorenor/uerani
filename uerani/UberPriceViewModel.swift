@@ -22,7 +22,9 @@ class UberPriceViewModel {
         self.venueId = venueId
         self.venueLocation = venueLocation
         self.uberDetailDelegate = delegate
-        
+    }
+    
+    func requestFare() {
         if let location = LocationRequestManager.sharedInstance().location {
             UberClient.sharedInstance().getUberPricesForLocation(location.coordinate, endPoint: venueLocation, completionHandler: self.uberPriceHandler)
         }

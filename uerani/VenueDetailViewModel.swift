@@ -15,7 +15,7 @@ public protocol VenueMapImageDelegate : class {
     func refreshMapImage()
 }
 
-public class VenueDetailViewModel<T:Venue> {
+public class VenueDetailViewModel<T:Venue> : VenueDetailAccessoryDelegate {
     
     var id:String!
     var name:String!
@@ -220,6 +220,10 @@ public class VenueDetailViewModel<T:Venue> {
             locationView = VenueDetailView()
             view.locationView = locationView
         }
+        if canRequestUberFare() && locationView.accessoryImage == nil {
+            locationView.accessoryImage = UIImage(named: "uber")!
+            locationView.accessoryDelegate = self
+        }
         
         locationView.text = getFormattedLocation()
         locationView.image = UIImage(named: "map_pin_black_64")!.resizeImageWithScale(0.25)
@@ -271,6 +275,17 @@ public class VenueDetailViewModel<T:Venue> {
         }
         
         view.layoutSubviews()
+    }
+    
+    func handleAccessoryTouch() {
+        self.uberPriceViewModel?.requestFare()
+    }
+    
+    func canRequestUberFare() -> Bool {
+        if let token = UberClient.sharedInstance().accessToken {
+            return true
+        }
+        return false
     }
     
     func getFormattedLocation() -> String {

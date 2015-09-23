@@ -125,31 +125,8 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
     }
     
     public func handleURL(url:NSURL) {
-        if (url.scheme == "authuerani") {
-            if self.foursquareNativeAuthentication {
-                self.handleNativeAuthentication(url)
-            } else {
-                self.handleWebAuthentication(url)
-            }
-        }
-    }
-    
-    func handleWebAuthentication(url:NSURL) {
-        var responseParameters: Dictionary<String, String> = Dictionary()
-        if let query = url.query {
-            responseParameters = query.parametersFromQueryString()
-        }
-        if ((url.fragment) != nil && url.fragment!.isEmpty == false) {
-            var fragmentParameters = url.fragment!.parametersFromQueryString()
-            for nextKey in fragmentParameters.keys {
-                responseParameters[nextKey] = fragmentParameters[nextKey]
-            }
-        }
-        if let accessCode = responseParameters["code"] {
-            self.getAccessToken(accessCode)
-        } else {
-            self.oauthError = "Error while login in to Foursquare"
-            self.accessTokenLoginDelegate?.errorLogin(self.oauthError)
+        if (url.scheme == "authuerani" && self.foursquareNativeAuthentication) {
+            self.handleNativeAuthentication(url)
         }
     }
     
@@ -219,10 +196,16 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
             consumerKey:    FoursquareClient.Constants.FOURSQUARE_CLIENT_ID,
             consumerSecret: FoursquareClient.Constants.FOURSQUARE_SECRET,
             authorizeUrl:   FoursquareClient.Constants.FOURSQUARE_AUTHORIZE_URI,
+            accessTokenUrl: FoursquareClient.Constants.FOURSQUARE_ACCESS_TOKEN_URI,
             responseType:   "code"
         )
-        oauthswift.authorizeWithCallbackURL(NSURL(string: FoursquareClient.Constants.FOURSQUARE_CALLBACK_URI)!, scope: "", state: "", params: [String:String](), success: {_ in }, failure: { _ in })
-        
+        oauthswift.authorizeWithCallbackURL(NSURL(string: FoursquareClient.Constants.FOURSQUARE_CALLBACK_URI)!, scope: "", state: "", params: [String:String](), success: {credential, response, parameters in
+                self.accessToken = credential.oauth_token
+                self.accessTokenLoginDelegate?.successLogin()
+            }, failure: { _ in
+                self.accessToken = nil
+                self.accessTokenLoginDelegate?.errorLogin("Can not login to Foursquare")
+        })
     }
     
     // MARK: - Shared Instance

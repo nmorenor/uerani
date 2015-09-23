@@ -21,10 +21,6 @@ public class UberClient : HTTPClientProtocol {
         get {
             return self.getAccessToken()
         }
-        
-        set (accessToken) {
-            self.setInMemoryToken("access_token", accessToken: accessToken)
-        }
     }
     var oauthError:String? {
         didSet {
@@ -37,27 +33,21 @@ public class UberClient : HTTPClientProtocol {
     }
     
     public func getBaseURLSecure() -> String {
-        return FoursquareClient.Constants.BASE_URL
+        return UberClient.Constants.BASE_URL
     }
     
-    private func setInMemoryToken(key:String, accessToken:String?) {
-        self.saveToKeyChain(key, data: accessToken)
-        self.inMemoryToken = accessToken
-    }
-    
-    private func saveToKeyChain(key:String, data:String?) {
+    private func setInMemoryToken(data:[String:String]?) {
+        self.saveToKeyChain(data)
         if let data = data {
-            var data = [key : data]
-            let (dictionary, error) = Locksmith.loadDataForUserAccount("uber-client-\(FoursquareClient.sharedInstance().userId!)")
-            if let dictionary = dictionary {
-                for key in dictionary.allKeys {
-                    if let nextKey = key as? String {
-                        if let nextValue = dictionary.valueForKey(nextKey) as? String {
-                            data[nextKey] = nextValue
-                        }
-                    }
-                }
-            }
+            self.inMemoryToken = data["access_token"]
+        } else {
+            self.inMemoryToken = nil
+        }
+        
+    }
+    
+    private func saveToKeyChain(data:[String:String]?) {
+        if let data = data {
             //save data on key chain
             Locksmith.saveData(data, forUserAccount: "uber-client-\(FoursquareClient.sharedInstance().userId!)")
         } else {
@@ -117,10 +107,12 @@ public class UberClient : HTTPClientProtocol {
         let state: String = generateStateWithLength(20) as String
         let redirectURL = UberClient.Constants.UBER_CALLBACK_URI.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
         oauthswift.authorizeWithCallbackURL(NSURL(string: redirectURL!)!, scope: "profile", state: state, params: [String:String](), success: { credential, response, parameters in
+                var data = [String:String]()
                 if let refreshToken = parameters["refresh_token"] as? String {
-                    self.saveToKeyChain("refresh_token", data: refreshToken)
+                    data["refresh_token"] = refreshToken
                 }
-                self.setInMemoryToken("access_token", accessToken: credential.oauth_token)
+                data["access_token"] = credential.oauth_token
+                self.setInMemoryToken(data)
                 self.accessTokenLoginDelegate?.successLogin()
             }, failure: { _ in
                 self.accessTokenLoginDelegate?.errorLogin("Can not login to uber")

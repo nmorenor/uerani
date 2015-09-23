@@ -11,7 +11,7 @@ import Foundation
 extension UberClient {
     
     struct Constants {
-        static let BASE_URL = "https://api.uber.com//v1/"
+        static let BASE_URL = "https://api.uber.com/v1/"
         static let UBER_CLIENT_ID = "kp4tR9HXP1428r0LAmjZMI6PSD4PDirL"
         static let UBER_SECRET = "Ogg3p1FMSu6rQ8awS0OKYNgyr4Cozk3Qa56Dk-9k"
         static let UBER_CALLBACK_URI = "uberauthuerani://uberuerani/authorized"
@@ -33,6 +33,6 @@ extension UberClient {
     }
     
     struct Methods {
-        static let ESTIMATE_PRICE = "estimates/price/"
+        static let ESTIMATE_PRICE = "estimates/price"
     }
 }

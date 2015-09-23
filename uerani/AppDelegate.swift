@@ -18,7 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if url.host == "uberuerani" {
             OAuth2Swift.handleOpenURL(url)
         } else if url.host == "uerani" {
-            FoursquareClient.sharedInstance().handleURL(url)
+            if FoursquareClient.sharedInstance().foursquareNativeAuthentication {
+                FoursquareClient.sharedInstance().handleURL(url)
+            } else {
+                OAuth2Swift.handleOpenURL(url)
+            }
         }
         return true
     }

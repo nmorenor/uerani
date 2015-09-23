@@ -66,7 +66,6 @@ class SearchViewWtihProgress: UIView {
             return
         }
         dispatch_async(dispatch_get_main_queue()) {
-            self.progress?.hidden = false
             let refreshRadius:CGFloat = self.frame.size.height/2 * 0.9
             UIView.animateWithDuration(0.4, animations: { [unowned self] in
                     self.searchBar.frame = CGRectMake(self.frame.origin.x, 0, self.frame.size.width - ((refreshRadius * 2) + 2) , self.frame.size.height)
@@ -93,7 +92,6 @@ class SearchViewWtihProgress: UIView {
                     self.searchBar.frame = CGRectMake(self.frame.origin.x, 0, self.frame.size.width, self.frame.size.height)
                     self.progress?.frame = CGRectMake(self.frame.size.width + (refreshRadius * 2), 0, refreshRadius * 2, self.frame.size.height)
                 }, completion: { [unowned self] _ in
-                    self.progress?.hidden = true
                 })
         }
     }
