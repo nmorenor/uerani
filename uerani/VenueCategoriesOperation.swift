@@ -44,7 +44,9 @@ class VenueCategoriesOperation : AbstractCoreDataOperation {
         var venueCategories:[[String:AnyObject]] = [[String:AnyObject]]()
         FoursquareClient.sharedInstance().searchCategories() { success, result, errorString in
             if let error = errorString {
-                println(error)
+                if DEBUG {
+                    println(error)
+                }
             } else {
                 venueCategories = result!
             }

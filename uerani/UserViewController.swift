@@ -85,7 +85,7 @@ class UserViewController : UIViewController, UserRefreshDelegate {
         if sender.on {
             UberClient.sharedInstance().handleWebLogin()
         } else {
-            println("logout")
+            UberClient.sharedInstance().setInMemoryToken(nil)
         }
     }
     

@@ -195,7 +195,9 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         var results = context.executeFetchRequest(fetchRequest, error: &error)
         var result:CDPhoto!
         if let error = error {
-            println("can not find photo \(photo.id)")
+            if DEBUG {
+                println("can not find photo \(photo.id)")
+            }
             result = CDPhoto(photo: photo, context: context)
         } else if let results = results where !results.isEmpty {
             result = results.first as? CDPhoto
@@ -215,7 +217,9 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         
         var result:CDTag!
         if let error = error {
-            println("can not find tag \(tag.tagvalue)")
+            if DEBUG {
+                println("can not find tag \(tag.tagvalue)")
+            }
             result = CDTag(tag: tag, context: context)
         } else if let results = results where !results.isEmpty {
             result = results.first as! CDTag
@@ -235,7 +239,9 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         
         var result:CDCategory? = nil
         if let error = error {
-            println("can not find category \(category.id)")
+            if DEBUG {
+                println("can not find category \(category.id)")
+            }
         } else if let results = results where !results.isEmpty {
             result = results.first as? CDCategory
         }

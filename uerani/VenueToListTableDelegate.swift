@@ -33,7 +33,9 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
         self.fetchedResultsController.performFetch(&error)
         
         if let error = error {
-            println("Error performing initial fetch")
+            if DEBUG {
+                println("Error performing initial fetch")
+            }
         }
         let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
         if sectionInfo.numberOfObjects > 0 {

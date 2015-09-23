@@ -28,7 +28,10 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
         self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
         
         if let error = error {
-            println("Error performing initial fetch")
+            if DEBUG {
+                println("Error performing initial fetch")
+            }
+            return
         }
         let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
         if sectionInfo.numberOfObjects > 0 {
@@ -96,7 +99,9 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
                 } else {
                     FoursquareClient.sharedInstance().httpClient!.taskForImage(url, completionHandler: { imageData, error in
                         if let error = error {
-                            println("Can not download venue image for list")
+                            if DEBUG {
+                                println("Can not download venue image for list")
+                            }
                         } else if let data = imageData {
                             dispatch_async(dispatch_get_main_queue()) {
                                 var image = UIImage(data: data)

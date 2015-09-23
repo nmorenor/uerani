@@ -36,7 +36,7 @@ public class UberClient : HTTPClientProtocol {
         return UberClient.Constants.BASE_URL
     }
     
-    private func setInMemoryToken(data:[String:String]?) {
+    func setInMemoryToken(data:[String:String]?) {
         self.saveToKeyChain(data)
         if let data = data {
             self.inMemoryToken = data["access_token"]

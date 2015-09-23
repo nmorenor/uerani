@@ -80,6 +80,7 @@ extension MapViewController: UISearchBarDelegate, UISearchResultsUpdating {
         
         if let error = error {
             println("Error performing doing a search fetch")
+            return
         }
         let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
         

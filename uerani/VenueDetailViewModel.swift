@@ -331,7 +331,9 @@ public class VenueDetailViewModel<T:Venue> : VenueDetailAccessoryDelegate {
     
     private func generateVenueMapImage(annotation:FoursquareLocationMapAnnotation, imageMapDelegate:VenueMapImageDelegate, snapshot:MKMapSnapshot, error:NSError?) {
         if let error = error {
-            println("Error taking map snapshot image")
+            if DEBUG {
+                println("Error taking map snapshot image")
+            }
         } else {
             var image = snapshot.image
             var annotationView = CategoryPinAnnotationView(annotation: annotation, reuseIdentifier: "foursquarePin")

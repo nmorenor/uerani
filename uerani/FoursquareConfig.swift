@@ -52,7 +52,7 @@ public class FoursquareConfig:NSObject, NSCoding {
             var error:NSError?
             for file in fileManager.contentsOfDirectoryAtPath(imageCacheDir, error: &error) as! [String] {
                 var success = fileManager.removeItemAtPath("\(imageCacheDir)/\(file)", error: &error)
-                if !success {
+                if !success && DEBUG {
                     println("Can not delete \(file)")
                 }
             }

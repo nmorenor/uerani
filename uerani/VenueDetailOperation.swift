@@ -98,7 +98,9 @@ public class VenueDetailOperation:AbstractCoreDataOperation {
         var results = self.sharedModelContext.executeFetchRequest(fetchRequest, error: &error)
         var result:CDVenue!
         if let error = error {
-            println("can not find venue \(venue.id)")
+            if DEBUG {
+                println("can not find venue \(venue.id)")
+            }
             result = CDVenue(venue: venue, context: self.sharedModelContext)
         } else if let results = results where !results.isEmpty {
             result = results.first as! CDVenue
@@ -115,7 +117,9 @@ public class VenueDetailOperation:AbstractCoreDataOperation {
             var error:NSError?
             var venueListResults = self.sharedModelContext.executeFetchRequest(fetchRequest, error: &error)
             if let error = error {
-                println("can not find venue List \(venue.id) :: \(venueName)")
+                if DEBUG {
+                    println("can not find venue List \(venue.id) :: \(venueName)")
+                }
             } else if let venueListResults = venueListResults where !venueListResults.isEmpty {
                 var list = venueListResults.first as! CDVenueList
                 list.venues.addObject(result)
