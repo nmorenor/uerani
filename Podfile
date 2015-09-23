@@ -7,7 +7,6 @@ link_with 'uerani', 'ueraniTests'
 
 target 'uerani' do
   pod 'RealmSwift', '~> 0.95.0'
-  pod 'pop', '~> 1.0'
   pod 'FSOAuth'
   pod 'OAuthSwift', '~> 0.3.7'
   pod 'Locksmith', '~> 1.2.2'
@@ -18,7 +17,6 @@ target 'ueraniTests' do
   pod 'Quick', '~> 0.3.1'
   pod 'Nimble', '~> 1.0.0-rc.1'
   pod 'RealmSwift', '~> 0.95.0'
-  pod 'pop', '~> 1.0'
   pod 'FSOAuth'
   pod 'OAuthSwift', '~> 0.3.7'
   pod 'Locksmith', '~> 1.2.2'

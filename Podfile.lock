@@ -4,7 +4,6 @@ PODS:
   - Locksmith (1.2.2)
   - Nimble (1.0.0)
   - OAuthSwift (0.3.7)
-  - pop (1.0.7)
   - Quick (0.3.1)
   - Realm (0.95.0):
     - Realm/Headers (= 0.95.0)
@@ -18,7 +17,6 @@ DEPENDENCIES:
   - Locksmith (~> 1.2.2)
   - Nimble (~> 1.0.0-rc.1)
   - OAuthSwift (~> 0.3.7)
-  - pop (~> 1.0)
   - Quick (~> 0.3.1)
   - RealmSwift (~> 0.95.0)
 
@@ -28,7 +26,6 @@ SPEC CHECKSUMS:
   Locksmith: c84c10bf23f99e6d04703dba65065dc38b038d88
   Nimble: 8bee528e5fcc403653076545db562d2b5db7bb87
   OAuthSwift: d5a96a1a92329e3b4bb63b682c3e4e89a8698dc8
-  pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   Quick: 824572d3d198d51e52cf4aa722cebf7e59952a35
   Realm: bbb171b96728ea136ed5cd354dca2a3d6529923c
   RealmSwift: 35eeb642bf0b43dedfe363451ba3288d0e72ebb9

@@ -54,7 +54,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'OAuthSwift.framework'
   install_framework 'Realm.framework'
   install_framework 'RealmSwift.framework'
-  install_framework 'pop.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'FBAnnotationClustering.framework'
@@ -63,5 +62,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'OAuthSwift.framework'
   install_framework 'Realm.framework'
   install_framework 'RealmSwift.framework'
-  install_framework 'pop.framework'
 fi
