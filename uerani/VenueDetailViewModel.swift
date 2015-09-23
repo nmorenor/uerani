@@ -293,7 +293,7 @@ public class VenueDetailViewModel<T:Venue> : VenueDetailAccessoryDelegate {
     }
     
     func canRequestUberFare() -> Bool {
-        if let token = UberClient.sharedInstance().accessToken {
+        if let token = UberClient.sharedInstance().accessToken, let location = LocationRequestManager.sharedInstance().location {
             return true
         }
         return false
