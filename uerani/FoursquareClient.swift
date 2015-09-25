@@ -45,14 +45,14 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
         if !fileManager.fileExistsAtPath(FoursquareClient.Constants.FOURSQUARE_CACHE_DIR.path!) {
             var error:NSError?
             let result = fileManager.createDirectoryAtURL(FoursquareClient.Constants.FOURSQUARE_CACHE_DIR, withIntermediateDirectories: false, attributes: nil, error: &error)
-            if !result {
+            if !result && DEBUG {
                 println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create directory to store cache data: \(error)")
             }
         }
         let targetFile = FoursquareClient.Constants.FOURSQUARE_CACHE_DIR.URLByAppendingPathComponent("cache.realm")
         if !fileManager.fileExistsAtPath(targetFile.path!) {
             let result = fileManager.createFileAtPath(targetFile.path!, contents: nil, attributes: nil)
-            if !result {
+            if !result && DEBUG {
                 println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create file to store cache data")
             }
         }
@@ -84,7 +84,7 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
             }
             //look for data on the key chain, do not store access token in plain text
             let (dictionary, error) = Locksmith.loadDataForUserAccount("foursquare-client")
-            if error != nil {
+            if error != nil && DEBUG {
                 println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load access token from keychain \(error)")
                 return nil
             }

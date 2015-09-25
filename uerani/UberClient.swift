@@ -61,7 +61,7 @@ public class UberClient : HTTPClientProtocol {
         }
         //look for data on the key chain, do not store access token in plain text
         let (dictionary, error) = Locksmith.loadDataForUserAccount("uber-client-\(FoursquareClient.sharedInstance().userId!)")
-        if error != nil {
+        if error != nil && DEBUG {
             println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load access token from keychain \(error)")
             return nil
         }

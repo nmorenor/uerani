@@ -55,8 +55,6 @@
 		6676DD741BA1295F00045C33 /* VenueRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6676DD731BA1295F00045C33 /* VenueRatingView.swift */; };
 		667940681B70324E003A29A9 /* VenueCategoriesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */; };
 		66809CBF1BAB817A00CDEB16 /* VenueToListTableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66809CBE1BAB817A00CDEB16 /* VenueToListTableDelegate.swift */; };
-		6684E4CB1B82AC9100B67B0A /* foursquare-logomark-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 6684E4C91B82AC9100B67B0A /* foursquare-logomark-white.pdf */; };
-		6684E4CC1B82AC9100B67B0A /* foursquare-logomark.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 6684E4CA1B82AC9100B67B0A /* foursquare-logomark.pdf */; };
 		6684E4CF1B82B05F00B67B0A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6684E4CE1B82B05F00B67B0A /* LoginViewController.swift */; };
 		6684E4D21B82B27600B67B0A /* FSButtonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6684E4D11B82B27600B67B0A /* FSButtonButton.swift */; };
 		6688F12D1B911E37008BF82B /* FContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688F12C1B911E37008BF82B /* FContact.swift */; };
@@ -117,12 +115,6 @@
 		66A7FCBD1B5AD7CA0012358D /* SearchBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A7FCB51B5AD7CA0012358D /* SearchBox.swift */; };
 		66A7FCBF1B5AD8810012358D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7FCBE1B5AD8810012358D /* MapKit.framework */; };
 		66AC96A31B670D7500621F56 /* CalloutAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */; };
-		66AD35291BB25E1400392B3B /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD35271BB25E1400392B3B /* Icon-Small@2x.png */; };
-		66AD352A1BB25E1400392B3B /* Icon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD35281BB25E1400392B3B /* Icon-Small@3x.png */; };
-		66AD352D1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD352B1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png */; };
-		66AD352E1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD352C1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png */; };
-		66AD35311BB25E3E00392B3B /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD352F1BB25E3E00392B3B /* Icon-60@2x.png */; };
-		66AD35321BB25E3E00392B3B /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD35301BB25E3E00392B3B /* Icon-60@3x.png */; };
 		66AFDC5D1B60692C002413DB /* CalloutMapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */; };
 		66BF4DFF1BB0E49D00A5D25B /* UberConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF4DFE1BB0E49D00A5D25B /* UberConvenience.swift */; };
 		66BF4E011BB0EAD800A5D25B /* UberPriceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF4E001BB0EAD800A5D25B /* UberPriceViewModel.swift */; };
@@ -132,6 +124,12 @@
 		66C008561BA47E22002385B9 /* message.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66C008541BA47E22002385B9 /* message.pdf */; };
 		66C008571BA47E22002385B9 /* phone.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66C008551BA47E22002385B9 /* phone.pdf */; };
 		66CD1B041B7974AD00F4778D /* SearchViewWtihProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */; };
+		66D66F751BB5CD8A00389EFB /* uerani-logomark-bco.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 66D66F741BB5CD8A00389EFB /* uerani-logomark-bco.pdf */; };
+		66D66F7B1BB5CFA400389EFB /* uerani-icon-sizes-08.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D66F7A1BB5CFA400389EFB /* uerani-icon-sizes-08.png */; };
+		66D66F7D1BB5CFC600389EFB /* uerani-icon-sizes-13.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D66F7C1BB5CFC600389EFB /* uerani-icon-sizes-13.png */; };
+		66D66F7F1BB5CFDE00389EFB /* uerani-icon-sizes-07.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D66F7E1BB5CFDE00389EFB /* uerani-icon-sizes-07.png */; };
+		66D66F811BB5D00000389EFB /* uerani-icon-sizes-03.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D66F801BB5D00000389EFB /* uerani-icon-sizes-03.png */; };
+		66D66F831BB5D03F00389EFB /* uerani-icon-sizes-04.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D66F821BB5D03F00389EFB /* uerani-icon-sizes-04.png */; };
 		66DB48F31BACDD8700282FCC /* VenueListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DB48F21BACDD8700282FCC /* VenueListsViewController.swift */; };
 		66DB48F51BACEB0E00282FCC /* VenuesFromListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DB48F41BACEB0E00282FCC /* VenuesFromListViewController.swift */; };
 		66DB48F71BADC47A00282FCC /* CreateVenueListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DB48F61BADC47A00282FCC /* CreateVenueListController.swift */; };
@@ -211,8 +209,6 @@
 		6676DD731BA1295F00045C33 /* VenueRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueRatingView.swift; sourceTree = "<group>"; };
 		667940671B70324E003A29A9 /* VenueCategoriesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueCategoriesOperation.swift; sourceTree = "<group>"; };
 		66809CBE1BAB817A00CDEB16 /* VenueToListTableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueToListTableDelegate.swift; sourceTree = "<group>"; };
-		6684E4C91B82AC9100B67B0A /* foursquare-logomark-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "foursquare-logomark-white.pdf"; sourceTree = "<group>"; };
-		6684E4CA1B82AC9100B67B0A /* foursquare-logomark.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "foursquare-logomark.pdf"; sourceTree = "<group>"; };
 		6684E4CE1B82B05F00B67B0A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6684E4D11B82B27600B67B0A /* FSButtonButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSButtonButton.swift; sourceTree = "<group>"; };
 		6688F12C1B911E37008BF82B /* FContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FContact.swift; sourceTree = "<group>"; };
@@ -277,12 +273,6 @@
 		66A7FCB51B5AD7CA0012358D /* SearchBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBox.swift; sourceTree = "<group>"; };
 		66A7FCBE1B5AD8810012358D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		66AC96A21B670D7500621F56 /* CalloutAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutAnnotation.swift; sourceTree = "<group>"; };
-		66AD35271BB25E1400392B3B /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
-		66AD35281BB25E1400392B3B /* Icon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@3x.png"; sourceTree = "<group>"; };
-		66AD352B1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Spotlight-40@2x.png"; sourceTree = "<group>"; };
-		66AD352C1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Spotlight-40@3x.png"; sourceTree = "<group>"; };
-		66AD352F1BB25E3E00392B3B /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@2x.png"; sourceTree = "<group>"; };
-		66AD35301BB25E3E00392B3B /* Icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@3x.png"; sourceTree = "<group>"; };
 		66AFDC5C1B60692C002413DB /* CalloutMapAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalloutMapAnnotationView.swift; sourceTree = "<group>"; };
 		66BF4DFE1BB0E49D00A5D25B /* UberConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberConvenience.swift; sourceTree = "<group>"; };
 		66BF4E001BB0EAD800A5D25B /* UberPriceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UberPriceViewModel.swift; sourceTree = "<group>"; };
@@ -292,6 +282,12 @@
 		66C008541BA47E22002385B9 /* message.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = message.pdf; sourceTree = "<group>"; };
 		66C008551BA47E22002385B9 /* phone.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = phone.pdf; sourceTree = "<group>"; };
 		66CD1B031B7974AD00F4778D /* SearchViewWtihProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewWtihProgress.swift; sourceTree = "<group>"; };
+		66D66F741BB5CD8A00389EFB /* uerani-logomark-bco.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "uerani-logomark-bco.pdf"; sourceTree = "<group>"; };
+		66D66F7A1BB5CFA400389EFB /* uerani-icon-sizes-08.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uerani-icon-sizes-08.png"; sourceTree = "<group>"; };
+		66D66F7C1BB5CFC600389EFB /* uerani-icon-sizes-13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uerani-icon-sizes-13.png"; sourceTree = "<group>"; };
+		66D66F7E1BB5CFDE00389EFB /* uerani-icon-sizes-07.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uerani-icon-sizes-07.png"; sourceTree = "<group>"; };
+		66D66F801BB5D00000389EFB /* uerani-icon-sizes-03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uerani-icon-sizes-03.png"; sourceTree = "<group>"; };
+		66D66F821BB5D03F00389EFB /* uerani-icon-sizes-04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uerani-icon-sizes-04.png"; sourceTree = "<group>"; };
 		66DB48F21BACDD8700282FCC /* VenueListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueListsViewController.swift; sourceTree = "<group>"; };
 		66DB48F41BACEB0E00282FCC /* VenuesFromListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenuesFromListViewController.swift; sourceTree = "<group>"; };
 		66DB48F61BADC47A00282FCC /* CreateVenueListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateVenueListController.swift; sourceTree = "<group>"; };
@@ -351,12 +347,12 @@
 		66382C1D1B69899C00F5644C /* images */ = {
 			isa = PBXGroup;
 			children = (
-				66AD352F1BB25E3E00392B3B /* Icon-60@2x.png */,
-				66AD35301BB25E3E00392B3B /* Icon-60@3x.png */,
-				66AD352B1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png */,
-				66AD352C1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png */,
-				66AD35271BB25E1400392B3B /* Icon-Small@2x.png */,
-				66AD35281BB25E1400392B3B /* Icon-Small@3x.png */,
+				66D66F821BB5D03F00389EFB /* uerani-icon-sizes-04.png */,
+				66D66F801BB5D00000389EFB /* uerani-icon-sizes-03.png */,
+				66D66F7E1BB5CFDE00389EFB /* uerani-icon-sizes-07.png */,
+				66D66F7C1BB5CFC600389EFB /* uerani-icon-sizes-13.png */,
+				66D66F7A1BB5CFA400389EFB /* uerani-icon-sizes-08.png */,
+				66D66F741BB5CD8A00389EFB /* uerani-logomark-bco.pdf */,
 				6654EDAF1BB2523B0063435C /* VenueDetailsView.png */,
 				6654EDB01BB2523B0063435C /* AddVenueToList.png */,
 				6654EDB11BB2523B0063435C /* VenuesOfListView.png */,
@@ -376,8 +372,6 @@
 				66A265651B8903A0005C4970 /* notes.pdf */,
 				66A265631B8901CB005C4970 /* user.pdf */,
 				66A265611B890112005C4970 /* map.pdf */,
-				6684E4C91B82AC9100B67B0A /* foursquare-logomark-white.pdf */,
-				6684E4CA1B82AC9100B67B0A /* foursquare-logomark.pdf */,
 				661B6D031B82A68B00E710B4 /* foursquare-wordmark-white.pdf */,
 				664C5D851B7FFC1400EDA856 /* poweredby-black.pdf */,
 				66382C281B6D103100F5644C /* default_64.png */,
@@ -791,6 +785,7 @@
 				TargetAttributes = {
 					66A7FC641B5AD6B30012358D = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = E286AG3VXK;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
 								enabled = 1;
@@ -827,15 +822,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66D66F811BB5D00000389EFB /* uerani-icon-sizes-03.png in Resources */,
 				66C008561BA47E22002385B9 /* message.pdf in Resources */,
+				66D66F7B1BB5CFA400389EFB /* uerani-icon-sizes-08.png in Resources */,
 				6654EDB71BB2523B0063435C /* ListsView.png in Resources */,
 				66F55AC21B8BF221005C2F49 /* CustomCallout.png in Resources */,
 				66A7FC721B5AD6B30012358D /* Main.storyboard in Resources */,
-				6684E4CB1B82AC9100B67B0A /* foursquare-logomark-white.pdf in Resources */,
 				66BF4E051BB218C000A5D25B /* UBER_API_Badges_2x_22px.png in Resources */,
 				66382C291B6D103100F5644C /* default_64.png in Resources */,
 				66BF4E031BB218B600A5D25B /* UBER_API_Badges_1x_22px.png in Resources */,
-				66AD352D1BB25E2C00392B3B /* Icon-Spotlight-40@2x.png in Resources */,
+				66D66F7F1BB5CFDE00389EFB /* uerani-icon-sizes-07.png in Resources */,
 				66F55AC61B8BF9CB005C2F49 /* ConnectToFoursquare.png in Resources */,
 				6654EDB81BB2523B0063435C /* UserView.png in Resources */,
 				66F55A9A1B8BE253005C2F49 /* MapView.png in Resources */,
@@ -843,23 +839,20 @@
 				66A265641B8901CB005C4970 /* user.pdf in Resources */,
 				66F55A981B8BE23B005C2F49 /* CategoryFilter.png in Resources */,
 				66418A891B9B59BE00345AF6 /* map_pin_64_black.pdf in Resources */,
+				66D66F831BB5D03F00389EFB /* uerani-icon-sizes-04.png in Resources */,
 				6654EDB61BB2523B0063435C /* VenuesOfListView.png in Resources */,
 				66A7FC771B5AD6B30012358D /* LaunchScreen.xib in Resources */,
 				66418A881B9B59BE00345AF6 /* map_pin_64_white.pdf in Resources */,
-				66AD352A1BB25E1400392B3B /* Icon-Small@3x.png in Resources */,
+				66D66F751BB5CD8A00389EFB /* uerani-logomark-bco.pdf in Resources */,
 				66A265661B8903A0005C4970 /* notes.pdf in Resources */,
 				66A265621B890112005C4970 /* map.pdf in Resources */,
 				661B6D041B82A68B00E710B4 /* foursquare-wordmark-white.pdf in Resources */,
 				66A2655E1B88FCF0005C4970 /* Images.xcassets in Resources */,
 				6654EDB41BB2523B0063435C /* VenueDetailsView.png in Resources */,
-				66AD35291BB25E1400392B3B /* Icon-Small@2x.png in Resources */,
-				66AD35311BB25E3E00392B3B /* Icon-60@2x.png in Resources */,
 				66382C231B69A62C00F5644C /* default_32.png in Resources */,
-				66AD352E1BB25E2C00392B3B /* Icon-Spotlight-40@3x.png in Resources */,
-				6684E4CC1B82AC9100B67B0A /* foursquare-logomark.pdf in Resources */,
 				66BF4E071BB218D800A5D25B /* UBER_API_Badges_3x_22px.png in Resources */,
+				66D66F7D1BB5CFC600389EFB /* uerani-icon-sizes-13.png in Resources */,
 				6654EDB51BB2523B0063435C /* AddVenueToList.png in Resources */,
-				66AD35321BB25E3E00392B3B /* Icon-60@3x.png in Resources */,
 				66C008571BA47E22002385B9 /* phone.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1203,9 +1196,11 @@
 			baseConfigurationReference = 85E0F1A40D3471844F2285F2 /* Pods-uerani.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Ignacio Moreno (E286AG3VXK)";
 				INFOPLIST_FILE = uerani/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8b564f4e-9701-44fa-8c2e-2f657feed9c9";
 			};
 			name = Debug;
 		};
@@ -1214,9 +1209,12 @@
 			baseConfigurationReference = 9A8F73D411711F3734457C38 /* Pods-uerani.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Ignacio Moreno (E286AG3VXK)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ignacio Moreno (E286AG3VXK)";
 				INFOPLIST_FILE = uerani/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8b564f4e-9701-44fa-8c2e-2f657feed9c9";
 			};
 			name = Release;
 		};

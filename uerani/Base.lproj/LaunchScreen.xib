@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -10,18 +10,18 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="foursquare-logo-white" translatesAutoresizingMaskIntoConstraints="NO" id="We2-0M-PhP">
-                    <rect key="frame" x="140" y="115" width="200" height="250"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="uerani-logomark-bco" translatesAutoresizingMaskIntoConstraints="NO" id="We2-0M-PhP">
+                    <rect key="frame" x="78" y="104" width="324" height="271"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="200" id="2AR-b7-XKR"/>
-                        <constraint firstAttribute="height" constant="250" id="D83-Pg-u5S"/>
+                        <constraint firstAttribute="height" constant="271" id="8pX-nn-VnC"/>
                     </constraints>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="centerY" secondItem="We2-0M-PhP" secondAttribute="centerY" id="aFw-kw-PEl"/>
-                <constraint firstAttribute="centerX" secondItem="We2-0M-PhP" secondAttribute="centerX" id="fuw-cD-PeJ"/>
+                <constraint firstItem="We2-0M-PhP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="104" id="59e-PK-0QG"/>
+                <constraint firstItem="We2-0M-PhP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="78" id="hbx-gf-9QZ"/>
+                <constraint firstItem="We2-0M-PhP" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="n2V-Sn-yyk"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -29,6 +29,6 @@
         </view>
     </objects>
     <resources>
-        <image name="foursquare-logo-white" width="612" height="792"/>
+        <image name="uerani-logomark-bco" width="730" height="730"/>
     </resources>
 </document>
