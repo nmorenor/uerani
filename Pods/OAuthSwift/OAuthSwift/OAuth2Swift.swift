@@ -62,13 +62,10 @@ public class OAuth2Swift: NSObject {
             let url = notification.userInfo![CallbackNotification.optionsURLKey] as! NSURL
             var responseParameters: Dictionary<String, String> = Dictionary()
             if let query = url.query {
-                responseParameters = query.parametersFromQueryString()
+                responseParameters += query.parametersFromQueryString()
             }
             if ((url.fragment) != nil && url.fragment!.isEmpty == false) {
-                var fragmentResponseParameters = url.fragment!.parametersFromQueryString()
-                for key in fragmentResponseParameters.keys {
-                    responseParameters[key] = fragmentResponseParameters[key]
-                }
+                responseParameters += url.fragment!.parametersFromQueryString()
             }
             if let accessToken = responseParameters["access_token"] {
                 self.client.credential.oauth_token = accessToken
@@ -90,7 +87,7 @@ public class OAuth2Swift: NSObject {
         var urlString = String()
         urlString += self.authorize_url
         urlString += (self.authorize_url.has("?") ? "&" : "?") + "client_id=\(self.consumer_key)"
-        urlString += "&redirect_uri=\(callbackURL.absoluteString!)"
+        urlString += "&redirect_uri=\(callbackURL.absoluteString)"
         urlString += "&response_type=\(self.response_type)"
         if (scope != "") {
           urlString += "&scope=\(scope)"
@@ -114,12 +111,12 @@ public class OAuth2Swift: NSObject {
         parameters["client_secret"] = self.consumer_secret
         parameters["code"] = code
         parameters["grant_type"] = "authorization_code"
-        parameters["redirect_uri"] = callbackURL.absoluteString!.stringByRemovingPercentEncoding
+        parameters["redirect_uri"] = callbackURL.absoluteString.stringByRemovingPercentEncoding
         
         if self.content_type == "multipart/form-data" {
             self.client.postMultiPartRequest(self.access_token_url!, method: "POST", parameters: parameters, success: {
                 data, response in
-                var responseJSON: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+                let responseJSON: AnyObject? = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
                 
                 let responseParameters: NSDictionary
                 
@@ -132,13 +129,13 @@ public class OAuth2Swift: NSObject {
                 
                 let accessToken = responseParameters["access_token"] as! String
                 self.client.credential.oauth_token = accessToken
-                self.client.credential.oauth2 = true
                 success(credential: self.client.credential, response: response, parameters: responseParameters)
                 }, failure: failure)
         } else {
+            self.client.credential.oauth_header_type = "oauth2"
             self.client.post(self.access_token_url!, parameters: parameters, success: {
                 data, response in
-                var responseJSON: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+                let responseJSON: AnyObject? = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
 
                 let responseParameters: NSDictionary
 
@@ -151,7 +148,6 @@ public class OAuth2Swift: NSObject {
 
                 let accessToken = responseParameters["access_token"] as! String
                 self.client.credential.oauth_token = accessToken
-                self.client.credential.oauth2 = true
                 success(credential: self.client.credential, response: response, parameters: responseParameters)
             }, failure: failure)
         }

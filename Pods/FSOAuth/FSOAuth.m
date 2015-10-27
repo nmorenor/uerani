@@ -18,34 +18,78 @@
 
 #define kFoursquareOAuthRequiredVersion @"20130509"
 #define kFoursquareAppStoreURL @"https://itunes.apple.com/app/foursquare/id306934924?mt=8"
+#define kFoursquareAppStoreID @306934924
+
+#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 60000)
+#import <StoreKit/StoreKit.h>
+#endif
 
 @implementation FSOAuth
 
-+ (FSOAuthStatusCode)authorizeUserUsingClientId:(NSString *)clientID callbackURIString:(NSString *)callbackURIString {
++ (FSOAuthStatusCode)authorizeUserUsingClientId:(NSString *)clientID
+                        nativeURICallbackString:(NSString *)nativeURICallbackString
+                     universalURICallbackString:(NSString *)universalURICallbackString
+                           allowShowingAppStore:(BOOL)allowShowingAppStore {
     if ([clientID length] <= 0) {
         return FSOAuthStatusErrorInvalidClientID;
     }
 
     UIApplication *sharedApplication = [UIApplication sharedApplication];
-    if ([callbackURIString length] <= 0 || ![sharedApplication canOpenURL:[NSURL URLWithString:callbackURIString]]) {
+    BOOL hasNativeCallback = ([nativeURICallbackString length] > 0);
+    BOOL hasUniversalCallback = ([universalURICallbackString length] > 0);
+    
+    if (!hasNativeCallback && !hasUniversalCallback) {
         return FSOAuthStatusErrorInvalidCallback;
     }
+
+    if (hasUniversalCallback) {
+        NSString *urlScheme = [[NSURL URLWithString:universalURICallbackString] scheme];
+        if (![urlScheme isEqualToString:@"http"] 
+            && ![urlScheme isEqualToString:@"https"]) {
+            return FSOAuthStatusErrorInvalidCallback;
+        }
+    }
+
+    BOOL universalLinksSupported = NO;
     
-    if (![sharedApplication canOpenURL:[NSURL URLWithString:@"foursquare://"]]) {
-        return FSOAuthStatusErrorFoursquareNotInstalled;
+    if (!universalLinksSupported && !hasNativeCallback) {
+        return FSOAuthStatusErrorInvalidCallback;
+    }
+
+    if (!universalLinksSupported) {
+        if (![sharedApplication canOpenURL:[NSURL URLWithString:@"foursquare://"]]) {
+            if (allowShowingAppStore) {
+                [self launchAppStoreOrShowStoreKitModal];
+            }
+            
+            return FSOAuthStatusErrorFoursquareNotInstalled;
+        }
     }
     
-    NSString *urlEncodedCallbackString = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                                                               (CFStringRef)callbackURIString,
-                                                                                                               NULL,
-                                                                                                               (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                                               kCFStringEncodingUTF8);
+    NSURL *authURL = nil;
     
-    NSURL *authURL = [NSURL URLWithString:[NSString stringWithFormat:@"foursquareauth://authorize?client_id=%@&v=%@&redirect_uri=%@", clientID, kFoursquareOAuthRequiredVersion, urlEncodedCallbackString]];
-    
-    if (![sharedApplication canOpenURL:authURL]) {
-        [sharedApplication openURL:[NSURL URLWithString:kFoursquareAppStoreURL]];
-        return FSOAuthStatusErrorFoursquareOAuthNotSupported;
+    if (universalLinksSupported) {
+        NSString *urlEncodedCallbackString = nil;
+        if (hasUniversalCallback) {
+            urlEncodedCallbackString = [self urlEncodedStringForString:universalURICallbackString];
+        }
+        else {
+            urlEncodedCallbackString = [self urlEncodedStringForString:nativeURICallbackString];}
+        
+        authURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://foursquare.com/native/oauth2/authenticate?client_id=%@&redirect_uri=%@&response_type=code", clientID, urlEncodedCallbackString]];
+    }
+    else {
+        NSString *urlEncodedCallbackString = [self urlEncodedStringForString:nativeURICallbackString];
+        
+        authURL = [NSURL URLWithString:[NSString stringWithFormat:@"foursquareauth://authorize?client_id=%@&v=%@&redirect_uri=%@", clientID, kFoursquareOAuthRequiredVersion, urlEncodedCallbackString]];
+        
+        if (![sharedApplication canOpenURL:authURL]) {
+            if (allowShowingAppStore) {
+                [self launchAppStoreOrShowStoreKitModal];
+            }
+            
+            return FSOAuthStatusErrorFoursquareOAuthNotSupported;
+        }
     }
     
     [sharedApplication openURL:authURL];
@@ -117,15 +161,11 @@
         && [clientSecret length] > 0
         && completionBlock) {
         
-        NSString *urlEncodedCallbackString = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                                                                   (CFStringRef)callbackURIString,
-                                                                                                                   NULL,
-                                                                                                                   (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                                                   kCFStringEncodingUTF8);
+        NSString *urlEncodedCallbackString = [self urlEncodedStringForString:callbackURIString];
         
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://foursquare.com/oauth2/access_token?client_id=%@&client_secret=%@&grant_type=authorization_code&redirect_uri=%@&code=%@", clientID, clientSecret, urlEncodedCallbackString, accessCode]]];
         
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        [self sendAsynchronousRequest:request completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data && [[response MIMEType] isEqualToString:@"application/json"]) {
                 id jsonObj = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
                 if ([jsonObj isKindOfClass:[NSDictionary class]]) {
@@ -145,5 +185,84 @@
         }];
     }
 }
-     
+
++ (void)launchAppStoreOrShowStoreKitModal {
+#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 60000)
+    if ([SKStoreProductViewController class]) {
+        SKStoreProductViewController *storeViewController = [SKStoreProductViewController new];
+        storeViewController.delegate = (id<SKStoreProductViewControllerDelegate>)self;
+        [storeViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier : kFoursquareAppStoreID}
+                                       completionBlock:nil];
+        
+        UIViewController *controller = [UIApplication sharedApplication].keyWindow.rootViewController;
+        while (1) {
+            if ([controller isKindOfClass:[UITabBarController class]]) {
+                controller = ((UITabBarController *)controller).selectedViewController;
+            }
+            else if ([controller isKindOfClass:[UINavigationController class]]) {
+                controller = ((UINavigationController *)controller).visibleViewController;
+            }
+            else if (controller.presentedViewController) {
+                controller = controller.presentedViewController;
+            }
+            else {
+                break;
+            }
+        }
+        
+        [controller presentViewController:storeViewController animated:YES completion:nil];
+    }
+    else
+#endif
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kFoursquareAppStoreURL]];
+    }
+}
+
+#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 60000)
++ (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [viewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+#endif
+
++ (NSString *)urlEncodedStringForString:(NSString *)string {
+    NSString *urlEncodedString = nil;
+    // Introduced in iOS 7, -stringByAddingPercentEncodingWithAllowedCharacters: replaces CFURLCreateStringByAddingPercentEscapes (deprecated in iOS 9).
+    if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
+        urlEncodedString = [string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    }
+    else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        urlEncodedString = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                                                           (CFStringRef)string,
+                                                                                                           NULL,
+                                                                                                           (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                                           kCFStringEncodingUTF8);
+#pragma clang diagnostic pop
+    }
+    
+    return urlEncodedString;
+}
+
++ (void)sendAsynchronousRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *error))completionHandler
+{
+    // Introduced in iOS 7, NSURLSession replaces NSURLConnection (deprecated in iOS 9).
+    if ([NSURLSession class]) {
+        [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(response, data, error);
+                });
+            }
+        }] resume];
+    }
+    else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:completionHandler];
+#pragma clang diagnostic pop
+    }
+}
+
 @end

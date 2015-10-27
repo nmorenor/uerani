@@ -22,7 +22,7 @@ class BorderedButton: UIButton {
     
     // MARK: - Constructors
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.cornerRadius = borderedButtonCornerRadius;
     }
@@ -47,12 +47,12 @@ class BorderedButton: UIButton {
     
     // MARK: - Tracking
     
-    override func beginTrackingWithTouch(touch: UITouch, withEvent: UIEvent) -> Bool {
+    override func beginTrackingWithTouch(touch: UITouch, withEvent: UIEvent?) -> Bool {
         self.backgroundColor = self.highlightedBackingColor
         return true
     }
     
-    override func endTrackingWithTouch(touch: UITouch, withEvent: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent: UIEvent?) {
         self.backgroundColor = self.backingColor
     }
     
@@ -63,7 +63,7 @@ class BorderedButton: UIButton {
     // MARK: - Layout
     
     override func sizeThatFits(size: CGSize) -> CGSize {
-        let userInterfaceIdiom = UIDevice.currentDevice().userInterfaceIdiom
+        _ = UIDevice.currentDevice().userInterfaceIdiom
         let extraButtonPadding : CGFloat = 14.0
         var sizeThatFits = CGSizeZero
         sizeThatFits.width = super.sizeThatFits(size).width + extraButtonPadding

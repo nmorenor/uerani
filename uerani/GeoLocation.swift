@@ -40,7 +40,7 @@ struct GeoLocation {
             get {
                 let prime:Int = 31
                 var result:Int = 1
-                var toHash = NSString(format: "[%.8f,%.8f]", center.coordinate.latitude, center.coordinate.longitude)
+                let toHash = NSString(format: "[%.8f,%.8f]", center.coordinate.latitude, center.coordinate.longitude)
                 result = prime * result + toHash.hashValue
                 return result
             }

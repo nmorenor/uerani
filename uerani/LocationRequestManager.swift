@@ -65,11 +65,11 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    public func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-        println(error)
+    public func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print(error, terminator: "")
     }
     
-    public func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    public func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.AuthorizedWhenInUse {
             self.manager.startUpdatingLocation()
             self.authorized = true
@@ -78,7 +78,7 @@ public class LocationRequestManager: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    public func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
+    public func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         self.location = newLocation
     }
 }

@@ -89,6 +89,19 @@ CGFloat FBCellSizeForZoomScale(MKZoomScale zoomScale)
     [self.lock unlock];
 }
 
+- (void)removeAnnotations:(NSArray *)annotations
+{
+    if (!self.tree) {
+        return;
+    }
+
+    [self.lock lock];
+    for (id<MKAnnotation> annotation in annotations) {
+        [self.tree removeAnnotation:annotation];
+    }
+    [self.lock unlock];
+}
+
 - (NSArray *)clusteredAnnotationsWithinMapRect:(MKMapRect)rect withZoomScale:(double)zoomScale
 {
     return [self clusteredAnnotationsWithinMapRect:rect withZoomScale:zoomScale withFilter:nil];
@@ -165,7 +178,10 @@ CGFloat FBCellSizeForZoomScale(MKZoomScale zoomScale)
 - (void)displayAnnotations:(NSArray *)annotations onMapView:(MKMapView *)mapView
 {
     NSMutableSet *before = [NSMutableSet setWithArray:mapView.annotations];
-    [before removeObject:[mapView userLocation]];
+    MKUserLocation *userLocation = [mapView userLocation];
+    if (userLocation) {
+        [before removeObject:userLocation];
+    }
     NSSet *after = [NSSet setWithArray:annotations];
     
     NSMutableSet *toKeep = [NSMutableSet setWithSet:before];

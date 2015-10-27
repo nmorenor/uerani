@@ -14,7 +14,7 @@ let borderedTextCornerRadius : CGFloat = 2.0
 
 class BorderedTextField : UITextField {
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.cornerRadius = borderedTextCornerRadius;
         self.textColor = UIColor.blackColor()
@@ -44,11 +44,9 @@ class BorderedTextField : UITextField {
     }
 
     override func awakeFromNib() {
-        let attributes = self.attributedPlaceholder?.attributesAtIndex(0, effectiveRange: nil) as NSDictionary?
+        var attributes = self.attributedPlaceholder?.attributesAtIndex(0, effectiveRange: nil)
+        attributes?[NSForegroundColorAttributeName] = UIColor.whiteColor()
         
-        var newAttributes:NSMutableDictionary = NSMutableDictionary(dictionary: attributes!)
-        newAttributes.setObject(UIColor.whiteColor(), forKey: NSForegroundColorAttributeName)
-        
-        self.attributedPlaceholder = NSAttributedString(string: self.attributedPlaceholder!.string, attributes: newAttributes as [NSObject : AnyObject])
+        self.attributedPlaceholder = NSAttributedString(string: self.attributedPlaceholder!.string, attributes: attributes)
     }
 }

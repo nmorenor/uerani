@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         if url.host == "uberuerani" {
             OAuth2Swift.handleOpenURL(url)
         } else if url.host == "uerani" {
@@ -31,9 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FoursquareClient.sharedInstance().config.updateIfDaysSinceUpdateExceeds(7)
         
         //if we are already logged in, go to the map view
-        if let accessToken = FoursquareClient.sharedInstance().accessToken {
+        if let _ = FoursquareClient.sharedInstance().accessToken {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let tabView = storyboard.instantiateViewControllerWithIdentifier("MainTabBar") as? UIViewController
+            let tabView = storyboard.instantiateViewControllerWithIdentifier("UeraniTabBarViewController")
             self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
             self.window!.rootViewController = tabView
             self.window!.backgroundColor = UIColor.whiteColor()

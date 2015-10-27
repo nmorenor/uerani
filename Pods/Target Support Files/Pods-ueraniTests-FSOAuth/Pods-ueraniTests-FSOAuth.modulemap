@@ -1,6 +1,0 @@
-framework module FSOAuth {
-  umbrella header "Pods-ueraniTests-FSOAuth-umbrella.h"
-
-  export *
-  module * { export * }
-}

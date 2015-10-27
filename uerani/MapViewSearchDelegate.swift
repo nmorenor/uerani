@@ -72,17 +72,21 @@ extension MapViewController: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        let searchPredicate = searchController.searchBar.text.isEmpty ? NSPredicate(format: "topCategory == %@", NSNumber(bool: true)) : NSPredicate(format: "name contains[c] %@", searchController.searchBar.text)
+        let searchPredicate = searchController.searchBar.text!.isEmpty ? NSPredicate(format: "topCategory == %@", NSNumber(bool: true)) : NSPredicate(format: "name contains[c] %@", searchController.searchBar.text!)
         self.fetchedResultsController.fetchRequest.predicate = searchPredicate
         
         var error:NSError? = nil
-        self.fetchedResultsController.performFetch(&error)
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch let error1 as NSError {
+            error = error1
+        }
         
-        if let error = error {
-            println("Error performing doing a search fetch")
+        if let _ = error {
+            print("Error performing doing a search fetch")
             return
         }
-        let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
+        _ = self.fetchedResultsController.sections!.first!
         
         self.categoryViewSearch.reloadData()
     }

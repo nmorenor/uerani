@@ -27,13 +27,13 @@ class FoursquareCategoryIconWorker: NSOperation, NSURLSessionDataDelegate {
     
     override func main() {
         for nextSize in FIcon.FIconSize.allValues {
-            var nextStringURL = "\(prefix)\(nextSize.description)\(suffix)"
-            var url = NSURL(string: nextStringURL)
+            let nextStringURL = "\(prefix)\(nextSize.description)\(suffix)"
+            let url = NSURL(string: nextStringURL)
             if let nextUrl = url, let imageCacheName = getImageIdentifier(nextUrl) where regex.test(nextStringURL) {
                 self.currentIcon = nextUrl
                 let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
                 if nextImage == nil {
-                    var downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: LocationRequestManager.sharedInstance().categoryIconDownloadOperationQueue, finishHandler: self.unlock)
+                    let downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: LocationRequestManager.sharedInstance().categoryIconDownloadOperationQueue, finishHandler: self.unlock)
                     downloadImage.performDownload(nextUrl)
                     
                     //wait for the download

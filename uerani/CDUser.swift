@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDUser)
 
-public class CDUser : NSManagedObject, Hashable, Equatable, Printable {
+public class CDUser : NSManagedObject {
     
     @NSManaged public var id:String
     @NSManaged public var firstName:String
@@ -70,7 +70,7 @@ public class CDUser : NSManagedObject, Hashable, Equatable, Printable {
                 cPhoto.prefix = photo[FoursquareClient.RespnoseKeys.PREFIX] as! String
                 cPhoto.suffix = photo[FoursquareClient.RespnoseKeys.SUFFIX] as! String
             } else {
-                var cPhoto = CDPhoto(data: photo, context: context)
+                let cPhoto = CDPhoto(data: photo, context: context)
                 cPhoto.user = self
                 self.photo = cPhoto
             }

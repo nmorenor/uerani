@@ -25,7 +25,7 @@ class FoursquareClientTests: QuickSpec {
             it("Can find venue categories") {
                 client.searchCategories() { success, result, errorString in
                     if let error = errorString {
-                        println(error)
+                        print(error)
                     } else {
                         venueCategories = result!
                     }
@@ -38,7 +38,7 @@ class FoursquareClientTests: QuickSpec {
                 let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.7, longitude: -74)
                 client.searchVenuesForLocation(location) { success, result, errorString in
                     if let error = errorString {
-                        println(error)
+                        print(error)
                     } else {
                         venues = result!
                     }
@@ -47,14 +47,16 @@ class FoursquareClientTests: QuickSpec {
             }
             
             it("Can persist on realm") {
-                let testRealm = Realm(path: realmPathForTesting)
-                testRealm.write() {
+                let testRealm = try! Realm(path: realmPathForTesting)
+                try! testRealm.write() {
                     for category in venueCategories {
                         let fCategory:FCategory = testRealm.create(FCategory.self, value: category, update: true)
+                        print(fCategory)
                     }
                     
                     for venue in venues {
                         let fVenue:FVenue = testRealm.create(FVenue.self, value: venue, update: true)
+                        print(fVenue)
                     }
                 }
                 
@@ -64,17 +66,18 @@ class FoursquareClientTests: QuickSpec {
             }
             
             it("Can request and perist Venue Details") {
-                let testRealm = Realm(path: realmPathForTesting)
+                let testRealm = try! Realm(path: realmPathForTesting)
                 
-                var rvenues = testRealm.objects(FVenue)
+                let rvenues = testRealm.objects(FVenue)
                 for next in rvenues {
                     let venueID = next.id
+                    print(venueID)
                     FoursquareClient.sharedInstance().getVenueDetail(next.id) { success, result, errorString in
                         if let error = errorString {
-                            println(error)
+                            print(error)
                         } else {
-                            let innerRealm = Realm(path: realmPathForTesting)
-                            innerRealm.write() {
+                            let innerRealm = try! Realm(path: realmPathForTesting)
+                            try! innerRealm.write() {
                                 if let result = result  {                               
                                     let fVenue:FVenue = innerRealm.create(FVenue.self, value: result, update: true)
                                     fVenue.completeVenue = true
@@ -88,13 +91,13 @@ class FoursquareClientTests: QuickSpec {
             }
             
             it ("Can find tags") {
-                let testRealm = Realm(path: realmPathForTesting)
-                var rvenues = testRealm.objects(FVenue)
+                let testRealm = try! Realm(path: realmPathForTesting)
+                let rvenues = testRealm.objects(FVenue)
                 
                 var tags = [String]()
-                for (index, next) in enumerate(rvenues) {
+                for next in rvenues {
                     if next.tags.count > 0 {
-                        for (tagIndex, nextTag) in enumerate(next.tags) {
+                        for nextTag in next.tags {
                             tags.append(nextTag.tagvalue)
                         }
                     }
@@ -112,14 +115,26 @@ class FoursquareClientTests: QuickSpec {
 
 private func deleteRealmFilesAtPath(path: String) {
     let fileManager = NSFileManager.defaultManager()
-    fileManager.removeItemAtPath(path, error: nil)
+    do {
+        try fileManager.removeItemAtPath(path)
+    } catch _ {
+    }
     let lockPath = "\(path).lock"
-    fileManager.removeItemAtPath(lockPath, error: nil)
+    do {
+        try fileManager.removeItemAtPath(lockPath)
+    } catch _ {
+    }
 }
 
 private func documentsDirectoryURL() -> NSURL {
     var error: NSError?
-    let url = NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: &error)
+    let url: NSURL?
+    do {
+        url = try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
+    } catch let error1 as NSError {
+        error = error1
+        url = nil
+    }
     assert(url != nil, "*** Error finding documents directory: \(error)")
     return url!
 }

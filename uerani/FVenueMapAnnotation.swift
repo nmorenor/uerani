@@ -46,9 +46,9 @@ public class FVenueMapAnnotation : Object {
     }
     
     static func loadData(annotation:FoursquareLocationMapAnnotation) -> FVenueMapAnnotation{
-        var result = FVenueMapAnnotation()
-        result.title = annotation.title
-        result.subtitle = annotation.subtitle
+        let result = FVenueMapAnnotation()
+        result.title = annotation.title!
+        result.subtitle = annotation.subtitle!
         result.venueId = annotation.venueId
         result.coordinate = annotation.coordinate
         result.city = annotation.city

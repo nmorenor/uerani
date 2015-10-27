@@ -35,19 +35,25 @@ class UserViewModel {
     
     private func populate(context:NSManagedObjectContext) {
         if let userId = FoursquareClient.sharedInstance().userId {
-            var request = NSFetchRequest(entityName: "CDUser")
+            let request = NSFetchRequest(entityName: "CDUser")
             request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
             request.predicate = NSPredicate(format: "id == %@", userId)
             
             var error:NSError? = nil
-            var cResult = context.executeFetchRequest(request, error: &error)
+            var cResult: [AnyObject]?
+            do {
+                cResult = try context.executeFetchRequest(request)
+            } catch let error1 as NSError {
+                error = error1
+                cResult = nil
+            }
             if let error = error {
                 if DEBUG {
-                    println("*** \(toString(UserViewModel.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load user data from core data: \(error)")
+                    Swift.print("*** \(String(UserViewModel.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load user data from core data: \(error)")
                     self.setDefaults()
                 }
             } else if let result = cResult where result.count > 0 {
-                var user = result.first! as! CDUser
+                let user = result.first! as! CDUser
                 self.loadUserData(user, context: nil)
             } else {
                 self.setDefaults()
@@ -65,13 +71,13 @@ class UserViewModel {
             user = data
         }
         self.name = "\(user.firstName) \(user.lastName)"
-        var font = UIFont(name: fontName, size: fontSize)!
-        var attributedString = NSAttributedString(string:name, attributes: [NSFontAttributeName : font])
+        let font = UIFont(name: fontName, size: fontSize)!
+        let attributedString = NSAttributedString(string:name, attributes: [NSFontAttributeName : font])
         let asize:CGSize = attributedString.size()
         
         self.width  = asize.width > 100 ? asize.width : 100
         
-        var identifier = getImageIdentifier("100x100", user.photo!)!
+        let identifier = getImageIdentifier("100x100", iconCapable: user.photo!)!
         self.imageIdentifier = "user_\(user.id)_\(identifier)"
     }
     

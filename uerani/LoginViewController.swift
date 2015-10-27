@@ -51,7 +51,7 @@ class LoginViewController: UIViewController, AccessTokenLoginDelegate {
     }
     
     @IBAction func connectToFoursquare(sender: FSButton) {
-        let statusCode:FSOAuthStatusCode = FSOAuth.authorizeUserUsingClientId(FoursquareClient.Constants.FOURSQUARE_CLIENT_ID, callbackURIString: FoursquareClient.Constants.FOURSQUARE_CALLBACK_URI);
+        let statusCode:FSOAuthStatusCode = FSOAuth.authorizeUserUsingClientId(FoursquareClient.Constants.FOURSQUARE_CLIENT_ID, nativeURICallbackString: FoursquareClient.Constants.FOURSQUARE_CALLBACK_URI, universalURICallbackString: nil, allowShowingAppStore:false);
         
         
         switch (statusCode) {
@@ -60,7 +60,7 @@ class LoginViewController: UIViewController, AccessTokenLoginDelegate {
             FoursquareClient.sharedInstance().foursquareNativeAuthentication = true
             break;
         case FSOAuthStatusCode.ErrorInvalidCallback:
-            println("Invalid callback URI")
+            Swift.print("Invalid callback URI", terminator: "")
             break;
             
         case FSOAuthStatusCode.ErrorFoursquareNotInstalled:
@@ -68,14 +68,10 @@ class LoginViewController: UIViewController, AccessTokenLoginDelegate {
             break;
             
         case FSOAuthStatusCode.ErrorInvalidClientID:
-            println("Error Invalid client ID")
+            Swift.print("Error Invalid client ID", terminator: "")
             break;
         case FSOAuthStatusCode.ErrorFoursquareOAuthNotSupported:
-            println("OAuth is not supported")
-            break;
-            
-        default:
-            
+            Swift.print("OAuth is not supported", terminator: "")
             break;
             
         }
@@ -83,10 +79,13 @@ class LoginViewController: UIViewController, AccessTokenLoginDelegate {
     }
     
     func successLogin() {
-        self.performSegueWithIdentifier("showMainSegue", sender: self)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let tabView = storyboard.instantiateViewControllerWithIdentifier("UeraniTabBarViewController")
+        self.presentViewController(tabView, animated: true, completion: nil)
+        //self.performSegueWithIdentifier("showMainSegue", sender: self)
     }
     
     func errorLogin(errorMessage:String?) {
-        println(errorMessage)
+        Swift.print(errorMessage, terminator: "")
     }
 }

@@ -12,25 +12,26 @@ class AccesorizedCalloutAnnotationView: CalloutMapAnnotationView {
     
     var accessory:UIButton
     
-    override init!(annotation: MKAnnotation!, reuseIdentifier: String!) {
-        self.accessory = UIButton.buttonWithType(UIButtonType.DetailDisclosure) as! UIButton
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        self.accessory = UIButton(type: UIButtonType.DetailDisclosure)
         self.accessory.exclusiveTouch = true
         self.accessory.enabled = true
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        self.accessory.addTarget(self, action: "calloutAccessoryTapped:", forControlEvents: UIControlEvents.TouchUpInside | UIControlEvents.TouchCancel)
+        self.accessory.addTarget(self, action: "calloutAccessoryTapped:", forControlEvents: [UIControlEvents.TouchUpInside, UIControlEvents.TouchCancel])
         self.addSubview(self.accessory)
     }
     
     override init(frame: CGRect) {
-        self.accessory = UIButton.buttonWithType(UIButtonType.DetailDisclosure) as! UIButton
+        self.accessory = UIButton(type: UIButtonType.DetailDisclosure)
+        self.accessory.tintColor = UIColor.ueraniDarkYellowColor()
         self.accessory.exclusiveTouch = true
         self.accessory.enabled = true
         super.init(frame: frame)
-        self.accessory.addTarget(self, action: "calloutAccessoryTapped:", forControlEvents: UIControlEvents.TouchUpInside | UIControlEvents.TouchCancel)
+        self.accessory.addTarget(self, action: "calloutAccessoryTapped:", forControlEvents: [UIControlEvents.TouchUpInside, UIControlEvents.TouchCancel])
         self.addSubview(self.accessory)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -44,32 +45,32 @@ class AccesorizedCalloutAnnotationView: CalloutMapAnnotationView {
     }
     
     func getContentFrame() -> CGRect {
-        var nrect = self.getRectDraw()
-        var contentFrame = CGRectMake(nrect.origin.x + 10, nrect.origin.y + 3, nrect.size.width - 20, self.contentHeight)
+        let nrect = self.getRectDraw()
+        let contentFrame = CGRectMake(nrect.origin.x + 10, nrect.origin.y + 3, nrect.size.width - 20, self.contentHeight)
         return contentFrame
     }
     
     func prepareAccessoryFrame() {
-        var nrect = self.getRectDraw()
+        let nrect = self.getRectDraw()
         self.accessory.frame = CGRectMake(nrect.size.width - self.accessory.frame.size.width - 15, (self.contentHeight + 3 - self.accessory.frame.size.height) / 2, self.accessory.frame.size.width, self.accessory.frame.height)
     }
     
     func calloutAccessoryTapped(sender: UIButton!) {
-        if let mapView = self.mapView where mapView.delegate.respondsToSelector(Selector("mapView:annotationView:calloutAccessoryControlTapped:")) {
+        if let mapView = self.mapView where mapView.delegate!.respondsToSelector(Selector("mapView:annotationView:calloutAccessoryControlTapped:")) {
             let parentView = self.parentAnnotationView as! BasicMapAnnotationView
             parentView.preventSelectionChange = false
             self.parentAnnotationView?.setSelected(false, animated: false)
-            mapView.delegate.mapView!(mapView, annotationView: self.parentAnnotationView, calloutAccessoryControlTapped: sender)
+            mapView.delegate!.mapView!(mapView, annotationView: self.parentAnnotationView!, calloutAccessoryControlTapped: sender)
         }
     }
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        var hitView:UIView? = super.hitTest(point, withEvent: event)
+        let hitView:UIView? = super.hitTest(point, withEvent: event)
         
         if let hitView = hitView {
             if hitView === self.accessory {
                 self.preventParentSelectionChange()
-                delay(seconds: 1.0, self.allowParentSelectionChange)
+                delay(seconds: 1.0, completion: self.allowParentSelectionChange)
                 if let superView = self.superview {
                     for sibling in superView.subviews {
                         if let sibling = sibling as? MKAnnotationView where sibling !== self.parentAnnotationView {
@@ -100,7 +101,7 @@ class AccesorizedCalloutAnnotationView: CalloutMapAnnotationView {
     
     func allowParentSelectionChange() {
         if let mapView = self.mapView {
-            mapView.selectAnnotation(self.parentAnnotationView?.annotation, animated: false)
+            mapView.selectAnnotation((self.parentAnnotationView?.annotation)!, animated: false)
             let parentView = self.parentAnnotationView as! BasicMapAnnotationView
             parentView.preventSelectionChange = false
         }

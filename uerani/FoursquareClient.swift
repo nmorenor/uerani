@@ -44,16 +44,25 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
         let fileManager = NSFileManager.defaultManager()
         if !fileManager.fileExistsAtPath(FoursquareClient.Constants.FOURSQUARE_CACHE_DIR.path!) {
             var error:NSError?
-            let result = fileManager.createDirectoryAtURL(FoursquareClient.Constants.FOURSQUARE_CACHE_DIR, withIntermediateDirectories: false, attributes: nil, error: &error)
+            let result: Bool
+            do {
+                try fileManager.createDirectoryAtURL(FoursquareClient.Constants.FOURSQUARE_CACHE_DIR, withIntermediateDirectories: false, attributes: nil)
+                result = true
+            } catch var error1 as NSError {
+                error = error1
+                result = false
+            } catch {
+                fatalError()
+            }
             if !result && DEBUG {
-                println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create directory to store cache data: \(error)")
+                print("*** \(String(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create directory to store cache data: \(error)")
             }
         }
         let targetFile = FoursquareClient.Constants.FOURSQUARE_CACHE_DIR.URLByAppendingPathComponent("cache.realm")
         if !fileManager.fileExistsAtPath(targetFile.path!) {
             let result = fileManager.createFileAtPath(targetFile.path!, contents: nil, attributes: nil)
             if !result && DEBUG {
-                println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create file to store cache data")
+                print("*** \(String(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not create file to store cache data")
             }
         }
         
@@ -68,33 +77,36 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
     }
     
     private func setInMemoryToken(accessToken:String?) {
-        if let accessToken = accessToken {
-            var data = ["access_token" : accessToken]
-            //save data on key chain
-            Locksmith.saveData(data, forUserAccount: "foursquare-client")
-        } else {
-            Locksmith.deleteDataForUserAccount("foursquare-client")
+        guard let token = accessToken else {
+            do {
+                try Locksmith.deleteDataForUserAccount("foursquare-client")
+                self.inMemoryToken = nil
+            } catch _ {}
+            return
         }
-        self.inMemoryToken = accessToken
+        do {
+            let data = ["access_token" : token]
+            //save data on key chain
+            try Locksmith.saveData(data, forUserAccount: "foursquare-client")
+        
+            self.inMemoryToken = token
+        } catch _ {}
     }
     
     private func getAccessToken() -> String? {
-            if let accessToken = self.inMemoryToken {
-                return accessToken
-            }
-            //look for data on the key chain, do not store access token in plain text
-            let (dictionary, error) = Locksmith.loadDataForUserAccount("foursquare-client")
-            if error != nil && DEBUG {
-                println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load access token from keychain \(error)")
+        if let accessToken = self.inMemoryToken {
+            return accessToken
+        }
+        //look for data on the key chain, do not store access token in plain text
+        
+        let lResult = Locksmith.loadDataForUserAccount("foursquare-client")
+            guard let dictionary = lResult, let accessToken = dictionary["access_token"] as? String else {
                 return nil
             }
-            if let dictionary = dictionary {
-                if let accessToken = dictionary["access_token"] as? String {
-                    self.inMemoryToken = accessToken
-                    return accessToken
-                }
-            }
-            return nil
+        
+        self.inMemoryToken = accessToken
+        return accessToken
+        
     }
     
     public func getBaseURLSecure() -> String {
@@ -134,7 +146,7 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
     
     func handleNativeAuthentication(url:NSURL) {
         var errorCode:FSOAuthErrorCode = FSOAuthErrorCode.None
-        var accessCode = FSOAuth.accessCodeForFSOAuthURL(url, error: &errorCode)
+        let accessCode = FSOAuth.accessCodeForFSOAuthURL(url, error: &errorCode)
         
         if (errorCode == FSOAuthErrorCode.None) {
             self.getAccessToken(accessCode)
@@ -199,10 +211,17 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
             accessTokenUrl: FoursquareClient.Constants.FOURSQUARE_ACCESS_TOKEN_URI,
             responseType:   "code"
         )
+        let webViewController = WebViewController()
+        oauthswift.authorize_url_handler = webViewController
         oauthswift.authorizeWithCallbackURL(NSURL(string: FoursquareClient.Constants.FOURSQUARE_CALLBACK_URI)!, scope: "", state: "", params: [String:String](), success: {credential, response, parameters in
+                webViewController.dismissWebViewController()
                 self.accessToken = credential.oauth_token
-                self.accessTokenLoginDelegate?.successLogin()
+                delay(seconds: 0.4) {
+                    self.accessTokenLoginDelegate?.successLogin()
+                }
+            
             }, failure: { _ in
+                webViewController.dismissWebViewController()
                 self.accessToken = nil
                 self.accessTokenLoginDelegate?.errorLogin("Can not login to Foursquare")
         })
@@ -222,7 +241,7 @@ public class FoursquareClient : HTTPClientProtocol, WebTokenDelegate {
             static let dateFormatter = Singleton.generateDateFormatter()
             
             static func generateDateFormatter() -> NSDateFormatter {
-                var formatter = NSDateFormatter()
+                let formatter = NSDateFormatter()
                 formatter.dateFormat = "yyyy-mm-dd"
                 
                 return formatter

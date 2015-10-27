@@ -21,7 +21,7 @@ public class VenueListsViewController : UITableViewController, DialogOKDelegate 
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "handleAddList:")
         self.venueListTableDelegate = VenueToListTableDelegate(tableView: self.tableView, cellIdentifier:"VenueListCell")
-        self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         self.venueListTableDelegate.venueListSelectionAction = self.venueSelected
         self.venueListTableDelegate.selectAccessory = false
         self.tableView.dataSource = self.venueListTableDelegate
@@ -48,7 +48,7 @@ public class VenueListsViewController : UITableViewController, DialogOKDelegate 
     }
     
     func venueSelected() {
-        var venuesOfListController = self.storyboard?.instantiateViewControllerWithIdentifier("VenuesOfListViewController") as! VenuesFromListViewController
+        let venuesOfListController = self.storyboard?.instantiateViewControllerWithIdentifier("VenuesOfListViewController") as! VenuesFromListViewController
         venuesOfListController.list = self.venueListTableDelegate.selectedList!
         self.navigationController?.pushViewController(venuesOfListController, animated: true)
     }
@@ -59,19 +59,27 @@ public class VenueListsViewController : UITableViewController, DialogOKDelegate 
     
     public func performOK(data:String) {
         dispatch_async(dispatch_get_main_queue()) {
-            var request = NSFetchRequest(entityName: "CDUser")
+            let request = NSFetchRequest(entityName: "CDUser")
             request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
             request.predicate = NSPredicate(format: "id == %@", FoursquareClient.sharedInstance().userId!)
         
             var error:NSError? = nil
-            var cResult = self.sharedContext.executeFetchRequest(request, error: &error)
+            var cResult: [AnyObject]?
+            do {
+                cResult = try self.sharedContext.executeFetchRequest(request)
+            } catch let error1 as NSError {
+                error = error1
+                cResult = nil
+            } catch {
+                fatalError()
+            }
             if let error = error {
                 if DEBUG {
-                    println("*** \(toString(UserViewModel.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load user data from core data: \(error)")
+                    print("*** \(String(UserViewModel.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load user data from core data: \(error)")
                 }
             } else if let result = cResult where result.count > 0 {
-                var user = result.first! as! CDUser
-                var list = CDVenueList(title: data, user: user, context: self.sharedContext)
+                let user = result.first! as! CDUser
+                _ = CDVenueList(title: data, user: user, context: self.sharedContext)
                 saveContext(self.sharedContext) { _ in
                     dispatch_async(dispatch_get_main_queue()) {
                         self.venueListTableDelegate.reload()

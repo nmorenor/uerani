@@ -18,13 +18,13 @@ public class VenueListDialogButtonBarView : UIView {
     var okAction:CloseDialogAction?
     var cancelAction:CloseDialogAction?
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override init(frame: CGRect) {
-        var cancelButtonFrame = CGRectMake(10, 5, (frame.width/2) - 20, frame.size.height - 10)
-        var okButtonFrame = CGRectMake((frame.width/2) + 10, 5, (frame.width/2) - 20, frame.size.height - 10)
+        let cancelButtonFrame = CGRectMake(10, 5, (frame.width/2) - 20, frame.size.height - 10)
+        let okButtonFrame = CGRectMake((frame.width/2) + 10, 5, (frame.width/2) - 20, frame.size.height - 10)
         self.okButton = BorderedButton(frame: okButtonFrame)
         self.cancelButton = BorderedButton(frame: cancelButtonFrame)
         super.init(frame: frame)
@@ -46,8 +46,8 @@ public class VenueListDialogButtonBarView : UIView {
         self.configureButton(cancelButton)
         self.configureButton(okButton)
         
-        cancelButton.setTitle("Cancel", forState: UIControlState.allZeros)
-        okButton.setTitle("Ok", forState: UIControlState.allZeros)
+        cancelButton.setTitle("Cancel", forState: UIControlState())
+        okButton.setTitle("Ok", forState: UIControlState())
         
         self.addSubview(cancelButton)
         self.addSubview(okButton)

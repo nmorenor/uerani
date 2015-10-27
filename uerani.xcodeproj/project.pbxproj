@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6561868563E3124623A2772C /* Pods_ueraniTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 540BABF78B677F4DC0F4B85A /* Pods_ueraniTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6561868563E3124623A2772C /* Pods_ueraniTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 540BABF78B677F4DC0F4B85A /* Pods_ueraniTests.framework */; };
 		6603AD9C1B7A3A1000ABF2F6 /* SearchViewProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6603AD9B1B7A3A1000ABF2F6 /* SearchViewProgress.swift */; };
 		66104FD01B7D741A004E32A6 /* ClusteredPinAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66104FCF1B7D741A004E32A6 /* ClusteredPinAnnotationView.swift */; };
 		66104FD21B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66104FD11B7D7B95004E32A6 /* CategoryPinAnnotaitonView.swift */; };
@@ -63,6 +63,7 @@
 		66911C171BB9C23E000AD9A7 /* Screenshot3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 66911C121BB9C23E000AD9A7 /* Screenshot3.jpg */; };
 		66911C181BB9C23E000AD9A7 /* Screenshot4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 66911C131BB9C23E000AD9A7 /* Screenshot4.jpg */; };
 		66911C191BB9C23E000AD9A7 /* Screenshot5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 66911C141BB9C23E000AD9A7 /* Screenshot5.jpg */; };
+		6691D4141BE03498006F6ED8 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6691D4131BE03498006F6ED8 /* WebViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		6693062E1B92AD9900E148DF /* UserRefreshOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6693062D1B92AD9900E148DF /* UserRefreshOperation.swift */; };
 		669306301B938E2C00E148DF /* AbstractCoreDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6693062F1B938E2C00E148DF /* AbstractCoreDataOperation.swift */; };
 		669306321B9524FC00E148DF /* DownloadImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669306311B9524FC00E148DF /* DownloadImageUtil.swift */; };
@@ -144,7 +145,7 @@
 		66F55AD21B8E5E62005C2F49 /* CategroyVenueFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F55AD11B8E5E62005C2F49 /* CategroyVenueFilter.swift */; };
 		66F693271B5AD92000C70E52 /* FoursquareClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F693261B5AD92000C70E52 /* FoursquareClientTests.swift */; };
 		66FBB1801B77CE88009374C1 /* CDSubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FBB17F1B77CE88009374C1 /* CDSubCategory.swift */; };
-		B12BA67A7FD7B7356B1D2DC8 /* Pods_uerani.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC8C27BBF60AF6ACCDC3C0D /* Pods_uerani.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B12BA67A7FD7B7356B1D2DC8 /* Pods_uerani.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC8C27BBF60AF6ACCDC3C0D /* Pods_uerani.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -214,6 +215,7 @@
 		66911C121BB9C23E000AD9A7 /* Screenshot3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Screenshot3.jpg; sourceTree = "<group>"; };
 		66911C131BB9C23E000AD9A7 /* Screenshot4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Screenshot4.jpg; sourceTree = "<group>"; };
 		66911C141BB9C23E000AD9A7 /* Screenshot5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Screenshot5.jpg; sourceTree = "<group>"; };
+		6691D4131BE03498006F6ED8 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		6693062D1B92AD9900E148DF /* UserRefreshOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRefreshOperation.swift; sourceTree = "<group>"; };
 		6693062F1B938E2C00E148DF /* AbstractCoreDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractCoreDataOperation.swift; sourceTree = "<group>"; };
 		669306311B9524FC00E148DF /* DownloadImageUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadImageUtil.swift; sourceTree = "<group>"; };
@@ -534,6 +536,7 @@
 				66382C201B6996DF00F5644C /* Regex.swift */,
 				66A7FC6A1B5AD6B30012358D /* AppDelegate.swift */,
 				6657BF021B5D565B00C94677 /* ImageCache.swift */,
+				6691D4131BE03498006F6ED8 /* WebViewController.swift */,
 				66A7FC8C1B5AD71D0012358D /* Model */,
 				66418A6E1B9A575900345AF6 /* venueDetail */,
 				66DB48F11BACDD5000282FCC /* VenueList */,
@@ -771,7 +774,9 @@
 		66A7FC5D1B5AD6B30012358D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Ignacio Moreno";
 				TargetAttributes = {
 					66A7FC641B5AD6B30012358D = {
@@ -1017,6 +1022,7 @@
 				669306321B9524FC00E148DF /* DownloadImageUtil.swift in Sources */,
 				66F55AD21B8E5E62005C2F49 /* CategroyVenueFilter.swift in Sources */,
 				66DB48F71BADC47A00282FCC /* CreateVenueListController.swift in Sources */,
+				6691D4141BE03498006F6ED8 /* WebViewController.swift in Sources */,
 				664829D31BA0CFE30060CACB /* FVenueMapAnnotation.swift in Sources */,
 				6654499A1BA8F6D400CE9081 /* AddVenueToListController.swift in Sources */,
 				66A7FCB91B5AD7CA0012358D /* LocationRequestManager.swift in Sources */,
@@ -1119,6 +1125,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1187,6 +1194,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Ignacio Moreno (E286AG3VXK)";
 				INFOPLIST_FILE = uerani/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "8b564f4e-9701-44fa-8c2e-2f657feed9c9";
 			};
@@ -1201,6 +1209,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ignacio Moreno (E286AG3VXK)";
 				INFOPLIST_FILE = uerani/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "8b564f4e-9701-44fa-8c2e-2f657feed9c9";
 			};
@@ -1221,6 +1230,7 @@
 				);
 				INFOPLIST_FILE = ueraniTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Ignacio-Moreno.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/uerani.app/uerani";
 			};
@@ -1237,6 +1247,7 @@
 				);
 				INFOPLIST_FILE = ueraniTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Ignacio-Moreno.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/uerani.app/uerani";
 			};

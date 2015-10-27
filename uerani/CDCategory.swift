@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDCategory)
 
-public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconCapable, Category {
+public class CDCategory : NSManagedObject, IconCapable, Category {
     
     @NSManaged public var id:String
     @NSManaged public var name:String
@@ -53,13 +53,13 @@ public class CDCategory : NSManagedObject, Equatable, Hashable, Printable, IconC
         }
     }
     
-    public var c_categories:GeneratorOf<Category> {
+    public var c_categories:AnyGenerator<Category> {
         get {
-            var queue = Queue<Category>()
+            let queue = Queue<Category>()
             for next in categories {
                 queue.enqueue(next)
             }
-            return GeneratorOf<Category>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     

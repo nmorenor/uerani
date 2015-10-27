@@ -8,13 +8,18 @@
 import Foundation
 
 public class OAuthSwiftCredential: NSObject, NSCoding {
+
+    struct OAuth {
+        static let version = "1.0"
+        static let signatureMethod = "HMAC-SHA1"
+    }
     
     var consumer_key: String = String()
     var consumer_secret: String = String()
     public var oauth_token: String = String()
     public var oauth_token_secret: String = String()
     var oauth_verifier: String = String()
-    public var oauth2 = false
+    public var oauth_header_type = String()
     
     override init(){
         
@@ -39,7 +44,7 @@ public class OAuthSwiftCredential: NSObject, NSCoding {
     
     // Cannot declare a required initializer within an extension.
     // extension OAuthSwiftCredential: NSCoding {
-    public required convenience init(coder decoder: NSCoder) {
+    public required convenience init?(coder decoder: NSCoder) {
         self.init()
         self.consumer_key = (decoder.decodeObjectForKey(CodingKeys.consumerKey) as? String) ?? String()
         self.consumer_secret = (decoder.decodeObjectForKey(CodingKeys.consumerSecret) as? String) ?? String()
@@ -56,4 +61,76 @@ public class OAuthSwiftCredential: NSObject, NSCoding {
         coder.encodeObject(self.oauth_verifier, forKey: CodingKeys.oauthVerifier)
     }
     // } // End NSCoding extension
+
+    public func makeHeaders(url:NSURL, method: String, parameters: Dictionary<String, AnyObject>) -> Dictionary<String, String> {
+        if self.oauth_header_type == "oauth1" {
+            return ["Authorization": self.authorizationHeaderForMethod(method, url: url, parameters: parameters)]
+        }
+        if self.oauth_header_type == "oauth2" {
+            return ["Authorization": "Bearer \(self.oauth_token)"]
+        }
+        return [:]
+    }
+
+    public func authorizationHeaderForMethod(method: String, url: NSURL, parameters: Dictionary<String, AnyObject>) -> String {
+        var authorizationParameters = Dictionary<String, AnyObject>()
+        authorizationParameters["oauth_version"] = OAuth.version
+        authorizationParameters["oauth_signature_method"] =  OAuth.signatureMethod
+        authorizationParameters["oauth_consumer_key"] = self.consumer_key
+        authorizationParameters["oauth_timestamp"] = String(Int64(NSDate().timeIntervalSince1970))
+        authorizationParameters["oauth_nonce"] = (NSUUID().UUIDString as NSString).substringToIndex(8)
+        
+        if (self.oauth_token != ""){
+            authorizationParameters["oauth_token"] = self.oauth_token
+        }
+        
+        for (key, value) in parameters {
+            if key.hasPrefix("oauth_") {
+                authorizationParameters.updateValue(value, forKey: key)
+            }
+        }
+        
+        let combinedParameters = authorizationParameters.join(parameters)
+        
+        let finalParameters = combinedParameters
+        
+        authorizationParameters["oauth_signature"] = self.signatureForMethod(method, url: url, parameters: finalParameters)
+        
+        var parameterComponents = authorizationParameters.urlEncodedQueryStringWithEncoding(dataEncoding).componentsSeparatedByString("&") as [String]
+        parameterComponents.sortInPlace { $0 < $1 }
+        
+        var headerComponents = [String]()
+        for component in parameterComponents {
+            let subcomponent = component.componentsSeparatedByString("=") as [String]
+            if subcomponent.count == 2 {
+                headerComponents.append("\(subcomponent[0])=\"\(subcomponent[1])\"")
+            }
+        }
+        
+        return "OAuth " + headerComponents.joinWithSeparator(", ")
+    }
+
+    public func signatureForMethod(method: String, url: NSURL, parameters: Dictionary<String, AnyObject>) -> String {
+        var tokenSecret: NSString = ""
+        tokenSecret = self.oauth_token_secret.urlEncodedStringWithEncoding(dataEncoding)
+        
+        let encodedConsumerSecret = self.consumer_secret.urlEncodedStringWithEncoding(dataEncoding)
+        
+        let signingKey = "\(encodedConsumerSecret)&\(tokenSecret)"
+        
+        var parameterComponents = parameters.urlEncodedQueryStringWithEncoding(dataEncoding).componentsSeparatedByString("&") as [String]
+        parameterComponents.sortInPlace { $0 < $1 }
+        
+        let parameterString = parameterComponents.joinWithSeparator("&")
+        let encodedParameterString = parameterString.urlEncodedStringWithEncoding(dataEncoding)
+        
+        let encodedURL = url.absoluteString.urlEncodedStringWithEncoding(dataEncoding)
+        
+        let signatureBaseString = "\(method)&\(encodedURL)&\(encodedParameterString)"
+        
+        let key = signingKey.dataUsingEncoding(NSUTF8StringEncoding)!
+        let msg = signatureBaseString.dataUsingEncoding(NSUTF8StringEncoding)!
+        let sha1 = HMAC.sha1(key: key, message: msg)!
+        return sha1.base64EncodedStringWithOptions([])
+    }
 }

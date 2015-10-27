@@ -64,15 +64,15 @@ class MapViewController: UIViewController, CategoriesReady {
         self.mapView.delegate = self
         
         //Initialize maged context on main thread
-        var context = self.sharedContext
+        _ = self.sharedContext
         self.fetchedResultsController.delegate = self
         
         //search all venue categories in background thread
-        VenueCategoriesOperation(delegate: self)
-        UserRefreshOperation(delegate: nil)
+        _ = VenueCategoriesOperation(delegate: self)
+        _ = UserRefreshOperation(delegate: nil)
         
         //do not show lines on empty rows
-        self.categoryViewSearch.tableFooterView = UIView(frame: CGRect.zeroRect)
+        self.categoryViewSearch.tableFooterView = UIView(frame: CGRect.zero)
         
         self.view.backgroundColor = UIColor.blackColor()
         
@@ -110,7 +110,7 @@ class MapViewController: UIViewController, CategoriesReady {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
-        let locationRequestManager = LocationRequestManager.sharedInstance()
+        _ = LocationRequestManager.sharedInstance()
         self.searchMediator?.calloutAnnotation = nil
         
         LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
@@ -125,10 +125,10 @@ class MapViewController: UIViewController, CategoriesReady {
         self.searchMediator.updateUI()
     }
     
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if context == &myContext || context == &userLocationContext {
             if context == &myContext {
-                if let authorized = change[NSKeyValueChangeNewKey] as? Bool {
+                if let authorized = change![NSKeyValueChangeNewKey] as? Bool {
                     if authorized {
                         self.searchMediator.setAllowLocation()
                     }
@@ -137,7 +137,7 @@ class MapViewController: UIViewController, CategoriesReady {
                     }
                 }
             } else {
-                if let location = change[NSKeyValueChangeNewKey] as? CLLocation where !self.isRefreshReady {
+                if let location = change![NSKeyValueChangeNewKey] as? CLLocation where !self.isRefreshReady {
                     self.searchMediator.displayLocation(location)
                     self.isRefreshReady = true
                 }
@@ -172,12 +172,18 @@ class MapViewController: UIViewController, CategoriesReady {
         dispatch_async(dispatch_get_main_queue()) {
             
             var error:NSError? = nil
-            self.fetchedResultsController.performFetch(&error)
-            
-            if let error = error {
-                println("Error performing initial fetch")
+            do {
+                try self.fetchedResultsController.performFetch()
+            } catch let error1 as NSError {
+                error = error1
+            } catch {
+                fatalError()
             }
-            let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
+            
+            if let _ = error {
+                print("Error performing initial fetch")
+            }
+            let sectionInfo = self.fetchedResultsController.sections!.first!
             if sectionInfo.numberOfObjects > 0 {
                 self.categoryViewSearch.reloadData()
             }

@@ -14,7 +14,7 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
     
     let defaultPinImage = "default_32"
     
-    override var image:UIImage! {
+    override var image:UIImage? {
         didSet {
             self.prepareFrameSize()
             self.setNeedsDisplay()
@@ -25,17 +25,17 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         super.init(frame: frame)
     }
     
-    override init!(annotation: MKAnnotation!, reuseIdentifier: String!) {
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = UIColor.clearColor()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func prepareFrameSize() {
-        self.frame = CGRectMake(0, 0, image.size.width + ((image.size.width/2) * 0.4), image.size.height + ((image.size.width/2) * 0.8))
+        self.frame = CGRectMake(0, 0, image!.size.width + ((image!.size.width/2) * 0.4), image!.size.height + ((image!.size.width/2) * 0.8))
     }
     
     func configure(foursquareAnnotation:FoursquareLocationMapAnnotation, scaledImageIdentifier:String, size:CGSize) {
@@ -44,12 +44,12 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
                 if let imageSize = ImageCache.sharedInstance().imageWithIdentifier(scaledImageIdentifier) {
                     self.image = imageSize
                 } else {
-                    var imageSize = image.resizeImage(size)
+                    let imageSize = image.resizeImage(size)
                     ImageCache.sharedInstance().storeImage(imageSize, withIdentifier: scaledImageIdentifier)
                     self.image = imageSize
                 }
             } else if let prefix = foursquareAnnotation.categoryPrefix, let suffix = foursquareAnnotation.categorySuffix where !prefix.isEmpty && !suffix.isEmpty {
-                FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
+                _ = FoursquareCategoryIconWorker(prefix: prefix, suffix: suffix)
                 if let image = UIImage(named: defaultPinImage) {
                     self.image = image.resizeImage(size)
                 }
@@ -63,16 +63,16 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
     }
     
     override func drawRect(rect: CGRect) {
-        var context:CGContextRef = UIGraphicsGetCurrentContext()
+        let context:CGContextRef = UIGraphicsGetCurrentContext()!
         drawInContext(context)
     }
     
     func drawInContext(context:CGContextRef) {
         UIColor.ueraniYellowColor().setFill()
         UIColor.blackColor().setStroke()
-        var path:CGMutablePathRef = CGPathCreateMutable()
-        var stroke:CGFloat = 1.5
-        var nrect:CGRect = CGRectMake(0, 0, image.size.width + 2, image.size.height + 2)
+        let path:CGMutablePathRef = CGPathCreateMutable()
+        let stroke:CGFloat = 1.5
+        var nrect:CGRect = CGRectMake(0, 0, image!.size.width + 2, image!.size.height + 2)
         nrect.size.width -= stroke
         nrect.size.height -= stroke
         nrect.origin.x += stroke / 2.0
@@ -80,10 +80,10 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         
         CGContextSetLineWidth(context, stroke)
         
-        var radius:CGFloat =  (image.size.width/2) * 0.412
+        let radius:CGFloat =  (image!.size.width/2) * 0.412
         
         //reference point for triangle
-        var originX:CGFloat = nrect.size.width / 2
+        let originX:CGFloat = nrect.size.width / 2
         
         CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
         CGPathAddLineToPoint(path, nil, nrect.origin.x, nrect.origin.y + nrect.size.height - radius)
@@ -103,21 +103,21 @@ class CategoryPinAnnotationView : BasicMapAnnotationView {
         // Fill & stroke the path
         CGContextAddPath(context, path)
         CGContextSaveGState(context)
-        CGContextDrawPath(context, kCGPathFillStroke);
+        CGContextDrawPath(context, CGPathDrawingMode.FillStroke);
         CGContextRestoreGState(context)
         
         //draw the image in black
         UIColor.blackColor().setFill()
-        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-        var flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, image.size.height)
+        CGContextSetInterpolationQuality(context, CGInterpolationQuality.High);
+        let flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, image!.size.height)
         
         CGContextConcatCTM(context, flipVertical)
         // Draw into the context; this scales the image
-        var imageRect = CGRectMake(1.0, -1.5, image.size.width, image.size.height)
-        CGContextDrawImage(context, imageRect, image.CGImage)
+        let imageRect = CGRectMake(1.0, -1.5, image!.size.width, image!.size.height)
+        CGContextDrawImage(context, imageRect, image!.CGImage)
         
-        CGContextClipToMask(context, imageRect, image.CGImage)
+        CGContextClipToMask(context, imageRect, image!.CGImage)
         CGContextAddRect(context, imageRect)
-        CGContextDrawPath(context, kCGPathFill)
+        CGContextDrawPath(context, CGPathDrawingMode.Fill)
     }
 }

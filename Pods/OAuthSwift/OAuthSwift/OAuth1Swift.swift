@@ -61,15 +61,16 @@ public class OAuth1Swift: NSObject {
                 let url = notification.userInfo![CallbackNotification.optionsURLKey] as! NSURL
                 var parameters: Dictionary<String, String> = Dictionary()
                 if ((url.query) != nil){
-                    parameters = url.query!.parametersFromQueryString()
-                } else if ((url.fragment) != nil && url.fragment!.isEmpty == false) {
-                    parameters = url.fragment!.parametersFromQueryString()
+                    parameters += url.query!.parametersFromQueryString()
+                }
+                if ((url.fragment) != nil && url.fragment!.isEmpty == false) {
+                    parameters += url.fragment!.parametersFromQueryString()
                 }
                 if let token = parameters["token"] {
                     parameters["oauth_token"] = token
                 }
                 if (parameters["oauth_token"] != nil && (self.allowMissingOauthVerifier || parameters["oauth_verifier"] != nil)) {
-                    var credential: OAuthSwiftCredential = self.client.credential
+                    //var credential: OAuthSwiftCredential = self.client.credential
                     self.client.credential.oauth_token = parameters["oauth_token"]!
                     if (parameters["oauth_verifier"] != nil) {
                         self.client.credential.oauth_verifier = parameters["oauth_verifier"]!
@@ -94,9 +95,10 @@ public class OAuth1Swift: NSObject {
     // 1. Request token
     public func postOAuthRequestTokenWithCallbackURL(callbackURL: NSURL, success: TokenSuccessHandler, failure: FailureHandler?) {
         var parameters =  Dictionary<String, AnyObject>()
-        if let callbackURLString = callbackURL.absoluteString {
+        if let callbackURLString: String = callbackURL.absoluteString {
             parameters["oauth_callback"] = callbackURLString
         }
+        self.client.credential.oauth_header_type = "oauth1"
         self.client.post(self.request_token_url, parameters: parameters, success: {
             data, response in
             let responseString = NSString(data: data, encoding: NSUTF8StringEncoding) as String!

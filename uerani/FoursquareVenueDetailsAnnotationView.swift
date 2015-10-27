@@ -17,9 +17,9 @@ class FoursquareVenueDetailsAnnotationView : AccesorizedCalloutAnnotationView {
         self.annotation = annotation
         self.contentHeight = 80.0
         if let annotation = self.parentAnnotationView?.annotation as? FoursquareLocationMapAnnotation {
-            self.contentView().subviews.map({$0.removeFromSuperview()})
+            _ = self.contentView().subviews.map({$0.removeFromSuperview()})
             let contentFrame = self.getContentFrame()
-            if let let categoryImageName = annotation.categoryImageName64 {
+            if let categoryImageName = annotation.categoryImageName64 {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(categoryImageName) {
                      self.configureView(annotation, contentFrame: contentFrame, image: image)
                 } else if let image = ImageCache.sharedInstance().imageWithIdentifier("default_64") {
@@ -35,12 +35,15 @@ class FoursquareVenueDetailsAnnotationView : AccesorizedCalloutAnnotationView {
     }
     
     func configureView(annotation:FoursquareLocationMapAnnotation, contentFrame:CGRect, image:UIImage) {
-        var aView = FoursquareAnnotationVenueInformationView()
+        let aView = FoursquareAnnotationVenueInformationView()
         aView.image = image
         aView.name = annotation.title
-        aView.address = "City: \(annotation.city), \(annotation.state)\nAddress: \(annotation.subtitle)"
+        aView.address = "City: \(annotation.city), \(annotation.state)"
+        if let address = annotation.subtitle {
+            aView.address = "\(aView.address)\nAddress: \(address)"
+        }
         aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
-        self.contentView().subviews.map({$0.removeFromSuperview()})
+        _ = self.contentView().subviews.map({$0.removeFromSuperview()})
         self.contentView().addSubview(aView)
     }
 }

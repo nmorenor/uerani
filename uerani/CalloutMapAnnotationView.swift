@@ -29,7 +29,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
     var alreadyOpen = false
     var adjustedRegionShift:CGFloat = -1
     
-    override var annotation: MKAnnotation! {
+    override var annotation: MKAnnotation? {
         didSet {
             self.alreadyOpen = false
             self.prepareFrameSize()
@@ -43,12 +43,12 @@ class CalloutMapAnnotationView: MKAnnotationView {
         super.init(frame: frame)
     }
 
-    override init!(annotation: MKAnnotation!, reuseIdentifier: String!) {
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = UIColor.clearColor()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -70,10 +70,10 @@ class CalloutMapAnnotationView: MKAnnotationView {
     
     func prepareOffset() {
         if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView {
-            var parentOrigin:CGPoint = mapView.convertPoint(parentAnnotationView.frame.origin, fromView: parentAnnotationView.superview)
-            var xOffset = (mapView.frame.size.width / 2.0) - (parentOrigin.x + self.offsetFromParent.x)
+            let parentOrigin:CGPoint = mapView.convertPoint(parentAnnotationView.frame.origin, fromView: parentAnnotationView.superview)
+            let xOffset = (mapView.frame.size.width / 2.0) - (parentOrigin.x + self.offsetFromParent.x)
             
-            var yOffset = -(self.frame.size.height / 2 + parentAnnotationView.frame.size.height / 2) + self.offsetFromParent.y + bottomShadowBufferSize
+            let yOffset = -(self.frame.size.height / 2 + parentAnnotationView.frame.size.height / 2) + self.offsetFromParent.y + bottomShadowBufferSize
             self.centerOffset = CGPointMake(xOffset, yOffset)
         }
     }
@@ -81,12 +81,12 @@ class CalloutMapAnnotationView: MKAnnotationView {
     func adjustMapRegionIfNeeded() {
         if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView where !self.alreadyOpen {
             //longitude
-            var xPixelShift:CGFloat = self.getXPixelShift()
+            let xPixelShift:CGFloat = self.getXPixelShift()
             //latitude
-            var mapViewOriginRelativeToParent = mapView.convertPoint(mapView.frame.origin, toView: parentAnnotationView)
+            let mapViewOriginRelativeToParent = mapView.convertPoint(mapView.frame.origin, toView: parentAnnotationView)
             var yPixelShift:CGFloat = 0.0
-            var pixelsFromTopOfMapView = -(mapViewOriginRelativeToParent.y + self.frame.size.height - bottomShadowBufferSize)
-            var pixelsFromBottomOfMapView = mapView.frame.size.height + mapViewOriginRelativeToParent.y - parentAnnotationView.frame.size.height
+            let pixelsFromTopOfMapView = -(mapViewOriginRelativeToParent.y + self.frame.size.height - bottomShadowBufferSize)
+            let pixelsFromBottomOfMapView = mapView.frame.size.height + mapViewOriginRelativeToParent.y - parentAnnotationView.frame.size.height
             
             if pixelsFromTopOfMapView < 7 {
                 yPixelShift = 7 - pixelsFromTopOfMapView
@@ -100,8 +100,8 @@ class CalloutMapAnnotationView: MKAnnotationView {
                 } else {
                     self.adjustedRegionShift = xPixelShift
                 }
-                var pixelsPerDegreeLongitude:CGFloat = mapView.frame.size.width / CGFloat(mapView.region.span.longitudeDelta)
-                var pixelsPerDegreeLatitude:CGFloat = mapView.frame.size.height / CGFloat(mapView.region.span.latitudeDelta)
+                let pixelsPerDegreeLongitude:CGFloat = mapView.frame.size.width / CGFloat(mapView.region.span.longitudeDelta)
+                let pixelsPerDegreeLatitude:CGFloat = mapView.frame.size.height / CGFloat(mapView.region.span.latitudeDelta)
             
                 let longitudinalShift:CLLocationDegrees = Double(-(xPixelShift / pixelsPerDegreeLongitude))
                 let latitudinalShift:CLLocationDegrees = Double(yPixelShift/pixelsPerDegreeLatitude)
@@ -122,20 +122,22 @@ class CalloutMapAnnotationView: MKAnnotationView {
     
     func getXPixelShift() -> CGFloat {
         var xPixelShift:CGFloat = 0
-        if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView {
-            
-            if self.relativeParentXPosition() < 38 {
-                xPixelShift = 38 - self.relativeParentXPosition()
-            } else if self.relativeParentXPosition() > (self.frame.size.width - 88) {
-                xPixelShift = (self.frame.size.width - 88) - self.relativeParentXPosition()
-            }
+        guard let _ = self.mapView, let _ = self.parentAnnotationView else {
+            return xPixelShift
         }
+            
+        if self.relativeParentXPosition() < 38 {
+            xPixelShift = 38 - self.relativeParentXPosition()
+        } else if self.relativeParentXPosition() > (self.frame.size.width - 88) {
+            xPixelShift = (self.frame.size.width - 88) - self.relativeParentXPosition()
+        }
+        
         return xPixelShift
     }
     
     func relativeParentXPosition() -> CGFloat {
         if let mapView = self.mapView, let parentAnnotationView = self.parentAnnotationView {
-            var parentOrigin:CGPoint = mapView.convertPoint(parentAnnotationView.frame.origin, fromView: parentAnnotationView.superview)
+            let parentOrigin:CGPoint = mapView.convertPoint(parentAnnotationView.frame.origin, fromView: parentAnnotationView.superview)
             return parentOrigin.x - self.offsetFromParent.x
         }
         return 0.0
@@ -173,7 +175,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
         UIView.setAnimationDidStopSelector("animateInStepThree")
         UIView.setAnimationDelegate(self)
         
-        var scale:CGFloat = 0.95
+        let scale:CGFloat = 0.95
         self.transform = CGAffineTransformMake(scale, 0.0, 0.0, scale, self.xTransformForScale(scale), self.yTransformForScale(scale))
         
         UIView.commitAnimations()
@@ -184,7 +186,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
         UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
         UIView.setAnimationDuration(0.075)
         
-        var scale:CGFloat = 1.0
+        let scale:CGFloat = 1.0
         self.transform = CGAffineTransformMake(scale, 0.0, 0.0, scale, self.xTransformForScale(scale), self.yTransformForScale(scale))
         UIView.commitAnimations()
     }
@@ -195,20 +197,18 @@ class CalloutMapAnnotationView: MKAnnotationView {
     }
     
     override func drawRect(rect: CGRect) {
-        var stroke:CGFloat = 1.0
-        var radius:CGFloat = 7.0
-        var path:CGMutablePathRef = CGPathCreateMutable()
+        let stroke:CGFloat = 1.0
+        let radius:CGFloat = 7.0
+        let path:CGMutablePathRef = CGPathCreateMutable()
         
-        var space:CGColorSpaceRef = CGColorSpaceCreateDeviceRGB()
-        var context:CGContextRef = UIGraphicsGetCurrentContext();
-        
+        let context:CGContextRef = UIGraphicsGetCurrentContext()!
         
         /**
         * In case of pixel shift, when the map view is moving to display the annotaiton
         * use the shift to draw the rect, so the triangle is not out of the rectangle
         **/
-        var parentX:CGFloat = self.getParentX()
-        var nrect = self.getRectDraw()
+        let parentX:CGFloat = self.getParentX()
+        let nrect = self.getRectDraw()
         
         //Create Path For Callout Bubble
         CGPathMoveToPoint(path, nil, nrect.origin.x, nrect.origin.y + radius)
@@ -239,7 +239,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
         color = UIColor.darkGrayColor().colorWithAlphaComponent(0.9)
         color.setStroke()
         CGContextSetLineWidth(context, stroke)
-        CGContextSetLineCap(context, kCGLineCapSquare)
+        CGContextSetLineCap(context, CGLineCap.Square)
         CGContextAddPath(context, path)
         CGContextStrokePath(context)
     }
@@ -249,7 +249,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
     }
     
     func getRectDraw() -> CGRect {
-        var stroke:CGFloat = 1.0
+        let stroke:CGFloat = 1.0
         var nrect = self.bounds
         nrect.size.width -= stroke + 14
         nrect.size.height -= stroke + heightAboveParent - self.offsetFromParent.y + bottomShadowBufferSize
@@ -261,7 +261,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
     
     func yShadowOffset() -> CGFloat {
         if _yShadowOffset == nil {
-            var osVersion = NSString(string: UIDevice.currentDevice().systemVersion).floatValue
+            let osVersion = NSString(string: UIDevice.currentDevice().systemVersion).floatValue
             if osVersion >= 3.2 {
                 _yShadowOffset = 6
             } else {
@@ -272,7 +272,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
         return _yShadowOffset!
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.superview?.bringSubviewToFront(self)
         super.touchesBegan(touches, withEvent: event)
     }
@@ -283,7 +283,7 @@ class CalloutMapAnnotationView: MKAnnotationView {
         }
         self._contentView = UIView()
         self._contentView?.backgroundColor = UIColor.clearColor()
-        self._contentView?.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        self._contentView?.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         self.addSubview(self._contentView!)
         
         return self._contentView!

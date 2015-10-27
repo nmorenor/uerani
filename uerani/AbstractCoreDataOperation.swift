@@ -25,11 +25,11 @@ public class AbstractCoreDataOperation : NSOperation {
     }
     
     lazy var sharedModelContext:NSManagedObjectContext = {
-        return CoreDataStackManager.sharedInstance().dataStack.childManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
+        return CoreDataStackManager.sharedInstance().dataStack.childManagedObjectContext(NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
         }()
     
     func mergeChanges(notification:NSNotification) {
-        var mainContext:NSManagedObjectContext = CoreDataStackManager.sharedInstance().dataStack.managedObjectContext
+        let mainContext:NSManagedObjectContext = CoreDataStackManager.sharedInstance().dataStack.managedObjectContext
         dispatch_async(dispatch_get_main_queue()) {
             mainContext.mergeChangesFromContextDidSaveNotification(notification)
             saveContext(CoreDataStackManager.sharedInstance().dataStack.managedObjectContext) { success, error in

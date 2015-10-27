@@ -41,14 +41,20 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
     
     func createFavoriteListIfNeeded() {
         if let user = self.user {
-            var request = NSFetchRequest(entityName: "CDVenueList")
+            let request = NSFetchRequest(entityName: "CDVenueList")
             request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false)]
             request.predicate = NSPredicate(format: "ANY user == %@", user)
             
             var error:NSError? = nil
-            var result = self.sharedModelContext.executeFetchRequest(request, error: &error)
-            if let error = error {
-                println("Can not find favorite list for user")
+            var result: [AnyObject]?
+            do {
+                result = try self.sharedModelContext.executeFetchRequest(request)
+            } catch let error1 as NSError {
+                error = error1
+                result = nil
+            }
+            if let _ = error {
+                print("Can not find favorite list for user")
             } else {
                 var createFavoriteList = true
                 if let result = result {
@@ -57,7 +63,7 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
                     }
                 }
                 if createFavoriteList {
-                    let list = CDVenueList(title: "Favorites", user: user, context: self.sharedModelContext)
+                    _ = CDVenueList(title: "Favorites", user: user, context: self.sharedModelContext)
                     saveContext(self.sharedModelContext) { success in
                         //do nothing
                     }
@@ -94,13 +100,13 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
     func downloadUserPhoto(user:CDUser?) {
         if let user = user {
             if let photo = user.photo {
-                var photoURL = "\(photo.prefix)100x100\(photo.suffix)"
+                let photoURL = "\(photo.prefix)100x100\(photo.suffix)"
                 if let url = NSURL(string: photoURL) {
-                    var imageCacheName = "user_\(user.id)_\(getImageIdentifier(url)!)"
+                    let imageCacheName = "user_\(user.id)_\(getImageIdentifier(url)!)"
                     let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
                     
                     if nextImage == nil {
-                        var downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: LocationRequestManager.sharedInstance().userRefreshOperationQueue, finishHandler: self.unlockDownload)
+                        let downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: LocationRequestManager.sharedInstance().userRefreshOperationQueue, finishHandler: self.unlockDownload)
                         downloadImage.performDownload(url)
                         //wait for the download
                         dispatch_semaphore_wait(imageSemaphore, DISPATCH_TIME_FOREVER)
@@ -112,13 +118,19 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
     
     func getUserFromResponse(result:[String:AnyObject]?) -> CDUser? {
         if let result = result, userId = result[FoursquareClient.RespnoseKeys.ID] as? String {
-            var request = NSFetchRequest(entityName: "CDUser")
+            let request = NSFetchRequest(entityName: "CDUser")
             request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
             request.predicate = NSPredicate(format: "id == %@", userId)
             
             var error:NSError? = nil
-            var cResult = self.sharedModelContext.executeFetchRequest(request, error: &error)
-            if let error = error {
+            var cResult: [AnyObject]?
+            do {
+                cResult = try self.sharedModelContext.executeFetchRequest(request)
+            } catch let error1 as NSError {
+                error = error1
+                cResult = nil
+            }
+            if let _ = error {
                 self.refreshDelegate?.refreshUserDataError("Can not update user data")
             } else {
                 if let cResult = cResult {
@@ -149,7 +161,7 @@ public class UserRefreshOperation : AbstractCoreDataOperation {
                                     cPhoto.prefix = photo[FoursquareClient.RespnoseKeys.PREFIX] as! String
                                     cPhoto.suffix = photo[FoursquareClient.RespnoseKeys.SUFFIX] as! String
                                 } else {
-                                    var cPhoto = CDPhoto(data: photo, context: self.sharedModelContext)
+                                    let cPhoto = CDPhoto(data: photo, context: self.sharedModelContext)
                                     cPhoto.user = user
                                     user.photo = cPhoto
                                 }

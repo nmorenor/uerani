@@ -12,7 +12,7 @@ import RealmSwift
 public protocol TimeFrames : class {
     
     var days:String {get}
-    var c_open:GeneratorOf<TimeOpenFrames> {get}
+    var c_open:AnyGenerator<TimeOpenFrames> {get}
 }
 
 public protocol TimeOpenFrames {
@@ -23,15 +23,15 @@ public protocol TimeOpenFrames {
 public class FTimeFrames : Object, TimeFrames {
     
     public dynamic var days:String = ""
-    public dynamic var open = List<FTimeOpenFrames>()
+    public let open = List<FTimeOpenFrames>()
     
-    public var c_open:GeneratorOf<TimeOpenFrames> {
+    public var c_open:AnyGenerator<TimeOpenFrames> {
         get {
-            var queue = Queue<TimeOpenFrames>()
+            let queue = Queue<TimeOpenFrames>()
             for next in open {
                 queue.enqueue(next)
             }
-            return GeneratorOf<TimeOpenFrames>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     

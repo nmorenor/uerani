@@ -4,37 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-uerani-FBAnnotationClustering.xcscheme</key>
+		<key>FBAnnotationClustering.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-uerani-FSOAuth.xcscheme</key>
+		<key>FSOAuth.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-uerani-Locksmith-Locksmith.xcscheme</key>
+		<key>Locksmith.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-uerani-Locksmith.xcscheme</key>
+		<key>Nimble.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-uerani-OAuthSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-uerani-Realm.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-uerani-RealmSwift.xcscheme</key>
+		<key>OAuthSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -44,52 +34,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-ueraniTests-FBAnnotationClustering.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ueraniTests-FSOAuth.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ueraniTests-Locksmith-Locksmith.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ueraniTests-Locksmith.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ueraniTests-Nimble.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ueraniTests-OAuthSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ueraniTests-Quick.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ueraniTests-Realm.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-ueraniTests-RealmSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-ueraniTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Quick.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Realm.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RealmSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -97,92 +57,52 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>09C0E4895C8A49D25756E7B8</key>
+		<key>05808644155557E3D66D7C7309244A78</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>15918259D5362E729ADCD500</key>
+		<key>10627F6ABB0725E6F9674A42EBD888C7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1677937D5327DFBCB9946375</key>
+		<key>5AF5EAD960AF0CCB97E2E6297FB22F31</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1698CF5E4B86F52D59C7FBB0</key>
+		<key>92943306EC8070DF9CD02ECD505D2CD5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1B549E2B7B4A7430828E1B13</key>
+		<key>B32579782FBDDA98B148B95D5A45ADD3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1ECB65E469C44E7E315DA880</key>
+		<key>B50F3727FF4F790E1C8050320C4D5603</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3450A2DD490D6F831E87BFA1</key>
+		<key>C5DB5104FED3C10F78978AFC810982B9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>37AA9275BC989D7A891BC3CF</key>
+		<key>D5A8B2D4FAAB97E3794C994EE3AA5CDA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>39248236B026F07CEF093F4D</key>
+		<key>DE93970FB68874F2C2C5274B42422D36</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>39E827F2FCD39238816AC732</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>690E0485FDCA9EDFDD65C59A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8458B51FC253FCDB619E4D18</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>86676D8FAFE19DE46E2CF28D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C549470067273151B39C7E5A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DFCCFB3676DCC8684C157F13</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E68F0B6FBB1DE3656D394303</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E83FC96C0408C3FCD124C7A2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EF6EA7603626F798E2D7D462</key>
+		<key>FBD9353990A2FC097E84FB3FC29A6AF5</key>
 		<dict>
 			<key>primary</key>
 			<true/>

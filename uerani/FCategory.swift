@@ -18,7 +18,7 @@ public protocol Category : IconCapable {
     var primary: Bool {get}
     var topCategory: Bool {get}
     
-    var c_categories:GeneratorOf<Category> {get}
+    var c_categories:AnyGenerator<Category> {get}
     var c_icon:Icon? {get}
     
 }
@@ -32,7 +32,7 @@ public class FCategory: Object, IconCapable, Category {
     public dynamic var icon:FIcon?
     public dynamic var primary = false
     public dynamic var topCategory = false
-    public dynamic var categories = List<FSubCategory>()
+    public let categories = List<FSubCategory>()
     
     public var c_icon:Icon? {
         get {
@@ -51,13 +51,13 @@ public class FCategory: Object, IconCapable, Category {
         }
     }
     
-    public var c_categories:GeneratorOf<Category> {
+    public var c_categories:AnyGenerator<Category> {
         get {
-            var queue = Queue<Category>()
+            let queue = Queue<Category>()
             for next in categories {
                 queue.enqueue(next)
             }
-            return GeneratorOf<Category>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     
@@ -77,6 +77,6 @@ public class FCategory: Object, IconCapable, Category {
     }
 }
 
-public class FSubCategory:FCategory, Category {
+public class FSubCategory:FCategory {
     
 }

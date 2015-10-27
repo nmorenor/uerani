@@ -27,9 +27,14 @@ class CoreDataStackManager {
     
     func saveContext() {
         var error:NSError? = nil
-        if self.dataStack.managedObjectContext.hasChanges && !self.dataStack.managedObjectContext.save(&error) {
-            NSLog("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+        if self.dataStack.managedObjectContext.hasChanges {
+            do {
+                try self.dataStack.managedObjectContext.save()
+            } catch let error1 as NSError {
+                error = error1
+                NSLog("Unresolved error \(error), \(error!.userInfo)")
+                abort()
+            }
         }
     }
 }

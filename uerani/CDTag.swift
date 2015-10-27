@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDTag)
 
-public class CDTag : NSManagedObject, Printable, Tag {
+public class CDTag : NSManagedObject, Tag {
     
     @NSManaged public var tagvalue:String
     

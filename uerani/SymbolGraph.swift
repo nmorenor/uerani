@@ -21,7 +21,7 @@ public class SymbolGraph<T:KeySymbolVertex> {
     init(keys:[T], p:T) {
         self.st = [T:Int]()
         for i in 0..<keys.count {
-            var nextKey:T = keys[i]
+            let nextKey:T = keys[i]
             if self.st[nextKey] == nil {
                 self.st[nextKey] = self.st.count
             }
@@ -38,7 +38,7 @@ public class SymbolGraph<T:KeySymbolVertex> {
     }
     
     public func contains(key:T) -> Bool {
-        if let v = self.st[key] {
+        if let _ = self.st[key] {
             return true
         }
         return false

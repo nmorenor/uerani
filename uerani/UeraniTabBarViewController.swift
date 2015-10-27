@@ -20,18 +20,18 @@ class UeraniTabBarViewController : UITabBarController {
         self.tabBar.tintColor = selectedColor
         
         //set custom colors
-        var mapItem = self.tabBar.items![0] as! UITabBarItem
-        var mapImage = UIImage(named: "map")
+        let mapItem = self.tabBar.items![0] 
+        let mapImage = UIImage(named: "map")
         mapItem.image = mapImage!.imageWithColor(unselectedColor)!.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         mapItem.selectedImage = mapImage!.imageWithColor(selectedColor)!.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         
-        var listItem = self.tabBar.items![1] as! UITabBarItem
-        var listImage = UIImage(named: "list")
+        let listItem = self.tabBar.items![1] 
+        let listImage = UIImage(named: "list")
         listItem.image = listImage!.imageWithColor(unselectedColor)!.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         listItem.selectedImage = listImage!.imageWithColor(selectedColor)!.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         
-        var userItem = self.tabBar.items![2] as! UITabBarItem
-        var userImage = UIImage(named: "user")
+        let userItem = self.tabBar.items![2] 
+        let userImage = UIImage(named: "user")
         userItem.image = userImage!.imageWithColor(unselectedColor)!.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         userItem.selectedImage = userImage!.imageWithColor(selectedColor)!.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         

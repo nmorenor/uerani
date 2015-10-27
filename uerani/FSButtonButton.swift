@@ -26,7 +26,7 @@ class FSButton: UIButton {
     
     // MARK: - Constructors
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.cornerRadius = fsButtonCornerRadius;
         
@@ -35,7 +35,7 @@ class FSButton: UIButton {
         image = image!.imageRotatedByDegrees(-90.0, flip: false)
         image = image!.cropHeight(45)
         
-        self.setImage(image!, forState: UIControlState.allZeros)
+        self.setImage(image!, forState: UIControlState())
     }
     
     override init(frame: CGRect) {
@@ -54,7 +54,7 @@ class FSButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.imageView?.layer.shouldRasterize = true
-        self.imageView?.layer.edgeAntialiasingMask = CAEdgeAntialiasingMask.LayerLeftEdge | .LayerRightEdge | .LayerBottomEdge | CAEdgeAntialiasingMask.LayerTopEdge
+        self.imageView?.layer.edgeAntialiasingMask = [CAEdgeAntialiasingMask.LayerLeftEdge, .LayerRightEdge, .LayerBottomEdge, CAEdgeAntialiasingMask.LayerTopEdge]
         self.imageView?.clipsToBounds = false
         self.imageView?.layer.masksToBounds = false
     }
@@ -80,12 +80,12 @@ class FSButton: UIButton {
     
     // MARK: - Tracking
     
-    override func beginTrackingWithTouch(touch: UITouch, withEvent: UIEvent) -> Bool {
+    override func beginTrackingWithTouch(touch: UITouch, withEvent: UIEvent?) -> Bool {
         self.backgroundColor = self.highlightedBackingColor
         return true
     }
     
-    override func endTrackingWithTouch(touch: UITouch, withEvent: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent: UIEvent?) {
         self.backgroundColor = self.backingColor
     }
     

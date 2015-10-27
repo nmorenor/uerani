@@ -25,7 +25,7 @@ public class FoursquareConfig:NSObject, NSCoding {
     
     public var daysSinceLastUpdate:Int? {
         if let lastUpdate = dateUpdated {
-            var timeInterval = NSDate().timeIntervalSinceDate(lastUpdate)
+            let timeInterval = NSDate().timeIntervalSinceDate(lastUpdate)
             return Int(timeInterval / (60*60*24))
         } else {
             return nil
@@ -39,28 +39,33 @@ public class FoursquareConfig:NSObject, NSCoding {
             }
         }
         //clean cache database
-        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
-        realm.write() {
+        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        try! realm.write() {
             realm.deleteAll()
         }
         
         let fileManager = NSFileManager.defaultManager()
         
-        var imageCacheDir = ImageCache.sharedInstance().imagesDirectoryURL.path!
-        var exist = fileManager.fileExistsAtPath(imageCacheDir)
+        let imageCacheDir = ImageCache.sharedInstance().imagesDirectoryURL.path!
+        let exist = fileManager.fileExistsAtPath(imageCacheDir)
         if exist {
-            var error:NSError?
-            for file in fileManager.contentsOfDirectoryAtPath(imageCacheDir, error: &error) as! [String] {
-                var success = fileManager.removeItemAtPath("\(imageCacheDir)/\(file)", error: &error)
+            for file in (try! fileManager.contentsOfDirectoryAtPath(imageCacheDir)) {
+                var success: Bool
+                do {
+                    try fileManager.removeItemAtPath("\(imageCacheDir)/\(file)")
+                    success = true
+                } catch _ as NSError {
+                    success = false
+                }
                 if !success && DEBUG {
-                    println("Can not delete \(file)")
+                    print("Can not delete \(file)")
                 }
             }
         }
         
         if let userId = FoursquareClient.sharedInstance().userId {
             //do not let uber access token expire
-            Locksmith.deleteDataForUserAccount("uber-client-\(userId)")
+            try! Locksmith.deleteDataForUserAccount("uber-client-\(userId)")
         }
         
         self.dateUpdated = NSDate()
@@ -84,7 +89,7 @@ public class FoursquareConfig:NSObject, NSCoding {
         return nil
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         dateUpdated = aDecoder.decodeObjectForKey(DateUpdatedKey) as? NSDate
         dictionary = aDecoder.decodeObjectForKey(DictionaryData) as? NSMutableDictionary
     }

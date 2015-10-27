@@ -19,13 +19,13 @@ public class CDHours : NSManagedObject, Hours {
     
     @NSManaged public var venue:CDVenue?
     
-    public var c_timeFrames:GeneratorOf<TimeFrames> {
+    public var c_timeFrames:AnyGenerator<TimeFrames> {
         get {
-            var queue = Queue<TimeFrames>()
+            let queue = Queue<TimeFrames>()
             for next in self.timeframes {
                 queue.enqueue(next)
             }
-            return GeneratorOf<TimeFrames>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     
@@ -42,7 +42,7 @@ public class CDHours : NSManagedObject, Hours {
         self.isOpen = hours.isOpen
         
         for nextTimeFrame in hours.timeframes {
-            var frame = CDTimeFrames(timeFrames: nextTimeFrame, context: context)
+            let frame = CDTimeFrames(timeFrames: nextTimeFrame, context: context)
             frame.hours = self
         }
     }

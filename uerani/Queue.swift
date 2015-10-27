@@ -16,10 +16,10 @@ public class Queue<T> : SequenceType {
     var size:Int = 0
     
     public func enqueue(value:T) {
-        var toEnqueue = QNode<T>()
+        let toEnqueue = QNode<T>()
         toEnqueue.item = value
-        if let first = self.first, currentFirst = first.item {
-            var oldLast = self.last
+        if let first = self.first, _ = first.item {
+            let oldLast = self.last
             oldLast?.next = toEnqueue
             self.last = toEnqueue
         } else {
@@ -46,7 +46,7 @@ public class Queue<T> : SequenceType {
 public struct MyGenerator<T>:GeneratorType {
     
     var currentNode:QNode<T>?
-    typealias Element = T
+    public typealias Element = T
     
     init(node:QNode<T>?) {
         self.currentNode = node

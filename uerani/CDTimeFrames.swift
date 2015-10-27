@@ -18,13 +18,13 @@ public class CDTimeFrames : NSManagedObject, TimeFrames {
     
     @NSManaged public var hours:CDHours?
     
-    public var c_open:GeneratorOf<TimeOpenFrames> {
+    public var c_open:AnyGenerator<TimeOpenFrames> {
         get {
-            var queue = Queue<TimeOpenFrames>()
+            let queue = Queue<TimeOpenFrames>()
             for next in open {
                 queue.enqueue(next)
             }
-            return GeneratorOf<TimeOpenFrames>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     
@@ -39,7 +39,7 @@ public class CDTimeFrames : NSManagedObject, TimeFrames {
         self.days = timeFrames.days
 
         for nextFrame in timeFrames.open {
-            var openFrame = CDTimeOpenFrames(openFrames: nextFrame, context: context)
+            let openFrame = CDTimeOpenFrames(openFrames: nextFrame, context: context)
             openFrame.timeFrames = self
         }
     }

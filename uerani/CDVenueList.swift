@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDVenueList)
 
-public class CDVenueList : NSManagedObject, Equatable, Hashable, Printable {
+public class CDVenueList : NSManagedObject {
     
     @NSManaged public var venues:NSMutableSet
     @NSManaged public var user:CDUser

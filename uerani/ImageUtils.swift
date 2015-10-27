@@ -25,7 +25,7 @@ extension UIImage {
         
         CGContextSetAllowsAntialiasing(bitmap, true)
         CGContextSetShouldAntialias(bitmap, true)
-        CGContextSetInterpolationQuality(bitmap, kCGInterpolationHigh)
+        CGContextSetInterpolationQuality(bitmap, CGInterpolationQuality.High)
         
         // Move the origin to the middle of the image so we will rotate and scale around the center.
         CGContextTranslateCTM(bitmap, rotatedSize.width / 2.0, rotatedSize.height / 2.0)
@@ -53,52 +53,52 @@ extension UIImage {
     
     public func resizeImage(newSize:CGSize) -> UIImage {
         
-        var newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
-        var imageRef:CGImageRef = self.CGImage
+        let newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
+        let imageRef:CGImageRef = self.CGImage!
         
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
-        var context:CGContextRef = UIGraphicsGetCurrentContext()
+        let context:CGContextRef = UIGraphicsGetCurrentContext()!
         
         // Set the quality level to use when rescaling
-        CGContextSetInterpolationQuality(context, kCGInterpolationHigh)
+        CGContextSetInterpolationQuality(context, CGInterpolationQuality.High)
         CGContextSetAllowsAntialiasing(context, true)
         CGContextSetShouldAntialias(context, true)
         
-        var flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
+        let flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
         
         CGContextConcatCTM(context, flipVertical)
         // Draw into the context; this scales the image
         CGContextDrawImage(context, newRect, imageRef)
         
         // Get the resized image from the context and a UIImage
-        var newImage:UIImage = UIImage(CGImage: CGBitmapContextCreateImage(context))!
+        let newImage:UIImage = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
         
         UIGraphicsEndImageContext();
         return newImage
     }
     
     public func resizeImageWithScale(scale:CGFloat) -> UIImage {
-        var newSize = CGSizeApplyAffineTransform(self.size, CGAffineTransformMakeScale(scale, scale))
-        var newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
-        var imageRef:CGImageRef = self.CGImage
+        let newSize = CGSizeApplyAffineTransform(self.size, CGAffineTransformMakeScale(scale, scale))
+        let newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
+        let imageRef:CGImageRef = self.CGImage!
         
         //0 means grab the scale from device
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
-        var context:CGContextRef = UIGraphicsGetCurrentContext()
+        let context:CGContextRef = UIGraphicsGetCurrentContext()!
         
         // Set the quality level to use when rescaling
-        CGContextSetInterpolationQuality(context, kCGInterpolationHigh)
+        CGContextSetInterpolationQuality(context, CGInterpolationQuality.High)
         CGContextSetAllowsAntialiasing(context, true)
         CGContextSetShouldAntialias(context, true)
         
-        var flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
+        let flipVertical:CGAffineTransform = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height)
         
         CGContextConcatCTM(context, flipVertical)
         // Draw into the context; this scales the image
         CGContextDrawImage(context, newRect, imageRef)
         
         // Get the resized image from the context and a UIImage
-        var newImage:UIImage = UIImage(CGImage: CGBitmapContextCreateImage(context))!
+        let newImage:UIImage = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
         
         UIGraphicsEndImageContext();
         return newImage
@@ -106,24 +106,24 @@ extension UIImage {
     
     func cropHeight(offset:CGFloat) -> UIImage {
         // Create a copy of the image without the imageOrientation property so it is in its native orientation (landscape)
-        let contextImage: UIImage = UIImage(CGImage: self.CGImage)!
+        let contextImage: UIImage = UIImage(CGImage: self.CGImage!)
         
         // Get the size of the contextImage
         let contextSize: CGSize = contextImage.size
         
         // Check to see which length is the longest and create the offset based on that length, then set the width and height of our rect
-        var posX:CGFloat = 0
-        var posY:CGFloat = offset
-        var width:CGFloat = contextSize.width
-        var height:CGFloat = contextSize.height - offset
+        let posX:CGFloat = 0
+        let posY:CGFloat = offset
+        let width:CGFloat = contextSize.width
+        let height:CGFloat = contextSize.height - offset
         
         let rect: CGRect = CGRectMake(posX, posY, width, height)
         
         // Create bitmap image from context using the rect
-        let imageRef: CGImageRef = CGImageCreateWithImageInRect(contextImage.CGImage, rect)
+        let imageRef: CGImageRef = CGImageCreateWithImageInRect(contextImage.CGImage, rect)!
         
         // Create a new image based on the imageRef and rotate back to the original orientation
-        let image: UIImage = UIImage(CGImage: imageRef, scale: self.scale, orientation: self.imageOrientation)!
+        let image: UIImage = UIImage(CGImage: imageRef, scale: self.scale, orientation: self.imageOrientation)
         
         return image
     }
@@ -153,10 +153,10 @@ extension UIImage {
         // set a mask that matches the rect of the image, then draw the color burned context path.
         CGContextClipToMask(context, rect, self.CGImage)
         CGContextAddRect(context, rect)
-        CGContextDrawPath(context, kCGPathFill)
+        CGContextDrawPath(context, CGPathDrawingMode.Fill)
         
         // generate a new UIImage from the graphics context we've been drawing onto
-        var image = UIGraphicsGetImageFromCurrentImageContext()
+        let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         return image

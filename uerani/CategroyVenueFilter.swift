@@ -18,12 +18,12 @@ public class CategroyVenueFilter {
     
     init(filter:CategoryFilter) {
         self.catFilter = CategoryFilter(id: filter.id)
-        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         let results = realm.objects(FCategory)
         
         var filterGraph:[CategoryFilter] = [CategoryFilter]()
         for next in results {
-            var nextFilter = CategoryFilter(id: next.id)
+            let nextFilter = CategoryFilter(id: next.id)
             filterGraph.append(nextFilter)
             if next.id == filter.id {
                 self.catFilter.setCategories(next)
@@ -31,7 +31,7 @@ public class CategroyVenueFilter {
         }
         let sresults = realm.objects(FSubCategory)
         for next in sresults {
-            var nextFilter = CategoryFilter(id: next.id)
+            let nextFilter = CategoryFilter(id: next.id)
             filterGraph.append(nextFilter)
             if next.id == filter.id {
                 self.catFilter.setCategories(next)
@@ -40,24 +40,24 @@ public class CategroyVenueFilter {
         
         self.symbolGraph = SymbolGraph(keys: filterGraph, p:self.catFilter)
         
-        var index = symbolGraph.indexOf(filter)
+        let index = symbolGraph.indexOf(filter)
         if index == -1 {
             if DEBUG {
-                println("can not find filter in graph")
+                Swift.print("can not find filter in graph")
             }
         } else {
             self.filter = DirectedDepthFirstSearch(g: symbolGraph.g, s: index)
         }
     }
     
-    func filterVenues(venues:GeneratorOf<FVenue>) -> GeneratorOf<FVenue> {
-        var result = Queue<FVenue>()
+    func filterVenues(venues:AnyGenerator<FVenue>) -> AnyGenerator<FVenue> {
+        let result = Queue<FVenue>()
         outer : for next in venues {
             for nextCategory in next.categories {
-                var index = self.symbolGraph.indexOf(CategoryFilter(id: nextCategory.id))
+                let index = self.symbolGraph.indexOf(CategoryFilter(id: nextCategory.id))
                 if (index == -1) {
                     if DEBUG {
-                        println("Can not find index for graph \(nextCategory.id)")
+                        Swift.print("Can not find index for graph \(nextCategory.id)")
                     }
                     continue
                 }
@@ -68,7 +68,7 @@ public class CategroyVenueFilter {
             }
             
         }
-        return GeneratorOf<FVenue>(result.generate())
+        return anyGenerator(result.generate())
     }
 }
 
@@ -96,7 +96,7 @@ public struct CategoryFilter: KeySymbolVertex {
             if self.id == key.id {
                 return true
             }
-            var searching = key.id
+            let searching = key.id
             for next in categories {
                 if next == searching {
                     return true

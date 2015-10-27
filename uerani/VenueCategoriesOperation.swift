@@ -21,20 +21,20 @@ class VenueCategoriesOperation : AbstractCoreDataOperation {
     }
     
     override func main() {
-        var topCategoriesPredicate = NSPredicate(format: "topCategory = %@", NSNumber(bool: true))
-        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        let topCategoriesPredicate = NSPredicate(format: "topCategory = %@", NSNumber(bool: true))
+        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         
-        var rCategories = realm.objects(FCategory).filter(topCategoriesPredicate)
+        let rCategories = realm.objects(FCategory).filter(topCategoriesPredicate)
         if rCategories.count > 0 {
             //we already have categories on local cache, look for any category that has pending image download
             let results = realm.objects(FCategory)
             for nextCat in results {
                 var downloadCategoryImage = true
-                if let imageid = getImageIdentifier(FIcon.FIconSize.S32.description, nextCat), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
+                if let imageid = getImageIdentifier(FIcon.FIconSize.S32.description, iconCapable: nextCat), let _ = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
                     downloadCategoryImage = false
                 }
                 if downloadCategoryImage {
-                    FoursquareCategoryIconWorker(prefix: nextCat.icon!.prefix, suffix: nextCat.icon!.suffix)
+                    _ = FoursquareCategoryIconWorker(prefix: nextCat.icon!.prefix, suffix: nextCat.icon!.suffix)
                 }
             }
             self.delegate?.initializeSearchResults()
@@ -45,7 +45,7 @@ class VenueCategoriesOperation : AbstractCoreDataOperation {
         FoursquareClient.sharedInstance().searchCategories() { success, result, errorString in
             if let error = errorString {
                 if DEBUG {
-                    println(error)
+                    Swift.print(error, terminator: "")
                 }
             } else {
                 venueCategories = result!
@@ -56,7 +56,7 @@ class VenueCategoriesOperation : AbstractCoreDataOperation {
         dispatch_semaphore_wait(foursquareApiSemaphore, DISPATCH_TIME_FOREVER)
         
         var categories:[FCategory] = [FCategory]()
-        realm.write() {
+        try! realm.write() {
             for category in venueCategories {
                 let fCategory:FCategory = realm.create(FCategory.self, value: category, update: true)
                 categories.append(fCategory)
@@ -82,7 +82,7 @@ class VenueCategoriesOperation : AbstractCoreDataOperation {
     
     func createChildrenCategories(parentCategory:CDCategory, categories:List<FSubCategory>) {
         for child in categories {
-            var childCat = CDSubCategory(parentCategory: parentCategory, category: child, context: self.sharedModelContext)
+            let childCat = CDSubCategory(parentCategory: parentCategory, category: child, context: self.sharedModelContext)
             if (child.categories.count > 0) {
                 createChildrenCategories(childCat, categories: child.categories)
             }

@@ -34,7 +34,7 @@ public class FoursquareLocationOperation: NSOperation {
         if cancelled {
             return
         }
-        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         let shouldCallFoursquareAPI = self.shouldCallFoursquareAPI(realm)
         if !shouldCallFoursquareAPI {
             searchOnFoursquare = false
@@ -94,11 +94,11 @@ public class FoursquareLocationOperation: NSOperation {
     private func doLocalCacheSearch(realm:Realm) {
         let predicate = SearchBox.getPredicate(self.sw, ne: self.ne)
         let venueResults = realm.objects(FVenue).filter(predicate)
-        var venues:GeneratorOf<FVenue>
+        var venues:AnyGenerator<FVenue>
         if let filter = self.searchMediator.getFilter() {
-            venues = filter.filterVenues(venueResults.generate())
+            venues = filter.filterVenues(anyGenerator(venueResults.generate()))
         } else {
-            venues = venueResults.generate()
+            venues = anyGenerator(venueResults.generate())
         }
         
         var annotations = [FoursquareLocationMapAnnotation]()
@@ -106,11 +106,11 @@ public class FoursquareLocationOperation: NSOperation {
             
             for nextCat in nextVenue.categories {
                 var downloadCategoryImage = true
-                if let imageid = getImageIdentifier(FIcon.FIconSize.S32.description, nextCat), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
+                if let imageid = getImageIdentifier(FIcon.FIconSize.S32.description, iconCapable: nextCat), let _ = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
                     downloadCategoryImage = false
                 }
                 if downloadCategoryImage {
-                    FoursquareCategoryIconWorker(prefix: nextCat.icon!.prefix, suffix: nextCat.icon!.suffix)
+                    _ = FoursquareCategoryIconWorker(prefix: nextCat.icon!.prefix, suffix: nextCat.icon!.suffix)
                 }
             }
             annotations.append(FoursquareLocationMapAnnotation(venue: nextVenue))
@@ -135,18 +135,18 @@ public class FoursquareLocationOperation: NSOperation {
     }
     
     private func searchHandler(success:Bool, result:[[String:AnyObject]]?, errorString:String?) {
-        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
-        if let error = errorString {
+        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        if let _ = errorString {
             //when we have any kind of error searching on foursquare we will just try to look on local cache
             self.doLocalCacheSearch(realm)
         } else {
             if let result = result where result.count > 0 {
-                var newVenues:Queue = Queue<FVenue>()
+                let newVenues:Queue = Queue<FVenue>()
                 let center = self.getCenter()
                 let boxCenter = SearchBoxCenter()
                 boxCenter.lat = center.latitude
                 boxCenter.lng = center.longitude
-                realm.write() {
+                try! realm.write() {
                     realm.add(boxCenter, update: true)
                     for next in result {
                         let venue = realm.create(FVenue.self, value: next, update: true)
@@ -155,16 +155,16 @@ public class FoursquareLocationOperation: NSOperation {
                 }
                 
                 var annotations:[FoursquareLocationMapAnnotation] = [FoursquareLocationMapAnnotation]()
-                var venues:GeneratorOf<FVenue>
+                var venues:AnyGenerator<FVenue>
                 if let filter = self.searchMediator.getFilter() {
-                    venues = filter.filterVenues(GeneratorOf<FVenue>(newVenues.generate()))
+                    venues = filter.filterVenues(anyGenerator(newVenues.generate()))
                 } else {
-                    venues = GeneratorOf<FVenue>(newVenues.generate())
+                    venues = anyGenerator(newVenues.generate())
                 }
                 
                 for venue in venues {
                     for nextCategory in venue.categories {
-                        FoursquareCategoryIconWorker(prefix: nextCategory.icon!.prefix, suffix: nextCategory.icon!.suffix)
+                        _ = FoursquareCategoryIconWorker(prefix: nextCategory.icon!.prefix, suffix: nextCategory.icon!.suffix)
 
                     }
                     annotations.append(FoursquareLocationMapAnnotation(venue: venue))
@@ -188,7 +188,7 @@ public class FoursquareLocationOperation: NSOperation {
                 let boxCenter = SearchBoxCenter()
                 boxCenter.lat = center.latitude
                 boxCenter.lng = center.longitude
-                realm.write() {
+                try! realm.write() {
                     realm.add(boxCenter, update: true)
                 }
             }
@@ -206,7 +206,6 @@ public class FoursquareLocationOperation: NSOperation {
             objc_sync_exit(searchMediator.clusteringManager)
             return
         }
-        var annotationSet:NSSet = NSSet(array: annotations)
         if cancelled {
             objc_sync_exit(searchMediator.clusteringManager)
             return

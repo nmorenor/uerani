@@ -75,15 +75,15 @@ public class VenueImageView : UIView {
         self.topPath!.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y))
         self.topPath!.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y + rect.height))
     
-        var arcHeight:CGFloat = rect.size.height *  0.15
-        var arcRect:CGRect = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height - arcHeight, rect.size.width, arcHeight)
+        let arcHeight:CGFloat = rect.size.height *  0.15
+        let arcRect:CGRect = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height - arcHeight, rect.size.width, arcHeight)
         
-        var arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
-        var arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)
+        let arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
+        let arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)
         
-        var angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
-        var startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
-        var endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
+        let angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
+        let startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
+        let endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
         self.topPath!.addArcWithCenter(arcCenter, radius: arcRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         self.topPath!.closePath()
     }
@@ -91,15 +91,15 @@ public class VenueImageView : UIView {
     func createLineBezierPaht(rect: CGRect) {
         self.linePath = UIBezierPath()
         
-        var arcHeight:CGFloat = rect.size.height *  0.15
-        var arcRect:CGRect = CGRectMake(rect.origin.x, rect.height - arcHeight, rect.size.width, arcHeight)
+        let arcHeight:CGFloat = rect.size.height *  0.15
+        let arcRect:CGRect = CGRectMake(rect.origin.x, rect.height - arcHeight, rect.size.width, arcHeight)
         
-        var arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
-        var arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)
+        let arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
+        let arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)
         
-        var angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
-        var startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
-        var endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
+        let angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
+        let startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
+        let endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
         self.linePath!.addArcWithCenter(arcCenter, radius: arcRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
     }
     
@@ -112,15 +112,15 @@ public class VenueImageView : UIView {
         self.mapPath!.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y + rect.height))
         self.mapPath!.addLineToPoint(CGPointMake(rect.origin.x, rect.origin.y))
         
-        var arcHeight:CGFloat = rect.size.height *  0.15
-        var arcRect:CGRect = CGRectMake(rect.origin.x, rect.height - arcHeight, rect.size.width, arcHeight)
+        let arcHeight:CGFloat = rect.size.height *  0.15
+        let arcRect:CGRect = CGRectMake(rect.origin.x, rect.height - arcHeight, rect.size.width, arcHeight)
         
-        var arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
-        var arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)
+        let arcRadius:CGFloat = (arcRect.size.height/2) + (pow(arcRect.size.width, 2) / (8*arcRect.size.height))
+        let arcCenter:CGPoint  = CGPointMake(arcRect.origin.x + arcRect.size.width/2, arcRect.origin.y + arcRadius)
         
-        var angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
-        var startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
-        var endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
+        let angle:CGFloat = acos(arcRect.size.width / (2*arcRadius))
+        let startAngle:CGFloat = (CGFloat(toRadian(180)) + angle)
+        let endAngle:CGFloat = (CGFloat(toRadian(360)) - angle)
         self.mapPath!.addArcWithCenter(arcCenter, radius: arcRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         
         self.mapPath!.closePath()
@@ -139,6 +139,7 @@ public class VenueImageView : UIView {
         mapPhotoLayer.mask = mapMaskLayer
         
         mapPhotoLayer.contentsScale = UIScreen.mainScreen().scale
+        mapPhotoLayer.contentsGravity = kCAGravityLeft
         mapPolygonLayer.contentsScale = UIScreen.mainScreen().scale
         mapMaskLayer.contentsScale = UIScreen.mainScreen().scale
         

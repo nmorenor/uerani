@@ -1,0 +1,6 @@
+framework module FBAnnotationClustering {
+  umbrella header "FBAnnotationClustering-umbrella.h"
+
+  export *
+  module * { export * }
+}

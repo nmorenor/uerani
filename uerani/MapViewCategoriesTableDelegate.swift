@@ -15,7 +15,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let sections = self.fetchedResultsController.sections {
             if sections.count > 0 {
-                let info = sections[section] as! NSFetchedResultsSectionInfo
+                let info = sections[section] 
                 return info.numberOfObjects
             }
         }
@@ -26,7 +26,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
         let category = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDCategory
         let CellIdentifier = "categorySearchCell"
         
-        let cell = self.categoryViewSearch.dequeueReusableCellWithIdentifier(CellIdentifier) as! UITableViewCell
+        let cell = self.categoryViewSearch.dequeueReusableCellWithIdentifier(CellIdentifier)!
         
         configureCell(cell, category: category)
         
@@ -35,7 +35,6 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let category = self.fetchedResultsController.objectAtIndexPath(indexPath) as? CDCategory {
-            let categoryId = category.id
             self.mapView.hidden = false
             self.categoryViewSearch.hidden = true
             self.searchController.active = false
@@ -53,7 +52,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
         cell.imageView!.image = nil
         
         // Set the category image
-        if let imageid = getImageIdentifier(FIcon.FIconSize.S64.description, category), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
+        if let imageid = getImageIdentifier(FIcon.FIconSize.S64.description, iconCapable: category), let image = ImageCache.sharedInstance().imageWithIdentifier(imageid) {
             categoryImage = image
         }
         

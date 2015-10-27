@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wn7-5i-SaT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wn7-5i-SaT">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -19,6 +20,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="PAS-ws-nNx" customClass="FSButton" customModule="uerani">
                                 <rect key="frame" x="255" y="355" width="90" height="30"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="CONNECT TO">
@@ -31,12 +33,14 @@
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="uerani-logomark-bco" translatesAutoresizingMaskIntoConstraints="NO" id="Pqa-Cm-pSW">
                                 <rect key="frame" x="138" y="58" width="324" height="271"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="324" id="UIA-Jx-ofs"/>
                                     <constraint firstAttribute="height" constant="271" id="ht4-UZ-qZj"/>
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="PAS-ws-nNx" firstAttribute="top" secondItem="Pqa-Cm-pSW" secondAttribute="bottom" constant="26" id="2n1-Gu-2kM"/>
@@ -68,6 +72,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wnH-GA-Z0X" customClass="BorderedButton" customModule="uerani" customModuleProvider="target">
                                 <rect key="frame" x="244" y="468" width="112" height="34"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="112" id="8vi-gb-BHG"/>
@@ -82,11 +87,12 @@
                                     <action selector="doLogout:" destination="nFZ-cj-VXH" eventType="touchUpInside" id="Tpr-ve-OFf"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RT7-NU-1Um">
-                                <rect key="frame" x="21" y="324" width="563" height="41"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RT7-NU-1Um">
+                                <rect key="frame" x="25" y="302" width="555" height="42"/>
                                 <subviews>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XQd-8d-i6h">
-                                        <rect key="frame" x="506" y="5" width="51" height="30"/>
+                                        <rect key="frame" x="498" y="5" width="51" height="31"/>
+                                        <animations/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <color key="onTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
@@ -95,11 +101,13 @@
                                     </switch>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uber Connected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dIB-qG-wr6">
                                         <rect key="frame" x="8" y="11" width="126" height="20"/>
+                                        <animations/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -111,14 +119,15 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wnH-GA-Z0X" firstAttribute="centerX" secondItem="RT7-NU-1Um" secondAttribute="centerX" constant="-2.5" id="1Ww-Kt-yft"/>
                             <constraint firstItem="RT7-NU-1Um" firstAttribute="trailing" secondItem="1pa-Ty-oPB" secondAttribute="trailingMargin" id="3r8-8E-gJX"/>
                             <constraint firstItem="RT7-NU-1Um" firstAttribute="leading" secondItem="1pa-Ty-oPB" secondAttribute="leadingMargin" constant="5" id="9hZ-Td-7jS"/>
+                            <constraint firstItem="wnH-GA-Z0X" firstAttribute="top" secondItem="RT7-NU-1Um" secondAttribute="bottom" constant="124" id="B3f-rl-nYN"/>
                             <constraint firstItem="wnH-GA-Z0X" firstAttribute="centerX" secondItem="1pa-Ty-oPB" secondAttribute="centerX" id="Fyn-NQ-gzJ"/>
                             <constraint firstItem="nru-uW-2sx" firstAttribute="top" secondItem="wnH-GA-Z0X" secondAttribute="bottom" constant="49" id="ZQw-oh-Of7"/>
-                            <constraint firstItem="wnH-GA-Z0X" firstAttribute="top" secondItem="RT7-NU-1Um" secondAttribute="bottom" constant="103" id="jG5-I0-v7m"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="user" id="QWQ-xi-K3K">
@@ -138,12 +147,13 @@
         <scene sceneID="edV-X1-pS7">
             <objects>
                 <navigationController id="HeO-Bd-YFL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="MapView.png" id="XKa-q7-GIE">
+                    <tabBarItem key="tabBarItem" title="" image="map" id="XKa-q7-GIE">
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="hZy-dA-HbN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="D4f-UL-dWi"/>
@@ -158,23 +168,30 @@
             <objects>
                 <tableViewController id="a3q-91-iIg" customClass="VenueListsViewController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dFV-sl-hOa">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="VenueListCell" textLabel="Ags-eX-FB7" style="IBUITableViewCellStyleDefault" id="9pM-LL-xHx">
+                                <rect key="frame" x="0.0" y="22" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9pM-LL-xHx" id="rKt-vK-2pU">
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ags-eX-FB7">
+                                            <rect key="frame" x="15" y="0.0" width="550" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <animations/>
                                 </tableViewCellContentView>
+                                <animations/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -197,15 +214,20 @@
             <objects>
                 <tableViewController storyboardIdentifier="VenuesOfListViewController" id="QxO-5k-Eaz" customClass="VenuesFromListViewController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="qZa-0d-tFz">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="venueCell" id="8r4-Mj-1sp">
+                                <rect key="frame" x="0.0" y="22" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8r4-Mj-1sp" id="d0G-cV-aJT">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
                                 </tableViewCellContentView>
+                                <animations/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -232,6 +254,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="5Pv-rn-tjv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
@@ -245,11 +268,12 @@
         <!--Uerani Tab Bar View Controller-->
         <scene sceneID="85D-7D-22O">
             <objects>
-                <tabBarController storyboardIdentifier="MainTabBar" id="9Cs-Xt-n1F" customClass="UeraniTabBarViewController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="UeraniTabBarViewController" id="9Cs-Xt-n1F" customClass="UeraniTabBarViewController" customModule="uerani" customModuleProvider="target" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="kn9-in-Xr0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -273,29 +297,35 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xfI-4p-Hff">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xfI-4p-Hff">
+                                <rect key="frame" x="4" y="44" width="592" height="443"/>
+                                <animations/>
                             </mapView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poweredByFoursquare" translatesAutoresizingMaskIntoConstraints="NO" id="EeX-wa-L7p">
-                                <rect key="frame" x="468" y="452" width="125" height="35"/>
+                                <rect key="frame" x="464" y="452" width="125" height="35"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="125" id="5ZM-PJ-ZOa"/>
                                     <constraint firstAttribute="height" constant="35" id="bxG-ro-Y1a"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ugk-Ll-QZF">
-                                <rect key="frame" x="0.0" y="64" width="600" height="585"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ugk-Ll-QZF">
+                                <rect key="frame" x="4" y="44" width="592" height="492"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="categorySearchCell" id="MQf-MH-EyY">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="592" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MQf-MH-EyY" id="XgK-7E-RNz">
+                                            <rect key="frame" x="0.0" y="0.0" width="592" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
                                         </tableViewCellContentView>
+                                        <animations/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -303,14 +333,16 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="Idg-SV-Rdj"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ko8-Be-9BA" customClass="SearchViewWtihProgress" customModule="uerani" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="600" height="43"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ko8-Be-9BA" customClass="SearchViewWtihProgress" customModule="uerani" customModuleProvider="target">
+                                <rect key="frame" x="4" y="0.0" width="592" height="43"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43" id="En7-ef-B51"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Ko8-Be-9BA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="5LR-PK-nyn"/>
@@ -353,7 +385,7 @@
                         <viewControllerLayoutGuide type="bottom" id="O0I-AS-FO9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="YES-6r-kmd">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UCu-0a-AI2">
@@ -364,6 +396,7 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oRH-C7-aVc" customClass="VenueImageView" customModule="uerani" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="600" height="250"/>
+                                                <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="250" id="CZc-qO-3s5"/>
@@ -371,6 +404,7 @@
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q0i-3Q-hZZ" customClass="VenueRatingView" customModule="uerani" customModuleProvider="target">
                                                 <rect key="frame" x="276" y="80" width="48" height="48"/>
+                                                <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -383,12 +417,14 @@
                                             </view>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qzm-YD-Sfj" customClass="VenueDetailsView" customModule="uerani" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="249" width="600" height="238"/>
+                                                <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="238" id="PcE-Bb-nk1"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="Q0i-3Q-hZZ" firstAttribute="top" secondItem="R8p-fV-TRD" secondAttribute="top" constant="80" id="1Ce-q4-qeq"/>
@@ -404,6 +440,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="R8p-fV-TRD" secondAttribute="bottom" id="CAh-xF-ktR"/>
                                     <constraint firstItem="R8p-fV-TRD" firstAttribute="top" secondItem="UCu-0a-AI2" secondAttribute="top" id="G0n-Cj-f7x"/>
@@ -413,6 +450,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="O0I-AS-FO9" firstAttribute="top" secondItem="UCu-0a-AI2" secondAttribute="bottom" id="2N4-da-3RP"/>
@@ -438,7 +476,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="MapView.png" width="974" height="1602"/>
         <image name="list" width="30" height="30"/>
         <image name="map" width="30" height="30"/>
         <image name="poweredByFoursquare" width="612" height="792"/>

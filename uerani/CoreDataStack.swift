@@ -11,7 +11,7 @@ import CoreData
 
 public typealias ChildManagedObjectContext = NSManagedObjectContext
 
-public final class CoreDataStack:Printable {
+public final class CoreDataStack:CustomStringConvertible {
     
     public let model:CoreDataModel
     public let managedObjectContext:NSManagedObjectContext
@@ -22,10 +22,12 @@ public final class CoreDataStack:Printable {
         self.model = model
         self.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model.managedObjectModel)
         
-        var error:NSError?
         let modelStoreURL:NSURL? = (storeType == NSInMemoryStoreType) ? nil : model.storeURL
         
-        self.persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: modelStoreURL, options: options, error: &error)
+        do {
+            try self.persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: modelStoreURL, options: options)
+        } catch _ as NSError {
+        }
         self.managedObjectContext = NSManagedObjectContext(concurrencyType: concurrencyType)
         self.managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
     }
@@ -40,7 +42,7 @@ public final class CoreDataStack:Printable {
     
     public var description: String {
         get {
-            return "<\(toString(CoreDataStack.self)): model=\(model)>"
+            return "<\(String(CoreDataStack.self)): model=\(model)>"
         }
     }
 }

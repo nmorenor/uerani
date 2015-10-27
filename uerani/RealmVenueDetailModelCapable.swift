@@ -21,8 +21,8 @@ public protocol VenueDetailModelCapable : class {
 
 public class RealmVenueDetailViewController : UIViewController, VenueDetailModelCapable, VenueDetailsDelegate, VenueMapImageDelegate, DialogOKDelegate {
     
-    typealias DetailModelType = VenueDetailViewModel<FVenue>
-    typealias VenueType = FVenue
+    public typealias DetailModelType = VenueDetailViewModel<FVenue>
+    public typealias VenueType = FVenue
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView! {
         didSet {
@@ -49,7 +49,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.ueraniYellowColor()
-        self.realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        self.realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         self.venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)
         
         if !self.updateCoreData {
@@ -115,7 +115,7 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     
     public func refreshVenueDetails(venueId:String) {
         dispatch_async(dispatch_get_main_queue()) {
-            let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+            let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
             realm.refresh()
             self.venue = realm.objectForPrimaryKey(FVenue.self, key: venueId)
             self.venueDetailModel.loadData(self.venue)
@@ -144,11 +144,11 @@ public class RealmVenueDetailViewController : UIViewController, VenueDetailModel
     
     public func refreshVenueDetailsError(errorString:String) {
         //TODO
-        println(errorString)
+        print(errorString, terminator: "")
     }
     
     public func performOK(data:String) {
-        VenueDetailOperation(venueId: self.venue.id, venueListName: data, delegate: nil)
+        let _ = VenueDetailOperation(venueId: self.venue.id, venueListName: data, delegate: nil)
     }
     
 }

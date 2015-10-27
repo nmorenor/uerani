@@ -13,8 +13,8 @@ extension NSManagedObject {
     
     class func entityName() -> String {
         let fullClassName = NSStringFromClass(object_getClass(self))
-        let nameComponents = split(fullClassName){ $0 == "."}
-        return last(nameComponents)!
+        let nameComponents = fullClassName.characters.split{ $0 == "."}.map { String($0) }
+        return nameComponents.last!
     }
     
     convenience init(context:NSManagedObjectContext) {

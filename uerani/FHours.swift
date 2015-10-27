@@ -14,22 +14,22 @@ public protocol Hours : class {
     var status:String {get}
     var isOpen:Bool {get}
     
-    var c_timeFrames:GeneratorOf<TimeFrames> {get}
+    var c_timeFrames:AnyGenerator<TimeFrames> {get}
 }
 
 public class FHours: Object, Hours {
     
     public dynamic var status:String = ""
     public dynamic var isOpen:Bool = false
-    public dynamic var timeframes = List<FTimeFrames>()
+    public let timeframes = List<FTimeFrames>()
     
-    public var c_timeFrames:GeneratorOf<TimeFrames> {
+    public var c_timeFrames:AnyGenerator<TimeFrames> {
         get {
-            var queue = Queue<TimeFrames>()
+            let queue = Queue<TimeFrames>()
             for next in self.timeframes {
                 queue.enqueue(next)
             }
-            return GeneratorOf<TimeFrames>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
 }

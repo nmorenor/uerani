@@ -52,7 +52,7 @@ public class DownloadImageUtil : NSObject, NSURLSessionDataDelegate {
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         if let error = error {
             if DEBUG {
-                println("Error downloading category icon \(error)")
+                Swift.print("Error downloading category icon \(error)", terminator: "")
             }
         } else {
             if let imageData = self.imageData {

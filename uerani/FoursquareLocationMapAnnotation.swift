@@ -9,10 +9,10 @@
 import UIKit
 import MapKit
 
-class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatable {
+class FoursquareLocationMapAnnotation: NSObject, MKAnnotation {
    
-    let title:String
-    let subtitle:String
+    let title:String?
+    let subtitle:String?
     let coordinate:CLLocationCoordinate2D
     var categoryImageName:String?
     var categoryImageName8:String?
@@ -69,10 +69,10 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
         self.coordinate = CLLocationCoordinate2D(latitude: venue.c_location!.lat, longitude: venue.c_location!.lng)
         self.venue = venue
         if let category = FoursquareLocationMapAnnotation.getBestCategory(venue) {
-            categoryImageName = getImageIdentifier(FIcon.FIconSize.S32.description, category)
-            categoryImageName64 = getImageIdentifier(FIcon.FIconSize.S64.description, category)
-            categoryImageName12 = getImageIdentifier("12", category)
-            categoryImageName8 = getImageIdentifier("8", category)
+            categoryImageName = getImageIdentifier(FIcon.FIconSize.S32.description, iconCapable: category)
+            categoryImageName64 = getImageIdentifier(FIcon.FIconSize.S64.description, iconCapable: category)
+            categoryImageName12 = getImageIdentifier("12", iconCapable: category)
+            categoryImageName8 = getImageIdentifier("8", iconCapable: category)
             
             self.categoryPrefix = category.c_icon!.prefix
             self.categorySuffix = category.c_icon!.suffix
@@ -82,7 +82,7 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
     private func calculateHashValue() -> Int {
         let prime:Int = 31
         var result:Int = 1
-        var toHash = NSString(format: "[%.8f,%.8f]", coordinate.latitude, coordinate.longitude)
+        let toHash = NSString(format: "[%.8f,%.8f]", coordinate.latitude, coordinate.longitude)
         result = prime * result + toHash.hashValue
         return result
     }
@@ -90,7 +90,7 @@ class FoursquareLocationMapAnnotation: NSObject, MKAnnotation, Hashable, Equatab
     private static func getBestCategory(venue:Venue) -> Category? {
         for nextCat in venue.c_categories {
             if let url = NSURL(string: "\(nextCat.c_icon!.prefix)\(FIcon.FIconSize.S32.description)\(nextCat.c_icon!.suffix)"), let imageName = getImageIdentifier(url) {
-                if let image = ImageCache.sharedInstance().imageWithIdentifier(imageName) {
+                if let _ = ImageCache.sharedInstance().imageWithIdentifier(imageName) {
                     return nextCat
                 }
             }

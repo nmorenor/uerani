@@ -11,7 +11,7 @@ import CoreData
 
 @objc(CDVenue)
 
-public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
+public class CDVenue : NSManagedObject, Venue {
     
     @NSManaged public var id:String
     @NSManaged public var name:String
@@ -56,33 +56,33 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         }
     }
     
-    public var c_categories:GeneratorOf<Category> {
+    public var c_categories:AnyGenerator<Category> {
         get {
-            var queue = Queue<Category>()
+            let queue = Queue<Category>()
             for next in self.categories.allObjects {
                 queue.enqueue(next as! CDCategory)
             }
-            return GeneratorOf<Category>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     
-    public var c_tags:GeneratorOf<Tag> {
+    public var c_tags:AnyGenerator<Tag> {
         get {
-            var queue = Queue<Tag>()
+            let queue = Queue<Tag>()
             for next in self.tags.allObjects {
                 queue.enqueue(next as! CDTag)
             }
-            return GeneratorOf<Tag>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     
-    public var c_photos:GeneratorOf<Photo> {
+    public var c_photos:AnyGenerator<Photo> {
         get {
-            var queue = Queue<Photo>()
+            let queue = Queue<Photo>()
             for next in self.photos {
                 queue.enqueue(next)
             }
-            return GeneratorOf<Photo>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     
@@ -119,7 +119,7 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         cvenue.url = venue.url
         
         for nextPhoto in venue.photos {
-            var photo = CDVenue.getPhoto(nextPhoto, context: context)
+            let photo = CDVenue.getPhoto(nextPhoto, context: context)
             photo.venue = cvenue
         }
         
@@ -141,7 +141,7 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
                     context.delete(next)
                 }
                 for nextFrame in fhours.timeframes {
-                    var frame = CDTimeFrames(timeFrames: nextFrame, context: context)
+                    let frame = CDTimeFrames(timeFrames: nextFrame, context: context)
                     frame.hours = hours
                 }
             } else {
@@ -172,7 +172,7 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
     
     static func updateVenueCategoriesAndTags(cvenue:CDVenue, venue:FVenue, context:NSManagedObjectContext) {
         for nextCat in venue.categories {
-            var category = CDVenue.getCategory(nextCat, context: context)
+            let category = CDVenue.getCategory(nextCat, context: context)
             if let category = category {
                 category.venues.addObject(cvenue)
                 cvenue.categories.addObject(category)
@@ -180,7 +180,7 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         }
         
         for nextTag in venue.tags {
-            var tag = CDVenue.getTag(nextTag, context: context)
+            let tag = CDVenue.getTag(nextTag, context: context)
             tag.venues.addObject(cvenue)
             cvenue.tags.addObject(tag)
         }
@@ -192,11 +192,17 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         fetchRequest.predicate = NSPredicate(format: "id = %@", photo.id)
         
         var error:NSError? = nil
-        var results = context.executeFetchRequest(fetchRequest, error: &error)
+        var results: [AnyObject]?
+        do {
+            results = try context.executeFetchRequest(fetchRequest)
+        } catch let error1 as NSError {
+            error = error1
+            results = nil
+        }
         var result:CDPhoto!
-        if let error = error {
+        if let _ = error {
             if DEBUG {
-                println("can not find photo \(photo.id)")
+                print("can not find photo \(photo.id)")
             }
             result = CDPhoto(photo: photo, context: context)
         } else if let results = results where !results.isEmpty {
@@ -213,12 +219,18 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         fetchRequest.predicate = NSPredicate(format: "tagvalue = %@", tag.tagvalue)
         
         var error:NSError? = nil
-        var results = context.executeFetchRequest(fetchRequest, error: &error)
+        var results: [AnyObject]?
+        do {
+            results = try context.executeFetchRequest(fetchRequest)
+        } catch let error1 as NSError {
+            error = error1
+            results = nil
+        }
         
         var result:CDTag!
-        if let error = error {
+        if let _ = error {
             if DEBUG {
-                println("can not find tag \(tag.tagvalue)")
+                print("can not find tag \(tag.tagvalue)")
             }
             result = CDTag(tag: tag, context: context)
         } else if let results = results where !results.isEmpty {
@@ -235,12 +247,18 @@ public class CDVenue : NSManagedObject, Hashable, Equatable, Venue {
         fetchRequest.predicate = NSPredicate(format: "id = %@", category.id)
         
         var error:NSError? = nil
-        var results = context.executeFetchRequest(fetchRequest, error: &error)
+        var results: [AnyObject]?
+        do {
+            results = try context.executeFetchRequest(fetchRequest)
+        } catch let error1 as NSError {
+            error = error1
+            results = nil
+        }
         
         var result:CDCategory? = nil
-        if let error = error {
+        if let _ = error {
             if DEBUG {
-                println("can not find category \(category.id)")
+                print("can not find category \(category.id)")
             }
         } else if let results = results where !results.isEmpty {
             result = results.first as? CDCategory

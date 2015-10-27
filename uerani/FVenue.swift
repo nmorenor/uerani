@@ -19,9 +19,9 @@ public protocol Venue : class {
     var venueDescription:String {get}
     
     var c_contact:Contact? {get}
-    var c_categories:GeneratorOf<Category> {get}
-    var c_tags:GeneratorOf<Tag> {get}
-    var c_photos:GeneratorOf<Photo> {get}
+    var c_categories:AnyGenerator<Category> {get}
+    var c_tags:AnyGenerator<Tag> {get}
+    var c_photos:AnyGenerator<Photo> {get}
     var c_bestPhoto:Photo? {get}
     var c_price:Price? {get}
     var c_hours:Hours? {get}
@@ -37,12 +37,12 @@ public class FVenue: Object, Venue {
     public dynamic var completeVenue = false
     public dynamic var location:FLocation?
     public dynamic var contact:FContact?
-    public dynamic var categories = List<FCategory>()
+    public let categories = List<FCategory>()
     public dynamic var venueDescription = ""
     public dynamic var verified = false
     public dynamic var url = ""
-    public dynamic var tags = List<FTag>()
-    public dynamic var photos = List<FPhoto>()
+    public let tags = List<FTag>()
+    public let photos = List<FPhoto>()
     public dynamic var bestPhoto:FPhoto?
     public dynamic var rating:Float = 0.0
     public dynamic var price:FPrice?
@@ -78,33 +78,33 @@ public class FVenue: Object, Venue {
         }
     }
     
-    public var c_categories:GeneratorOf<Category> {
+    public var c_categories:AnyGenerator<Category> {
         get {
-            var queue = Queue<Category>()
+            let queue = Queue<Category>()
             for next in self.categories {
                 queue.enqueue(next)
             }
-            return GeneratorOf<Category>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     
-    public var c_tags:GeneratorOf<Tag> {
+    public var c_tags:AnyGenerator<Tag> {
         get {
-            var queue = Queue<Tag>()
+            let queue = Queue<Tag>()
             for next in self.tags {
                 queue.enqueue(next)
             }
-            return GeneratorOf<Tag>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     
-    public var c_photos:GeneratorOf<Photo> {
+    public var c_photos:AnyGenerator<Photo> {
         get {
-            var queue = Queue<Photo>()
+            let queue = Queue<Photo>()
             for next in self.photos {
                 queue.enqueue(next)
             }
-            return GeneratorOf<Photo>(queue.generate())
+            return anyGenerator(queue.generate())
         }
     }
     

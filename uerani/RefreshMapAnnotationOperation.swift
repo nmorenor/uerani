@@ -10,7 +10,7 @@ import MapKit
 import FBAnnotationClustering
 import RealmSwift
 
-func delay(#seconds: Double, completion:()->()) {
+func delay(seconds seconds: Double, completion:()->()) {
     let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64( Double(NSEC_PER_SEC) * seconds ))
     
     dispatch_after(popTime,  dispatch_get_main_queue()) {
@@ -53,7 +53,7 @@ class RefreshMapAnnotationOperation: NSOperation {
             }
             
         } else {
-            if let mapView = self.mapView {
+            if let _ = self.mapView {
                 
                 if let annotations = self.getAnnotations(), let mapView = self.mapView {
                     self.displayAnnotations(annotations, mapView: mapView)
@@ -63,16 +63,14 @@ class RefreshMapAnnotationOperation: NSOperation {
     }
     
     private func removeAnnotations(mapView:MKMapView) {
-        if let mapAnnotations = mapView.annotations {
-            if searchMediator.shouldUseCluster() {
-                self.displayNoAnnotations()
+        if searchMediator.shouldUseCluster() {
+            self.displayNoAnnotations()
+        } else {
+            // on remove and with big zoom we do not want to remove visible operations
+            if let visibleAnnotations = self.getNonClusteredAnnotations() {
+                self.displayAnnotations(visibleAnnotations, mapView: mapView)
             } else {
-                // on remove and with big zoom we do not want to remove visible operations
-                if let visibleAnnotations = self.getNonClusteredAnnotations() {
-                    self.displayAnnotations(visibleAnnotations, mapView: mapView)
-                } else {
-                    self.displayNoAnnotations()
-                }
+                self.displayNoAnnotations()
             }
         }
     }
@@ -82,40 +80,39 @@ class RefreshMapAnnotationOperation: NSOperation {
     }
     
     private func displayAnnotations(annotations:Array<NSObject>, mapView:MKMapView) {
-        if let mapAnnotations = mapView.annotations {
-            var before:NSMutableSet = NSMutableSet(array: mapAnnotations)
-            before.removeObject(mapView.userLocation)
-            if let calloutAnnotation = searchMediator.calloutAnnotation {
-                before.removeObject(calloutAnnotation)
+        let before:NSMutableSet = NSMutableSet(array: mapView.annotations)
+        before.removeObject(mapView.userLocation)
+        if let calloutAnnotation = searchMediator.calloutAnnotation {
+            before.removeObject(calloutAnnotation)
+        }
+        
+        let after:NSSet = NSSet(array: annotations)
+        
+        let toKeep:NSMutableSet = NSMutableSet(set: before)
+        toKeep.intersectSet(after as Set<NSObject>)
+        
+        let toAdd = NSMutableSet(set: after)
+        toAdd.minusSet(toKeep as Set<NSObject>)
+        
+        let toRemove = NSMutableSet(set: before)
+        toRemove.minusSet(after as Set<NSObject>)
+        
+        if toAdd.count > 0 || toRemove.count > 0 {
+            dispatch_async(dispatch_get_main_queue()) {
+                mapView.addAnnotations(toAdd.allObjects as! [MKAnnotation])
+                mapView.removeAnnotations(toRemove.allObjects as! [MKAnnotation])
+                //once ui is updated unlock, let other threads to execute
+                self.unlock()
             }
-            
-            var after:NSSet = NSSet(array: annotations)
-            
-            var toKeep:NSMutableSet = NSMutableSet(set: before)
-            toKeep.intersectSet(after as Set<NSObject>)
-            
-            var toAdd = NSMutableSet(set: after)
-            toAdd.minusSet(toKeep as Set<NSObject>)
-            
-            var toRemove = NSMutableSet(set: before)
-            toRemove.minusSet(after as Set<NSObject>)
-            
-            if toAdd.count > 0 || toRemove.count > 0 {
-                dispatch_async(dispatch_get_main_queue()) {
-                    mapView.addAnnotations(toAdd.allObjects)
-                    mapView.removeAnnotations(toRemove.allObjects)
-                    //once ui is updated unlock, let other threads to execute
-                    self.unlock()
-                }
-                //block thread, only one at a time will update the ui
-                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-                if !self.searchMediator.hasRunningSearch() {
-                    self.sendEndProgressNotification()
-                }
-            } else if !self.searchMediator.hasRunningSearch() {
+            //block thread, only one at a time will update the ui
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+            if !self.searchMediator.hasRunningSearch() {
                 self.sendEndProgressNotification()
             }
+        } else if !self.searchMediator.hasRunningSearch() {
+            self.sendEndProgressNotification()
         }
+        
     }
     
     private func sendEndProgressNotification() {
@@ -152,15 +149,15 @@ class RefreshMapAnnotationOperation: NSOperation {
                 NSNotificationCenter.defaultCenter().postNotification(searchBeginNotification)
             }
             let predicate = searchBox.getPredicate(mapView.region)
-            let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+            let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
             let venueResults = realm.objects(FVenue).filter(predicate)
             
             var annotations = [FoursquareLocationMapAnnotation]()
-            var venues:GeneratorOf<FVenue>
+            var venues:AnyGenerator<FVenue>
             if let filter = self.searchMediator.getFilter() {
-                venues = filter.filterVenues(venueResults.generate())
+                venues = filter.filterVenues(anyGenerator(venueResults.generate()))
             } else {
-                venues = venueResults.generate()
+                venues = anyGenerator(venueResults.generate())
             }
             for venue in venues {
                 annotations.append(FoursquareLocationMapAnnotation(venue: venue))

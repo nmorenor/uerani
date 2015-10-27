@@ -23,7 +23,7 @@ public class CreateVenueListController: UIViewController, UIGestureRecognizerDel
     var dialogView:CreateVenueListDialogView!
     var dialogOKDelegate:DialogOKDelegate?
     
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -94,7 +94,7 @@ public class CreateVenueListController: UIViewController, UIGestureRecognizerDel
         self.dialogView.cancelAction = self.closeViewCancel
         self.containerView.addSubview(self.dialogView)
         
-        UIView.animateWithDuration(0.5, delay: 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: nil, animations: {
+        UIView.animateWithDuration(0.5, delay: 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
             self.containerView.center = self.rootViewController.view.center
             }, completion: { finished in
                 
@@ -104,7 +104,7 @@ public class CreateVenueListController: UIViewController, UIGestureRecognizerDel
     }
     
     public func closeView(withCallback:Bool) {
-        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: nil, animations: {
+        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: [], animations: {
             self.containerView.center.y = -(self.viewHeight! + 10)
             }, completion: { finished in
                 UIView.animateWithDuration(0.3, animations: {
@@ -126,8 +126,8 @@ public class CreateVenueListController: UIViewController, UIGestureRecognizerDel
     }
     
     func closeViewOK(withCallback:Bool) {
-        if !self.dialogView.venueListNameText.text.isEmpty {
-            self.dialogOKDelegate?.performOK(self.dialogView.venueListNameText.text)
+        if !self.dialogView.venueListNameText.text!.isEmpty {
+            self.dialogOKDelegate?.performOK(self.dialogView.venueListNameText.text!)
         }
         self.closeView(withCallback)
     }
@@ -137,7 +137,7 @@ public class CreateVenueListController: UIViewController, UIGestureRecognizerDel
     }
     
     public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view.isDescendantOfView(self.dialogView) {
+        if touch.view!.isDescendantOfView(self.dialogView) {
             return false
         }
         return true

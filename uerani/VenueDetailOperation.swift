@@ -64,14 +64,14 @@ public class VenueDetailOperation:AbstractCoreDataOperation {
     }
     
     private func downloadImageAndNotify() {
-        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
         if let venue = realm.objectForPrimaryKey(FVenue.self, key: venueId) {
             var photo:FPhoto?
             if let bestPhoto = venue.bestPhoto {
                 photo = bestPhoto
             } else if let fphoto = venue.photos.first {
                 photo = fphoto
-                realm.write() {
+                try! realm.write() {
                     realm.add(venue, update: true)
                 }
             }
@@ -95,11 +95,17 @@ public class VenueDetailOperation:AbstractCoreDataOperation {
         fetchRequest.predicate = NSPredicate(format: "id = %@", venue.id)
         
         var error:NSError? = nil
-        var results = self.sharedModelContext.executeFetchRequest(fetchRequest, error: &error)
+        var results: [AnyObject]?
+        do {
+            results = try self.sharedModelContext.executeFetchRequest(fetchRequest)
+        } catch let error1 as NSError {
+            error = error1
+            results = nil
+        }
         var result:CDVenue!
-        if let error = error {
+        if let _ = error {
             if DEBUG {
-                println("can not find venue \(venue.id)")
+                print("can not find venue \(venue.id)")
             }
             result = CDVenue(venue: venue, context: self.sharedModelContext)
         } else if let results = results where !results.isEmpty {
@@ -115,13 +121,19 @@ public class VenueDetailOperation:AbstractCoreDataOperation {
             fetchRequest.predicate = NSPredicate(format: "user.id == %@ AND title == %@", FoursquareClient.sharedInstance().userId!, venueName)
             
             var error:NSError?
-            var venueListResults = self.sharedModelContext.executeFetchRequest(fetchRequest, error: &error)
-            if let error = error {
+            var venueListResults: [AnyObject]?
+            do {
+                venueListResults = try self.sharedModelContext.executeFetchRequest(fetchRequest)
+            } catch let error1 as NSError {
+                error = error1
+                venueListResults = nil
+            }
+            if let _ = error {
                 if DEBUG {
-                    println("can not find venue List \(venue.id) :: \(venueName)")
+                    print("can not find venue List \(venue.id) :: \(venueName)")
                 }
             } else if let venueListResults = venueListResults where !venueListResults.isEmpty {
-                var list = venueListResults.first as! CDVenueList
+                let list = venueListResults.first as! CDVenueList
                 list.venues.addObject(result)
                 result.venueLists.addObject(list)
             }
@@ -136,14 +148,14 @@ public class VenueDetailOperation:AbstractCoreDataOperation {
     
     private func downloadPhoto(size : String, photo:FPhoto?) {
         if let photo = photo {
-            var identifier = getImageIdentifier(size, photo)
-            var photoURL = "\(photo.prefix)\(size)\(photo.suffix)"
+            let identifier = getImageIdentifier(size, iconCapable: photo)
+            let photoURL = "\(photo.prefix)\(size)\(photo.suffix)"
             if let url = NSURL(string: photoURL), let identifier = identifier {
-                var imageCacheName = "venue_\(self.venueId)_\(identifier)"
+                let imageCacheName = "venue_\(self.venueId)_\(identifier)"
                 let nextImage = ImageCache.sharedInstance().imageWithIdentifier(imageCacheName)
                 
                 if nextImage == nil {
-                    var downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: NSOperationQueue(), finishHandler: self.unlockImage)
+                    let downloadImage = DownloadImageUtil(imageCacheName: imageCacheName, operationQueue: NSOperationQueue(), finishHandler: self.unlockImage)
                     downloadImage.performDownload(url)
                     //wait for the download
                     dispatch_semaphore_wait(imageSemaphore, DISPATCH_TIME_FOREVER)
@@ -157,9 +169,9 @@ public class VenueDetailOperation:AbstractCoreDataOperation {
             self.venueDetailDelegate?.refreshVenueDetailsError(error)
         } else if success {
             if let result = result {
-                let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+                let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
                 var venue:FVenue!
-                realm.write {
+                try! realm.write {
                     //update venue with data from foursquare
                     venue = realm.create(FVenue.self, value: result, update: true)
                     

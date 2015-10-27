@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import UIKit
 
-class VenuesFromListViewController : UITableViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+class VenuesFromListViewController : UITableViewController, NSFetchedResultsControllerDelegate {
     
     var list:CDVenueList!
     
@@ -24,16 +24,20 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
         self.tableView.delegate = self
         var error:NSError? = nil
         self.fetchedResultsController.delegate = self
-        self.fetchedResultsController.performFetch(&error)
-        self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch let error1 as NSError {
+            error = error1
+        }
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         
-        if let error = error {
+        if let _ = error {
             if DEBUG {
-                println("Error performing initial fetch")
+                print("Error performing initial fetch")
             }
             return
         }
-        let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResultsController.sections!.first!
         if sectionInfo.numberOfObjects > 0 {
             self.tableView.reloadData()
         }
@@ -69,7 +73,7 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let sections = self.fetchedResultsController.sections {
             if sections.count > 0 {
-                let info = sections[section] as! NSFetchedResultsSectionInfo
+                let info = sections[section] 
                 return info.numberOfObjects
             }
         }
@@ -80,33 +84,31 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
         let venue = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDVenue
         
         var venueCell:UITableViewCell!
-        if let cell = self.tableView.dequeueReusableCellWithIdentifier("venueCell") as? UITableViewCell {
-            cell.textLabel!.text = venue.name
-            venueCell = cell
+        if let cell = self.tableView.dequeueReusableCellWithIdentifier("venueCell") {
+            venueCell = setupCell(cell, venue: venue)
         } else {
-            var cell = UITableViewCell()
-            cell.textLabel!.text = venue.name
-            venueCell = cell
+            venueCell = setupCell(UITableViewCell(), venue: venue)
         }
         
+        
         if let bestPhoto = venue.bestPhoto {
-            var rect = tableView.rectForRowAtIndexPath(indexPath)
+            let rect = tableView.rectForRowAtIndexPath(indexPath)
             let url = NSURL(string: "\(bestPhoto.iprefix)\(rect.size.height.getIntValue())x\(rect.size.height.getIntValue())\(bestPhoto.isuffix)")!
             if let identifier = getImageIdentifier(url) {
                 if let image = ImageCache.sharedInstance().imageWithIdentifier(identifier) {
-                    var imageView = UIImageView(image: image)
+                    let imageView = UIImageView(image: image)
                     venueCell.accessoryView = imageView
                 } else {
                     FoursquareClient.sharedInstance().httpClient!.taskForImage(url, completionHandler: { imageData, error in
-                        if let error = error {
+                        if let _ = error {
                             if DEBUG {
-                                println("Can not download venue image for list")
+                                Swift.print("Can not download venue image for list")
                             }
                         } else if let data = imageData {
                             dispatch_async(dispatch_get_main_queue()) {
-                                var image = UIImage(data: data)
+                                let image = UIImage(data: data)
                                 ImageCache.sharedInstance().storeImage(image, withIdentifier: identifier)
-                                var imageView = UIImageView(image: image)
+                                let imageView = UIImageView(image: image)
                                 venueCell.accessoryView = imageView
                             }
                         }
@@ -119,13 +121,18 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
         return venueCell
     }
     
+    func setupCell(cell:UITableViewCell, venue:CDVenue) -> UITableViewCell {
+        cell.textLabel!.text = venue.name
+        return cell
+    }
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         switch (editingStyle) {
         case .Delete:
             let venue = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDVenue
-            var venueLists = venue.mutableSetValueForKey("venueLists")
-            var venues = self.list.mutableSetValueForKey("venues")
+            let venueLists = venue.mutableSetValueForKey("venueLists")
+            let venues = self.list.mutableSetValueForKey("venues")
             
             venueLists.removeObject(self.list)
             venues.removeObject(venue)
@@ -149,8 +156,8 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var venue = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDVenue
-        var detailsController = self.storyboard?.instantiateViewControllerWithIdentifier("RealmDetailsViewController") as! RealmVenueDetailViewController
+        let venue = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDVenue
+        let detailsController = self.storyboard?.instantiateViewControllerWithIdentifier("RealmDetailsViewController") as! RealmVenueDetailViewController
         detailsController.venueId = venue.id
         detailsController.updateCoreData = true
         self.navigationController?.pushViewController(detailsController, animated: true)
@@ -162,14 +169,14 @@ class VenuesFromListViewController : UITableViewController, UITableViewDataSourc
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch(type) {
-        case NSFetchedResultsChangeType.Insert :
-            self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
-            break
-        case NSFetchedResultsChangeType.Delete :
-            self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
-            break
-        default:
-            break
+            case NSFetchedResultsChangeType.Insert :
+                self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                    break
+            case NSFetchedResultsChangeType.Delete :
+                self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                break
+            default:
+                break
         }
     }
     

@@ -46,12 +46,18 @@ public class UberClient : HTTPClientProtocol {
         
     }
     
-    private func saveToKeyChain(data:[String:String]?) {
-        if let data = data {
+    private func saveToKeyChain(saveData:[String:String]?) {
+        do {
+            guard let data = saveData else {
+                do {
+                    try Locksmith.deleteDataForUserAccount("uber-client-\(FoursquareClient.sharedInstance().userId!)")
+                } catch _ {}
+                return
+            }
             //save data on key chain
-            Locksmith.saveData(data, forUserAccount: "uber-client-\(FoursquareClient.sharedInstance().userId!)")
-        } else {
-            Locksmith.deleteDataForUserAccount("uber-client-\(FoursquareClient.sharedInstance().userId!)")
+            try Locksmith.saveData(data, forUserAccount: "uber-client-\(FoursquareClient.sharedInstance().userId!)")
+        } catch _ {
+            
         }
     }
     
@@ -60,18 +66,14 @@ public class UberClient : HTTPClientProtocol {
             return accessToken
         }
         //look for data on the key chain, do not store access token in plain text
-        let (dictionary, error) = Locksmith.loadDataForUserAccount("uber-client-\(FoursquareClient.sharedInstance().userId!)")
-        if error != nil && DEBUG {
-            println("*** \(toString(FoursquareClient.self)) ERROR: [\(__LINE__)] \(__FUNCTION__) Can not load access token from keychain \(error)")
+
+        let locksmithResult = Locksmith.loadDataForUserAccount("uber-client-\(FoursquareClient.sharedInstance().userId!)")
+        guard let dictionary = locksmithResult, let accessToken = dictionary["access_token"] as? String else  {
             return nil
         }
-        if let dictionary = dictionary {
-            if let accessToken = dictionary["access_token"] as? String {
-                self.inMemoryToken = accessToken
-                return accessToken
-            }
-        }
-        return nil
+        
+        self.inMemoryToken = accessToken
+        return accessToken
     }
     
     public func addRequestHeaders(request: NSMutableURLRequest) {
@@ -89,7 +91,7 @@ public class UberClient : HTTPClientProtocol {
     }
     
     public func addAuthParameters(parameters:[String:AnyObject]) -> [String:AnyObject] {
-        var result = parameters
+        let result = parameters
         return result
     }
     
@@ -106,15 +108,22 @@ public class UberClient : HTTPClientProtocol {
         )
         let state: String = generateStateWithLength(20) as String
         let redirectURL = UberClient.Constants.UBER_CALLBACK_URI.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+        let webViewController = WebViewController()
+        oauthswift.authorize_url_handler = webViewController
         oauthswift.authorizeWithCallbackURL(NSURL(string: redirectURL!)!, scope: "profile", state: state, params: [String:String](), success: { credential, response, parameters in
+                webViewController.dismissWebViewController()
                 var data = [String:String]()
                 if let refreshToken = parameters["refresh_token"] as? String {
                     data["refresh_token"] = refreshToken
                 }
                 data["access_token"] = credential.oauth_token
                 self.setInMemoryToken(data)
-                self.accessTokenLoginDelegate?.successLogin()
+                delay(seconds: 0.4) {
+                    self.accessTokenLoginDelegate?.successLogin()
+                }
+            
             }, failure: { _ in
+                webViewController.dismissWebViewController()
                 self.accessTokenLoginDelegate?.errorLogin("Can not login to uber")
         })
         

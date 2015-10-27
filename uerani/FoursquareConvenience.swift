@@ -12,7 +12,7 @@ import MapKit
 extension FoursquareClient {
     
     public func loadUserData(completionHandler:(success:Bool, result:[String:AnyObject]?, errorString:String?) -> Void) {
-        var parameters = self.addAuthParameters([String:AnyObject]())
+        let parameters = self.addAuthParameters([String:AnyObject]())
         
         self.doGETAPI(FoursquareClient.Methods.USERS_SELF, key: FoursquareClient.RespnoseKeys.USER, parameters: parameters, completionHandler: completionHandler)
     }
@@ -46,7 +46,7 @@ extension FoursquareClient {
             if let error = errorString {
                 completionHandler(success: false, result: nil, errorString: error)
             } else {
-                var completionResult = result!
+                let completionResult = result!
                 
                 var topCategories = [[String:AnyObject]]()
                 for category in completionResult {
@@ -108,11 +108,11 @@ extension FoursquareClient {
     
     private func doGETAPI<T:CollectionType>(method:String, key:String, parameters:[String:AnyObject], completionHandler:(success:Bool, result:T?, errorString:String?) -> Void) {
         self.httpClient?.taskForGETMethod(method, parameters: parameters) { JSONResult, error in
-            if let error = error {
+            if let _ = error {
                 completionHandler(success: false, result: nil, errorString: "Error while searching \(key)")
             } else {
                 if DEBUG {
-                    println(JSONResult)
+                    print(JSONResult, terminator: "")
                 }
                 if let meta = JSONResult.valueForKey(FoursquareClient.RespnoseKeys.Meta) as? [String:AnyObject] {
                     if let code = meta[FoursquareClient.RespnoseKeys.Code] as? NSNumber {

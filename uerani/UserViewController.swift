@@ -43,13 +43,13 @@ class UserViewController : UIViewController, UserRefreshDelegate {
         self.userPhotoView.name = "\(self.userViewModel.name)"
         self.view.addSubview(self.userPhotoView!)
         
-        UserRefreshOperation(delegate: self)
+        let _ = UserRefreshOperation(delegate: self)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let token = UberClient.sharedInstance().accessToken {
+        if let _ = UberClient.sharedInstance().accessToken {
             self.uberSwitch.setOn(true, animated: false)
         } else {
             self.uberSwitch.setOn(false, animated: false)

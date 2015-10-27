@@ -28,7 +28,7 @@ public class HTTPClient: NSObject {
     
     func taskWithBodyMethod(httpMethod:String, method: String, parameters: [String:AnyObject], jsonBody: [String:AnyObject], completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
-        var mutableJsonBody = self.delegate.processJsonBody(jsonBody)
+        let mutableJsonBody = self.delegate.processJsonBody(jsonBody)
         
         let urlString = self.delegate.getBaseURLSecure() + method + HTTPClient.escapedParameters(parameters)
         let url = NSURL(string: urlString)!
@@ -36,16 +36,21 @@ public class HTTPClient: NSObject {
         var jsonifyError:NSError? = nil
         self.delegate.addRequestHeaders(request)
         request.HTTPMethod = httpMethod
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(mutableJsonBody, options: nil, error: &jsonifyError)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(mutableJsonBody, options: [])
+        } catch let error as NSError {
+            jsonifyError = error
+            request.HTTPBody = nil
+        }
         
         if (DEBUG && jsonifyError == nil) {
-            println(NSString(data: request.HTTPBody!, encoding: NSUTF8StringEncoding))
+            print(NSString(data: request.HTTPBody!, encoding: NSUTF8StringEncoding))
         }
         
         let task = session.dataTaskWithRequest(request) { data, response, downloadError in
-            let newData = self.delegate.processResponse(data)
+            let newData = self.delegate.processResponse(data!)
             if (DEBUG) {
-                println(NSString(data: newData, encoding: NSUTF8StringEncoding))
+                print(NSString(data: newData, encoding: NSUTF8StringEncoding))
             }
             if let error = downloadError {
                 let newError = HTTPClient.errorForData(newData, response: response, error: error)
@@ -82,9 +87,9 @@ public class HTTPClient: NSObject {
         self.delegate.addRequestHeaders(request)
         
         let task = session.dataTaskWithRequest(request) { data, response, downloadError in
-            let newData = self.delegate.processResponse(data)
+            let newData = self.delegate.processResponse(data!)
             if (DEBUG) {
-                println(NSString(data: newData, encoding: NSUTF8StringEncoding))
+                print(NSString(data: newData, encoding: NSUTF8StringEncoding))
             }
             if let error = downloadError {
                 let newError = HTTPClient.errorForData(newData, response: response, error: error)
@@ -105,7 +110,7 @@ public class HTTPClient: NSObject {
         
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
             
-            if let error = downloadError {
+            if let _ = downloadError {
                 let userInfo = [NSLocalizedDescriptionKey : "Error downloading image"]
                 completionHandler(imageData: nil, error: NSError(domain: "Uerani Error", code: 1, userInfo: userInfo))
             } else {
@@ -120,7 +125,7 @@ public class HTTPClient: NSObject {
     
     class func errorForData(data: NSData?, response: NSURLResponse?, error:NSError) -> NSError {
         
-        if let parsedResult = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil) as? [String:AnyObject] {
+        if let parsedResult = (try? NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)) as? [String:AnyObject] {
             if let errorMessage = parsedResult[HTTPClient.JSONResponseKeys.ErrorMessage] as? String {
                 let userInfo = [NSLocalizedDescriptionKey: errorMessage]
                 if let errorCode = parsedResult[HTTPClient.JSONResponseKeys.Status] as? Int {
@@ -138,7 +143,13 @@ public class HTTPClient: NSObject {
         
         var parsingError: NSError? = nil
         
-        let parsedResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError)
+        let parsedResult: AnyObject?
+        do {
+            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+        } catch let error as NSError {
+            parsingError = error
+            parsedResult = nil
+        }
         
         if let error = parsingError {
             completionHandler(result: nil, error: error)
@@ -165,7 +176,7 @@ public class HTTPClient: NSObject {
             
         }
         
-        return (!urlVars.isEmpty ? "?" : "") + join("&", urlVars)
+        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }
     
     class func substituteKeyInMethod(method:String, key:String, value: String) -> String? {

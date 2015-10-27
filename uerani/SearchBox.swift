@@ -110,9 +110,9 @@ struct SearchBox {
     }
     
     func removeOverlays() {
-        if let mapView = self.mapView, let overlays = mapView.overlays where debug {
+        if let mapView = self.mapView where debug {
             dispatch_async(dispatch_get_main_queue()) {
-                mapView.removeOverlays(overlays)
+                mapView.removeOverlays(mapView.overlays)
             }
         }
     }
@@ -126,7 +126,7 @@ struct SearchBox {
             if self.boxDistance == SearchBox.internalBoxDistance {
                 
                 //only trigger forsquare search one per bounding box
-                var locations = self.getLocations().filter({ !self.searchMediator.isInGridBox($0) })
+                let locations = self.getLocations().filter({ !self.searchMediator.isInGridBox($0) })
                 
                 for location in locations {
                     self.searchMediator.addToGridBox(location)
@@ -156,7 +156,7 @@ struct SearchBox {
             
             var locations = searchMediator.getGidBoxLocations()
             let regionCenter = GeoLocation(coordinate: mapView!.region.center)
-            locations.sort() { lhs, rhs in
+            locations.sortInPlace() { lhs, rhs in
                 if self.useCenter {
                     return lhs.center.distanceTo(self.center) < rhs.center.distanceTo(self.center)
                 } else {
@@ -164,7 +164,7 @@ struct SearchBox {
                 }
             }
             for location in locations {
-                FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, searchMediator:self.searchMediator)
+                let _ = FoursquareLocationOperation(sw: location.swLocation.coordinate, ne: location.neLocation.coordinate, searchMediator:self.searchMediator)
             }
         }
     }

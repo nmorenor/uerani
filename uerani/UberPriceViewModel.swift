@@ -30,15 +30,15 @@ class UberPriceViewModel {
     }
     
     func uberPriceHandler(success:Bool, result:[[String:AnyObject]]?, errorString:String?) {
-        if let error = errorString {
+        if let _ = errorString {
             self.uberDetailDelegate.refreshVenueDetailsError("error on price request to uber")
         } else {
             var resultValue = ""
             for i in 0..<result!.count {
                 let price = result![i]
-                var estimate = price[UberClient.ResponseKeys.ESTIMATE] as? String
-                var currencyCode = price[UberClient.ResponseKeys.CURRENCY_CODE] as? String
-                var displayName = price[UberClient.ResponseKeys.DISPLAY_NAME] as? String
+                let estimate = price[UberClient.ResponseKeys.ESTIMATE] as? String
+                let currencyCode = price[UberClient.ResponseKeys.CURRENCY_CODE] as? String
+                let displayName = price[UberClient.ResponseKeys.DISPLAY_NAME] as? String
                 if let estimate = estimate, currencyCode = currencyCode, displayName = displayName {
                     resultValue += "\(displayName): \(estimate) \(currencyCode)"
                 }

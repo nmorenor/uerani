@@ -30,15 +30,19 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
     
     func reload() {
         var error:NSError? = nil
-        self.fetchedResultsController.performFetch(&error)
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch let error1 as NSError {
+            error = error1
+        }
         
-        if let error = error {
+        if let _ = error {
             if DEBUG {
-                println("Error performing initial fetch")
+                print("Error performing initial fetch")
             }
         }
-        let sectionInfo = self.fetchedResultsController.sections!.first as! NSFetchedResultsSectionInfo
-        if sectionInfo.numberOfObjects > 0 {
+        let sectionInfo = self.fetchedResultsController.sections!.first
+        if sectionInfo!.numberOfObjects > 0 {
             self.tableView.reloadData()
         }
     }
@@ -62,7 +66,7 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let sections = self.fetchedResultsController.sections {
             if sections.count > 0 {
-                let info = sections[section] as! NSFetchedResultsSectionInfo
+                let info = sections[section] 
                 return info.numberOfObjects
             }
         }
@@ -76,20 +80,19 @@ public class VenueToListTableDelegate : NSObject, UITableViewDataSource, UITable
             selected = true
         }
         
-        if let cell = self.tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier) as? UITableViewCell {
-            cell.textLabel!.text = venueList.title
-            if selected {
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }
-            return cell
-        } else {
-            var cell = UITableViewCell()
-            cell.textLabel!.text = venueList.title
-            if selected {
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }
-            return cell
+        guard let cell = self.tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier) else {
+            return setupCell(UITableViewCell(), venueList: venueList, selected: selected)
         }
+        
+        return setupCell(cell, venueList: venueList, selected: selected)
+    }
+    
+    func setupCell(cell:UITableViewCell, venueList:CDVenueList, selected:Bool) -> UITableViewCell {
+        cell.textLabel!.text = venueList.title
+        if selected {
+            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+        }
+        return cell
     }
     
     public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

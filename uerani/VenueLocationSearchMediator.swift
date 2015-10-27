@@ -22,7 +22,7 @@ public class VenueLocationSearchMediator {
     var searchBox:SearchBox? {
         willSet {
             self.cleanGridBox()
-            RefreshMapAnnotationOperation(mapView: mapView, searchMediator:self)
+            _ = RefreshMapAnnotationOperation(mapView: mapView, searchMediator:self)
         }
     }
     
@@ -50,7 +50,7 @@ public class VenueLocationSearchMediator {
     }
     
     func displayLocation(location:CLLocation) {
-        var region:MKCoordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 400.0, 40.0)
+        let region:MKCoordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 400.0, 40.0)
         dispatch_async(dispatch_get_main_queue()) {
             self.mapView.setRegion(region, animated: true)
         }
@@ -87,13 +87,13 @@ public class VenueLocationSearchMediator {
     }
     
     func updateUI() {
-        mapView.delegate.mapView!(mapView, regionDidChangeAnimated: true)
+        mapView.delegate!.mapView!(mapView, regionDidChangeAnimated: true)
     }
     
     func shouldUseCluster() -> Bool {
-        if let searchBox = self.searchBox {
+        if let _ = self.searchBox {
             let mapRegionDistance = GeoLocation.getDistance(mapView.region)
-            var maxDistanceForNonClustered = (VenueLocationSearchMediator.locationSearchDistance * 0.5) + 1
+            let maxDistanceForNonClustered = (VenueLocationSearchMediator.locationSearchDistance * 0.5) + 1
             return mapRegionDistance > maxDistanceForNonClustered
         }
         return true
@@ -127,7 +127,7 @@ public class VenueLocationSearchMediator {
     }
     
     func isInGridBox(location:GeoLocation.GeoLocationBoundBox) -> Bool {
-        var result = false
+        let result = false
         objc_sync_enter(self.mutex)
         self.isInGridBoxInternal(location)
         objc_sync_exit(self.mutex)
@@ -178,9 +178,9 @@ public class VenueLocationSearchMediator {
         LocationRequestManager.sharedInstance().refreshOperationQueue.cancelAllOperations()
         self.cleanRunningSearches()
         objc_sync_enter(self.clusteringManager)
-        let realm = Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
-        realm.write() {
-            var results = realm.objects(FVenueMapAnnotation.self)
+        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+        try! realm.write() {
+            let results = realm.objects(FVenueMapAnnotation.self)
             realm.delete(results)
         }
         self.clusteringManager = FBClusteringManager(annotations: [FoursquareLocationMapAnnotation]())
@@ -199,7 +199,7 @@ public class VenueLocationSearchMediator {
     func addRunningSearch(location:GeoLocation) {
         objc_sync_enter(self.mutex)
         let hash = self.calculateHashFor(location)
-        var wasEmpty = self.runningSearchLocations.count == 0
+        let wasEmpty = self.runningSearchLocations.count == 0
         self.runningSearchLocations.addObject(hash)
         if wasEmpty {
             let searchBeginNotification = NSNotification(name: UERANI_MAP_BEGIN_PROGRESS, object: nil)
@@ -226,7 +226,7 @@ public class VenueLocationSearchMediator {
     func calculateHashFor(location:GeoLocation) -> Int {
         let prime:Int = 31
         var result:Int = 1
-        var toHash = NSString(format: "[%.8f,%.8f]", location.coordinate.latitude, location.coordinate.longitude)
+        let toHash = NSString(format: "[%.8f,%.8f]", location.coordinate.latitude, location.coordinate.longitude)
         result = prime * result + toHash.hashValue
         return result
     }
@@ -243,10 +243,10 @@ public class VenueLocationSearchMediator {
     }
     
     func addCurrentVenues(annotations:Array<FoursquareLocationMapAnnotation>, realm:Realm) {
-        realm.write() {
+        try! realm.write() {
             for next in annotations {
                 var currentVenue = realm.objectForPrimaryKey(FVenueMapAnnotation.self, key: next.venueId)
-                if let currentVenue = currentVenue {
+                if let _ = currentVenue {
                     continue
                 }
                 currentVenue = FVenueMapAnnotation.loadData(next)

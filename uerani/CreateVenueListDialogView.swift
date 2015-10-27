@@ -28,19 +28,19 @@ public class CreateVenueListDialogView : UIView {
         }
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override init(frame: CGRect) {
-        var headerFrame = CGRectMake(0, 0, frame.width, 35.0);
+        let headerFrame = CGRectMake(0, 0, frame.width, 35.0);
         self.headerView = VenueListDialogHeaderView(frame: headerFrame)
         self.headerView.title = "Create List"
         
-        var buttonsFrame = CGRectMake(0, frame.size.height - 40, frame.size.width, 45)
+        let buttonsFrame = CGRectMake(0, frame.size.height - 40, frame.size.width, 45)
         self.buttonBarView = VenueListDialogButtonBarView(frame: buttonsFrame)
         
-        var textFrame = CGRectMake(0, 35.0, frame.width, frame.size.height - (headerFrame.size.height + buttonsFrame.size.height - 5))
+        let textFrame = CGRectMake(0, 35.0, frame.width, frame.size.height - (headerFrame.size.height + buttonsFrame.size.height - 5))
         self.textParentView = UIView(frame: textFrame)
         
         self.venueListNameText = BorderedTextField(frame: CGRectMake(5, 5, textFrame.size.width - 10, textFrame.size.height - 10))

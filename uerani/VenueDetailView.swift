@@ -49,7 +49,7 @@ class VenueDetailView: UIView {
     
     var text:String!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -70,23 +70,23 @@ class VenueDetailView: UIView {
     override func layoutSubviews() {
         self.textLayer.wrapped = true
         if let image = image, let accessoryImage = self.accessoryImage {
-            var imageRect = CGRectMake(10, (self.frame.size.height/2) - (image.size.height/2), image.size.width, image.size.height)
+            let imageRect = CGRectMake(10, (self.frame.size.height/2) - (image.size.height/2), image.size.width, image.size.height)
             self.imageLayer.frame = imageRect
             
-            var textSize = calculateSizeForText(self.frame.width - (self.imageLayer.frame.size.width + 20 + accessoryImage.size.width + 25), attributedString: getAttributedString())
+            let textSize = calculateSizeForText(self.frame.width - (self.imageLayer.frame.size.width + 20 + accessoryImage.size.width + 25), attributedString: getAttributedString())
             
             self.textLayer.frame = CGRectMake(self.imageLayer.frame.size.width + 20, (self.frame.size.height/2) - (textSize.height/2), self.frame.width - ((self.imageLayer.frame.size.width + 20) + accessoryImage.size.width + 25), self.frame.size.height)
             
             self.accessoryLayer.frame = CGRectMake((self.imageLayer.frame.size.width + 20) + (self.textLayer.frame.size.width + 5), (self.frame.size.height/2) - (accessoryImage.size.height/2), accessoryImage.size.width, accessoryImage.size.height)
         } else if let image = image {
-            var imageRect = CGRectMake(10, (self.frame.size.height/2) - (image.size.height/2), image.size.width, image.size.height)
+            let imageRect = CGRectMake(10, (self.frame.size.height/2) - (image.size.height/2), image.size.width, image.size.height)
             self.imageLayer.frame = imageRect
             
-            var textSize = calculateSizeForText(self.frame.width - (self.imageLayer.frame.size.width + 20), attributedString: getAttributedString())
+            let textSize = calculateSizeForText(self.frame.width - (self.imageLayer.frame.size.width + 20), attributedString: getAttributedString())
             
             self.textLayer.frame = CGRectMake(self.imageLayer.frame.size.width + 20, (self.frame.size.height/2) - (textSize.height/2), self.frame.width - (self.imageLayer.frame.size.width + 20), self.frame.size.height)
         } else {
-            var textSize = calculateSizeForText(self.frame.width - 20, attributedString: getAttributedString())
+            let textSize = calculateSizeForText(self.frame.width - 20, attributedString: getAttributedString())
             
             self.textLayer.frame = CGRectMake(10, (self.frame.size.height/2) - (textSize.height/2), self.frame.width - 20, self.frame.size.height)
         }
@@ -96,10 +96,10 @@ class VenueDetailView: UIView {
         borderLayer.backgroundColor = UIColor.ueraniDarkYellowColor().CGColor
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        if let accessoryImage = self.accessoryImage {
-            let touch = touches.first! as! UITouch
-            var p:CGPoint = touch.locationInView(self)
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let _ = self.accessoryImage {
+            let touch = touches.first! 
+            let p:CGPoint = touch.locationInView(self)
             if self.accessoryLayer.containsPoint(self.layer.convertPoint(p, toLayer: self.accessoryLayer)) {
                 self.accessoryDelegate?.handleAccessoryTouch()
             }
@@ -108,26 +108,26 @@ class VenueDetailView: UIView {
     
     func getAttributedString() -> NSAttributedString {
         let fontName = "HelveticaNeue"
-        var font = UIFont(name: fontName, size: 14.0)!
-        var paraStyle = NSMutableParagraphStyle()
+        let font = UIFont(name: fontName, size: 14.0)!
+        let paraStyle = NSMutableParagraphStyle()
         paraStyle.lineSpacing = 6.0
-        var attributedString = NSAttributedString(string: self.text, attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: UIColor.blackColor(), NSParagraphStyleAttributeName : paraStyle])
+        let attributedString = NSAttributedString(string: self.text, attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: UIColor.blackColor(), NSParagraphStyleAttributeName : paraStyle])
         return attributedString
     }
 }
 
 extension UIView {
     func calculateSizeForText(width:CGFloat, attributedString:NSAttributedString) -> CGSize {
-        var stringRef = attributedString as CFAttributedStringRef
+        let stringRef = attributedString as CFAttributedStringRef
         
-        var typesetter = CTTypesetterCreateWithAttributedString(stringRef)
+        let typesetter = CTTypesetterCreateWithAttributedString(stringRef)
         
         var offset:CFIndex = 0
         var length:CFIndex = 0
         var y:CGFloat = 0
-        do {
+        repeat {
             length = CTTypesetterSuggestLineBreak(typesetter, offset, Double(width))
-            var line:CTLineRef = CTTypesetterCreateLine(typesetter, CFRangeMake(offset, length))
+            let line:CTLineRef = CTTypesetterCreateLine(typesetter, CFRangeMake(offset, length))
             
             var ascent:CGFloat = 0
             var descent:CGFloat = 0

@@ -6,19 +6,19 @@ use_frameworks!
 link_with 'uerani', 'ueraniTests'
 
 target 'uerani' do
-  pod 'RealmSwift', '~> 0.95.0'
+  pod 'RealmSwift'
   pod 'FSOAuth'
-  pod 'OAuthSwift', '~> 0.3.7'
-  pod 'Locksmith', '~> 1.2.2'
-  pod 'FBAnnotationClustering', '~> 0.1.2'
+  pod 'OAuthSwift'
+  pod 'Locksmith'
+  pod 'FBAnnotationClustering'
 end
 
 target 'ueraniTests' do
-  pod 'Quick', '~> 0.3.1'
-  pod 'Nimble', '~> 1.0.0-rc.1'
-  pod 'RealmSwift', '~> 0.95.0'
+  pod 'Quick'
+  pod 'Nimble'
+  pod 'RealmSwift'
   pod 'FSOAuth'
-  pod 'OAuthSwift', '~> 0.3.7'
-  pod 'Locksmith', '~> 1.2.2'
-  pod 'FBAnnotationClustering', '~> 0.1.2'
+  pod 'OAuthSwift'
+  pod 'Locksmith'
+  pod 'FBAnnotationClustering'
 end

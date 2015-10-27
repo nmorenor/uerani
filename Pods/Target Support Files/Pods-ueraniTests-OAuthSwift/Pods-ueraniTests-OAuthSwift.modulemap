@@ -1,6 +1,0 @@
-framework module OAuthSwift {
-  umbrella header "Pods-ueraniTests-OAuthSwift-umbrella.h"
-
-  export *
-  module * { export * }
-}

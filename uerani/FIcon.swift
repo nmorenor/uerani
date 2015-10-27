@@ -17,7 +17,7 @@ public protocol Icon : class {
 
 public class FIcon: Object, Icon {
     
-    public enum FIconSize : Printable {
+    public enum FIconSize : CustomStringConvertible {
         case S32;
         case S44;
         case S64;

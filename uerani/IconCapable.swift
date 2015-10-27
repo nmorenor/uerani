@@ -30,7 +30,7 @@ func getImageIdentifier(size:String, iconCapable:IconCapable) -> String? {
 
 func getImageIdentifier(url:NSURL) -> String? {
     if let name = url.lastPathComponent, let pathComponents = url.pathComponents {
-        let prefix_image_name = pathComponents[pathComponents.count - 2] as! String
+        let prefix_image_name = pathComponents[pathComponents.count - 2] 
         return "\(prefix_image_name)_\(name)"
     }
     return nil

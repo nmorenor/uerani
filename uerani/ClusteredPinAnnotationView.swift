@@ -14,7 +14,7 @@ import FBAnnotationClustering
 
 class ClusteredPinAnnotationView : MKAnnotationView {
     
-    override var annotation: MKAnnotation! {
+    override var annotation: MKAnnotation? {
         didSet {
              if let annotation = annotation as? FBAnnotationCluster where annotation.annotations.count != self.currentCount {
                 self.prepareFrameSize()
@@ -33,12 +33,12 @@ class ClusteredPinAnnotationView : MKAnnotationView {
         super.init(frame: frame)
     }
     
-    override init!(annotation: MKAnnotation!, reuseIdentifier: String!) {
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = UIColor.clearColor()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -47,8 +47,8 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             let number = annotation.annotations.count
             
             let fontSize:CGFloat = self.getFontSize(number)
-            var font = UIFont(name: fontName, size: fontSize)!
-            var attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: UIColor.ueraniYellowColor()])
+            let font = UIFont(name: fontName, size: fontSize)!
+            let attributedString = NSAttributedString(string: String(annotation.annotations.count), attributes: [NSFontAttributeName : font, NSForegroundColorAttributeName: UIColor.ueraniYellowColor()])
             let asize:CGSize = attributedString.size()
             let size = asize.width + 16
             self.frame = CGRectMake(0, 0, size + 8, size + 8)
@@ -61,13 +61,13 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             let number = annotation.annotations.count
             let fontSize:CGFloat = self.getFontSize(annotation.annotations.count)
             
-            var context:CGContextRef = UIGraphicsGetCurrentContext();
+            let context:CGContextRef = UIGraphicsGetCurrentContext()!
             
             CGContextSetLineWidth(context, 6); // set the line width
             UIColor.ueraniYellowColor().setStroke()
             
             var center:CGPoint = CGPointMake(size/2, size/2)
-            var radius:CGFloat = 0.80 * center.x;
+            let radius:CGFloat = 0.80 * center.x;
             var startAngle:CGFloat = -(CGFloat(M_PI) / 2); // 90 degrees
             var endAngle:CGFloat = ((2 * CGFloat(M_PI)) + startAngle);
             CGContextAddArc(context, center.x, center.y, radius, startAngle, endAngle, 0);
@@ -86,10 +86,10 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             CGContextFillPath(context)
             CGContextRestoreGState(context)
             
-            var textStyle:NSMutableParagraphStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
+            let textStyle:NSMutableParagraphStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
             textStyle.alignment = NSTextAlignment.Center
             
-            var font = UIFont(name: fontName, size: fontSize)!
+            let font = UIFont(name: fontName, size: fontSize)!
             
             CGContextTranslateCTM(context, 0.0, CGRectGetHeight(rect))
             CGContextScaleCTM(context, 1.0, -1.0)
@@ -103,7 +103,7 @@ class ClusteredPinAnnotationView : MKAnnotationView {
             // set the line width to stroke the text with
             CGContextSetLineWidth(context, 1.5)
             // set the drawing mode to stroke
-            CGContextSetTextDrawingMode(context, kCGTextFill)
+            CGContextSetTextDrawingMode(context, CGTextDrawingMode.Fill)
             
             CGContextSetTextPosition(context, (center.x - (bounds.size.width/2)), (((bounds.size.height/2) + (center.y / 2)) - (((bounds.size.height/2) - (radius/2)))) - 4)
             // the line of text is drawn - see https://developer.apple.com/library/ios/DOCUMENTATION/StringsTextFonts/Conceptual/CoreText_Programming/LayoutOperations/LayoutOperations.html
