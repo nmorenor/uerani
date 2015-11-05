@@ -42,9 +42,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright (c) 2015 Ignacio Moreno. All rights reserved</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow to use location to suggest you places to go</string>
 	<key>UILaunchStoryboardName</key>

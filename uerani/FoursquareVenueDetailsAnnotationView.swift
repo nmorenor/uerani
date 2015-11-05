@@ -38,9 +38,12 @@ class FoursquareVenueDetailsAnnotationView : AccesorizedCalloutAnnotationView {
         let aView = FoursquareAnnotationVenueInformationView()
         aView.image = image
         aView.name = annotation.title
-        aView.address = "City: \(annotation.city), \(annotation.state)"
+        if let city = annotation.city, let state = annotation.state {
+            aView.address = "City: \(annotation.city), \(annotation.state)"
+        }
         if let address = annotation.subtitle {
-            aView.address = "\(aView.address)\nAddress: \(address)"
+            let prefix = aView.address ?? ""
+            aView.address = "\(prefix)\nAddress: \(address)"
         }
         aView.frame = CGRectMake(2, 3, contentFrame.size.width - 8, contentFrame.size.height - 6)
         _ = self.contentView().subviews.map({$0.removeFromSuperview()})

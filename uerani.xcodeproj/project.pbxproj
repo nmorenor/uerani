@@ -1194,7 +1194,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Ignacio Moreno (E286AG3VXK)";
 				INFOPLIST_FILE = uerani/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.uerani;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "8b564f4e-9701-44fa-8c2e-2f657feed9c9";
 			};
@@ -1209,7 +1209,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ignacio Moreno (E286AG3VXK)";
 				INFOPLIST_FILE = uerani/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.uerani;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "8b564f4e-9701-44fa-8c2e-2f657feed9c9";
 			};
