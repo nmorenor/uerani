@@ -50,7 +50,7 @@ class FoursquareAnnotationVenueInformationView: UIView {
     
     var address:String? {
         didSet {
-            addressLabel.text = address
+            addressLabel.text = address!
         }
     }
     

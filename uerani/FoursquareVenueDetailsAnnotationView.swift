@@ -38,10 +38,8 @@ class FoursquareVenueDetailsAnnotationView : AccesorizedCalloutAnnotationView {
         let aView = FoursquareAnnotationVenueInformationView()
         aView.image = image
         aView.name = annotation.title
-        if let city = annotation.city, let state = annotation.state {
-            aView.address = "City: \(annotation.city), \(annotation.state)"
-        }
-        if let address = annotation.subtitle {
+        aView.address = "City: \(annotation.city), \(annotation.state)"
+        if let address = annotation.subtitle where address.characters.count > 0 {
             let prefix = aView.address ?? ""
             aView.address = "\(prefix)\nAddress: \(address)"
         }
