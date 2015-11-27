@@ -23,6 +23,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, NSFetch
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
         let category = self.fetchedResultsController.objectAtIndexPath(indexPath) as! CDCategory
         let CellIdentifier = "categorySearchCell"
         

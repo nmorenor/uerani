@@ -58,14 +58,18 @@ public class FoursquareConfig:NSObject, NSCoding {
                     success = false
                 }
                 if !success && DEBUG {
-                    print("Can not delete \(file)")
+                    Swift.print("Can not delete \(file)")
                 }
             }
         }
         
         if let userId = FoursquareClient.sharedInstance().userId {
             //do not let uber access token expire
-            try! Locksmith.deleteDataForUserAccount("uber-client-\(userId)")
+            do {
+                try Locksmith.deleteDataForUserAccount("uber-client-\(userId)")
+            } catch {
+                Swift.print(error)
+            }
         }
         
         self.dateUpdated = NSDate()
