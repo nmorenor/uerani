@@ -22,6 +22,10 @@ To use the application your Foursquare credentials are required, the app is doin
 ![alt tag](https://raw.github.com/nmorenor/uerani/master/uerani/Screenshot4.jpg)
 ![alt tag](https://raw.github.com/nmorenor/uerani/master/uerani/Screenshot5.jpg)
 
+## AppStore
+
+[Uerani at the AppStore](https://itunes.apple.com/us/app/uerani/id1043594755)
+
 ## TODO
 
 - Use Reactive Cocoa
