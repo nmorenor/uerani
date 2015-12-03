@@ -34,17 +34,21 @@ public class FoursquareLocationOperation: NSOperation {
         if cancelled {
             return
         }
-        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
-        let shouldCallFoursquareAPI = self.shouldCallFoursquareAPI(realm)
-        if !shouldCallFoursquareAPI {
-            searchOnFoursquare = false
-            self.doLocalCacheSearch(realm)
+        do {
+        let realm = try Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+            let shouldCallFoursquareAPI = self.shouldCallFoursquareAPI(realm)
+            if !shouldCallFoursquareAPI {
+                searchOnFoursquare = false
+                self.doLocalCacheSearch(realm)
+            }
+            
+            if searchOnFoursquare && shouldCallFoursquareAPI {
+                doFoursquareSearch(self.searchHandler)
+            }
+            self.searchMediator.removeRunningSearch(self.center)
+        } catch {
+            Swift.print(error)
         }
-        
-        if searchOnFoursquare && shouldCallFoursquareAPI {
-            doFoursquareSearch(self.searchHandler)
-        }
-        self.searchMediator.removeRunningSearch(self.center)
     }
     
     /**

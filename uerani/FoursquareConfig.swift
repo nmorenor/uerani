@@ -39,9 +39,13 @@ public class FoursquareConfig:NSObject, NSCoding {
             }
         }
         //clean cache database
-        let realm = try! Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
-        try! realm.write() {
-            realm.deleteAll()
+        do {
+            let realm = try Realm(path: FoursquareClient.sharedInstance().foursquareDataCacheRealmFile.path!)
+            try realm.write() {
+                realm.deleteAll()
+            }
+        } catch {
+            Swift.print(error)
         }
         
         let fileManager = NSFileManager.defaultManager()
@@ -49,17 +53,12 @@ public class FoursquareConfig:NSObject, NSCoding {
         let imageCacheDir = ImageCache.sharedInstance().imagesDirectoryURL.path!
         let exist = fileManager.fileExistsAtPath(imageCacheDir)
         if exist {
-            for file in (try! fileManager.contentsOfDirectoryAtPath(imageCacheDir)) {
-                var success: Bool
-                do {
+            do {
+                for file in (try fileManager.contentsOfDirectoryAtPath(imageCacheDir)) {
                     try fileManager.removeItemAtPath("\(imageCacheDir)/\(file)")
-                    success = true
-                } catch _ as NSError {
-                    success = false
                 }
-                if !success && DEBUG {
-                    Swift.print("Can not delete \(file)")
-                }
+            } catch  {
+                Swift.print(error)
             }
         }
         
